@@ -1,12 +1,12 @@
 ﻿using Exebite.DataAccess.Context;
-using Exebite.DataAccess.Customers;
+using Exebite.DataAccess.Handlers;
 using Exebite.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
-namespace Exebite.DataAccess.Orders
+namespace Exebite.DataAccess.Handlers
 {
     public class OrderHandler : IOrderHandler
     {

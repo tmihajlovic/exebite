@@ -2,55 +2,55 @@
 using System.Data.Entity;
 using System.Linq;
 using Exebite.DataAccess.Context;
-using Exebite.DataAccess.Foods;
+using Exebite.DataAccess.Handlers;
 using Exebite.Model;
 
-namespace Exebite.DataAccess.Restaurants
+namespace Exebite.DataAccess.Handlers
 {
-    public class RestaurantHandler : IRestaurantHandler
+    public class RestaurantHandler :DatabaseHandler<Restaurant> ,IRestaurantHandler
     {
         IFoodOrderingContextFactory _factory;
 
-        public RestaurantHandler(IFoodOrderingContextFactory factory)
+        public RestaurantHandler(IFoodOrderingContextFactory factory):base(factory)
         {
             _factory = factory;
         }
 
-        public void Delete(int Id)
-        {
-            using (var context = _factory.Create())
-            {
-                var restaurant = context.Restaurants.Find(Id);
-                context.Restaurants.Remove(restaurant);
-                context.SaveChanges();
-            }
-        }
+        //public void Delete(int Id)
+        //{
+        //    using (var context = _factory.Create())
+        //    {
+        //        var restaurant = context.Restaurants.Find(Id);
+        //        context.Restaurants.Remove(restaurant);
+        //        context.SaveChanges();
+        //    }
+        //}
 
-        public IEnumerable<Restaurant> Get()
-        {
-            using (var context = _factory.Create())
-            {
-                var restaurantEntities = new List<Restaurant>();
+        //public IEnumerable<Restaurant> Get()
+        //{
+        //    using (var context = _factory.Create())
+        //    {
+        //        var restaurantEntities = new List<Restaurant>();
 
-                foreach (var restaurant in context.Restaurants)
-                {
-                    var restaurantModel = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(restaurant);
-                    restaurantEntities.Add(restaurantModel);
-                }
+        //        foreach (var restaurant in context.Restaurants)
+        //        {
+        //            var restaurantModel = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(restaurant);
+        //            restaurantEntities.Add(restaurantModel);
+        //        }
 
-                return restaurantEntities;
-            }
-        }
+        //        return restaurantEntities;
+        //    }
+        //}
 
-        public Restaurant GetByID(int Id)
-        {
-            using (var context = _factory.Create())
-            {
-                var restaurantEntity = context.Restaurants.Find(Id);
-                var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(restaurantEntity);
-                return restaurant;
-            }
-        }
+        //public Restaurant GetByID(int Id)
+        //{
+        //    using (var context = _factory.Create())
+        //    {
+        //        var restaurantEntity = context.Restaurants.Find(Id);
+        //        var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(restaurantEntity);
+        //        return restaurant;
+        //    }
+        //}
 
         public Restaurant GetByName(string name)
         {

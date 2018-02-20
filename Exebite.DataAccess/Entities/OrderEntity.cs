@@ -1,10 +1,11 @@
-﻿using Exebite.DataAccess.Customers;
-using Exebite.DataAccess.Meals;
+﻿using Exebite.DataAccess.Handlers;
+using Exebite.DataAccess.Handlers;
 using Exebite.Model;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace Exebite.DataAccess.Orders
+
+namespace Exebite.DataAccess.Handlers
 {
     [Table(nameof(Order))]
     public class OrderEntity

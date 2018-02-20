@@ -20,9 +20,16 @@ namespace Exebite.DataAccess.Migrations
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
             context.Locations.AddOrUpdate(x => x.Id,
-                new Locations.LocationEntity() { Id = 1, Name = "Bulevar", Address = "Bulevar Vojvode Stjepe" },
-                new Locations.LocationEntity() { Id = 2, Name = "JD", Address = "Jovana Ducica" }
+                new Handlers.LocationEntity() { Id = 1, Name = "Bulevar", Address = "Bulevar Vojvode Stjepe" },
+                new Handlers.LocationEntity() { Id = 2, Name = "JD", Address = "Jovana Ducica" }
                  );
+            context.Restaurants.AddOrUpdate(x => x.Id,
+                new Handlers.RestaurantEntity() { Id = 1, Name = "Restoran pod Lipom" },
+                new Handlers.RestaurantEntity() { Id = 2, Name = "Hedone" },
+                new Handlers.RestaurantEntity() { Id = 3, Name = "Index House" },
+                new Handlers.RestaurantEntity() { Id = 4, Name = "Teglas" },
+                new Handlers.RestaurantEntity() { Id = 5, Name = "Extra Food" }
+                );
         }
     }
 }

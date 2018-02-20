@@ -1,7 +1,7 @@
 ﻿using Exebite.Model;
 using System;
 using System.Collections.Generic;
-namespace Exebite.DataAccess.Orders
+namespace Exebite.DataAccess
 {
     public interface IOrderHandler : IDatabaseHandler<Order>
     {

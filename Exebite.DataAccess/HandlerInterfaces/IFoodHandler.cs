@@ -1,7 +1,7 @@
 ﻿using Exebite.Model;
 using System.Collections.Generic;
 
-namespace Exebite.DataAccess.Foods
+namespace Exebite.DataAccess
 {
     public interface IFoodHandler : IDatabaseHandler<Food>
     {

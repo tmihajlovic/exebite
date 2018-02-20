@@ -43,8 +43,7 @@ namespace GoogleSpreadsheetApi.Strategies
                 foodList.Add(new Food {
                     Name = item[0].ToString(),
                     Type = FoodType.MAIN_COURSE,
-                    Price = decimal.Parse(item[2].ToString()),
-                    Restaurant = restaurant
+                    Price = decimal.Parse(item[2].ToString())
                 });
             }
 

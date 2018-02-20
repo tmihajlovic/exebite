@@ -1,11 +1,11 @@
-﻿using Exebite.DataAccess.Locations;
-using Exebite.DataAccess.Orders;
+﻿using Exebite.DataAccess.Handlers;
+using Exebite.DataAccess.Handlers;
 using Exebite.Model;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Exebite.DataAccess.Customers
+namespace Exebite.DataAccess.Handlers
 {
     [Table(nameof(Customer))]
     public class CustomerEntity

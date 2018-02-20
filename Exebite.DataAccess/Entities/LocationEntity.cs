@@ -1,10 +1,10 @@
-﻿using Exebite.DataAccess.Customers;
+﻿using Exebite.DataAccess.Handlers;
 using Exebite.Model;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Exebite.DataAccess.Locations
+namespace Exebite.DataAccess.Handlers
 {
     [Table(nameof(Location))]
     public class LocationEntity

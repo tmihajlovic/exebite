@@ -1,6 +1,5 @@
-﻿using System;
-using Exebite.Business;
-using Exebite.DataAccess.Locations;
+﻿using Exebite.Business;
+using Exebite.DataAccess;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

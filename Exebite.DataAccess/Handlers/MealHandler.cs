@@ -3,7 +3,7 @@ using System.Data.Entity;
 using Exebite.DataAccess.Context;
 using Exebite.Model;
 
-namespace Exebite.DataAccess.Meals
+namespace Exebite.DataAccess.Handlers
 {
     public class MealHandler : IMealHandler
     {

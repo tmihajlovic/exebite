@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Exebite.DataAccess;
-using Exebite.DataAccess.Restaurants;
+﻿using System.Collections.Generic;
 using Exebite.Model;
 using GoogleSpreadsheetApi;
 using GoogleSpreadsheetApi.GoogleSSFactory;
@@ -48,7 +42,7 @@ namespace Exebite.Business
             historicalData.AddRange(_hedone.GetHistoricalData());
             historicalData.AddRange(_indexHouse.GetHistoricalData());
             historicalData.AddRange(_teglas.GetHistoricalData());
-            //historicalData.AddRange(_extraFood.GetHistoricalData());
+            historicalData.AddRange(_extraFood.GetHistoricalData());
 
             return historicalData;
         }

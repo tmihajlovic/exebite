@@ -1,5 +1,5 @@
 ﻿using Exebite.Model;
-namespace Exebite.DataAccess.Recipes
+namespace Exebite.DataAccess
 {
     public interface IRecipeHandler : IDatabaseHandler<Recipe>
     {

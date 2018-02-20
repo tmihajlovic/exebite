@@ -1,5 +1,6 @@
-﻿using Exebite.DataAccess.Context;
-using Exebite.DataAccess.Customers;
+﻿using Exebite.DataAccess;
+using Exebite.DataAccess.Context;
+using Exebite.DataAccess.Handlers;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -1,6 +1,6 @@
 ﻿using Exebite.Model;
 
-namespace Exebite.DataAccess.Meals
+namespace Exebite.DataAccess
 {
     public interface IMealHandler : IDatabaseHandler<Meal>
     {

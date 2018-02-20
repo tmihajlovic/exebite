@@ -54,20 +54,21 @@
     <Compile Include="AutoMapperHelper.cs" />
     <Compile Include="Context\FoodOrderingContextFactory.cs" />
     <Compile Include="Context\IFoodOrderingContextFactory.cs" />
-    <Compile Include="Customers\CustomerEntity.cs" />
-    <Compile Include="Customers\CustomerHandler.cs" />
-    <Compile Include="Customers\ICustomerHandler.cs" />
+    <Compile Include="Entities\CustomerEntity.cs" />
+    <Compile Include="Handlers\CustomerHandler.cs" />
+    <Compile Include="HandlerInterfaces\ICustomerHandler.cs" />
     <Compile Include="Context\FoodOrderingContext.cs" />
-    <Compile Include="Foods\FoodEntity.cs" />
-    <Compile Include="Foods\FoodHandler.cs" />
-    <Compile Include="Foods\IFoodHandler.cs" />
-    <Compile Include="IDatabaseHandler.cs" />
-    <Compile Include="Locations\ILocationHandler.cs" />
-    <Compile Include="Locations\LocationEntity.cs" />
-    <Compile Include="Locations\LocationHandler.cs" />
-    <Compile Include="Meals\IMealHandler.cs" />
-    <Compile Include="Meals\MealEntity.cs" />
-    <Compile Include="Meals\MealHandler.cs" />
+    <Compile Include="Entities\FoodEntity.cs" />
+    <Compile Include="Handlers\DatabaseHandler.cs" />
+    <Compile Include="Handlers\FoodHandler.cs" />
+    <Compile Include="HandlerInterfaces\IFoodHandler.cs" />
+    <Compile Include="HandlerInterfaces\IDatabaseHandler.cs" />
+    <Compile Include="HandlerInterfaces\ILocationHandler.cs" />
+    <Compile Include="Entities\LocationEntity.cs" />
+    <Compile Include="Handlers\LocationHandler.cs" />
+    <Compile Include="HandlerInterfaces\IMealHandler.cs" />
+    <Compile Include="Entities\MealEntity.cs" />
+    <Compile Include="Handlers\MealHandler.cs" />
     <Compile Include="Migrations\201802190924481_InitialCreate.cs" />
     <Compile Include="Migrations\201802190924481_InitialCreate.Designer.cs">
       <DependentUpon>201802190924481_InitialCreate.cs</DependentUpon>
@@ -81,16 +82,16 @@
       <DependentUpon>201802191409552_RestaurantAddedMissingFoodLists.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Orders\IOrderHandler.cs" />
-    <Compile Include="Orders\OrderHandler.cs" />
-    <Compile Include="Orders\OrderEntity.cs" />
+    <Compile Include="HandlerInterfaces\IOrderHandler.cs" />
+    <Compile Include="Handlers\OrderHandler.cs" />
+    <Compile Include="Entities\OrderEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Recipes\IRecipeHandler.cs" />
-    <Compile Include="Recipes\RecipeEntity.cs" />
-    <Compile Include="Recipes\RecipeHandler.cs" />
-    <Compile Include="Restaurants\IRestaurantHandler.cs" />
-    <Compile Include="Restaurants\RestaurantEntity.cs" />
-    <Compile Include="Restaurants\RestaurantHandler.cs" />
+    <Compile Include="HandlerInterfaces\IRecipeHandler.cs" />
+    <Compile Include="Entities\RecipeEntity.cs" />
+    <Compile Include="Handlers\RecipeHandler.cs" />
+    <Compile Include="HandlerInterfaces\IRestaurantHandler.cs" />
+    <Compile Include="Entities\RestaurantEntity.cs" />
+    <Compile Include="Handlers\RestaurantHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -113,5 +114,6 @@
       <Name>Exebite.Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

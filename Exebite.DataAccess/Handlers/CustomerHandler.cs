@@ -4,7 +4,7 @@ using System.Linq;
 using Exebite.DataAccess.Context;
 using Exebite.Model;
 
-namespace Exebite.DataAccess.Customers
+namespace Exebite.DataAccess.Handlers
 {
     public class CustomerHandler : ICustomerHandler
     {

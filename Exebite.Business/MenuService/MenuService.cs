@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Exebite.DataAccess;
-using Exebite.DataAccess.Foods;
-using Exebite.DataAccess.Orders;
-using Exebite.DataAccess.Recipes;
-using Exebite.DataAccess.Restaurants;
 using Exebite.Model;
 
 namespace Exebite.Business

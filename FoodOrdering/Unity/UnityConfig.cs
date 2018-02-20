@@ -1,15 +1,10 @@
 ﻿
 using Exebite.DataAccess.Context;
-using Exebite.DataAccess.Customers;
-using Exebite.DataAccess.Foods;
-using Exebite.DataAccess.Locations;
-using Exebite.DataAccess.Meals;
-using Exebite.DataAccess.Orders;
-using Exebite.DataAccess.Restaurants;
+using Exebite.DataAccess.Handlers;
 using System;
 using Unity;
-using Exebite.Business;
 using GoogleSpreadsheetApi.GoogleSSFactory;
+using Exebite.DataAccess;
 
 namespace FoodOrdering.Unity
 {

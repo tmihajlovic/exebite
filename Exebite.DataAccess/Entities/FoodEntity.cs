@@ -1,11 +1,12 @@
-﻿using Exebite.DataAccess.Meals;
-using Exebite.DataAccess.Recipes;
-using Exebite.DataAccess.Restaurants;
+﻿using Exebite.DataAccess.Handlers;
+using Exebite.DataAccess.Handlers;
+using Exebite.DataAccess.Handlers;
 using Exebite.Model;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace Exebite.DataAccess.Foods
+
+namespace Exebite.DataAccess.Handlers
 {
     [Table(nameof(Food))]
     public class FoodEntity

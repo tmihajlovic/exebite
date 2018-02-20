@@ -1,14 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Exebite.Business;
-using Exebite.DataAccess.Customers;
-using Unity;
-using Unity.Resolution;
-using Exebite.DataAccess.Context;
 using Exebite.Model;
 using BusinessTest;
+using Exebite.DataAccess;
 
 namespace Business.Test.Services
 {

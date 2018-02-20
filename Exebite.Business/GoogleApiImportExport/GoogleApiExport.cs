@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Exebite.DataAccess.Restaurants;
+﻿using System.Collections.Generic;
+using Exebite.DataAccess;
 using Exebite.Model;
 using GoogleSpreadsheetApi;
 using GoogleSpreadsheetApi.GoogleSSFactory;

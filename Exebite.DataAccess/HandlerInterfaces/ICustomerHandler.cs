@@ -1,5 +1,5 @@
 ﻿using Exebite.Model;
-namespace Exebite.DataAccess.Customers
+namespace Exebite.DataAccess
 {
     public interface ICustomerHandler : IDatabaseHandler<Customer>
     {

@@ -16,33 +16,49 @@ namespace FoodOrdering.Unity
             IOrderService orderService = UnityConfig.Container.Resolve<IOrderService>();
             IRestarauntService restarauntService = UnityConfig.Container.Resolve<IRestarauntService>();
 
-            //historical data import
+            Console.WriteLine("1 - get historical data");
+            Console.WriteLine("2 - Update daily menu");
+            Console.WriteLine("q or other - quit");
 
-            //Console.WriteLine("Import all data");
-            //var data = dataImporter.GetHistoricalData();
-            //foreach (var order in data)
-            //{
-            //    orderService.PlaceOreder(order);
-            //}
-            //Console.WriteLine("Done!");
+            var choise = Console.ReadKey().KeyChar;
 
-            //daily menu
-
-            Console.WriteLine("DailyMenuUpdate");
-            Console.WriteLine("");
-            dataImporter.UpdateRestorauntsMenu();
-            var restauratns = restarauntService.GetAllRestaurants();
-            foreach (var restaurant in restauratns)
+            switch(choise)
             {
+                case '1':
+                    //historical data import
+                    Console.WriteLine("Import all data");
+                    var data = dataImporter.GetHistoricalData();
+                    foreach (var order in data)
+                    {
+                        orderService.PlaceOreder(order);
+                    }
+                    Console.WriteLine("Done!");
+                    Console.ReadLine();
+                    break;
 
-                Console.WriteLine(restaurant.Name);
-                foreach (var food in restaurant.DailyMenu)
-                {
-                    Console.WriteLine(food.Name);
-                }
+                case '2':
+                    //daily menu
+                    Console.WriteLine("DailyMenuUpdate");
+                    Console.WriteLine("");
+                    dataImporter.UpdateRestorauntsMenu();
+                    var restauratns = restarauntService.GetAllRestaurants();
+                    foreach (var restaurant in restauratns)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("-----------------------------------------");
+                        Console.WriteLine(restaurant.Name);
+                        foreach (var food in restaurant.DailyMenu)
+                        {
+                            Console.WriteLine("*" + food.Name + " " + "-" + " " + food.Price);
+                        }
+                    }
+                    Console.ReadLine();
+                    break;
+
+                case 'q':
+                    break;
+
             }
-
-            Console.ReadLine();
         }
     }
 }

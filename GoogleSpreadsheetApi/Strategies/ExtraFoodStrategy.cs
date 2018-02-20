@@ -159,21 +159,24 @@ namespace GoogleSpreadsheetApi.Strategies
                         }
                         
                         var food = alwaysAvailableFood.FirstOrDefault(x => x.Name == dateValues[j][0]);
-
-                        var order = new Order()
+                        if(food != null)
                         {
-                            Customer = customers[j],
-                            Date = date
-                        };
+                            food.Restaurant = restaurant;
+                            var order = new Order()
+                            {
+                                Customer = customers[j],
+                                Date = date
+                            };
 
-                        var meal = new Meal
-                        {
-                            Foods = new List<Food> { food }
-                        };
+                            var meal = new Meal
+                            {
+                                Foods = new List<Food> { food }
+                            };
 
-                        order.Meal = meal;
+                            order.Meal = meal;
 
-                        orders.Add(order);
+                            orders.Add(order);
+                        }
                         
                     }
 
@@ -224,7 +227,12 @@ namespace GoogleSpreadsheetApi.Strategies
 
                             if (!string.IsNullOrWhiteSpace(foodName))
                             {
-                                orderedFood.Add(dateFood.FirstOrDefault(f => f.Name == foodName));
+                                var foundedFood = dateFood.FirstOrDefault(f => f.Name == foodName);
+                                if(foundedFood != null)
+                                {
+                                    foundedFood.Restaurant = restaurant;
+                                    orderedFood.Add(foundedFood);
+                                }
                             }
                         }
 

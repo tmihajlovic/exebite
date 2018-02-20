@@ -1,10 +1,10 @@
-﻿using Exebite.DataAccess.Customers;
-using Exebite.DataAccess.Foods;
-using Exebite.DataAccess.Locations;
-using Exebite.DataAccess.Meals;
-using Exebite.DataAccess.Orders;
-using Exebite.DataAccess.Recipes;
-using Exebite.DataAccess.Restaurants;
+﻿using Exebite.DataAccess.Handlers;
+using Exebite.DataAccess.Handlers;
+using Exebite.DataAccess.Handlers;
+using Exebite.DataAccess.Handlers;
+using Exebite.DataAccess.Handlers;
+using Exebite.DataAccess.Handlers;
+using Exebite.DataAccess.Handlers;
 using System.Data.Entity;
 namespace Exebite.DataAccess.Context
 {

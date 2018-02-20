@@ -1,15 +1,4 @@
-﻿using Exebite.DataAccess.Customers;
-using Exebite.DataAccess.Foods;
-using Exebite.DataAccess.Locations;
-using Exebite.DataAccess.Meals;
-using Exebite.DataAccess.Orders;
-using Exebite.DataAccess.Restaurants;
-using Exebite.Model;
-using System;
-using System.Collections.Generic;
-using Unity;
-
-namespace FoodOrdering.Unity
+﻿namespace FoodOrdering.Unity
 {
     //public class TestApplication : IApplication
     //{
@@ -66,7 +55,7 @@ namespace FoodOrdering.Unity
     //        #endregion
 
     //        #region Food
-            
+
     //        var restaurant = new Restaurant()
     //        {
     //            Name = "Lipa"
