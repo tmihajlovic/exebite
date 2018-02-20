@@ -26,5 +26,10 @@
         {
             return Properties.Settings.Default.TeglasSpredsheetID;
         }
+
+        public string GetNewLipa()
+        {
+            return Properties.Settings.Default.LipaNovi;
+        }
     }
 }

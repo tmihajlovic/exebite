@@ -20,5 +20,8 @@
     <Setting Name="TeglasSpredsheetID" Type="System.String" Scope="Application">
       <Value Profile="(Default)">1jOUHYfi0b6i4BTjBvmOQYGvBqC0MKv0-g7oSU07BUUU</Value>
     </Setting>
+    <Setting Name="LipaNovi" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1XncnXTvjTuzpjKgCTrQbJAdVn5x4L7YpagbfJlAq_xc</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -77,5 +77,14 @@ namespace GoogleSpreadsheetApi.Properties {
                 return ((string)(this["TeglasSpredsheetID"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1XncnXTvjTuzpjKgCTrQbJAdVn5x4L7YpagbfJlAq_xc")]
+        public string LipaNovi {
+            get {
+                return ((string)(this["LipaNovi"]));
+            }
+        }
     }
 }

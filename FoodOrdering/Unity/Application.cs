@@ -1,4 +1,7 @@
 ﻿using Exebite.Business;
+using Exebite.Model;
+using GoogleSpreadsheetApi.GoogleSSFactory;
+using GoogleSpreadsheetApi.RestaurantHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +18,9 @@ namespace FoodOrdering.Unity
             IGoogleDataImporter dataImporter = UnityConfig.Container.Resolve<IGoogleDataImporter>();
             IOrderService orderService = UnityConfig.Container.Resolve<IOrderService>();
             IRestarauntService restarauntService = UnityConfig.Container.Resolve<IRestarauntService>();
+            IGoogleSheetServiceFactory GoogleSSFactory = UnityConfig.Container.Resolve<IGoogleSheetServiceFactory>();
+            IGoogleSpreadsheetIdFactory GoogleSSIdFactory = UnityConfig.Container.Resolve<IGoogleSpreadsheetIdFactory>();
+
 
             Console.WriteLine("1 - get historical data");
             Console.WriteLine("2 - Update daily menu");
@@ -53,6 +59,28 @@ namespace FoodOrdering.Unity
                         }
                     }
                     Console.ReadLine();
+                    break;
+
+                case '5':
+                    //test
+                    Console.WriteLine("");
+                    Console.WriteLine("------------------Test get daily-----------------------");
+
+                    LipaHandler lh = new LipaHandler(GoogleSSFactory, GoogleSSIdFactory);
+                    var result = lh.GetDalyMenu();
+
+                    break;
+
+                case '6':
+                    //test
+                    Console.WriteLine("");
+                    Console.WriteLine("------------------Test place order-----------------------");
+
+                    LipaHandler lhp = new LipaHandler(GoogleSSFactory, GoogleSSIdFactory);
+                    List<Order> orderList = new List<Order>();
+                    orderList = orderService.GettOrdersForDate(new DateTime(2017,11,06));
+                    lhp.PlaceOrders(orderList);
+
                     break;
 
                 case 'q':

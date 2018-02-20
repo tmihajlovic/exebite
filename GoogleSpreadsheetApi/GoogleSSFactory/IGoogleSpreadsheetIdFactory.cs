@@ -13,5 +13,6 @@ namespace GoogleSpreadsheetApi.GoogleSSFactory
         string GetIndexHouse();
         string GetExtraFood();
         string GetTeglas();
+        string GetNewLipa();
     }
 }

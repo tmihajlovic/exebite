@@ -7,7 +7,7 @@ using Exebite.Model;
 
 namespace Exebite.DataAccess.Handlers
 {
-    public class RestaurantHandler :DatabaseHandler<Restaurant> ,IRestaurantHandler
+    public class RestaurantHandler :DatabaseHandler<Restaurant,RestaurantEntity> ,IRestaurantHandler
     {
         IFoodOrderingContextFactory _factory;
 
@@ -96,6 +96,7 @@ namespace Exebite.DataAccess.Handlers
                     }
                     else
                     {
+                        restaurantEntity.DailyMenu[i].Restaurant = dbRestaurant;
                         dbRestaurant.DailyMenu.Add(restaurantEntity.DailyMenu[i]);
                     }
                 }

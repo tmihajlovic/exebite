@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Exebite.DataAccess.Handlers
 {
-    public class DatabaseHandler<T> : IDatabaseHandler<T> where T: class
+    public class DatabaseHandler<TModel, TEntity> : IDatabaseHandler<TModel> where TModel: class where TEntity : class
     {
         IFoodOrderingContextFactory _factory;
         
@@ -18,41 +18,41 @@ namespace Exebite.DataAccess.Handlers
         }
 
         
-        public IEnumerable<T> Get()
+        public IEnumerable<TModel> Get()
         {
             using (var context = _factory.Create())
             {
-                List<T> itemList = new List<T>();
-                var entity = AutoMapperHelper.Instance.GetMappedValue<T>((T)null);
-                var ET = typeof(T).MakeGenericType(entity.GetType());
-                IQueryable<T> itemSet = context.Set<T>().AsQueryable();
+                List<TModel> itemList = new List<TModel>();
+                var entity = AutoMapperHelper.Instance.GetMappedValue<TEntity>((TModel)null);
+                var ET = typeof(TModel).MakeGenericType(entity.GetType());
+                IQueryable<TModel> itemSet = context.Set<TModel>().AsQueryable();
                 foreach(var item in itemSet)
                 {
-                    var itemModel = AutoMapperHelper.Instance.GetMappedValue<T>(item);
+                    var itemModel = AutoMapperHelper.Instance.GetMappedValue<TModel>(item);
                     itemList.Add(itemModel);
                 }
                 return itemList;
             }
         }
 
-        public T GetByID(int Id)
+        public TModel GetByID(int Id)
         {
             using (var context = _factory.Create())
             {
-                var itemSet = context.Set<T>();
+                var itemSet = context.Set<TModel>();
                 var itemEntity = itemSet.Find(Id);
-                var item = AutoMapperHelper.Instance.GetMappedValue<T>(itemEntity);
+                var item = AutoMapperHelper.Instance.GetMappedValue<TModel>(itemEntity);
                 return item;
             }
             throw new NotImplementedException();
         }
 
-        public virtual void Insert(T entity)
+        public virtual void Insert(TModel entity)
         {
             throw new NotImplementedException();
         }
 
-        public virtual void Update(T entity)
+        public virtual void Update(TModel entity)
         {
             throw new NotImplementedException();
         }
@@ -61,7 +61,7 @@ namespace Exebite.DataAccess.Handlers
         {
             using (var context = _factory.Create())
             {
-                var itemSet = context.Set<T>();
+                var itemSet = context.Set<TModel>();
                 var itemEntity = itemSet.Find(Id);
                 itemSet.Remove(itemEntity);
                 context.SaveChanges();
