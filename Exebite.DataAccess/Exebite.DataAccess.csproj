@@ -69,17 +69,9 @@
     <Compile Include="HandlerInterfaces\IMealHandler.cs" />
     <Compile Include="Entities\MealEntity.cs" />
     <Compile Include="Handlers\MealHandler.cs" />
-    <Compile Include="Migrations\201802190924481_InitialCreate.cs" />
-    <Compile Include="Migrations\201802190924481_InitialCreate.Designer.cs">
-      <DependentUpon>201802190924481_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802191103367_LocationDeleteCustomer.cs" />
-    <Compile Include="Migrations\201802191103367_LocationDeleteCustomer.Designer.cs">
-      <DependentUpon>201802191103367_LocationDeleteCustomer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802191409552_RestaurantAddedMissingFoodLists.cs" />
-    <Compile Include="Migrations\201802191409552_RestaurantAddedMissingFoodLists.Designer.cs">
-      <DependentUpon>201802191409552_RestaurantAddedMissingFoodLists.cs</DependentUpon>
+    <Compile Include="Migrations\201802211224126_init.cs" />
+    <Compile Include="Migrations\201802211224126_init.Designer.cs">
+      <DependentUpon>201802211224126_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="HandlerInterfaces\IOrderHandler.cs" />
@@ -98,22 +90,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201802190924481_InitialCreate.resx">
-      <DependentUpon>201802190924481_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802191103367_LocationDeleteCustomer.resx">
-      <DependentUpon>201802191103367_LocationDeleteCustomer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802191409552_RestaurantAddedMissingFoodLists.resx">
-      <DependentUpon>201802191409552_RestaurantAddedMissingFoodLists.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Exebite.Model\Exebite.Model.csproj">
       <Project>{18A84D46-D8D4-44F1-B203-DA16BAD63DD0}</Project>
       <Name>Exebite.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201802211224126_init.resx">
+      <DependentUpon>201802211224126_init.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

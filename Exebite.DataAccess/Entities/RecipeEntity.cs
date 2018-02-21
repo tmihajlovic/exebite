@@ -11,6 +11,10 @@ namespace Exebite.DataAccess.Handlers
     {
         [Key]
         public int Id { get; set; }
+    
+        [ForeignKey(nameof(MainCourse))]
+        public int MainCourseId { get; set; }
+        public virtual FoodEntity MainCourse { get; set; }
 
         public virtual List<FoodEntity> Foods { get; set; }
     }

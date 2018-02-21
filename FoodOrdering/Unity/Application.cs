@@ -24,6 +24,7 @@ namespace FoodOrdering.Unity
 
             Console.WriteLine("1 - get historical data");
             Console.WriteLine("2 - Update daily menu");
+            Console.WriteLine("3 - Full Update");
             Console.WriteLine("q or other - quit");
 
             var choise = Console.ReadKey().KeyChar;
@@ -61,6 +62,22 @@ namespace FoodOrdering.Unity
                     Console.ReadLine();
                     break;
 
+                case '3':
+                    //historical data import
+                    Console.WriteLine("Import historical data");
+                    data = dataImporter.GetHistoricalData();
+                    foreach (var order in data)
+                    {
+                        orderService.PlaceOreder(order);
+                    }
+                    Console.WriteLine("");
+                    //update daily
+                    Console.WriteLine("DailyMenuUpdate");
+                    dataImporter.UpdateRestorauntsMenu();
+                    Console.WriteLine("Done!");
+                    Console.ReadLine();
+                    break;
+
                 case '5':
                     //test
                     Console.WriteLine("");
@@ -82,6 +99,29 @@ namespace FoodOrdering.Unity
                     lhp.PlaceOrders(orderList);
 
                     break;
+
+                case '7':
+                    //test
+                    Console.WriteLine("");
+                    Console.WriteLine("------------------Write menu-----------------------");
+
+                    lh = new LipaHandler(GoogleSSFactory, GoogleSSIdFactory);
+                    List<Food> foodList = new List<Food>();
+                    Restaurant restLispa = restarauntService.GetRestaurantById(1);
+                    lh.WriteMenu(restLispa.Foods);
+
+                    break;
+
+                case '9':
+                    //test
+                    Console.WriteLine("");
+                    Console.WriteLine("------------------setup menu-----------------------");
+
+                    lh = new LipaHandler(GoogleSSFactory, GoogleSSIdFactory);
+                    lh.DnevniMenuSheetSetup();
+
+                    break;
+
 
                 case 'q':
                     break;

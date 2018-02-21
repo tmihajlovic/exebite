@@ -1,69 +1,43 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using Exebite.DataAccess.Context;
 using Exebite.Model;
 
 namespace Exebite.DataAccess.Handlers
 {
-    public class LocationHandler : ILocationHandler
+    public class LocationHandler : DatabaseHandler<Location,LocationEntity>, ILocationHandler
     {
         IFoodOrderingContextFactory _factory;
         public LocationHandler(IFoodOrderingContextFactory factory)
+            :base(factory)
         {
             this._factory = factory;
         }
+        
 
-        public void Delete(int Id)
-        {
-            using (var context = _factory.Create())
-            {
-                var loc = context.Locations.Find(Id);
-                context.Locations.Remove(loc);
-            }
-        }
-
-        public IEnumerable<Location> Get()
-        {
-            using (var context = _factory.Create())
-            {
-                var locationEntities = new List<Location>();
-
-                foreach (var location in context.Locations)
-                {
-                    var locModel = AutoMapperHelper.Instance.GetMappedValue<Location>(location);
-                    locationEntities.Add(locModel);
-                }
-
-                return locationEntities;
-            }
-        }
-
-        public Location GetByID(int Id)
-        {
-            using (var context = _factory.Create())
-            {
-                var loc = context.Locations.Find(Id);
-                var locModel = AutoMapperHelper.Instance.GetMappedValue<Location>(loc);
-                return locModel;
-            }
-        }
-
-        public void Insert(Location entity)
+        public override Location Insert(Location entity)
         {
             using (var context = _factory.Create())
             {
                 var locEntity = AutoMapperHelper.Instance.GetMappedValue<LocationEntity>(entity);
-                context.Locations.Add(locEntity);
+                var resultEntity = context.Locations.Add(locEntity);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Location>(resultEntity);
+                return result;
             }
         }
         
-        public void Update(Location entity)
+        public override Location Update(Location entity)
         {
             using (var context = _factory.Create())
             {
                 var locationEntity = AutoMapperHelper.Instance.GetMappedValue<LocationEntity>(entity);
-                context.Entry(locationEntity).State = EntityState.Modified;
+                var oldLocationEntry = context.Locations.FirstOrDefault(l => l.Id == entity.Id);
+                context.Entry(oldLocationEntry).CurrentValues.SetValues(locationEntity);
                 context.SaveChanges();
+                var resultEntry = context.Locations.FirstOrDefault(l => l.Id == entity.Id);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Location>(resultEntry);
+                return result;
             }
         }
     }

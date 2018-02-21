@@ -1,11 +1,6 @@
 ﻿using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
 using System.Data.Entity;
+
 namespace Exebite.DataAccess.Context
 {
     public class FoodOrderingContext : DbContext
@@ -17,5 +12,17 @@ namespace Exebite.DataAccess.Context
         public DbSet<RestaurantEntity> Restaurants { get; set; }
         public DbSet<RecipeEntity> Recipes { get; set; }
         public DbSet<LocationEntity> Locations { get; set; }
+
+
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RestaurantEntity>()
+               .HasMany(f => f.Foods);
+
+            modelBuilder.Entity<FoodEntity>()
+                .HasRequired(r => r.Restaurant)
+                .WithMany(f => f.Foods);
+        }
     }
 }

@@ -6,51 +6,16 @@ using Exebite.Model;
 
 namespace Exebite.DataAccess.Handlers
 {
-    public class CustomerHandler : ICustomerHandler
+    public class CustomerHandler : DatabaseHandler<Customer,CustomerEntity>, ICustomerHandler
     {
         IFoodOrderingContextFactory _factory;
         
         public CustomerHandler(IFoodOrderingContextFactory factory)
+            :base(factory)
         {
             this._factory = factory;
         }
-
-
-        public void Delete(int Id)
-        {
-            using (var context = _factory.Create())
-            {
-                var customer = context.Customers.Find(Id);
-                context.Customers.Remove(customer);
-                context.SaveChanges();
-            }
-        }
-
-        public IEnumerable<Customer> Get()
-        {
-            using (var context = _factory.Create())
-            {
-                var customerEntities = new List<Customer>();
-
-                foreach (var customer in context.Customers)
-                {
-                    var customerModel = AutoMapperHelper.Instance.GetMappedValue<Customer>(customer);
-                    customerEntities.Add(customerModel);
-                }
-
-                return customerEntities;
-            }
-        }
-
-        public Customer GetByID(int Id)
-        {
-            using (var context = _factory.Create())
-            {
-                var customerEntity = context.Customers.Find(Id);
-                var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(customerEntity);
-                return customer;
-            }
-        }
+        
 
         public Customer GetByName(string name)
         {
@@ -62,7 +27,7 @@ namespace Exebite.DataAccess.Handlers
             }
         }
 
-        public void Insert(Customer entity)
+        public override Customer Insert(Customer entity)
         {
             using (var context = _factory.Create())
             {
@@ -78,19 +43,25 @@ namespace Exebite.DataAccess.Handlers
                     customerEntity.Location = location;
                 }
 
-                context.Customers.Add(customerEntity);
+                var resultEntity = context.Customers.Add(customerEntity);
                 context.SaveChanges();
+                var result = AutoMapperHelper.Instance.GetMappedValue<Customer>(resultEntity);
+                return result;
             }
         }
         
 
-        public void Update(Customer entity)
+        public override Customer Update(Customer entity)
         {
             using (var context = _factory.Create())
             {
                 var customerEntity = AutoMapperHelper.Instance.GetMappedValue<CustomerEntity>(entity);
-                context.Entry(customerEntity).State = EntityState.Modified;
+                var oldCustomerEntity = context.Customers.FirstOrDefault(c => c.Id == entity.Id);
+                context.Entry(oldCustomerEntity).CurrentValues.SetValues(customerEntity);
                 context.SaveChanges();
+                var resultEntity = context.Customers.FirstOrDefault(c => c.Id == entity.Id);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Customer>(resultEntity);
+                return result;
             }
         }
     }

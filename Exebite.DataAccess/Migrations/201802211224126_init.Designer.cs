@@ -7,13 +7,13 @@ namespace Exebite.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class RestaurantAddedMissingFoodLists : IMigrationMetadata
+    public sealed partial class init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RestaurantAddedMissingFoodLists));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(init));
         
         string IMigrationMetadata.Id
         {
-            get { return "201802191409552_RestaurantAddedMissingFoodLists"; }
+            get { return "201802211224126_init"; }
         }
         
         string IMigrationMetadata.Source

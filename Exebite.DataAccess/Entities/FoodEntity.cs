@@ -1,7 +1,4 @@
-﻿using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
-using Exebite.Model;
+﻿using Exebite.Model;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,6 +16,8 @@ namespace Exebite.DataAccess.Handlers
         public FoodType Type { get; set; }
 
         public decimal Price { get; set; }
+
+        public string Description { get; set; }
 
         public virtual List<MealEntity> Meals { get; set; }
         

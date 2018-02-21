@@ -6,8 +6,8 @@ namespace Exebite.DataAccess
     {
         IEnumerable<T> Get();
         T GetByID(int Id);
-        void Insert(T entity);
+        T Insert(T entity);
         void Delete(int Id);
-        void Update(T entity);
+        T Update(T entity);
     }
 }

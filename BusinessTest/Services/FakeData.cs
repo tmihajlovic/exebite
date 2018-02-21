@@ -76,8 +76,7 @@ namespace BusinessTest
             {
                 Id = 1,
                 Name = "TestRestaurant",
-                DailyMenu = new List<Food>(),
-                AlwaysAvailable = new List<Food>()
+                DailyMenu = new List<Food>()
             }
         };
 
@@ -93,8 +92,7 @@ namespace BusinessTest
                 {
                     Id = 1,
                     Name = "TestRestaurant1",
-                    DailyMenu = new List<Food>(),
-                    AlwaysAvailable = new List<Food>()
+                    DailyMenu = new List<Food>()
                 }
             },
             new Food
@@ -107,8 +105,7 @@ namespace BusinessTest
                 {
                     Id = 1,
                     Name = "TestRestaurant1",
-                    DailyMenu = new List<Food>(),
-                    AlwaysAvailable = new List<Food>()
+                    DailyMenu = new List<Food>()
                 }
             },
             new Food
@@ -121,8 +118,7 @@ namespace BusinessTest
                 {
                     Id = 1,
                     Name = "TestRestaurant1",
-                    DailyMenu = new List<Food>(),
-                    AlwaysAvailable = new List<Food>()
+                    DailyMenu = new List<Food>()
                 }
             },
             new Food
@@ -135,8 +131,7 @@ namespace BusinessTest
                 {
                     Id = 2,
                     Name = "TestRestaurant2",
-                    DailyMenu = new List<Food>(),
-                    AlwaysAvailable = new List<Food>()
+                    DailyMenu = new List<Food>()
                 }
             }
         };

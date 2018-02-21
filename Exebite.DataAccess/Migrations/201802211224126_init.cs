@@ -3,7 +3,7 @@ namespace Exebite.DataAccess.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class init : DbMigration
     {
         public override void Up()
         {
@@ -64,19 +64,32 @@ namespace Exebite.DataAccess.Migrations
                         Name = c.String(),
                         Type = c.Int(nullable: false),
                         Price = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Description = c.String(),
                         RestaurantId = c.Int(nullable: false),
+                        RecipeEntity_Id = c.Int(),
+                        RestaurantEntity_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Recipe", t => t.RecipeEntity_Id)
+                .ForeignKey("dbo.Restaurant", t => t.RestaurantEntity_Id)
                 .ForeignKey("dbo.Restaurant", t => t.RestaurantId, cascadeDelete: true)
-                .Index(t => t.RestaurantId);
+                .Index(t => t.RestaurantId)
+                .Index(t => t.RecipeEntity_Id)
+                .Index(t => t.RestaurantEntity_Id);
             
             CreateTable(
                 "dbo.Recipe",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        MainCourseId = c.Int(nullable: false),
+                        FoodEntity_Id = c.Int(),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Food", t => t.MainCourseId, cascadeDelete: true)
+                .ForeignKey("dbo.Food", t => t.FoodEntity_Id)
+                .Index(t => t.MainCourseId)
+                .Index(t => t.FoodEntity_Id);
             
             CreateTable(
                 "dbo.Restaurant",
@@ -100,40 +113,30 @@ namespace Exebite.DataAccess.Migrations
                 .Index(t => t.FoodEntity_Id)
                 .Index(t => t.MealEntity_Id);
             
-            CreateTable(
-                "dbo.RecipeEntityFoodEntities",
-                c => new
-                    {
-                        RecipeEntity_Id = c.Int(nullable: false),
-                        FoodEntity_Id = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.RecipeEntity_Id, t.FoodEntity_Id })
-                .ForeignKey("dbo.Recipe", t => t.RecipeEntity_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Food", t => t.FoodEntity_Id, cascadeDelete: true)
-                .Index(t => t.RecipeEntity_Id)
-                .Index(t => t.FoodEntity_Id);
-            
         }
         
         public override void Down()
         {
             DropForeignKey("dbo.Order", "MealId", "dbo.Meal");
             DropForeignKey("dbo.Food", "RestaurantId", "dbo.Restaurant");
-            DropForeignKey("dbo.RecipeEntityFoodEntities", "FoodEntity_Id", "dbo.Food");
-            DropForeignKey("dbo.RecipeEntityFoodEntities", "RecipeEntity_Id", "dbo.Recipe");
+            DropForeignKey("dbo.Food", "RestaurantEntity_Id", "dbo.Restaurant");
+            DropForeignKey("dbo.Recipe", "FoodEntity_Id", "dbo.Food");
+            DropForeignKey("dbo.Recipe", "MainCourseId", "dbo.Food");
+            DropForeignKey("dbo.Food", "RecipeEntity_Id", "dbo.Recipe");
             DropForeignKey("dbo.FoodEntityMealEntities", "MealEntity_Id", "dbo.Meal");
             DropForeignKey("dbo.FoodEntityMealEntities", "FoodEntity_Id", "dbo.Food");
             DropForeignKey("dbo.Order", "CustomerId", "dbo.Customer");
             DropForeignKey("dbo.Customer", "LocationId", "dbo.Location");
-            DropIndex("dbo.RecipeEntityFoodEntities", new[] { "FoodEntity_Id" });
-            DropIndex("dbo.RecipeEntityFoodEntities", new[] { "RecipeEntity_Id" });
             DropIndex("dbo.FoodEntityMealEntities", new[] { "MealEntity_Id" });
             DropIndex("dbo.FoodEntityMealEntities", new[] { "FoodEntity_Id" });
+            DropIndex("dbo.Recipe", new[] { "FoodEntity_Id" });
+            DropIndex("dbo.Recipe", new[] { "MainCourseId" });
+            DropIndex("dbo.Food", new[] { "RestaurantEntity_Id" });
+            DropIndex("dbo.Food", new[] { "RecipeEntity_Id" });
             DropIndex("dbo.Food", new[] { "RestaurantId" });
             DropIndex("dbo.Order", new[] { "CustomerId" });
             DropIndex("dbo.Order", new[] { "MealId" });
             DropIndex("dbo.Customer", new[] { "LocationId" });
-            DropTable("dbo.RecipeEntityFoodEntities");
             DropTable("dbo.FoodEntityMealEntities");
             DropTable("dbo.Restaurant");
             DropTable("dbo.Recipe");

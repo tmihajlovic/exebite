@@ -1,11 +1,5 @@
 ﻿using AutoMapper;
 using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
-using Exebite.DataAccess.Handlers;
 using Exebite.Model;
 
 namespace Exebite.DataAccess

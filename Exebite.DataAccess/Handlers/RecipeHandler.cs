@@ -1,73 +1,60 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using Exebite.DataAccess.Context;
 using Exebite.Model;
 
 namespace Exebite.DataAccess.Handlers
 {
-    public class RecipeHandler : IRecipeHandler
+    public class RecipeHandler  :DatabaseHandler<Recipe, RecipeEntity>, IRecipeHandler
     {
         IFoodOrderingContextFactory _factory;
 
         public RecipeHandler(IFoodOrderingContextFactory factory)
+            :base(factory)
         {
             _factory = factory;
         }
 
-        public void Delete(int Id)
+
+        public override Recipe Insert(Recipe entity)
         {
             using (var context = _factory.Create())
             {
-                var recipe = context.Recipes.Find(Id);
-                context.Recipes.Remove(recipe);
-                context.SaveChanges();
-            }
-        }
-
-        public IEnumerable<Recipe> Get()
-        {
-            using (var context = _factory.Create())
-            {
-                var recipeEntities = new List<Recipe>();
-
-                foreach (var recipe in context.Recipes)
+                var recipeEntity = AutoMapperHelper.Instance.GetMappedValue<RecipeEntity>(entity);
+                recipeEntity.MainCourse = context.Foods.SingleOrDefault(f => f.Id == recipeEntity.MainCourse.Id);
+                for(int i = 0; i < recipeEntity.Foods.Count; i++)
                 {
-                    var recipeModel = AutoMapperHelper.Instance.GetMappedValue<Recipe>(recipe);
-                    recipeEntities.Add(recipeModel);
+                    recipeEntity.Foods[i] = context.Foods.SingleOrDefault(f => f.Id == recipeEntity.Foods[i].Id);
                 }
 
-                return recipeEntities;
+                var resultEntity = context.Recipes.Add(recipeEntity);
+                context.SaveChanges();
+                var result = AutoMapperHelper.Instance.GetMappedValue<Recipe>(resultEntity);
+                return result;
             }
         }
 
-        public Recipe GetByID(int Id)
-        {
-            using (var context = _factory.Create())
-            {
-                var recipeEntity = context.Recipes.Find(Id);
-                var recipe = AutoMapperHelper.Instance.GetMappedValue<Recipe>(recipeEntity);
-                return recipe;
-            }
-        }
-
-        public void Insert(Recipe entity)
+        public override Recipe Update(Recipe entity)
         {
             using (var context = _factory.Create())
             {
                 var recipeEntity = AutoMapperHelper.Instance.GetMappedValue<RecipeEntity>(entity);
+                var oldRecipeEntity = context.Recipes.FirstOrDefault(r => r.Id == entity.Id);
+                context.Entry(oldRecipeEntity).CurrentValues.SetValues(recipeEntity);
 
-                context.Recipes.Add(recipeEntity);
-                context.SaveChanges();
-            }
-        }
+                oldRecipeEntity.MainCourse = context.Foods.SingleOrDefault(f => f.Id == oldRecipeEntity.MainCourse.Id);
+                for (int i = 0; i < oldRecipeEntity.Foods.Count; i++)
+                {
+                    oldRecipeEntity.Foods[i] = context.Foods.SingleOrDefault(f => f.Id == oldRecipeEntity.Foods[i].Id);
+                }
 
-        public void Update(Recipe entity)
-        {
-            using (var context = _factory.Create())
-            {
-                var recipeEntity = AutoMapperHelper.Instance.GetMappedValue<RecipeEntity>(entity);
-                context.Entry(recipeEntity).State = EntityState.Modified;
+                
                 context.SaveChanges();
+
+                var resultEntity = context.Recipes.FirstOrDefault(r => r.Id == entity.Id);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Recipe>(resultEntity);
+                return result;
             }
         }
     }

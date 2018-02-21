@@ -8,50 +8,16 @@ using System.Linq;
 
 namespace Exebite.DataAccess.Handlers
 {
-    public class OrderHandler : IOrderHandler
+    public class OrderHandler : DatabaseHandler<Order,OrderEntity>, IOrderHandler
     {
         IFoodOrderingContextFactory _factory;
         ICustomerHandler _cusomerHandler;
+
         public OrderHandler(IFoodOrderingContextFactory factory, ICustomerHandler customerHandler)
+            :base(factory)
         {
             _cusomerHandler = customerHandler;
             _factory = factory;
-        }
-
-        public void Delete(int Id)
-        {
-            using (var context = _factory.Create())
-            {
-                var order = context.Orders.Find(Id);
-                context.Orders.Remove(order);
-                context.SaveChanges();
-            }
-        }
-
-        public IEnumerable<Order> Get()
-        {
-            using (var context = _factory.Create())
-            {
-                var orderEntities = new List<Order>();
-
-                foreach (var order in context.Orders)
-                {
-                    var orderModel = AutoMapperHelper.Instance.GetMappedValue<Order>(order);
-                    orderEntities.Add(orderModel);
-                }
-
-                return orderEntities;
-            }
-        }
-
-        public Order GetByID(int Id)
-        {
-            using (var context = _factory.Create())
-            {
-                var orderEntity = context.Orders.Find(Id);
-                var order = AutoMapperHelper.Instance.GetMappedValue<Order>(orderEntity);
-                return order;
-            }
         }
 
         public IEnumerable<Order> GetOrdersForCustomer(Customer customer)
@@ -95,7 +61,7 @@ namespace Exebite.DataAccess.Handlers
             }
         }
 
-        public void Insert(Order entity)
+        public override Order Insert(Order entity)
         {
             using (var context = _factory.Create())
             {
@@ -143,18 +109,69 @@ namespace Exebite.DataAccess.Handlers
                     }
                 }
 
-                context.Orders.Add(orderEntity);
+                var resultEntity = context.Orders.Add(orderEntity);
                 context.SaveChanges();
+
+                var result = AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity);
+                return result;
+
             }
         }
 
-        public void Update(Order entity)
+        public override Order Update(Order entity)
         {
             using (var context = _factory.Create())
             {
                 var orderEntity = AutoMapperHelper.Instance.GetMappedValue<OrderEntity>(entity);
-                context.Entry(orderEntity).State = EntityState.Modified;
+                var oldOredeEntity = context.Orders.FirstOrDefault(o => o.Id == entity.Id);
+                context.Entry(oldOredeEntity).CurrentValues.SetValues(orderEntity);
+                var customer = context.Customers.FirstOrDefault(c => c.Name == orderEntity.Customer.Name);
+
+                //bind customer
+                if (customer != null)
+                {
+                    orderEntity.Customer = customer;
+                }
+                else
+                {
+                    orderEntity.Customer = new CustomerEntity
+                    {
+                        Name = orderEntity.Customer.Name,
+                        Balance = 0
+                    };
+                    if (orderEntity.Customer.Name.Contains("JD"))
+                    {
+                        orderEntity.Customer.LocationId = 2;
+                    }
+                    else
+                    {
+                        orderEntity.Customer.LocationId = 1;
+                    }
+                }
+                var restName = orderEntity.Meal.Foods[0].Restaurant.Name;
+                var restaurant = context.Restaurants.FirstOrDefault(r => r.Name == restName);
+                //bind Foods
+                for (int i = 0; i < orderEntity.Meal.Foods.Count; i++)
+                {
+                    string name = orderEntity.Meal.Foods[i].Name;
+                    var tmpFood = context.Foods.FirstOrDefault(f => f.Name == name);
+                    if (tmpFood != null)
+                    {
+                        orderEntity.Meal.Foods[i] = tmpFood;
+                    }
+                    else
+                    {
+                        if (restaurant != null)
+                        {
+                            orderEntity.Meal.Foods[i].Restaurant = restaurant;
+                        }
+                    }
+                }
                 context.SaveChanges();
+
+                var resultEntity = context.Orders.FirstOrDefault(o => o.Id == entity.Id);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity);
+                return result;
             }
         }
     }

@@ -18,6 +18,8 @@ namespace Exebite.Model
 
         public Restaurant Restaurant { get; set; }
 
+        public string Description { get; set; }
+
     }
 
     public enum FoodType

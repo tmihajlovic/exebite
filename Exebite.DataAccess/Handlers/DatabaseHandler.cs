@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Exebite.DataAccess.Handlers
 {
-    public class DatabaseHandler<TModel, TEntity> : IDatabaseHandler<TModel> where TModel: class where TEntity : class
+    public abstract class DatabaseHandler<TModel, TEntity> : IDatabaseHandler<TModel> where TModel: class where TEntity : class
     {
         IFoodOrderingContextFactory _factory;
         
@@ -17,15 +17,16 @@ namespace Exebite.DataAccess.Handlers
             _factory = factory;
         }
 
+        public abstract TModel Insert(TModel entity);
+
+        public abstract TModel Update(TModel entity);
         
         public IEnumerable<TModel> Get()
         {
             using (var context = _factory.Create())
             {
                 List<TModel> itemList = new List<TModel>();
-                var entity = AutoMapperHelper.Instance.GetMappedValue<TEntity>((TModel)null);
-                var ET = typeof(TModel).MakeGenericType(entity.GetType());
-                IQueryable<TModel> itemSet = context.Set<TModel>().AsQueryable();
+                IQueryable<TEntity> itemSet = context.Set<TEntity>().AsQueryable();
                 foreach(var item in itemSet)
                 {
                     var itemModel = AutoMapperHelper.Instance.GetMappedValue<TModel>(item);
@@ -39,24 +40,14 @@ namespace Exebite.DataAccess.Handlers
         {
             using (var context = _factory.Create())
             {
-                var itemSet = context.Set<TModel>();
+                var itemSet = context.Set<TEntity>();
                 var itemEntity = itemSet.Find(Id);
                 var item = AutoMapperHelper.Instance.GetMappedValue<TModel>(itemEntity);
                 return item;
             }
             throw new NotImplementedException();
         }
-
-        public virtual void Insert(TModel entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void Update(TModel entity)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public void Delete(int Id)
         {
             using (var context = _factory.Create())

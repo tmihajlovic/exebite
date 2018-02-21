@@ -52,9 +52,7 @@ namespace GoogleSpreadsheetApi.Strategies
 
             restaurant = new Restaurant
             {
-                Name = "Extra Food",
-                DailyMenu = GetDailyMenu(),
-                AlwaysAvailable = GetAlwaysAvailableMenu()
+                Name = "Extra Food"
             };
 
         }

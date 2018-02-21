@@ -88,6 +88,33 @@ namespace GoogleSpreadsheetApi.RestaurantHandler
             return allFood;
         }
 
+        public void WriteMenu(List<Food> foods)
+        {
+            List<object> header = new List<object> { "Naziv jela", "Opis", "Cena" };
+            ValueRange foodRange = new ValueRange();
+            foodRange.Values = new List<IList<object>>();
+            foodRange.Values.Add(header);
+
+            foreach( var food in foods)
+            {
+                List<object> foodData = new List<object>();
+                foodData.Add(food.Name);
+                foodData.Add(food.Description);
+                foodData.Add(food.Price);
+                foodRange.Values.Add(foodData);
+            }
+
+            ClearValuesRequest body = new ClearValuesRequest();
+            SpreadsheetsResource.ValuesResource.ClearRequest clearRequest = GoogleSS.Spreadsheets.Values.Clear(body, sheetId, foodListSheet);
+            clearRequest.Execute();
+
+            SpreadsheetsResource.ValuesResource.UpdateRequest updateRequest = GoogleSS.Spreadsheets.Values.Update(foodRange, sheetId, foodListSheet);
+            updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+
+            updateRequest.Execute();
+
+        }
+
         private List<Food> DailyMenu()
         {
             List<Food> dailyFood = new List<Food>();
@@ -129,7 +156,7 @@ namespace GoogleSpreadsheetApi.RestaurantHandler
 
             return dailyFood;
         }
-        private List<Food>AaMenu()
+        private List<Food> AaMenu()
         {
             List<Food> aaFood = new List<Food>();
 
@@ -141,6 +168,107 @@ namespace GoogleSpreadsheetApi.RestaurantHandler
 
             aaFood = sheetData.Values[0].Select(f => new Food { Name = f.ToString(), Restaurant = restaurant }).ToList();
             return aaFood;
+        }
+
+        public void DnevniMenuSheetSetup()
+        {
+            
+            SpreadsheetsResource.ValuesResource.GetRequest request =
+                        GoogleSS.Spreadsheets.Values.Get(sheetId, dailyMenuSheet);
+            request.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.COLUMNS;
+            ValueRange sheetData = request.Execute();
+            
+
+            var sheetValues = sheetData.Values;
+            var dayOfWeek =this.GetLocalDayName(DayOfWeek.Monday);
+            int today = 0;
+            for(int i=0; i<sheetValues.Count; i++)
+            {
+                if (sheetValues[i][0].ToString() == dayOfWeek)
+                    today = i;
+            }
+
+            ValueRange updatedRange = new ValueRange();
+            updatedRange.Values = new List<IList<object>>();
+            
+            //insert today and after
+            for(int i = today; i < sheetValues.Count;i++)
+            {
+                updatedRange.Values.Add(sheetValues[i]);
+            }
+            //insert before today
+            for(int k = 0; k < today; k++)
+            {
+                updatedRange.Values.Add(sheetValues[k]);
+            }
+
+            ValueRange formatedRange = new ValueRange();
+            formatedRange.Values = new List<IList<object>>();
+
+            bool empty = true;
+            int rowNum = 0;
+            do
+            {
+                empty = true;
+                List<object> row = new List<object>();
+                for (int i = 0; i < updatedRange.Values.Count; i++)
+                {
+                    if (updatedRange.Values[i].Count > rowNum)
+                    {
+                        row.Add(updatedRange.Values[i][rowNum].ToString());
+                        empty = false;
+                    }
+                    else
+                    {
+                        row.Add("");
+                    }
+                }
+                if (!empty)
+                {
+                    formatedRange.Values.Add(row);
+                    rowNum++;
+                }
+            } while (!empty);
+
+
+
+            ClearValuesRequest body = new ClearValuesRequest();
+            SpreadsheetsResource.ValuesResource.ClearRequest clearRequest = GoogleSS.Spreadsheets.Values.Clear(body, sheetId, dailyMenuSheet);
+            clearRequest.Execute();
+
+
+            SpreadsheetsResource.ValuesResource.UpdateRequest updateRequest = GoogleSS.Spreadsheets.Values.Update(formatedRange, sheetId, dailyMenuSheet);
+            updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+            updateRequest.Execute();
+
+        }
+
+        private string GetLocalDayName(DayOfWeek day)
+        {
+            var dayString = "";
+            switch(day)
+            {
+                case DayOfWeek.Monday:
+                    dayString = "Ponedeljak";
+                    break;
+
+                case DayOfWeek.Tuesday:
+                    dayString = "Utorak";
+                    break;
+
+                case DayOfWeek.Wednesday:
+                    dayString = "Sreda";
+                    break;
+
+                case DayOfWeek.Thursday:
+                    dayString = "Cetvrtak";
+                    break;
+
+                case DayOfWeek.Friday:
+                    dayString = "Petak";
+                    break;
+            }
+            return dayString;
         }
     }
 }

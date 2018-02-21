@@ -12,9 +12,10 @@ namespace Exebite.Model
 
         public string Name { get; set; }
 
+        public List<Food> Foods { get; set; }
+        
         public List<Food> DailyMenu { get; set; }
 
-        public List<Food> AlwaysAvailable { get; set; }
         
     }
 }

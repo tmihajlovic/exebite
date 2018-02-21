@@ -1,5 +1,4 @@
-﻿using Exebite.DataAccess.Handlers;
-using Exebite.Model;
+﻿using Exebite.Model;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,7 +16,5 @@ namespace Exebite.DataAccess.Handlers
         public virtual List<FoodEntity> Foods { get; set; }
 
         public virtual List<FoodEntity> DailyMenu { get; set; }
-
-        public virtual List<FoodEntity> AlwaysAvailable { get; set; }
     }
 }

@@ -53,9 +53,10 @@ namespace Exebite.Business
         public void UpdateRestorauntsMenu()
         {
             Restaurant lipaRestoraunt = _restarauntService.GetRestaurantByName("Restoran pod Lipom");
-            Restaurant hedoneRestoraunt = _restarauntService.GetRestaurantByName("Teglas");
+
+            Restaurant hedoneRestoraunt = _restarauntService.GetRestaurantByName("Hedone");
             Restaurant indexHauseRestoraunt = _restarauntService.GetRestaurantByName("Index House");
-            Restaurant teglasRestoraunt = _restarauntService.GetRestaurantByName("Hedone");
+            Restaurant teglasRestoraunt = _restarauntService.GetRestaurantByName("Teglas");
             Restaurant extraFoodRestoraunt = _restarauntService.GetRestaurantByName("Extra food");
 
             // Get daily menu and update info in database

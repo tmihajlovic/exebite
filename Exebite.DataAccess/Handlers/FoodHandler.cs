@@ -6,48 +6,13 @@ using Exebite.Model;
 
 namespace Exebite.DataAccess.Handlers
 {
-    public class FoodHandler : IFoodHandler
+    public class FoodHandler : DatabaseHandler<Food,FoodEntity>, IFoodHandler
     {
         IFoodOrderingContextFactory _factory;
         public FoodHandler(IFoodOrderingContextFactory factory)
+            :base(factory)
         {
             this._factory = factory;
-        }
-
-        public void Delete(int Id)
-        {
-            using (var context = _factory.Create())
-            {
-                var food = context.Foods.Find(Id);
-                context.Foods.Remove(food);
-                context.SaveChanges();
-            }
-        }
-
-        public IEnumerable<Food> Get()
-        {
-            using (var context = _factory.Create())
-            {
-                var foodEntities = new List<Food>();
-
-                foreach (var food in context.Foods)
-                {
-                    var foodModel = AutoMapperHelper.Instance.GetMappedValue<Food>(food);
-                    foodEntities.Add(foodModel);
-                }
-
-                return foodEntities;
-            }
-        }
-
-        public Food GetByID(int Id)
-        {
-            using (var context = _factory.Create())
-            {
-                var foodEntity = context.Foods.Find(Id);
-                var foodModel = AutoMapperHelper.Instance.GetMappedValue<Food>(foodEntity);
-                return foodModel;
-            }
         }
 
         public IEnumerable<Food> GetByRestaurant(Restaurant restaurant)
@@ -66,24 +31,30 @@ namespace Exebite.DataAccess.Handlers
             }
         }
 
-        public void Insert(Food entity)
+        public override Food Insert(Food entity)
         {
             using (var context = _factory.Create())
             {
                 var foodEntity = AutoMapperHelper.Instance.GetMappedValue<FoodEntity>(entity);
-                context.Foods.Add(foodEntity);
+                var resultEntity = context.Foods.Add(foodEntity);
                 context.SaveChanges();
+                var result = AutoMapperHelper.Instance.GetMappedValue<Food>(resultEntity);
+                return result;
             }
         }
         
 
-        public void Update(Food entity)
+        public override Food Update(Food entity)
         {
             using (var context = _factory.Create())
             {
                 var foodEntity = AutoMapperHelper.Instance.GetMappedValue<FoodEntity>(entity);
-                context.Entry(foodEntity).State = EntityState.Modified;
+                var oldFoodEntity = context.Foods.SingleOrDefault(f => f.Id == entity.Id);
+                context.Entry(oldFoodEntity).CurrentValues.SetValues(foodEntity);
                 context.SaveChanges();
+                var resultEntity = context.Foods.FirstOrDefault(f => f.Id == entity.Id);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Food>(resultEntity);
+                return result;
             }
         }
         
