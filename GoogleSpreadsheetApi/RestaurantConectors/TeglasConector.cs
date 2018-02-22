@@ -12,6 +12,7 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
     {
         public static string ordersSheet = "Narudzbine";
         public static string foodListSheet = "Cene i opis";
+        public static string menuSheet = "Meni";
 
         Restaurant restaurant;
         SheetsService GoogleSS;
@@ -25,6 +26,8 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
             _sheetId = sheetId;
             _ordersSheet = ordersSheet;
             _GoogleSS = GoogleSS;
+            _foodListSheet = foodListSheet;
+            _restaurant = restaurant;
         }
         
         public override void WriteMenu(List<Food> foods)
@@ -69,7 +72,7 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
         {
             IEnumerable<Food> aaFood = new List<Food>();
 
-            var range = foodListSheet + "!A2:A1000";
+            var range = menuSheet + "!A2:A1000";
             SpreadsheetsResource.ValuesResource.GetRequest request =
                         GoogleSS.Spreadsheets.Values.Get(sheetId, range);
             request.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.COLUMNS;

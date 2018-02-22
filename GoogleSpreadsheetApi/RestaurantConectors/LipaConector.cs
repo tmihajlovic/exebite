@@ -28,6 +28,8 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
             _ordersSheet = ordersSheet;
             _GoogleSS = GoogleSS;
             _dailyMenuSheet = dailyMenuSheet;
+            _foodListSheet = foodListSheet;
+            _restaurant = restaurant;
         }
         
         

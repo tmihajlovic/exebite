@@ -1,9 +1,5 @@
-
-using GoogleSpreadsheetApi;
 using System;
-using System.Web.Mvc;
 using Unity;
-using Unity.AspNet.Mvc;
 
 namespace gLogin
 {
@@ -45,7 +41,9 @@ namespace gLogin
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
-           // container.RegisterType<IGoogleSpreadsheetService, GoogleSpreadsheetService>();
+            // container.RegisterType<IGoogleSpreadsheetService, GoogleSpreadsheetService>();
+
+            Exebite.Business.Unity.UnityConfig.RegisterTypes(container);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using Exebite.Business;
+using Exebite.Model;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace gLogin.Controllers
 {
@@ -8,41 +11,18 @@ namespace gLogin.Controllers
 
         public GoogleSSController()
         {
-            //this.service = service;
+            
         }
 
 
-        //// GET: GoogleSS
-        //public ActionResult GoogleSS()
-        //{
-        //    var currentLoggedUser = User.Identity.Name;
-        //    var users = service.GetUsers();
-            
-        //    var user = users.FirstOrDefault(u => u.Value == currentLoggedUser);
-            
-        //    var mealData = service.GetSSData();            
+        // GET: GoogleSS
+        public ActionResult GoogleSS()
+        {
+            List<Food> foodList = new List<Food>();
 
-        //    var todayDate = "06-Feb-2018"; //DateTime.Today.ToString("dd-MMM-yyyy");
-        //    //var menuForToday = mealData.Where(m => m.Value.Date == todayDate);
 
-        //    Dictionary<string, FoodSpreadsheet> menuForToday = new Dictionary<string, FoodSpreadsheet>();
-
-        //    foreach (var item in mealData)
-        //    {
-        //        if(item.Value.Date == todayDate)
-        //        {
-        //            menuForToday[item.Key] = item.Value;
-        //        }
-        //    }
-
-        //    foreach(var meal in menuForToday)
-        //    {
-        //        meal.Value.IsOrderd = service.IsOrderd(user.Key.ToString(), meal.Key);
-        //    }
-            
-
-        //    return View(menuForToday);
-        //}
+            return View();
+        }
 
         ////GET: Place order
         //public ActionResult PlaceOrder(string cell)
@@ -50,7 +30,7 @@ namespace gLogin.Controllers
         //    var currentLoggedUser = User.Identity.Name;
 
         //    var users = service.GetUsers();
-            
+
         //    var user = users.FirstOrDefault(u => u.Value == currentLoggedUser);
 
         //    service.PlaceOrder(user.Key.ToString(), cell);
@@ -69,4 +49,5 @@ namespace gLogin.Controllers
         //    return RedirectToAction("GoogleSS");
         //}
     }
+
 }

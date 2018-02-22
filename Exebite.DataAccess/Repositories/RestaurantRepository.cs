@@ -51,12 +51,12 @@ namespace Exebite.DataAccess.Repositories
                 List<FoodEntity> foodList = context.Foods.Where(f => f.Restaurant.Id == dbRestaurant.Id).ToList();
                 //clear old menu
                 dbRestaurant.DailyMenu.Clear();
-
-                //bind food entitys
-                for (int i=0; i < restaurantEntity.DailyMenu.Count; i++)
+                dbRestaurant.Foods.Clear();
+                //bind daily food entitys
+                for (int i = 0; i < restaurantEntity.DailyMenu.Count; i++)
                 {
                     var tmpfood = foodList.FirstOrDefault(f => f.Name == restaurantEntity.DailyMenu[i].Name);
-                    if(tmpfood != null)
+                    if (tmpfood != null)
                     {
                         dbRestaurant.DailyMenu.Add(tmpfood);
                     }
@@ -66,6 +66,23 @@ namespace Exebite.DataAccess.Repositories
                         dbRestaurant.DailyMenu.Add(restaurantEntity.DailyMenu[i]);
                     }
                 }
+
+                //bind all food entitys
+                for (int i = 0; i < restaurantEntity.Foods.Count; i++)
+                {
+                    var tmpfood = foodList.FirstOrDefault(f => f.Name == restaurantEntity.Foods[i].Name);
+                    if (tmpfood != null)
+                    {
+                        dbRestaurant.Foods.Add(tmpfood);
+                    }
+                    else
+                    {
+                        restaurantEntity.Foods[i].Restaurant = dbRestaurant;
+                        dbRestaurant.Foods.Add(restaurantEntity.Foods[i]);
+                    }
+                }
+
+
                 context.SaveChanges();
                 
                 var resultEntity = context.Restaurants.FirstOrDefault(r => r.Id == entity.Id);

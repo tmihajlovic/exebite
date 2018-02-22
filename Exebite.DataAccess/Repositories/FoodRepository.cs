@@ -49,10 +49,14 @@ namespace Exebite.DataAccess.Repositories
             using (var context = _factory.Create())
             {
                 var foodEntity = AutoMapperHelper.Instance.GetMappedValue<FoodEntity>(entity);
-                var oldFoodEntity = context.Foods.SingleOrDefault(f => f.Id == entity.Id);
-                context.Entry(oldFoodEntity).CurrentValues.SetValues(foodEntity);
+                var oldFoodEntity = context.Foods.SingleOrDefault(f => f.Name == entity.Name);
+
+                oldFoodEntity.Price = entity.Price;
+                oldFoodEntity.Description = entity.Description;
+                oldFoodEntity.Type = entity.Type;
+
                 context.SaveChanges();
-                var resultEntity = context.Foods.FirstOrDefault(f => f.Id == entity.Id);
+                var resultEntity = context.Foods.FirstOrDefault(f => f.Id == oldFoodEntity.Id);
                 var result = AutoMapperHelper.Instance.GetMappedValue<Food>(resultEntity);
                 return result;
             }

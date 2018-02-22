@@ -1,4 +1,4 @@
-﻿@model Dictionary<string, GoogleSpreadsheetApi.Models.FoodSpreadsheet>
+﻿@model IEnumerable<Exebite.Model.Food>
 @{
     ViewBag.Title = "GoogleSS";
 }
@@ -6,24 +6,41 @@
 <h2>Restoran "Pod Lipom"</h2>
 
 <div>
-    @foreach (KeyValuePair<string, GoogleSpreadsheetApi.Models.FoodSpreadsheet> meal in Model)
-    {
-        if (meal.Value.Name != "")
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Restaurant.Name)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
         {
-            <div style="border:dashed">
-                Meal: @meal.Value.Name<br />
-                Price: @meal.Value.Price<br />
-                Date:@meal.Value.Date<br />
-                Cell: @meal.Key<br />
-                @if (meal.Value.IsOrderd == true)
-                {
-                    @Html.ActionLink("Cancel order", "CancelOrder", new { cell = meal.Key }, new { @style = "color:#FE0101;" });
-                }
-                else
-                {
-                    @Html.ActionLink("Place order", "PlaceOrder", new { cell = meal.Key }, new { @style = "color:#12FE01;" });
-                }
-            </div>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Restaurant.Name)
+                </td>
+            </tr>
         }
-    }
+
+    </table>
+    
 </div>

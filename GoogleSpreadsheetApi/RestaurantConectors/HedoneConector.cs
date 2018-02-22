@@ -29,6 +29,8 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
             _ordersSheet = ordersSheet;
             _GoogleSS = GoogleSS;
             _dailyMenuSheet = dailyMenuSheet;
+            _foodListSheet = foodListSheet;
+            _restaurant = restaurant;
         }
         
         public override void WriteMenu(List<Food> foods)
@@ -37,7 +39,7 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
             ValueRange foodRange = new ValueRange();
             foodRange.Values = new List<IList<object>>();
             foodRange.Values.Add(header);
-
+            
             foreach (var food in foods)
             {
                 List<object> foodData = new List<object>();
@@ -59,6 +61,7 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
 
         }
 
+
         public override List<Food> GetDalyMenu()
         {
             List<Food> allFood = new List<Food>();
@@ -68,8 +71,6 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
 
             return allFood;
         }
-
-        
 
         private IEnumerable<Food> DailyMenu()
         {

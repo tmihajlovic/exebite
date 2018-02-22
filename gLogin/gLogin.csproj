@@ -370,13 +370,9 @@
       <Project>{4a72d8ee-1fd0-4b45-97df-638593bd9354}</Project>
       <Name>Exebite.Business</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Exebite.DataAccess\Exebite.DataAccess.csproj">
-      <Project>{2976A1C2-2F1E-4C17-B665-51A4223E822F}</Project>
-      <Name>Exebite.DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GoogleSpreadsheetApi\Exebite.GoogleSpreadsheetApi.csproj">
-      <Project>{05506757-bed4-4f0b-8fac-f93a60cfcaf5}</Project>
-      <Name>Exebite.GoogleSpreadsheetApi</Name>
+    <ProjectReference Include="..\Exebite.Model\Exebite.Model.csproj">
+      <Project>{18a84d46-d8d4-44f1-b203-da16bad63dd0}</Project>
+      <Name>Exebite.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

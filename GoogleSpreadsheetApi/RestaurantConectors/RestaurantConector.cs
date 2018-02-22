@@ -14,6 +14,8 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
         internal string _sheetId;
         internal string _ordersSheet;
         internal string _dailyMenuSheet;
+        internal string _foodListSheet;
+        internal Restaurant _restaurant;
 
         public RestaurantConector()
         {
@@ -40,7 +42,8 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
             ValueRange orderRange = new ValueRange();
             orderRange.Values = new List<IList<object>>();
             orderRange.Values.Add(header);
-
+            orders[0].Note = "TEST NOTE!!!";
+            orders[2].Note = "TEST NOTE 2";
             foreach (var food in distinctFood)
             {
                 List<object> customerList = new List<object>();
@@ -50,8 +53,15 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
                 {
                     if (order.Meal.Foods.FirstOrDefault(f => f.Name == food.Name) != null)
                     {
-                        customerList.Add(order.Customer.Name);
-                    }
+                        if (order.Note != null && order.Note != "")
+                        {
+                            customerList.Add(order.Customer.Name + "(" + order.Note + ")");
+                        }
+                        else
+                        {
+                            customerList.Add(order.Customer.Name);
+                        }
+                    }   
                 }
 
                 formatedData.Add(food.Name);
@@ -73,7 +83,6 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
             updateRequest.Execute();
 
         }
-
 
         public void DnevniMenuSheetSetup()
         {
@@ -146,6 +155,26 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
             updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
             updateRequest.Execute();
 
+        }
+
+        public List<Food> LoadAllFoods()
+        {
+            SpreadsheetsResource.ValuesResource.GetRequest request =
+                        _GoogleSS.Spreadsheets.Values.Get(_sheetId, _foodListSheet);
+            request.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
+            ValueRange sheetData = request.Execute();
+
+            var foodData = sheetData.Values.Skip(1);
+
+            var foods = foodData.Select(item => new Food(){
+                Name = item[0].ToString(),
+                Description = item[1].ToString(),
+                Price = decimal.Parse(item[2].ToString()),
+                Type = GetFoodType(item[3].ToString()),
+                Restaurant = _restaurant
+            });
+
+            return foods.ToList();
         }
 
         internal string GetLocalDayName(DayOfWeek day)

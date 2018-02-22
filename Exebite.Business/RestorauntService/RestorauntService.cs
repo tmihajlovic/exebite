@@ -7,41 +7,41 @@ namespace Exebite.Business
 {
     public class RestarauntService : IRestarauntService
     {
-        IRestaurantRepository _restaurantHandler;
+        IRestaurantRepository _restaurantRepository;
 
         public RestarauntService(IRestaurantRepository restaurantHandler)
         {
-            _restaurantHandler = restaurantHandler;
+            _restaurantRepository = restaurantHandler;
         }
 
         public List<Restaurant> GetAllRestaurants()
         {
-            return _restaurantHandler.Get().ToList();
+            return _restaurantRepository.Get().ToList();
         }
 
         public Restaurant GetRestaurantById(int Id)
         {
-            return _restaurantHandler.GetByID(Id);
+            return _restaurantRepository.GetByID(Id);
         }
 
         public Restaurant GetRestaurantByName(string name)
         {
-            return _restaurantHandler.GetByName(name);
+            return _restaurantRepository.GetByName(name);
         }
 
         public void CreateNewRestaurant(Restaurant restaurant)
         {
-            _restaurantHandler.Insert(restaurant);
+            _restaurantRepository.Insert(restaurant);
         }
 
         public void UpdateRestourant(Restaurant restaurant)
         {
-            _restaurantHandler.Update(restaurant);
+            _restaurantRepository.Update(restaurant);
         }
 
         public void DeleteRestourant(int restaurantId)
         {
-            _restaurantHandler.Delete(restaurantId);
+            _restaurantRepository.Delete(restaurantId);
         }
     }
 }
