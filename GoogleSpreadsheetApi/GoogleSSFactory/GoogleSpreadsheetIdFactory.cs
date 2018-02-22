@@ -31,5 +31,15 @@
         {
             return Properties.Settings.Default.LipaNovi;
         }
+
+        public string GetNewTeglas()
+        {
+            return Properties.Settings.Default.TeglasNovi;
+        }
+
+        public string GetNewHedone()
+        {
+            return Properties.Settings.Default.HedoneNovi;
+        }
     }
 }

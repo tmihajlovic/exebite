@@ -86,5 +86,23 @@ namespace GoogleSpreadsheetApi.Properties {
                 return ((string)(this["LipaNovi"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1Sp_9P9qSWd3ENkjhbs2slzBHPJNIg-QeuL0vG7L2gKA")]
+        public string TeglasNovi {
+            get {
+                return ((string)(this["TeglasNovi"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1w5jCZQU0WVEj6o0RzBX5ALYWWoLcd8eRBvK6OebSJxs")]
+        public string HedoneNovi {
+            get {
+                return ((string)(this["HedoneNovi"]));
+            }
+        }
     }
 }

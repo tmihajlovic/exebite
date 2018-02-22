@@ -14,5 +14,7 @@ namespace GoogleSpreadsheetApi.GoogleSSFactory
         string GetExtraFood();
         string GetTeglas();
         string GetNewLipa();
+        string GetNewTeglas();
+        string GetNewHedone();
     }
 }

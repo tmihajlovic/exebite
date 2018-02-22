@@ -23,5 +23,11 @@
     <Setting Name="LipaNovi" Type="System.String" Scope="Application">
       <Value Profile="(Default)">1XncnXTvjTuzpjKgCTrQbJAdVn5x4L7YpagbfJlAq_xc</Value>
     </Setting>
+    <Setting Name="TeglasNovi" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1Sp_9P9qSWd3ENkjhbs2slzBHPJNIg-QeuL0vG7L2gKA</Value>
+    </Setting>
+    <Setting Name="HedoneNovi" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1w5jCZQU0WVEj6o0RzBX5ALYWWoLcd8eRBvK6OebSJxs</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

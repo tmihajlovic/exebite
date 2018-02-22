@@ -2,8 +2,10 @@
 using Exebite.Model;
 using GoogleSpreadsheetApi.GoogleSSFactory;
 using GoogleSpreadsheetApi.RestaurantHandler;
+using GoogleSpreadsheetApi.Strategies;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,16 +17,27 @@ namespace FoodOrdering.Unity
     {
         public void Run(string[] args)
         {
+
             IGoogleDataImporter dataImporter = UnityConfig.Container.Resolve<IGoogleDataImporter>();
             IOrderService orderService = UnityConfig.Container.Resolve<IOrderService>();
             IRestarauntService restarauntService = UnityConfig.Container.Resolve<IRestarauntService>();
             IGoogleSheetServiceFactory GoogleSSFactory = UnityConfig.Container.Resolve<IGoogleSheetServiceFactory>();
             IGoogleSpreadsheetIdFactory GoogleSSIdFactory = UnityConfig.Container.Resolve<IGoogleSpreadsheetIdFactory>();
 
+            LipaHandler lh = new LipaHandler(GoogleSSFactory, GoogleSSIdFactory);
+            TeglasHandler th = new TeglasHandler(GoogleSSFactory, GoogleSSIdFactory);
+            HedoneHandler hh = new HedoneHandler(GoogleSSFactory, GoogleSSIdFactory);
+
 
             Console.WriteLine("1 - get historical data");
             Console.WriteLine("2 - Update daily menu");
             Console.WriteLine("3 - Full Update");
+            Console.WriteLine("4 - ----");
+            Console.WriteLine("5 - Test get daily");
+            Console.WriteLine("6 - Test place order -all");
+            Console.WriteLine("7 - Write menu");
+            Console.WriteLine("8 - setup menu");
+            Console.WriteLine("9 - ----");
             Console.WriteLine("q or other - quit");
 
             var choise = Console.ReadKey().KeyChar;
@@ -78,13 +91,17 @@ namespace FoodOrdering.Unity
                     Console.ReadLine();
                     break;
 
+                case '4':
+                    
+                    break;
+
                 case '5':
                     //test
                     Console.WriteLine("");
                     Console.WriteLine("------------------Test get daily-----------------------");
 
-                    LipaHandler lh = new LipaHandler(GoogleSSFactory, GoogleSSIdFactory);
-                    var result = lh.GetDalyMenu();
+                    var resultLipa = lh.GetDalyMenu();
+                    var resultHedone = hh.GetDalyMenu();
 
                     break;
 
@@ -92,23 +109,26 @@ namespace FoodOrdering.Unity
                     //test
                     Console.WriteLine("");
                     Console.WriteLine("------------------Test place order-----------------------");
-
-                    LipaHandler lhp = new LipaHandler(GoogleSSFactory, GoogleSSIdFactory);
+                    
                     List<Order> orderList = new List<Order>();
                     orderList = orderService.GettOrdersForDate(new DateTime(2017,11,06));
-                    lhp.PlaceOrders(orderList);
-
+                    lh.PlaceOrders(orderList);
+                    th.PlaceOrders(orderList);
+                    hh.PlaceOrders(orderList);
                     break;
 
                 case '7':
                     //test
                     Console.WriteLine("");
                     Console.WriteLine("------------------Write menu-----------------------");
-
-                    lh = new LipaHandler(GoogleSSFactory, GoogleSSIdFactory);
+                    
                     List<Food> foodList = new List<Food>();
                     Restaurant restLispa = restarauntService.GetRestaurantById(1);
                     lh.WriteMenu(restLispa.Foods);
+                    Restaurant restTegla = restarauntService.GetRestaurantById(4);
+                    th.WriteMenu(restTegla.Foods);
+                    Restaurant restHedone = restarauntService.GetRestaurantById(2);
+                    hh.WriteMenu(restHedone.Foods);
 
                     break;
 
@@ -116,9 +136,9 @@ namespace FoodOrdering.Unity
                     //test
                     Console.WriteLine("");
                     Console.WriteLine("------------------setup menu-----------------------");
-
-                    lh = new LipaHandler(GoogleSSFactory, GoogleSSIdFactory);
+                    
                     lh.DnevniMenuSheetSetup();
+                    hh.DnevniMenuSheetSetup();
 
                     break;
 

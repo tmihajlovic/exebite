@@ -118,7 +118,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="RestaurantHandler\HedoneHandler.cs" />
     <Compile Include="RestaurantHandler\LipaHandler.cs" />
+    <Compile Include="RestaurantHandler\TeglasHandler.cs" />
     <Compile Include="Strategies\BaseRestaurantStrategy.cs" />
     <Compile Include="Strategies\ExtraFoodStrategy.cs" />
     <Compile Include="Strategies\HedoneStrategy.cs" />
