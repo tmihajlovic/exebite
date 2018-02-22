@@ -1,12 +1,9 @@
-﻿using GoogleSpreadsheetApi.GoogleSSFactory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Exebite.GoogleSpreadsheetApi.GoogleSSFactory;
+using Exebite.GoogleSpreadsheetApi.RestaurantConectors;
+using Exebite.GoogleSpreadsheetApi.RestaurantConectorsInterfaces;
 using Unity;
 
-namespace GoogleSpreadsheetApi
+namespace Exebite.GoogleSpreadsheetApi.Unity
 {
     public static class UnityConfig
     {
@@ -14,6 +11,12 @@ namespace GoogleSpreadsheetApi
         {
             container.RegisterType<IGoogleSheetServiceFactory, GoogleSheetServiceFactory>();
             container.RegisterType<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>();
+
+            container.RegisterType<IRestaurantConector, RestaurantConector>();
+            container.RegisterType<IHedoneConector,HedoneConector>();
+            container.RegisterType<ILipaConector, LipaConector>();
+            container.RegisterType<ITeglasConector, TeglasConector>();
+
         }
     }
 }

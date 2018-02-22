@@ -1,5 +1,5 @@
 ﻿using Exebite.DataAccess;
-using Exebite.DataAccess.Handlers;
+using Exebite.DataAccess.Entities;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GoogleSpreadsheetApi.Properties {
+namespace Exebite.GoogleSpreadsheetApi.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -102,6 +102,15 @@ namespace GoogleSpreadsheetApi.Properties {
         public string HedoneNovi {
             get {
                 return ((string)(this["HedoneNovi"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("asd")]
+        public string asdas {
+            get {
+                return ((string)(this["asdas"]));
             }
         }
     }

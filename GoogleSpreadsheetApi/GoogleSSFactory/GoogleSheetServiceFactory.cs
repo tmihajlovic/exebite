@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Threading;
 
-namespace GoogleSpreadsheetApi.GoogleSSFactory
+namespace Exebite.GoogleSpreadsheetApi.GoogleSSFactory
 {
     public  class GoogleSheetServiceFactory : IGoogleSheetServiceFactory
     {

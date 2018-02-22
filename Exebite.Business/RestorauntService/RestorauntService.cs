@@ -7,9 +7,9 @@ namespace Exebite.Business
 {
     public class RestarauntService : IRestarauntService
     {
-        IRestaurantHandler _restaurantHandler;
+        IRestaurantRepository _restaurantHandler;
 
-        public RestarauntService(IRestaurantHandler restaurantHandler)
+        public RestarauntService(IRestaurantRepository restaurantHandler)
         {
             _restaurantHandler = restaurantHandler;
         }

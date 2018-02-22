@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gLogin", "gLogin\gLogin.csproj", "{11A62FC4-A30F-43E4-AA9E-BF4BA4815D70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleSpreadsheetApi", "GoogleSpreadsheetApi\GoogleSpreadsheetApi.csproj", "{05506757-BED4-4F0B-8FAC-F93A60CFCAF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.GoogleSpreadsheetApi", "GoogleSpreadsheetApi\Exebite.GoogleSpreadsheetApi.csproj", "{05506757-BED4-4F0B-8FAC-F93A60CFCAF5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{FF0A49B8-C378-49D8-956F-9CF17A12574A}"
 EndProject

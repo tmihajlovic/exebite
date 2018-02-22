@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Exebite.DataAccess;
 using Exebite.Model;
-using GoogleSpreadsheetApi;
-using GoogleSpreadsheetApi.GoogleSSFactory;
-using GoogleSpreadsheetApi.Strategies;
+using Exebite.GoogleSpreadsheetApi;
+using Exebite.GoogleSpreadsheetApi.GoogleSSFactory;
+using Exebite.GoogleSpreadsheetApi.Strategies;
 
 namespace Exebite.Business
 {
@@ -11,14 +11,14 @@ namespace Exebite.Business
     {
         IGoogleSheetServiceFactory _googleSheetServiceFactory;
         IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
-        IRestaurantHandler _restaurantHandler;
+        IRestaurantRepository _restaurantHandler;
         IRestaurantStrategy _lipa;
         IRestaurantStrategy _hedone;
         IRestaurantStrategy _indexHouse;
         IRestaurantStrategy _teglas;
         IRestaurantStrategy _extraFood;
 
-        public GoogleApiExport(IGoogleSheetServiceFactory googleSheetServiceFactory, IGoogleSpreadsheetIdFactory googleSpreadsheetIdFactory, IRestaurantHandler restaurantHandler)
+        public GoogleApiExport(IGoogleSheetServiceFactory googleSheetServiceFactory, IGoogleSpreadsheetIdFactory googleSpreadsheetIdFactory, IRestaurantRepository restaurantHandler)
         {
             _googleSheetServiceFactory = googleSheetServiceFactory;
             _googleSpreadsheetIdFactory = googleSpreadsheetIdFactory;

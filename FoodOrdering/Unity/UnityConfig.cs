@@ -1,10 +1,5 @@
-﻿
-using Exebite.DataAccess.Context;
-using Exebite.DataAccess.Handlers;
-using System;
+﻿using System;
 using Unity;
-using GoogleSpreadsheetApi.GoogleSSFactory;
-using Exebite.DataAccess;
 
 namespace FoodOrdering.Unity
 {
@@ -29,16 +24,9 @@ namespace FoodOrdering.Unity
         public static void RegisterTypes(IUnityContainer container)
         {
             container.RegisterType<IApplication, Application>();
-            container.RegisterType<IFoodOrderingContextFactory, FoodOrderingContextFactory>();
-            container.RegisterType<ICustomerHandler, CustomerHandler>();
-            container.RegisterType<IRestaurantHandler, RestaurantHandler>();
-            container.RegisterType<ILocationHandler, LocationHandler>();
-            container.RegisterType<IFoodHandler, FoodHandler>();
-            container.RegisterType<IMealHandler, MealHandler>();
-            container.RegisterType<IOrderHandler, OrderHandler>();
-            Exebite.Business.UnityConfig.RegisterTypes(container);
-            container.RegisterType<IGoogleSheetServiceFactory, GoogleSheetServiceFactory>();
-            container.RegisterType<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>();
+            Exebite.DataAccess.Unity.UnityConfig.RegisterTypes(container);
+            Exebite.Business.Unity.UnityConfig.RegisterTypes(container);
+            Exebite.GoogleSpreadsheetApi.Unity.UnityConfig.RegisterTypes(container);
         }
     }
 }

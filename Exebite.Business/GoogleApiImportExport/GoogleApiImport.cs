@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Exebite.Model;
-using GoogleSpreadsheetApi;
-using GoogleSpreadsheetApi.GoogleSSFactory;
-using GoogleSpreadsheetApi.Strategies;
+using Exebite.GoogleSpreadsheetApi;
+using Exebite.GoogleSpreadsheetApi.GoogleSSFactory;
+using Exebite.GoogleSpreadsheetApi.Strategies;
 
 namespace Exebite.Business
 {

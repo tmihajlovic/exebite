@@ -8,11 +8,11 @@ namespace Exebite.Business
 {
     public class MenuService : IMenuService
     {
-        IRestaurantHandler _restaurantHandler;
-        IFoodHandler _foodHandler;
-        IRecipeHandler _recipeHandler;
+        IRestaurantRepository _restaurantHandler;
+        IFoodRepository _foodHandler;
+        IRecipeRepository _recipeHandler;
 
-        public MenuService(IRestaurantHandler restaurantHandler, IFoodHandler foodHandler, IRecipeHandler recipeHandler)
+        public MenuService(IRestaurantRepository restaurantHandler, IFoodRepository foodHandler, IRecipeRepository recipeHandler)
         {
             _restaurantHandler = restaurantHandler;
             _foodHandler = foodHandler;

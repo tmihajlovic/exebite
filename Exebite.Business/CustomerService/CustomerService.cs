@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Exebite.DataAccess;
-using Exebite.DataAccess.Handlers;
 using Exebite.Model;
 
 namespace Exebite.Business
@@ -12,9 +8,9 @@ namespace Exebite.Business
     public class CustomerService : ICustomerService
     {
 
-        ICustomerHandler _customerHandler;
+        ICustomerRepository _customerHandler;
 
-        public CustomerService(ICustomerHandler customerHandler)
+        public CustomerService(ICustomerRepository customerHandler)
         {
             _customerHandler = customerHandler;
         }

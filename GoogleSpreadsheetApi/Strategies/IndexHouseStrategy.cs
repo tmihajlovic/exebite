@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Google.Apis.Sheets.v4;
 using Exebite.Model;
 using System.Linq;
-using GoogleSpreadsheetApi.GoogleSSFactory;
+using Exebite.GoogleSpreadsheetApi.GoogleSSFactory;
 
-namespace GoogleSpreadsheetApi.Strategies
+namespace Exebite.GoogleSpreadsheetApi.Strategies
 {
     public class IndexHouseStrategy : BaseRestaurantStrategy, IRestaurantStrategy
     {

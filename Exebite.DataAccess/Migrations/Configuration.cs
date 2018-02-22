@@ -1,9 +1,6 @@
 namespace Exebite.DataAccess.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Exebite.DataAccess.Context.FoodOrderingContext>
     {
@@ -20,15 +17,15 @@ namespace Exebite.DataAccess.Migrations
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
             context.Locations.AddOrUpdate(x => x.Id,
-                new Handlers.LocationEntity() { Id = 1, Name = "Bulevar", Address = "Bulevar Vojvode Stjepe" },
-                new Handlers.LocationEntity() { Id = 2, Name = "JD", Address = "Jovana Ducica" }
+                new Entities.LocationEntity() { Id = 1, Name = "Bulevar", Address = "Bulevar Vojvode Stjepe" },
+                new Entities.LocationEntity() { Id = 2, Name = "JD", Address = "Jovana Ducica" }
                  );
             context.Restaurants.AddOrUpdate(x => x.Id,
-                new Handlers.RestaurantEntity() { Id = 1, Name = "Restoran pod Lipom" },
-                new Handlers.RestaurantEntity() { Id = 2, Name = "Hedone" },
-                new Handlers.RestaurantEntity() { Id = 3, Name = "Index House" },
-                new Handlers.RestaurantEntity() { Id = 4, Name = "Teglas" },
-                new Handlers.RestaurantEntity() { Id = 5, Name = "Extra Food" }
+                new Entities.RestaurantEntity() { Id = 1, Name = "Restoran pod Lipom" },
+                new Entities.RestaurantEntity() { Id = 2, Name = "Hedone" },
+                new Entities.RestaurantEntity() { Id = 3, Name = "Index House" },
+                new Entities.RestaurantEntity() { Id = 4, Name = "Teglas" },
+                new Entities.RestaurantEntity() { Id = 5, Name = "Extra Food" }
                 );
         }
     }

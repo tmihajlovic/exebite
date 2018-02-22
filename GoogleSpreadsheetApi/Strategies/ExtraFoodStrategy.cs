@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Exebite.GoogleSpreadsheetApi.GoogleSSFactory;
 using Exebite.Model;
-using GoogleSpreadsheetApi.GoogleSSFactory;
 
-namespace GoogleSpreadsheetApi.Strategies
+namespace Exebite.GoogleSpreadsheetApi.Strategies
 {
     public class ExtraFoodStrategy : BaseRestaurantStrategy, IRestaurantStrategy
     {

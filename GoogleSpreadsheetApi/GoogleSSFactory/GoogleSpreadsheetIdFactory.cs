@@ -1,9 +1,10 @@
-﻿namespace GoogleSpreadsheetApi.GoogleSSFactory
+﻿namespace Exebite.GoogleSpreadsheetApi.GoogleSSFactory
 {
     public class GoogleSpreadsheetIdFactory : IGoogleSpreadsheetIdFactory
     {
         public string GetExtraFood()
         {
+            
             return Properties.Settings.Default.ExtraFoodSpredsheetID;
         }
 

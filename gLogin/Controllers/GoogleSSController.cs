@@ -1,14 +1,4 @@
-﻿using gLogin.Google;
-using gLogin.Models;
-using gLogin.Models.DTO;
-using gLogin.Shared;
-using GoogleSpreadsheetApi;
-using GoogleSpreadsheetApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace gLogin.Controllers
 {

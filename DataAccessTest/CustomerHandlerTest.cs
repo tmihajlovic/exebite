@@ -1,6 +1,6 @@
 ﻿using Exebite.DataAccess;
 using Exebite.DataAccess.Context;
-using Exebite.DataAccess.Handlers;
+using Exebite.DataAccess.Repositories;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,7 +13,7 @@ namespace DataAccessTest
         [TestMethod]
         public void Get_Pass_NotNull()
         {
-            ICustomerHandler customerHandler = new CustomerHandler(_ctxFactory);
+            ICustomerRepository customerHandler = new CustomerRepository(_ctxFactory);
             var result = customerHandler.Get();
             Assert.IsNotNull(result);
         }
@@ -33,7 +33,7 @@ namespace DataAccessTest
 
                  }
             };
-            ICustomerHandler customerHandler = new CustomerHandler(_ctxFactory);
+            ICustomerRepository customerHandler = new CustomerRepository(_ctxFactory);
             customerHandler.Insert(cust);
         }
 
@@ -53,7 +53,7 @@ namespace DataAccessTest
 
                 }
             };
-            ICustomerHandler customerHandler = new CustomerHandler(_ctxFactory);
+            ICustomerRepository customerHandler = new CustomerRepository(_ctxFactory);
             customerHandler.Delete(1);
         }
     }

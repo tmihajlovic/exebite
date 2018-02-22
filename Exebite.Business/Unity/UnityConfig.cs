@@ -1,6 +1,6 @@
 ﻿using Unity;
 
-namespace Exebite.Business
+namespace Exebite.Business.Unity
 {
     public static class UnityConfig
     {

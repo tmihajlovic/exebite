@@ -11,7 +11,7 @@ namespace GoogleSpreadsheetApi.Test
     {
         public static void RegisterTypes(IUnityContainer container)
         {
-            GoogleSpreadsheetApi.UnityConfig.RegisterTypes(container);
+            GoogleSpreadsheetApi.Unity.UnityConfig.RegisterTypes(container);
         }
     }
 }

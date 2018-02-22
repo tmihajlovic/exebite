@@ -10,12 +10,12 @@ namespace Business.Test.Services
     public class CustomerServiceTest
     {
         static ICustomerService _customerService;
-        static ICustomerHandler _customerHandler;
+        static ICustomerRepository _customerHandler;
         
         [ClassInitialize]
         public static void ClassInit(TestContext context)
         {
-            var _customerHandlerMock = new Moq.Mock<ICustomerHandler>();
+            var _customerHandlerMock = new Moq.Mock<ICustomerRepository>();
             _customerHandlerMock.Setup(f => f.Get()).Returns(FakeData.cutumerList);
             _customerHandlerMock.Setup(f => f.GetByID(1)).Returns(FakeData.customer);
             _customerHandlerMock.Setup(f => f.GetByName("TestName")).Returns(FakeData.customer);

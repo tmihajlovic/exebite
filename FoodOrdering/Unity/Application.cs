@@ -1,14 +1,9 @@
 ﻿using Exebite.Business;
 using Exebite.Model;
-using GoogleSpreadsheetApi.GoogleSSFactory;
-using GoogleSpreadsheetApi.RestaurantHandler;
-using GoogleSpreadsheetApi.Strategies;
+using Exebite.GoogleSpreadsheetApi.GoogleSSFactory;
+using Exebite.GoogleSpreadsheetApi.RestaurantConectors;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Unity;
 
 namespace FoodOrdering.Unity
@@ -24,9 +19,9 @@ namespace FoodOrdering.Unity
             IGoogleSheetServiceFactory GoogleSSFactory = UnityConfig.Container.Resolve<IGoogleSheetServiceFactory>();
             IGoogleSpreadsheetIdFactory GoogleSSIdFactory = UnityConfig.Container.Resolve<IGoogleSpreadsheetIdFactory>();
 
-            LipaHandler lh = new LipaHandler(GoogleSSFactory, GoogleSSIdFactory);
-            TeglasHandler th = new TeglasHandler(GoogleSSFactory, GoogleSSIdFactory);
-            HedoneHandler hh = new HedoneHandler(GoogleSSFactory, GoogleSSIdFactory);
+            LipaConector lh = new LipaConector(GoogleSSFactory, GoogleSSIdFactory);
+            TeglasConector th = new TeglasConector(GoogleSSFactory, GoogleSSIdFactory);
+            HedoneConector hh = new HedoneConector(GoogleSSFactory, GoogleSSIdFactory);
 
 
             Console.WriteLine("1 - get historical data");
@@ -36,8 +31,8 @@ namespace FoodOrdering.Unity
             Console.WriteLine("5 - Test get daily");
             Console.WriteLine("6 - Test place order -all");
             Console.WriteLine("7 - Write menu");
-            Console.WriteLine("8 - setup menu");
-            Console.WriteLine("9 - ----");
+            Console.WriteLine("8 - ----");
+            Console.WriteLine("9 - setup menu");
             Console.WriteLine("q or other - quit");
 
             var choise = Console.ReadKey().KeyChar;

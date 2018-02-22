@@ -7,9 +7,9 @@ namespace Exebite.Business
 {
     public class LocationService : ILocationService
     {
-        ILocationHandler _locationHandler;
+        ILocationRepository _locationHandler;
 
-        public LocationService(ILocationHandler locationHandler)
+        public LocationService(ILocationRepository locationHandler)
         {
             _locationHandler = locationHandler;
         }

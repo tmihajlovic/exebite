@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Exebite.DataAccess.Handlers
+namespace Exebite.DataAccess.Entities
 {
     [Table(nameof(Restaurant))]
     public class RestaurantEntity

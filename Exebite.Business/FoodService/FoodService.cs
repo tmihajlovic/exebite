@@ -7,9 +7,9 @@ namespace Exebite.Business
 {
     public class FoodService : IFoodService
     {
-        IFoodHandler _foodHandler;
+        IFoodRepository _foodHandler;
 
-        public FoodService(IFoodHandler foodHandler)
+        public FoodService(IFoodRepository foodHandler)
         {
             _foodHandler = foodHandler;
         }

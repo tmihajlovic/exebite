@@ -8,11 +8,11 @@ namespace Exebite.Business
 {
     public class OrderService : IOrderService
     {
-        IOrderHandler _orderHandler;
-        ICustomerHandler _customerHandler;
-        IRestaurantHandler _restaurantHandler;
+        IOrderRepository _orderHandler;
+        ICustomerRepository _customerHandler;
+        IRestaurantRepository _restaurantHandler;
 
-        public OrderService(IOrderHandler orderHandler, ICustomerHandler customerHandler, IRestaurantHandler restaurantHandler)
+        public OrderService(IOrderRepository orderHandler, ICustomerRepository customerHandler, IRestaurantRepository restaurantHandler)
         {
             _orderHandler = orderHandler;
             _customerHandler = customerHandler;

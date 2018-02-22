@@ -1,4 +1,4 @@
-﻿using Exebite.DataAccess.Handlers;
+﻿using Exebite.DataAccess.Entities;
 using System.Data.Entity;
 
 namespace Exebite.DataAccess.Context
