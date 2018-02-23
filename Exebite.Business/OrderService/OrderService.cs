@@ -21,7 +21,7 @@ namespace Exebite.Business
 
         public List<Order> GetAllOrders()
         {
-             return _orderHandler.Get().ToList();
+             return _orderHandler.GetAll().ToList();
         }
 
         public List<Order> GetAllOrdersForCustomer(int customerId)

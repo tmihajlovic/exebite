@@ -51,7 +51,6 @@ namespace Exebite.DataAccess.Repositories
                 List<FoodEntity> foodList = context.Foods.Where(f => f.Restaurant.Id == dbRestaurant.Id).ToList();
                 //clear old menu
                 dbRestaurant.DailyMenu.Clear();
-                dbRestaurant.Foods.Clear();
                 //bind daily food entitys
                 for (int i = 0; i < restaurantEntity.DailyMenu.Count; i++)
                 {
@@ -78,10 +77,18 @@ namespace Exebite.DataAccess.Repositories
                     else
                     {
                         restaurantEntity.Foods[i].Restaurant = dbRestaurant;
+                        restaurantEntity.Foods[i].IsInactive = false;
                         dbRestaurant.Foods.Add(restaurantEntity.Foods[i]);
                     }
                 }
-
+                //inactivate deleted food
+                for(int i = 0; i<foodList.Count; i++)
+                {
+                    if(restaurantEntity.Foods.FirstOrDefault(f => f.Name == foodList[i].Name) == null)
+                    {
+                        foodList[i].IsInactive = true;
+                    }
+                }
 
                 context.SaveChanges();
                 

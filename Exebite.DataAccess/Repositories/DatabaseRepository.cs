@@ -18,7 +18,7 @@ namespace Exebite.DataAccess.Repositories
 
         public abstract TModel Update(TModel entity);
         
-        public IEnumerable<TModel> Get()
+        public IEnumerable<TModel> GetAll()
         {
             using (var context = _factory.Create())
             {
@@ -49,8 +49,9 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var itemSet = context.Set<TModel>();
-                var itemEntity = itemSet.Find(Id);
+                var itemSet = context.Set<TEntity>();
+                var item = this.GetByID(Id);
+                var itemEntity = AutoMapperHelper.Instance.GetMappedValue<TEntity>(item);
                 itemSet.Remove(itemEntity);
                 context.SaveChanges();
             }

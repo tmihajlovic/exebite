@@ -16,7 +16,7 @@ namespace Exebite.Business
 
         public List<Location> GetAllLocations()
         {
-            return _locationHandler.Get().ToList();
+            return _locationHandler.GetAll().ToList();
         }
 
         public Location GetLocationById(int locationId)
@@ -26,7 +26,7 @@ namespace Exebite.Business
 
         public Location GetLocationByName(string name)
         {
-            return _locationHandler.Get().SingleOrDefault(l => l.Name == name);
+            return _locationHandler.GetAll().SingleOrDefault(l => l.Name == name);
             
         }
 

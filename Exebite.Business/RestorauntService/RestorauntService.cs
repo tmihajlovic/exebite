@@ -16,7 +16,7 @@ namespace Exebite.Business
 
         public List<Restaurant> GetAllRestaurants()
         {
-            return _restaurantRepository.Get().ToList();
+            return _restaurantRepository.GetAll().ToList();
         }
 
         public Restaurant GetRestaurantById(int Id)

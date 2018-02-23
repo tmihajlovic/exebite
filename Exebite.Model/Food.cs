@@ -20,6 +20,8 @@ namespace Exebite.Model
 
         public string Description { get; set; }
 
+        public bool IsInactive { get; set; }
+
     }
 
     public enum FoodType

@@ -19,6 +19,8 @@ namespace Exebite.DataAccess.Entities
 
         public string Description { get; set; }
 
+        public bool IsInactive { get; set; }
+
         public virtual List<MealEntity> Meals { get; set; }
         
         public virtual List<RecipeEntity> Recipes { get; set; }

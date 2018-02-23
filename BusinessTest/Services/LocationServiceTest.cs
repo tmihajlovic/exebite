@@ -14,7 +14,7 @@ namespace BusinessTest.Services
         public static void ClassInit(TestContext context)
         {
             var _locationHandlerMock = new Moq.Mock<ILocationRepository>();
-            _locationHandlerMock.Setup(f => f.Get()).Returns(FakeData.locationList);
+            _locationHandlerMock.Setup(f => f.GetAll()).Returns(FakeData.locationList);
             _locationHandlerMock.Setup(f => f.GetByID(1)).Returns(FakeData.location);
             _locationHandlerMock.Setup(f => f.GetByID(11)).Returns((Location)null);
 

@@ -16,7 +16,7 @@ namespace Business.Test.Services
         public static void ClassInit(TestContext context)
         {
             var _customerHandlerMock = new Moq.Mock<ICustomerRepository>();
-            _customerHandlerMock.Setup(f => f.Get()).Returns(FakeData.cutumerList);
+            _customerHandlerMock.Setup(f => f.GetAll()).Returns(FakeData.cutumerList);
             _customerHandlerMock.Setup(f => f.GetByID(1)).Returns(FakeData.customer);
             _customerHandlerMock.Setup(f => f.GetByName("TestName")).Returns(FakeData.customer);
             _customerHandlerMock.Setup(f => f.GetByName("TestNameInvalid")).Returns((Customer)null);

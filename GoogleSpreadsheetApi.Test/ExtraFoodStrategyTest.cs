@@ -1,12 +1,11 @@
-﻿using Exebite.Model;
-using GoogleSpreadsheetApi.GoogleSSFactory;
-using GoogleSpreadsheetApi.Strategies;
+﻿using Exebite.GoogleSpreadsheetApi;
+using Exebite.GoogleSpreadsheetApi.GoogleSSFactory;
+using Exebite.GoogleSpreadsheetApi.Strategies;
+using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Unity;
 
 namespace GoogleSpreadsheetApi.Test
@@ -103,22 +102,7 @@ namespace GoogleSpreadsheetApi.Test
             
             Assert.IsTrue(_orders.Where(o => o.Date == expectedDate && o.Customer.Name == userName && o.Meal.Foods.Any(f => f.Name == foodName)).ToList().Count > 0);
         }
-
-
-        [TestMethod]
-        public void GetHistoricalData_DailyOrder_Exists()
-        {
-            DateTime expectedDate = new DateTime(2017, 10, 9);
-            string userName = "Borislav Subic";
-
-            // Food names which are not matching the name of current
-            string foodName = "Becka snicla (pilece meso)";
-            string foodName2 = "1/2 Spanac + 1/2 pekarski krompir";
-            
-            Assert.IsTrue(_orders.Where(o => o.Date == expectedDate && o.Customer.Name == userName && o.Meal.Foods.Count == 2).ToList().Count > 0);
-        }
-
-
+        
         [TestMethod]
         public void GetHistoricalData_DailyOrder2_Exists()
         {

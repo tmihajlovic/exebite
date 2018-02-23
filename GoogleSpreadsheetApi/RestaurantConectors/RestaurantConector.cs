@@ -42,8 +42,6 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
             ValueRange orderRange = new ValueRange();
             orderRange.Values = new List<IList<object>>();
             orderRange.Values.Add(header);
-            orders[0].Note = "TEST NOTE!!!";
-            orders[2].Note = "TEST NOTE 2";
             foreach (var food in distinctFood)
             {
                 List<object> customerList = new List<object>();
@@ -171,7 +169,8 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
                 Description = item[1].ToString(),
                 Price = decimal.Parse(item[2].ToString()),
                 Type = GetFoodType(item[3].ToString()),
-                Restaurant = _restaurant
+                Restaurant = _restaurant,
+                IsInactive = false
             });
 
             return foods.ToList();

@@ -16,7 +16,7 @@ namespace Exebite.DataAccess.Unity
             container.RegisterType<IOrderRepository,OrderRepository>();
             container.RegisterType<IRecipeRepository, RecipeRepository>();
             container.RegisterType<IRestaurantRepository, RestaurantRepository>();
-
+            
         }
     }
 }

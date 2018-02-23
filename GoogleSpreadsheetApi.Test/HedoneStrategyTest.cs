@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Exebite.GoogleSpreadsheetApi;
+using Exebite.GoogleSpreadsheetApi.GoogleSSFactory;
+using Exebite.GoogleSpreadsheetApi.Strategies;
 using Exebite.Model;
-using GoogleSpreadsheetApi.GoogleSSFactory;
-using GoogleSpreadsheetApi.Strategies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unity;
 

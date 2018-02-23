@@ -53,6 +53,9 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -107,6 +110,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Exebite.Business\Exebite.Business.csproj">
+      <Project>{4a72d8ee-1fd0-4b45-97df-638593bd9354}</Project>
+      <Name>Exebite.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Exebite.DataAccess\Exebite.DataAccess.csproj">
+      <Project>{ff5784ea-e58e-49c0-98a3-ca1f5ddfbf94}</Project>
+      <Name>Exebite.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Exebite.Model\Exebite.Model.csproj">
       <Project>{18A84D46-D8D4-44F1-B203-DA16BAD63DD0}</Project>
       <Name>Exebite.Model</Name>

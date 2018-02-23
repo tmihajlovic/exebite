@@ -79,6 +79,10 @@
     <Compile Include="Context\FoodOrderingContextFactory.cs" />
     <Compile Include="Context\IFoodOrderingContextFactory.cs" />
     <Compile Include="Entities\CustomerEntity.cs" />
+    <Compile Include="Migrations\201802230724538_AddFoodIsInactive.cs" />
+    <Compile Include="Migrations\201802230724538_AddFoodIsInactive.Designer.cs">
+      <DependentUpon>201802230724538_AddFoodIsInactive.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repositories\CustomerRepository.cs" />
     <Compile Include="Repositories\DatabaseRepository.cs" />
     <Compile Include="Repositories\FoodRepository.cs" />
@@ -123,6 +127,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201802211224126_init.resx">
       <DependentUpon>201802211224126_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802230724538_AddFoodIsInactive.resx">
+      <DependentUpon>201802230724538_AddFoodIsInactive.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

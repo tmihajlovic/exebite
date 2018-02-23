@@ -17,7 +17,7 @@ namespace Exebite.Business
 
         public List<Customer> GetAllCustomers()
         {
-            return _customerHandler.Get().ToList();
+            return _customerHandler.GetAll().ToList();
         }
 
         public Customer GetCustomerById(int Id)

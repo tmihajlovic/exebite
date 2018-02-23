@@ -16,7 +16,7 @@ namespace Exebite.Business
 
         public List<Food> GetAllFoods()
         {
-            return _foodHandler.Get().ToList();
+            return _foodHandler.GetAll().ToList();
         }
 
         public Food GetFoodById(int Id)

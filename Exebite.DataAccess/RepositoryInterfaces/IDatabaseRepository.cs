@@ -4,7 +4,7 @@ namespace Exebite.DataAccess
 {
     public interface IDatabaseRepository<T>
     {
-        IEnumerable<T> Get();
+        IEnumerable<T> GetAll();
         T GetByID(int Id);
         T Insert(T entity);
         void Delete(int Id);

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity;
+﻿using Unity;
 
 namespace GoogleSpreadsheetApi.Test
 {
@@ -11,7 +6,10 @@ namespace GoogleSpreadsheetApi.Test
     {
         public static void RegisterTypes(IUnityContainer container)
         {
-            GoogleSpreadsheetApi.Unity.UnityConfig.RegisterTypes(container);
+            Exebite.GoogleSpreadsheetApi.Unity.UnityConfig.RegisterTypes(container);
+            Exebite.DataAccess.Unity.UnityConfig.RegisterTypes(container);
+            Exebite.Business.Unity.UnityConfig.RegisterTypes(container);
+            Exebite.GoogleSpreadsheetApi.Unity.UnityConfig.RegisterTypes(container);
         }
     }
 }

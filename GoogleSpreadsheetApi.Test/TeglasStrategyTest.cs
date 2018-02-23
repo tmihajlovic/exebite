@@ -1,12 +1,9 @@
-﻿using Exebite.Model;
-using GoogleSpreadsheetApi.GoogleSSFactory;
-using GoogleSpreadsheetApi.Strategies;
+﻿using Exebite.GoogleSpreadsheetApi;
+using Exebite.GoogleSpreadsheetApi.GoogleSSFactory;
+using Exebite.GoogleSpreadsheetApi.Strategies;
+using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Unity;
 
 namespace GoogleSpreadsheetApi.Test

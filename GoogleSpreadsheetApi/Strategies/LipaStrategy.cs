@@ -128,7 +128,8 @@ namespace Exebite.GoogleSpreadsheetApi.Strategies
                                              Name = order[2].ToString(),
                                              Price = decimal.Parse(order[5].ToString()),
                                              Type = FoodType.MAIN_COURSE,
-                                             Restaurant = restaurant
+                                             Restaurant = restaurant,
+                                             IsInactive = false
                                          }
                                      },
                                     Price = decimal.Parse(order[5].ToString())

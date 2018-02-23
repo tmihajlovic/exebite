@@ -7,21 +7,22 @@ namespace gLogin.Controllers
 {
     public class GoogleSSController : Controller
     {
-       // IGoogleSpreadsheetServiceFactory service;
-
-        public GoogleSSController()
+        // IGoogleSpreadsheetServiceFactory service;
+        IMenuService _menuService;
+        public GoogleSSController(IMenuService menuService)
         {
-            
+            _menuService = menuService;
         }
 
 
         // GET: GoogleSS
         public ActionResult GoogleSS()
         {
-            List<Food> foodList = new List<Food>();
+            List<Restaurant> restaurantList = new List<Restaurant>();
+            restaurantList = _menuService.GetRestorantsWithMenus();
 
 
-            return View();
+            return View(restaurantList);
         }
 
         ////GET: Place order

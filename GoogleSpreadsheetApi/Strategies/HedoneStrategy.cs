@@ -96,7 +96,8 @@ namespace Exebite.GoogleSpreadsheetApi.Strategies
                     Name = item[0].ToString(),
                     Type = FoodType.MAIN_COURSE,
                     Price = decimal.Parse(item[3].ToString()),
-                    Description = item[1].ToString()
+                    Description = item[1].ToString(),
+                    IsInactive = false
                 });
             }
 

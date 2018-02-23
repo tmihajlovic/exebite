@@ -53,7 +53,6 @@ namespace Exebite.Business
         public void UpdateRestorauntsMenu()
         {
             Restaurant lipaRestoraunt = _restarauntService.GetRestaurantByName("Restoran pod Lipom");
-
             Restaurant hedoneRestoraunt = _restarauntService.GetRestaurantByName("Hedone");
             Restaurant indexHauseRestoraunt = _restarauntService.GetRestaurantByName("Index House");
             Restaurant teglasRestoraunt = _restarauntService.GetRestaurantByName("Teglas");

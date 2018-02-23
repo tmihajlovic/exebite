@@ -6,7 +6,7 @@ namespace BusinessTest
     {
         public static void RegisterTypes(IUnityContainer container)
         {
-            GoogleSpreadsheetApi.Unity.UnityConfig.RegisterTypes(container);
+            Exebite.GoogleSpreadsheetApi.Unity.UnityConfig.RegisterTypes(container);
             Exebite.Business.Unity.UnityConfig.RegisterTypes(container);
         }
     }

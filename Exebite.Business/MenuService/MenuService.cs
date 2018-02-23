@@ -21,7 +21,7 @@ namespace Exebite.Business
 
         public List<Restaurant> GetRestorantsWithMenus()
         {
-            return _restaurantHandler.Get().ToList();
+            return _restaurantHandler.GetAll().ToList();
         }
 
         public int CheckPrice(Meal meal)
@@ -33,7 +33,7 @@ namespace Exebite.Business
         public List<Food> CheckAvailableSideDishes(int foodId)
         {
             var food = _foodHandler.GetByID(foodId);
-            var AllRecipe = _recipeHandler.Get();
+            var AllRecipe = _recipeHandler.GetAll();
             return AllRecipe.SingleOrDefault(r => r.MainCourse == food).SideDish;
         }
     }
