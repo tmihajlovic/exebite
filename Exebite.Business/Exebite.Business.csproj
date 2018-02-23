@@ -85,7 +85,7 @@
     <Compile Include="GoogleApiImportExport\GoogleApiExport.cs" />
     <Compile Include="GoogleApiImportExport\GoogleApiImport.cs" />
     <Compile Include="GoogleApiImportExport\IGoogleDataImporter.cs" />
-    <Compile Include="GoogleApiImportExport\IGoogleDateExporter.cs" />
+    <Compile Include="GoogleApiImportExport\IGoogleDataExporter.cs" />
     <Compile Include="LocationService\ILocationService.cs" />
     <Compile Include="LocationService\LocationService.cs" />
     <Compile Include="MenuService\IMenuService.cs" />

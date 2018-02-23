@@ -13,9 +13,7 @@ namespace Exebite.Business.Unity
             container.RegisterType<ILocationService, LocationService>();
             container.RegisterType<IRestarauntService, RestarauntService>();
             container.RegisterType<IGoogleDataImporter, GoogleApiImport>();
-            container.RegisterType<IGoogleDateExporter, GoogleApiExport>();
-            DataAccess.Unity.UnityConfig.RegisterTypes(container);
-            GoogleSpreadsheetApi.Unity.UnityConfig.RegisterTypes(container);
+            container.RegisterType<IGoogleDataExporter, GoogleApiExport>();
         }
     }
 }

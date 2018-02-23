@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Exebite.GoogleSpreadsheetApi.RestaurantConectorsInterfaces
 {
-    public interface ITeglasConector
+    public interface ITeglasConector: IRestaurantConector
     {
     }
 }

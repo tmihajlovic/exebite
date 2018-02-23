@@ -2,17 +2,30 @@
 @{
     ViewBag.Title = "GoogleSS";
 }
-
+<div>
+    @Html.ActionLink("Write to Google Sheets", "WriteToSheets")
+</div>
 <div>
     @foreach (var rest in Model)
     {
-        <div>
-            <h3>@rest.Name</h3><br />
+        <table border="1">
+            <thead>
+                <h4>@rest.Name</h4>
+            </thead>
+
             @foreach (var food in rest.DailyMenu)
             {
-                @food.Name <i> - @food.Price</i><br /> 
+                <tr>
+                    <td>
+                        @food.Name
+                    </td>
+                    <td>
+                        @Html.ActionLink("Naruci", "PlaceOrder", food)
+                    </td>
+                </tr>
             }
-        </div>
+
+        </table>
     }
 
 </div>

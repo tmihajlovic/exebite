@@ -11,7 +11,7 @@ namespace Exebite.GoogleSpreadsheetApi.GoogleSSFactory
     {
         public SheetsService GetService()
         {
-            var jsonFile = Path.Combine(Environment.CurrentDirectory, @"Resources\client_secret.json");
+            var jsonFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\client_secret.json");
             UserCredential credential;
             using (var stream = new FileStream(jsonFile, FileMode.Open, FileAccess.Read))
             {

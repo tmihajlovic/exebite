@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Exebite.Business
 {
-    interface IGoogleDateExporter
+    public interface IGoogleDataExporter
     {
 
         void PlaceOrders(List<Order> orderList);

@@ -54,7 +54,6 @@ namespace Exebite.Business
         public void PlaceOreder(Order order)
         {
             _orderHandler.Insert(order);
-            
         }
 
         public void EditOrder(Order order)

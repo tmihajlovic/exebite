@@ -45,7 +45,6 @@ namespace gLogin
 
             Exebite.Business.Unity.UnityConfig.RegisterTypes(container);
             Exebite.DataAccess.Unity.UnityConfig.RegisterTypes(container);
-            Exebite.Business.Unity.UnityConfig.RegisterTypes(container);
             Exebite.GoogleSpreadsheetApi.Unity.UnityConfig.RegisterTypes(container);
         }
     }

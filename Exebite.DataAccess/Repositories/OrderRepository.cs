@@ -66,7 +66,6 @@ namespace Exebite.DataAccess.Repositories
             {
                 var orderEntity = AutoMapperHelper.Instance.GetMappedValue<OrderEntity>(entity);
                 var customer = context.Customers.FirstOrDefault(c => c.Name == orderEntity.Customer.Name);
-
                 //bind customer
                 if (customer != null)
                 {
@@ -88,24 +87,12 @@ namespace Exebite.DataAccess.Repositories
                         orderEntity.Customer.LocationId = 1;
                     }
                 }
-                var restName = orderEntity.Meal.Foods[0].Restaurant.Name;
-                var restaurant = context.Restaurants.FirstOrDefault(r => r.Name == restName);
                 //bind Foods
                 for(int i=0; i < orderEntity.Meal.Foods.Count; i++)
                 {
                     string name = orderEntity.Meal.Foods[i].Name;
                     var tmpFood = context.Foods.FirstOrDefault(f => f.Name == name);
-                    if (tmpFood != null)
-                    {
-                        orderEntity.Meal.Foods[i] = tmpFood;
-                    }
-                    else
-                    {
-                        if(restaurant != null)
-                        {
-                            orderEntity.Meal.Foods[i].Restaurant = restaurant;
-                        }
-                    }
+                    orderEntity.Meal.Foods[i] = tmpFood;
                 }
 
                 var resultEntity = context.Orders.Add(orderEntity);
