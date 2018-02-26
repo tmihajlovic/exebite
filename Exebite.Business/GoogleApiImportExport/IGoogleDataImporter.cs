@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exebite.Business
+namespace Exebite.Business.GoogleApiImportExport
 {
     public interface IGoogleDataImporter
     {
         void UpdateRestorauntsMenu();
-        List<Order> GetHistoricalData();
+        void ImportUsersFromKasa();
     }
 }

@@ -42,5 +42,10 @@
         {
             return Properties.Settings.Default.HedoneNovi;
         }
+
+        public string GetKasa()
+        {
+            return Properties.Settings.Default.Kasa;
+        }
     }
 }

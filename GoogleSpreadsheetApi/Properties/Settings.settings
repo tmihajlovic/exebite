@@ -1,10 +1,7 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GoogleSpreadsheetApi.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Exebite.GoogleSpreadsheetApi.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="json_location" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">C:\Users\nberdic\source\repos\FoodOrdering\GoogleSpreadSheetApi\Resources\client_secret.json</Value>
-    </Setting>
     <Setting Name="HedoneSpredsheetID" Type="System.String" Scope="Application">
       <Value Profile="(Default)">1E1U6l1Xh1vO1MHw3FR2RfQT-iQTDzNKJ69WpBp5UYko</Value>
     </Setting>
@@ -28,6 +25,9 @@
     </Setting>
     <Setting Name="HedoneNovi" Type="System.String" Scope="Application">
       <Value Profile="(Default)">1w5jCZQU0WVEj6o0RzBX5ALYWWoLcd8eRBvK6OebSJxs</Value>
+    </Setting>
+    <Setting Name="Kasa" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1wShyMKMdswapEc6y8WMjqG5IwDqj4avYmQugwfM57YE</Value>
     </Setting>
   </Settings>
 </SettingsFile>

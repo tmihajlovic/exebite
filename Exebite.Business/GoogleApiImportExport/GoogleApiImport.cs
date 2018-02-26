@@ -1,50 +1,30 @@
-﻿using System.Collections.Generic;
-using Exebite.Model;
-using Exebite.GoogleSpreadsheetApi;
-using Exebite.GoogleSpreadsheetApi.GoogleSSFactory;
-using Exebite.GoogleSpreadsheetApi.Strategies;
+﻿using Exebite.Model;
+using Exebite.GoogleSpreadsheetApi.RestaurantConectorsInterfaces;
+using GoogleSpreadsheetApi.Kasa;
+using System.Linq;
 
-namespace Exebite.Business
+namespace Exebite.Business.GoogleApiImportExport
 {
     public class GoogleApiImport : IGoogleDataImporter
     {
-
-        IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
-        IGoogleSheetServiceFactory _googleSheetServiceFactory;
         private IRestarauntService _restarauntService;
-        private IRestaurantStrategy _lipa;
-        private IRestaurantStrategy _hedone;
-        private IRestaurantStrategy _indexHouse;
-        private IRestaurantStrategy _teglas;
-        private IRestaurantStrategy _extraFood;
+        //conectors
+        ILipaConector _lipaConector;
+        IHedoneConector _hedoneConector;
+        ITeglasConector _teglasConector;
+        IKasaConector _kasaConector;
+        ICustomerService _customerService;
         
-
-        public GoogleApiImport(IGoogleSheetServiceFactory googleSheetServiceFactory, IGoogleSpreadsheetIdFactory googleSpreadsheetIdFactory, IRestarauntService restarauntService)
+        public GoogleApiImport(IRestarauntService restarauntService, ICustomerService customerService,
+            ILipaConector lipaConector, ITeglasConector teglasConector, IHedoneConector hedoneConector, IKasaConector kasaConector)
         {
-            _googleSpreadsheetIdFactory = googleSpreadsheetIdFactory;
-            _googleSheetServiceFactory = googleSheetServiceFactory;
             _restarauntService = restarauntService;
-            _lipa = new LipaStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
-            _hedone = new HedoneStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
-            _indexHouse = new IndexHouseStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory); 
-            _teglas = new TeglasStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
-            _extraFood = new ExtraFoodStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
-        }
-
-        /// <summary>
-        /// Gets all oreger that are in spreadsheets
-        /// </summary>
-        /// <returns>List of all orders</returns>
-        public List<Order> GetHistoricalData()
-        {
-            List<Order> historicalData = new List<Order>();
-            historicalData.AddRange(_lipa.GetHistoricalData());
-            historicalData.AddRange(_hedone.GetHistoricalData());
-            historicalData.AddRange(_indexHouse.GetHistoricalData());
-            historicalData.AddRange(_teglas.GetHistoricalData());
-            historicalData.AddRange(_extraFood.GetHistoricalData());
-
-            return historicalData;
+            //conectors to a new sheets
+            _lipaConector = lipaConector;
+            _hedoneConector = hedoneConector;
+            _teglasConector = teglasConector;
+            _kasaConector = kasaConector;
+            _customerService = customerService;
         }
         
         /// <summary>
@@ -59,21 +39,48 @@ namespace Exebite.Business
             Restaurant extraFoodRestoraunt = _restarauntService.GetRestaurantByName("Extra food");
 
             // Get daily menu and update info in database
-            lipaRestoraunt.DailyMenu = _lipa.GetDailyMenu();
+            //Lipa
+            lipaRestoraunt.Foods = _lipaConector.LoadAllFoods();
             _restarauntService.UpdateRestourant(lipaRestoraunt);
-
-            teglasRestoraunt.DailyMenu = _teglas.GetDailyMenu();
+            lipaRestoraunt.DailyMenu = _lipaConector.GetDailyMenu();
+            _restarauntService.UpdateRestourant(lipaRestoraunt);
+            //Teglas
+            teglasRestoraunt.Foods = _teglasConector.LoadAllFoods();
             _restarauntService.UpdateRestourant(teglasRestoraunt);
-
-            indexHauseRestoraunt.DailyMenu = _indexHouse.GetDailyMenu();
-            _restarauntService.UpdateRestourant(indexHauseRestoraunt);
-
-            hedoneRestoraunt.DailyMenu = _hedone.GetDailyMenu();
+            teglasRestoraunt.DailyMenu = _teglasConector.GetDailyMenu();
+            _restarauntService.UpdateRestourant(teglasRestoraunt);
+            //Hedone
+            hedoneRestoraunt.Foods = _hedoneConector.LoadAllFoods();
+            _restarauntService.UpdateRestourant(hedoneRestoraunt);
+            hedoneRestoraunt.DailyMenu = _hedoneConector.GetDailyMenu();
             _restarauntService.UpdateRestourant(hedoneRestoraunt);
 
-            extraFoodRestoraunt.DailyMenu = _extraFood.GetDailyMenu();
-            _restarauntService.UpdateRestourant(extraFoodRestoraunt);
+            //Index and extra food to be implemented
+
+            //indexHauseRestoraunt.DailyMenu = _indexHouse.GetDailyMenu();
+            //_restarauntService.UpdateRestourant(indexHauseRestoraunt);
             
+            //extraFoodRestoraunt.DailyMenu = _extraFood.GetDailyMenu();
+            //_restarauntService.UpdateRestourant(extraFoodRestoraunt);
+            
+        }
+
+        /// <summary>
+        /// Imports users from kasa sheet
+        /// </summary>
+        public void ImportUsersFromKasa()
+        {
+            var customerListSheet = _kasaConector.GetCustomersFromKasa();
+            var customerListDB = _customerService.GetAllCustomers();
+
+            foreach(var customer in customerListSheet)
+            {
+                if(customerListDB.FirstOrDefault(u => u.Name == customer.Name) == null)
+                {
+                    _customerService.CreateCustomer(customer);
+                }
+            }
+
         }
     }
 }

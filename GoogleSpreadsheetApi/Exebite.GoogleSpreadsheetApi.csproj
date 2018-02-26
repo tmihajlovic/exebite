@@ -7,7 +7,7 @@
     <ProjectGuid>{05506757-BED4-4F0B-8FAC-F93A60CFCAF5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GoogleSpreadsheetApi</RootNamespace>
+    <RootNamespace>Exebite.GoogleSpreadsheetApi</RootNamespace>
     <AssemblyName>GoogleSpreadsheetApi</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -105,6 +105,8 @@
     <Compile Include="GoogleSSFactory\IGoogleSheetServiceFactory.cs" />
     <Compile Include="GoogleSSFactory\IGoogleSpreadsheetIdFactory.cs" />
     <Compile Include="IRestaurantStrategy.cs" />
+    <Compile Include="Kasa\IKasaConector.cs" />
+    <Compile Include="Kasa\KasaConector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -16,6 +16,7 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
         internal string _dailyMenuSheet;
         internal string _foodListSheet;
         internal Restaurant _restaurant;
+        internal string _kasaSheet = "Kasa";
 
         public RestaurantConector()
         {
@@ -23,8 +24,12 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
 
         public abstract void WriteMenu(List<Food> foods);
 
-        public abstract List<Food> GetDalyMenu();
+        public abstract List<Food> GetDailyMenu();
 
+        /// <summary>
+        /// Populate Orders tab in sheet with new order data
+        /// </summary>
+        /// <param name="orders">List of orders to write</param>
         public void PlaceOrders(List<Order> orders)
         {
 
@@ -42,6 +47,7 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
             ValueRange orderRange = new ValueRange();
             orderRange.Values = new List<IList<object>>();
             orderRange.Values.Add(header);
+            int rowCounter = 2;// First row with orders, used for formula
             foreach (var food in distinctFood)
             {
                 List<object> customerList = new List<object>();
@@ -65,7 +71,8 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
                 formatedData.Add(food.Name);
                 formatedData.Add(customerList.Count());
                 formatedData.Add(food.Price);
-                formatedData.Add(food.Price * customerList.Count());
+                formatedData.Add("=" + "B" +rowCounter+ "*" +"C"+rowCounter);//add formula to sum
+                rowCounter++;
                 formatedData.AddRange(customerList);
                 orderRange.Values.Add(formatedData);
             }
@@ -76,23 +83,26 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
             clearRequest.Execute();
 
             SpreadsheetsResource.ValuesResource.UpdateRequest updateRequest = _GoogleSS.Spreadsheets.Values.Update(orderRange, _sheetId, _ordersSheet);
-            updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+            updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
 
             updateRequest.Execute();
 
         }
-
+        /// <summary>
+        /// Setup daily menu sheet, making today first column
+        /// </summary>
         public void DnevniMenuSheetSetup()
         {
-
+            //get data
             SpreadsheetsResource.ValuesResource.GetRequest request =
                         _GoogleSS.Spreadsheets.Values.Get(_sheetId, _dailyMenuSheet);
             request.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.COLUMNS;
             ValueRange sheetData = request.Execute();
 
+            DateTime dateCounter = DateTime.Today;
 
             var sheetValues = sheetData.Values;
-            var dayOfWeek = this.GetLocalDayName(DayOfWeek.Thursday);
+            var dayOfWeek = this.GetLocalDayName(dateCounter.DayOfWeek);
             int today = 0;
             for (int i = 0; i < sheetValues.Count; i++)
             {
@@ -102,18 +112,38 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
 
             ValueRange updatedRange = new ValueRange();
             updatedRange.Values = new List<IList<object>>();
-
-            //insert today and after
+            int daysToAdd = 0;
+            // insert today and after
             for (int i = today; i < sheetValues.Count; i++)
             {
+                sheetValues[i][1] =dateCounter.AddDays(daysToAdd).ToString("dd-MM-yyyy");
                 updatedRange.Values.Add(sheetValues[i]);
+                if (dateCounter.DayOfWeek == DayOfWeek.Friday)
+                {
+                    dateCounter = dateCounter.AddDays(3);
+                }
+                else
+                {
+                    dateCounter = dateCounter.AddDays(1);
+                }
             }
-            //insert before today
+            // insert before today
             for (int k = 0; k < today; k++)
             {
+                sheetValues[k][1] = dateCounter.AddDays(daysToAdd).ToString("dd-MM-yyyy");
                 updatedRange.Values.Add(sheetValues[k]);
+                if (dateCounter.DayOfWeek == DayOfWeek.Friday)
+                {
+                    dateCounter = dateCounter.AddDays(3);
+                }
+                else
+                {
+                    dateCounter = dateCounter.AddDays(1);
+                }
             }
 
+
+            // Transpose values
             ValueRange formatedRange = new ValueRange();
             formatedRange.Values = new List<IList<object>>();
 
@@ -155,6 +185,10 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
 
         }
 
+        /// <summary>
+        /// Loads values from sheet, with all info
+        /// </summary>
+        /// <returns>List of all food from sheet</returns>
         public List<Food> LoadAllFoods()
         {
             SpreadsheetsResource.ValuesResource.GetRequest request =
@@ -176,6 +210,42 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
             return foods.ToList();
         }
 
+        /// <summary>
+        /// Populate "Kasa" tab 
+        /// </summary>
+        public void WriteKasaTab(List<Customer> customerList)
+        {
+            List<object> header = new List<object> { "Id", "Ime i prezime", "Suma"};
+            ValueRange kasaData = new ValueRange();
+            kasaData.Values = new List<IList<object>>();
+            kasaData.Values.Add(header);
+
+            foreach(var customer in customerList)
+            {
+                var row = new List<object>();
+                row.Add(customer.Id);
+                row.Add(customer.Name);
+                row.Add(customer.Orders.Where(o => o.Meal.Foods[0].Restaurant.Name == _restaurant.Name).Sum(o => o.Price));
+                kasaData.Values.Add(row);
+            }
+
+
+
+            ClearValuesRequest body = new ClearValuesRequest();
+            SpreadsheetsResource.ValuesResource.ClearRequest clearRequest = _GoogleSS.Spreadsheets.Values.Clear(body, _sheetId, _kasaSheet);
+            clearRequest.Execute();
+
+            SpreadsheetsResource.ValuesResource.UpdateRequest updateRequest = _GoogleSS.Spreadsheets.Values.Update(kasaData, _sheetId, _kasaSheet);
+            updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
+
+            updateRequest.Execute();
+
+        }
+        /// <summary>
+        /// Translate name of day
+        /// </summary>
+        /// <param name="day">Day of week</param>
+        /// <returns>Translated day of week</returns>
         internal string GetLocalDayName(DayOfWeek day)
         {
             var dayString = "";
@@ -203,7 +273,11 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
             }
             return dayString;
         }
-
+        /// <summary>
+        /// Translate food type 
+        /// </summary>
+        /// <param name="foodType">Value of food enum</param>
+        /// <returns>Name</returns>
         internal string GetLocalFoodType(FoodType foodType)
         {
             string typeLocal = "Glavno jelo";
@@ -237,7 +311,11 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
 
             return typeLocal;
         }
-
+        /// <summary>
+        /// Translate food type to enum value
+        /// </summary>
+        /// <param name="type">Type of food</param>
+        /// <returns>Enum value</returns>
         internal FoodType GetFoodType(string type)
         {
             FoodType result = FoodType.MAIN_COURSE;

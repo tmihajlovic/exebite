@@ -15,5 +15,7 @@ namespace Exebite.Model
         public decimal Balance { get; set; }
 
         public Location Location { get; set; }
+
+        public virtual List<Order> Orders { get; set; }
     }
 }

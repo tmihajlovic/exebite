@@ -50,9 +50,9 @@ namespace Exebite.DataAccess.Repositories
             using (var context = _factory.Create())
             {
                 var itemSet = context.Set<TEntity>();
-                var item = this.GetByID(Id);
+                var item = itemSet.Find(Id);
                 var itemEntity = AutoMapperHelper.Instance.GetMappedValue<TEntity>(item);
-                itemSet.Remove(itemEntity);
+                itemSet.Remove(item);
                 context.SaveChanges();
             }
 

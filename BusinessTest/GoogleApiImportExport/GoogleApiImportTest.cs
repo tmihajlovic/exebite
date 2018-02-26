@@ -1,5 +1,6 @@
 ﻿using BusinessTest;
 using Exebite.Business;
+using Exebite.Business.GoogleApiImportExport;
 using Exebite.DataAccess;
 using Exebite.GoogleSpreadsheetApi.GoogleSSFactory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,6 +18,7 @@ namespace Business.Test.GoogleApiImportExport
         IUnityContainer _container;
         IRestarauntService _restarauntService;
         IRestaurantRepository _restaurantRepository;
+        IGoogleApiOldSheets _googleApiOldSheets;
         [TestInitialize]
         public void Setup()
         {
@@ -26,6 +28,7 @@ namespace Business.Test.GoogleApiImportExport
             _googleSheetServiceFactory = _container.Resolve<IGoogleSheetServiceFactory>();
             _googleSpreadsheetIdFactory = _container.Resolve<IGoogleSpreadsheetIdFactory>();
             _restaurantRepository = _container.Resolve<IRestaurantRepository>();
+            _googleApiOldSheets = _container.Resolve<IGoogleApiOldSheets>();
 
             _restarauntService = _container.Resolve<IRestarauntService>(new ParameterOverrides
             {
@@ -43,7 +46,7 @@ namespace Business.Test.GoogleApiImportExport
         [TestMethod]
         public void GetHistoricalData()
         {
-            var restult = _googleDataImporter.GetHistoricalData();
+            var restult = _googleApiOldSheets.GetHistoricalData();
             Assert.AreNotEqual(restult.Count, 0);
         }
     }

@@ -25,16 +25,6 @@ namespace Exebite.GoogleSpreadsheetApi.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\nberdic\\source\\repos\\FoodOrdering\\GoogleSpreadSheetApi\\Resources\\client_" +
-            "secret.json")]
-        public string json_location {
-            get {
-                return ((string)(this["json_location"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1E1U6l1Xh1vO1MHw3FR2RfQT-iQTDzNKJ69WpBp5UYko")]
         public string HedoneSpredsheetID {
             get {
@@ -107,10 +97,10 @@ namespace Exebite.GoogleSpreadsheetApi.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("asd")]
-        public string asdas {
+        [global::System.Configuration.DefaultSettingValueAttribute("1wShyMKMdswapEc6y8WMjqG5IwDqj4avYmQugwfM57YE")]
+        public string Kasa {
             get {
-                return ((string)(this["asdas"]));
+                return ((string)(this["Kasa"]));
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Unity;
+﻿using Exebite.Business.GoogleApiImportExport;
+using Unity;
 
 namespace Exebite.Business.Unity
 {
@@ -14,6 +15,7 @@ namespace Exebite.Business.Unity
             container.RegisterType<IRestarauntService, RestarauntService>();
             container.RegisterType<IGoogleDataImporter, GoogleApiImport>();
             container.RegisterType<IGoogleDataExporter, GoogleApiExport>();
+            container.RegisterType<IGoogleApiOldSheets, GoogleApiOldSheets>();
         }
     }
 }

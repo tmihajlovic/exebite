@@ -10,5 +10,6 @@
         string GetNewLipa();
         string GetNewTeglas();
         string GetNewHedone();
+        string GetKasa();
     }
 }

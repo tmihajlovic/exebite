@@ -24,7 +24,7 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
         {
             GoogleSS = GoogleSSFactory.GetService();
             sheetId = GoogleSSIdFactory.GetNewHedone();
-            restaurant = new Restaurant { Name = "Hedone" };
+            restaurant =new Restaurant { Name = "Hedone" };
             _sheetId = sheetId;
             _ordersSheet = ordersSheet;
             _GoogleSS = GoogleSS;
@@ -62,7 +62,7 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
         }
 
 
-        public override List<Food> GetDalyMenu()
+        public override List<Food> GetDailyMenu()
         {
             List<Food> allFood = new List<Food>();
 
@@ -76,33 +76,33 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
         {
             IEnumerable<Food> dailyFood = new List<Food>();
 
-            var today = DateTime.Today.DayOfWeek;
-            string todayDayColumn = "A";
-            switch (today)
-            {
-                case DayOfWeek.Monday:
-                    todayDayColumn = "A";
-                    break;
+            //var today = DateTime.Today.DayOfWeek;
+            //string todayDayColumn = "A";
+            //switch (today)
+            //{
+            //    case DayOfWeek.Monday:
+            //        todayDayColumn = "A";
+            //        break;
 
-                case DayOfWeek.Tuesday:
-                    todayDayColumn = "B";
-                    break;
+            //    case DayOfWeek.Tuesday:
+            //        todayDayColumn = "B";
+            //        break;
 
-                case DayOfWeek.Wednesday:
-                    todayDayColumn = "C";
-                    break;
+            //    case DayOfWeek.Wednesday:
+            //        todayDayColumn = "C";
+            //        break;
 
-                case DayOfWeek.Thursday:
-                    todayDayColumn = "D";
-                    break;
+            //    case DayOfWeek.Thursday:
+            //        todayDayColumn = "D";
+            //        break;
 
-                case DayOfWeek.Friday:
-                    todayDayColumn = "E";
-                    break;
-            }
+            //    case DayOfWeek.Friday:
+            //        todayDayColumn = "E";
+            //        break;
+            //}
 
 
-            var range = dailyMenuSheet + "!" + todayDayColumn + "2:" + todayDayColumn + "1000";
+            var range = dailyMenuSheet + "!A3:A1000";
 
             SpreadsheetsResource.ValuesResource.GetRequest request =
                         GoogleSS.Spreadsheets.Values.Get(sheetId, range);

@@ -59,7 +59,7 @@ namespace Exebite.GoogleSpreadsheetApi.RestaurantConectors
 
         }
 
-        public override List<Food> GetDalyMenu()
+        public override List<Food> GetDailyMenu()
         {
             List<Food> allFood = new List<Food>();
 
