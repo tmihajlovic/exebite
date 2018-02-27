@@ -15,6 +15,8 @@ namespace Exebite.DataAccess.Entities
 
         public decimal Balance { get; set; }
 
+        public string AppUserId { get; set; }
+
         [ForeignKey(nameof(Location))]
         public int LocationId { get; set; }
         public virtual LocationEntity Location { get; set; }

@@ -10,6 +10,12 @@ namespace Exebite.Business
 
         ICustomerRepository _customerHandler;
 
+        public Customer GetCustomerByIdentityId(string Id)
+        {
+            var users = _customerHandler.GetAll();
+            return users.FirstOrDefault(c => c.AppUserId == Id);
+        }
+
         public CustomerService(ICustomerRepository customerHandler)
         {
             _customerHandler = customerHandler;
@@ -30,19 +36,20 @@ namespace Exebite.Business
             return _customerHandler.GetByName(name);
         }
 
-        public void CreateCustomer(Customer customer)
+        public Customer CreateCustomer(Customer customer)
         {
-            _customerHandler.Insert(customer);
+           return _customerHandler.Insert(customer);
         }
 
-        public void UpdateCustomer(Customer customer)
+        public Customer UpdateCustomer(Customer customer)
         {
-            _customerHandler.Update(customer);
+           return _customerHandler.Update(customer);
         }
 
         public void DeleteCustomer(int customerId)
         {
             _customerHandler.Delete(customerId);
         }
+
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Exebite.Model
 {
@@ -17,5 +13,7 @@ namespace Exebite.Model
         public Location Location { get; set; }
 
         public virtual List<Order> Orders { get; set; }
+
+        public string AppUserId { get; set; }
     }
 }

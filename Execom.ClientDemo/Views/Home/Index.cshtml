@@ -1,0 +1,44 @@
+﻿@model Execom.ClientDemo.Models.HomeIndexViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div class="row">
+    <div class="col-1 border-right">
+        filteri
+    </div>
+    <div class="col">
+        <div class="row">
+            <input type="search" placeholder="Pretraga..." name="search" class="searchbox-input" onkeyup="buttonUp();" required="">
+        </div>
+        <hr />
+        <div class="row">
+            <div class="card-columns" style="margin:10px">
+                @foreach (var food in Model.TodayFoods)
+                {
+                    <div class="card">
+                        <div class="card-block">
+                            <h6 class="card-title">@food.Name - <i>@food.Price</i></h6>
+                            <i>@food.Restaurant.Name</i>
+                            <p class="card-text">@food.Description</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class="col-2 border-left">
+        naruceno
+    </div>
+</div>
+
+<script>
+    $('.searchbox-input').change(function () {
+        $('.card').show();
+        var filter = $(this).val(); // get the value of the input, which we filter on
+        $('.container').find(".card-title:not(:contains(" + filter + "))").parent().css('display', 'none');
+    });
+</script>

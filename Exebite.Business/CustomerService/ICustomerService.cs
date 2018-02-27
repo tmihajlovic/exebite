@@ -6,10 +6,11 @@ namespace Exebite.Business
     public interface ICustomerService
     {
         Customer GetCustomerById(int Id);
+        Customer GetCustomerByIdentityId(string Id);
         Customer GetCustomerByName(string name);
         List<Customer> GetAllCustomers();
-        void CreateCustomer(Customer customer);
-        void UpdateCustomer(Customer customer);
+        Customer CreateCustomer(Customer customer);
+        Customer UpdateCustomer(Customer customer);
         void DeleteCustomer(int customerId);
         
     }
