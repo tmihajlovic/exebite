@@ -10,20 +10,20 @@
 </head>
 <body>
     <nav class="navbar navbar-expand navbar-dark bg-primary">
-            <a class="navbar-brand" href="#">Exebites demo</a>
-            <div class="navbar-collapse collapse" id="collapsingNavbar1">
-                <ul class="navbar-nav">
-                    <li class="nav-item">@Html.ActionLink("Narucivanje", "Index", "Home", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Istorija narudzbina", "About", "Home", null, new { @class = "nav-link" })</li>
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                    @Html.Partial("_LoginPartial")
-                </ul>
-                <div>
-                    Credit
-                </div>
-               
+        <a class="navbar-brand" href="#">Exebites demo</a>
+        <div class="navbar-collapse collapse" id="collapsingNavbar1">
+            <ul class="navbar-nav">
+                <li class="nav-item">@Html.ActionLink("Narucivanje", "Index", "Home", null, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Istorija narudzbina", "About", "Home", null, new { @class = "nav-link" })</li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                @Html.Partial("_LoginPartial")
+            </ul>
+            <div>
+                Credit:<b id="creditElem">asd</b>
             </div>
+
+        </div>
     </nav>
 
 
@@ -38,5 +38,12 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+
+    <script>
+        $(document).ready(function () {
+            $('#creditElem').text(@Model.Customer.Balance);
+        });
+    </script>
 </body>
 </html>

@@ -6,23 +6,42 @@
 
 <div class="row">
     <div class="col-1 border-right">
-        filteri
+        <div class="container">
+            <span>Filter po restoranima:</span>
+            <div class="radio">
+                <label><input type="radio" name="restaurantFilter" value="" checked onchange="restaurantFilter('')">Svi</label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" name="restaurantFilter" value="Restoran pod Lipom" onchange="restaurantFilter('Restoran pod Lipom')">Pod Lipom</label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" name="restaurantFilter" value="Teglas" onchange="restaurantFilter('Teglas')">Tegla's</label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" name="restaurantFilter" value="Hedone" onchange="restaurantFilter('Hedone')">Hedone</label>
+            </div>
+        </div>
+        <div>
+            cena
+        </div>
     </div>
     <div class="col">
         <div class="row">
-            <input type="search" placeholder="Pretraga..." name="search" class="searchbox-input" onkeyup="buttonUp();" required="">
+            <div style="margin: 5px">
+                <input type="text" placeholder="Pretraga..." name="search" id="foodSearchBox" class="searchbox-input" onkeyup="buttonUp();" required="">
+            </div>
         </div>
-        <hr />
         <div class="row">
             <div class="card-columns" style="margin:10px">
                 @foreach (var food in Model.TodayFoods)
                 {
-                    <div class="card">
+                    <div class="card" id="@food.Id">
                         <div class="card-block">
-                            <h6 class="card-title">@food.Name - <i>@food.Price</i></h6>
-                            <i>@food.Restaurant.Name</i>
+                            <h6 class="card-title">@food.Name - <i id="price">@food.Price</i></h6>
+                            <i id="restaurant">@food.Restaurant.Name</i>
                             <p class="card-text">@food.Description</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <a href="#" class="btn btn-primary" onclick="addToOrder(@food.Id)">Naruci</a>
+                            <input hidden type="number" id="inputId" value="@food.Id" name="inputId" />
                         </div>
                     </div>
                 }
@@ -31,14 +50,113 @@
 
     </div>
     <div class="col-2 border-left">
-        naruceno
+        <div class="row">
+            <div class="container">
+                <div>
+                    <span>Hrana za naruciti:</span><br />
+                </div>
+                @using (Html.BeginForm("PlaceOrder", "Home", FormMethod.Post))
+                {
+                    <div id="foodList">
+
+                    </div>
+                    <div>
+                        <span>Napomena:</span>
+                        <input name="note" type="text" />
+                        <b>Cena ukupno: <span id="orderPriceTotal">0</span></b><br />
+                        <button type="submit" class="btn btn-success">Naruci</button>
+                        <button type="button" class="btn btn-danger" onclick="cancelOrder()">Otkazi</button>
+                    </div>
+                }
+            </div>
+            <hr />
+        </div>
+        <div class="row">
+            <div>
+                <hr />
+                <span>Naruceno danas:</span>
+                @foreach (var order in Model.Customer.Orders.Where(o => o.Date == DateTime.Today))
+                {
+                    <form action="/Home/CancelOrder" method="post" class="container" id="narucenoDanas">
+                        <input hidden type="number" name="orderId" value="@order.Id" id="orderId" />
+                        @foreach (var food in order.Meal.Foods)
+                        {
+                            <span>-@food.Name</span><br />
+                        }
+                        <small class="text-muted">@order.Note</small><br />
+                        <strong>Cena:@order.Price</strong> <button type="submit" class="btn btn-danger btn-sm">Otkazi</button>
+                    </form>
+                    <hr />
+                }
+            </div>
+        </div>
     </div>
 </div>
-
 <script>
-    $('.searchbox-input').change(function () {
+    function addToOrder(foodId) {
+        var id = '#' + foodId;
+        var food = $(id).first();
+        var title = food.find('.card-title').text();
+        var price = parseFloat($('#orderPriceTotal').text());
+        price += parseFloat(food.find('#price').text());
+        $('#orderPriceTotal').text(price);
+        $('#foodList').append('<div id="' + foodId + '"></div>');
+        $('#foodList').find(id).last().append('<button type="button" class="btn btn-outline-danger" onClick="removeFromOrder(' + foodId + ')" >x</button >');
+        $('#foodList').find(id).last().append('<span>' + food.find('.card-title').text() + '</span>');
+        $('#foodList').find(id).last().append(food.find('#inputId'));
+
+    };
+    function removeFromOrder(foodId) {
+        var id = '#' + foodId;
+        var food = $(id).first();
+        var price = parseFloat($('#orderPriceTotal').text());
+        price -= parseFloat(food.find('#price').text());
+        $('#orderPriceTotal').text(price);
+        $('#foodList').find(id).first().remove();
+    };
+    function cancelOrder() {
+        $('#foodList').children().remove();
+        $('#orderPriceTotal').text('0');
+    };
+    function buttonUp() {
         $('.card').show();
-        var filter = $(this).val(); // get the value of the input, which we filter on
-        $('.container').find(".card-title:not(:contains(" + filter + "))").parent().css('display', 'none');
-    });
+        var filter = $('#foodSearchBox').val(); // get the value of the input, which we filter on
+        var cards = $('.card');
+        if (filter.length != 0) {
+            for (i = 0; i < cards.length; i++) {
+                var t = cards[i].getElementsByClassName("card-title")[0];
+                if (t.innerHTML.toLowerCase().indexOf(filter.toLowerCase()) > -1) {
+                    cards[i].style.display = '';
+                }
+                else {
+                    cards[i].style.display = 'none';
+                }
+            }
+        }
+    };
+    function restaurantFilter(restaurant) {
+       
+    };
+
 </script>
+
+<style>
+    input[type=text] {
+        width: 130px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        background-color: white;
+        background-image: url('/Content/Img/searchicon.png');
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        padding: 12px 20px 12px 40px;
+        -webkit-transition: width 0.4s ease-in-out;
+        transition: width 0.4s ease-in-out;
+    }
+
+        input[type=text]:focus {
+            width: 100%;
+        }
+</style>

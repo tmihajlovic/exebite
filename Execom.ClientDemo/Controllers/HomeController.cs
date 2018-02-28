@@ -1,4 +1,5 @@
 ﻿using Exebite.Business;
+using Exebite.Model;
 using Execom.ClientDemo.Models;
 using Microsoft.AspNet.Identity;
 using System;
@@ -14,12 +15,14 @@ namespace Execom.ClientDemo.Controllers
         ICustomerService _customerService;
         IMenuService _menuService;
         IOrderService _orderService;
+        IFoodService _foodService;
 
-        public HomeController(ICustomerService customerService, IMenuService menuService, IOrderService orderService)
+        public HomeController(ICustomerService customerService, IMenuService menuService, IOrderService orderService, IFoodService foodService)
         {
             _customerService = customerService;
             _menuService = menuService;
             _orderService = orderService;
+            _foodService = foodService;
         }
 
         public ActionResult Index()
@@ -29,6 +32,7 @@ namespace Execom.ClientDemo.Controllers
             model.ListOfRestaurants = _menuService.GetRestorantsWithMenus();
             model.ListOfOrders = _orderService.GetAllOrdersForCustomer(model.Customer.Id).Where(o => o.Date == DateTime.Today).ToList();
             model.TodayFoods = new List<Exebite.Model.Food>();
+            model.CurentOrder = new Exebite.Model.Order {  Customer =model.Customer, Meal = new Exebite.Model.Meal { Foods= new List<Exebite.Model.Food>() } };
             foreach(var restaurant in model.ListOfRestaurants)
             {
                 model.TodayFoods.AddRange(restaurant.DailyMenu);
@@ -48,6 +52,36 @@ namespace Execom.ClientDemo.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult PlaceOrder(string[] inputId, string note)
+        {
+
+            if (inputId.Count() > 0)
+            {
+                Order newOrder = new Order();
+                newOrder.Customer = _customerService.GetCustomerByIdentityId(User.Identity.GetUserId());
+                newOrder.Date = DateTime.Today;
+                newOrder.Note = note;
+                newOrder.Meal = new Meal();
+                newOrder.Meal.Foods = new List<Food>();
+                foreach (var id in inputId)
+                {
+                    newOrder.Meal.Foods.Add(_foodService.GetFoodById(int.Parse(id)));
+                }
+                newOrder.Meal.Price = newOrder.Meal.Foods.Sum(f => f.Price);
+                newOrder.Price = newOrder.Meal.Price;
+                _orderService.PlaceOreder(newOrder);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult CancelOrder(int orderId)
+        {
+           // int i = int.Parse(orderId);
+             _orderService.CancelOrder(orderId);
+            return RedirectToAction("Index", "Home");
         }
     }
 }
