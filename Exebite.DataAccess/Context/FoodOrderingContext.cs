@@ -12,6 +12,7 @@ namespace Exebite.DataAccess.Context
         public DbSet<RestaurantEntity> Restaurants { get; set; }
         public DbSet<RecipeEntity> Recipes { get; set; }
         public DbSet<LocationEntity> Locations { get; set; }
+        public DbSet<CustomerAliasesEntity> CustomerAliases { get; set; }
 
 
 
@@ -23,6 +24,8 @@ namespace Exebite.DataAccess.Context
             modelBuilder.Entity<FoodEntity>()
                 .HasRequired(r => r.Restaurant)
                 .WithMany(f => f.Foods);
+
+            
         }
     }
 }

@@ -61,7 +61,7 @@ namespace Execom.ClientDemo
             container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>();
 
             container.RegisterType<AccountController>(new InjectionConstructor(typeof(ICustomerService), typeof(ILocationService)));
-            container.RegisterType<ManageController>(new InjectionConstructor(typeof(ICustomerService)));
+            container.RegisterType<ManageController>(new InjectionConstructor(typeof(ICustomerService),typeof(ILocationService), typeof(IRestarauntService)));
         }
     }
 }

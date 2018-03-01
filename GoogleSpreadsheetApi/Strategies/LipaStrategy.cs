@@ -16,7 +16,7 @@ namespace Exebite.GoogleSpreadsheetApi.Strategies
 
         public LipaStrategy(IGoogleSheetServiceFactory GoogleSSFactory, IGoogleSpreadsheetIdFactory GoogleSSIdFactory)
         {
-            restaurant = new Restaurant { Name = "Restoran pod Lipom" };
+            restaurant = new Restaurant { Name = "Restoran pod Lipom", Id = 1 };
             GoogleSS = GoogleSSFactory.GetService();
             LipaSpredSheet = GoogleSSIdFactory.GetLipa();
         }
@@ -143,9 +143,72 @@ namespace Exebite.GoogleSpreadsheetApi.Strategies
             return orderList;
         }
 
-        public void PlaceOrder(Order order)
+        public void PlaceOrders(List<Order> orders)
         {
-            throw new NotImplementedException();
+            string today = "06-Feb-2018";//DateTime.Today in productio
+            string tomorrow = "07-Feb-2018"; // real in production!!!
+            var sheet = GetActiveSheet();
+            SpreadsheetsResource.ValuesResource.GetRequest request =
+                        GoogleSS.Spreadsheets.Values.Get(LipaSpredSheet, sheet);
+            request.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
+            ValueRange sheetData = request.Execute();
+
+            int dateStartIndex = 0;
+            for(int i = 0; i < sheetData.Values[4].Count; i++)
+            {
+                if(sheetData.Values[3][i].ToString() == today)
+                {
+                    dateStartIndex = i;
+                    break;
+
+                }
+            }
+
+            foreach(var order in orders)
+            {
+
+                int nameIndex = 0;
+                string customerAliase = order.Customer.Aliases.First(a => a.Restaurant.Id == restaurant.Id).Alias;
+                for(int i = 9; i < sheetData.Values[1].Count; i++)
+                {
+                    string tmp = sheetData.Values[i][1].ToString();
+                    if (tmp ==customerAliase)
+                    {
+                        nameIndex = i;
+                        break;
+                    }
+                }
+
+
+                
+            }
+
+        }
+
+        /// <summary>
+        /// Calculates Excel column in alphabet
+        /// </summary>
+        /// <param name="columnNumber">Int number of column</param>
+        /// <returns>Alphabet string</returns>
+        private string GetExcelColumnName(int columnNumber)
+        {
+            if (columnNumber < 0)
+            {
+                throw new ArgumentException();
+            }
+
+            int dividend = columnNumber;
+            string columnName = String.Empty;
+            int modulo;
+
+            while (dividend > 0)
+            {
+                modulo = (dividend - 1) % 26;
+                columnName = Convert.ToChar(65 + modulo).ToString() + columnName;
+                dividend = (int)((dividend - modulo) / 26);
+            }
+
+            return columnName;
         }
     }
 }

@@ -56,8 +56,19 @@ namespace Exebite.DataAccess.Repositories
             {
                 var customerEntity = AutoMapperHelper.Instance.GetMappedValue<CustomerEntity>(entity);
                 var oldCustomerEntity = context.Customers.FirstOrDefault(c => c.Id == entity.Id);
-                context.Entry(oldCustomerEntity).CurrentValues.SetValues(customerEntity);
                 oldCustomerEntity.LocationId = customerEntity.Location.Id;
+                context.Entry(oldCustomerEntity).CurrentValues.SetValues(customerEntity);
+
+                oldCustomerEntity.Aliases.Clear();
+                oldCustomerEntity.Aliases.AddRange(customerEntity.Aliases);
+                //bind
+                for(int i =0; i < oldCustomerEntity.Aliases.Count; i++)
+                {
+                    var restId =  oldCustomerEntity.Aliases[i].Restaurant.Id;
+                    oldCustomerEntity.Aliases[i].Restaurant = context.Restaurants.First(r => r.Id ==restId) ;
+                    oldCustomerEntity.Aliases[i].Customer = oldCustomerEntity;
+                }
+
                 context.SaveChanges();
                 var resultEntity = context.Customers.FirstOrDefault(c => c.Id == entity.Id);
                 var result = AutoMapperHelper.Instance.GetMappedValue<Customer>(resultEntity);

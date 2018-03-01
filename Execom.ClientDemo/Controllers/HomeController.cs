@@ -31,8 +31,8 @@ namespace Execom.ClientDemo.Controllers
             model.Customer =  _customerService.GetCustomerByIdentityId(User.Identity.GetUserId());
             model.ListOfRestaurants = _menuService.GetRestorantsWithMenus();
             model.ListOfOrders = _orderService.GetAllOrdersForCustomer(model.Customer.Id).Where(o => o.Date == DateTime.Today).ToList();
-            model.TodayFoods = new List<Exebite.Model.Food>();
-            model.CurentOrder = new Exebite.Model.Order {  Customer =model.Customer, Meal = new Exebite.Model.Meal { Foods= new List<Exebite.Model.Food>() } };
+            model.TodayFoods = new List<Food>();
+            model.CurentOrder = new Order {  Customer =model.Customer, Meal = new Meal { Foods= new List<Food>() } };
             foreach(var restaurant in model.ListOfRestaurants)
             {
                 model.TodayFoods.AddRange(restaurant.DailyMenu);

@@ -1,0 +1,40 @@
+﻿@model Execom.ClientDemo.Models.CustomerDetailsViewModel
+@{
+    ViewBag.Title = "CustomerDetails";
+}
+
+<h2>CustomerDetails</h2>
+
+@using (Html.BeginForm("CustomerDetailsUpdate", "Manage", new { CustomerDetailsViewModel = Model }, FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Customer.Id);
+    <span>Ime:</span><br />
+    @Html.TextBoxFor(m => m.Customer.Name)<br />
+    <span>Lokacija:</span>
+    @Html.DropDownListFor(m => m.Customer.Location.Id, new SelectList(Model.Locations, "Id", "Name", Model.Customer.Location), new { @class = "form-control" })<br />
+    <input type="submit" />
+    <hr />
+    <span>Aliases:</span><br />
+
+}
+
+    @foreach (var alias in Model.Customer.Aliases)
+    {
+        using (Html.BeginForm("RemoveAlias", "Manage", FormMethod.Post))
+        {
+            <input hidden type="number" name="aliasId" value="@alias.Id" />
+            <span>@Model.Restaurants.FirstOrDefault(a => a.Id == alias.Restaurant.Id).Name:</span>@alias.Alias <input type="submit" value="Izbrisi" /> <br />
+        }
+    }
+<hr />
+
+
+@using (Html.BeginForm("AddAlias", "Manage", new { CustomerDetailsViewModel = Model }, FormMethod.Post))
+{
+
+    <span>Dodaj novi:</span><br />
+
+    @Html.DropDownListFor(m => m.NewAlias.Restaurant.Id, new SelectList(Model.Restaurants, "Id", "Name"))<b>-</b><span>@Html.TextBoxFor(m => m.NewAlias.Alias)</span><br />
+
+    <input type="submit" />
+}

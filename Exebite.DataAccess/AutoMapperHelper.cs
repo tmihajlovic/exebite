@@ -23,6 +23,7 @@ namespace Exebite.DataAccess
                 cfg.CreateMap(typeof(LocationEntity), typeof(Location));
                 cfg.CreateMap(typeof(RecipeEntity), typeof(Recipe));
                 cfg.CreateMap(typeof(MealEntity), typeof(Meal));
+                cfg.CreateMap(typeof(CustomerAliasesEntity), typeof(CustomerAliases));
 
                 cfg.CreateMap(typeof(Customer), typeof(CustomerEntity));
                 cfg.CreateMap<Customer, CustomerEntity>().ForMember(i => i.LocationId, option => option.MapFrom(c => c.Location.Id));
@@ -32,6 +33,7 @@ namespace Exebite.DataAccess
                 cfg.CreateMap(typeof(Location), typeof(LocationEntity));
                 cfg.CreateMap(typeof(Recipe), typeof(RecipeEntity));
                 cfg.CreateMap(typeof(Meal), typeof(MealEntity));
+                cfg.CreateMap(typeof(CustomerAliases), typeof(CustomerAliasesEntity));
             });
         }
 

@@ -49,5 +49,10 @@ namespace Exebite.Business.GoogleApiImportExport
 
             return historicalData;
         }
+
+        public void WriteOrdersToSheets(List<Order> orders)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

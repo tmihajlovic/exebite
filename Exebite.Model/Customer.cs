@@ -14,6 +14,8 @@ namespace Exebite.Model
 
         public virtual List<Order> Orders { get; set; }
 
+        public virtual List<CustomerAliases> Aliases { get; set; }
+
         public string AppUserId { get; set; }
     }
 }

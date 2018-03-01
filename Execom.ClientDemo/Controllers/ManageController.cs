@@ -17,17 +17,23 @@ namespace Execom.ClientDemo.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ICustomerService _customerService;
+        private ILocationService _locationService;
+        private IRestarauntService _restarauntService;
 
-        public ManageController(ICustomerService customerService)
+        public ManageController(ICustomerService customerService, ILocationService locationService, IRestarauntService restarauntService)
         {
             _customerService = customerService;
+            _locationService = locationService;
+            _restarauntService = restarauntService;
         }
 
-        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ICustomerService customerService)
+        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ICustomerService customerService, ILocationService locationService, IRestarauntService restarauntService)
         {
             UserManager = userManager;
             SignInManager = signInManager;
             _customerService = customerService;
+            _locationService = locationService;
+            _restarauntService = restarauntService;
         }
 
         public ApplicationSignInManager SignInManager
@@ -74,8 +80,9 @@ namespace Execom.ClientDemo.Controllers
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
-            };
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                Customer = _customerService.GetCustomerByIdentityId(User.Identity.GetUserId())
+        };
             return View(model);
         }
 
@@ -337,6 +344,44 @@ namespace Execom.ClientDemo.Controllers
             base.Dispose(disposing);
         }
 
+
+        //my
+
+
+        public ActionResult CustomerDetails()
+        {
+            CustomerDetailsViewModel model = new CustomerDetailsViewModel();
+            model.Customer = _customerService.GetCustomerByIdentityId(User.Identity.GetUserId());
+            model.Restaurants = _restarauntService.GetAllRestaurants();
+            model.Locations = _locationService.GetAllLocations();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CustomerDetailsUpdate(CustomerDetailsViewModel model)
+        {
+            var customer = _customerService.GetCustomerByIdentityId(User.Identity.GetUserId());
+            customer.Name = model.Customer.Name;
+            customer.Location.Id = model.Customer.Location.Id;
+            _customerService.UpdateCustomer(customer);
+            return RedirectToAction("CustomerDetails");
+        }
+        [HttpPost]
+        public ActionResult AddAlias(CustomerDetailsViewModel model)
+        {
+            var customer = _customerService.GetCustomerByIdentityId(User.Identity.GetUserId());
+            customer.Aliases.Add(model.NewAlias);
+            _customerService.UpdateCustomer(customer);
+            return RedirectToAction("CustomerDetails");
+        }
+        public ActionResult RemoveAlias(int aliasId)
+        {
+            var customer = _customerService.GetCustomerByIdentityId(User.Identity.GetUserId());
+            var alias = customer.Aliases.First(a => a.Id == aliasId);
+            customer.Aliases.Remove(alias);
+            _customerService.UpdateCustomer(customer);
+            return RedirectToAction("CustomerDetails");
+        }
 #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";

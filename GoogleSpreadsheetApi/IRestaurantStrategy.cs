@@ -11,6 +11,6 @@ namespace Exebite.GoogleSpreadsheetApi
     {
         List<Food> GetDailyMenu();
         List<Order> GetHistoricalData();
-        void PlaceOrder(Order order);
+        void PlaceOrders(List<Order> order);
     }
 }

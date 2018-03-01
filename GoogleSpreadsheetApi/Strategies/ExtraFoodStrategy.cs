@@ -97,7 +97,7 @@ namespace Exebite.GoogleSpreadsheetApi.Strategies
             return orders;
         }
 
-        public void PlaceOrder(Order order)
+        public void PlaceOrders(List<Order> order)
         {
             throw new NotImplementedException();
         }

@@ -22,5 +22,7 @@ namespace Exebite.DataAccess.Entities
         public virtual LocationEntity Location { get; set; }
 
         public virtual List<OrderEntity> Orders{ get; set; }
+
+        public virtual List<CustomerAliasesEntity> Aliases { get; set; }
     }
 }
