@@ -14,4 +14,9 @@ namespace Execom.ClientDemo.Models
         public Customer Customer { get; set; }
         public List<Restaurant> ListOfRestaurants { get; set; }
     }
+
+    public class HomeIstorijaNarudzbinaViewModel
+    {
+        public Customer Customer { get; set; }
+    }
 }

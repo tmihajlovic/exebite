@@ -40,19 +40,14 @@ namespace Execom.ClientDemo.Controllers
             return View(model);
         }
 
-        public ActionResult About()
+        public ActionResult IstorijaNarudzbina()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            HomeIstorijaNarudzbinaViewModel model = new HomeIstorijaNarudzbinaViewModel();
+            model.Customer = _customerService.GetCustomerByIdentityId(User.Identity.GetUserId());
+            model.Customer.Orders = model.Customer.Orders.OrderBy(o => o.Date).Reverse().ToList();
+            return View(model);
         }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
+        
 
         public ActionResult PlaceOrder(string[] inputId, string note)
         {
