@@ -61,11 +61,6 @@ namespace FoodOrdering.Unity
                         break;
 
                     case '3':
-                        var oldOrders = oldSheets.GetHistoricalData();
-                        foreach(var order in oldOrders)
-                        {
-                            orderService.PlaceOreder(order);
-                        }
                         break;
                     case 'q':
                         loopBreak = true;

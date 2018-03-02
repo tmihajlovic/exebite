@@ -76,7 +76,7 @@ namespace Exebite.GoogleSpreadsheetApi.Strategies
             string tomorrow = "07-Feb-2018"; // real in production!!!
 
             IEnumerable<IList<object>> todayData = null;
-            
+
             todayData = sheetData.Values.SkipWhile(m => m[1].ToString() != today)
                 .TakeWhile(n => n[1].ToString() != tomorrow);// get values for today
             foodList = todayData.Select(f => new Food { Name = f[0].ToString(), Price = decimal.Parse(f[3].ToString()) }).ToList();// make Food from values
@@ -100,28 +100,31 @@ namespace Exebite.GoogleSpreadsheetApi.Strategies
             var orderData = sheetData.Values.Skip(2);
             var tmpDate = "";
 
-            foreach(var order in orderData)
+            foreach (var order in orderData)
             {
                 //update current date
-                if(order[3].ToString() != "")
+                if (order[3].ToString() != "")
                 {
                     tmpDate = order[3].ToString();
                 }
                 //if orders exist 
-                if(order.Count > 7)
+                if (order.Count > 7)
                 {
                     //look for "x" cell, if exist make new order for user on that row
-                    for (int i=8; i< order.Count; i++)
+                    for (int i = 8; i < order.Count; i++)
                     {
-                        if(order[i].ToString() != "")
+                        if (order[i].ToString() != "")
                         {
-                            orderList.Add(new Order {
+                            orderList.Add(new Order
+                            {
                                 Price = decimal.Parse(order[5].ToString()),
                                 Date = DateTime.Parse(tmpDate),
-                                Customer = new Customer {
+                                Customer = new Customer
+                                {
                                     Name = sheetData.Values[1][i].ToString()
                                 },
-                                Meal = new Meal {
+                                Meal = new Meal
+                                {
                                     Foods = new List<Food>() {
                                          new Food
                                          {
@@ -153,34 +156,64 @@ namespace Exebite.GoogleSpreadsheetApi.Strategies
             request.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
             ValueRange sheetData = request.Execute();
 
+            ValueRange orderMark = new ValueRange();
+            IList<object> mark =new  List<object>() {"x"};
+            orderMark.Values = new List<IList<object>>() { mark};
+
+            //find index where today menu starts and ends
             int dateStartIndex = 0;
-            for(int i = 0; i < sheetData.Values[4].Count; i++)
+            int dateEndIndex = 0;
+            for (int i = 0; i < sheetData.Values[4].Count; i++)
             {
-                if(sheetData.Values[3][i].ToString() == today)
+                if (sheetData.Values[3][i].ToString() == today)
                 {
                     dateStartIndex = i;
+                }
+                if (sheetData.Values[3][i].ToString() == tomorrow)
+                {
+                    dateEndIndex = i - 1;
                     break;
-
                 }
             }
 
-            foreach(var order in orders)
+            foreach (var order in orders)
             {
-
+                //find index of row for customer
                 int nameIndex = 0;
                 string customerAliase = order.Customer.Aliases.First(a => a.Restaurant.Id == restaurant.Id).Alias;
-                for(int i = 9; i < sheetData.Values[1].Count; i++)
+                for (int i = 9; i < sheetData.Values.Count; i++)
                 {
                     string tmp = sheetData.Values[i][1].ToString();
-                    if (tmp ==customerAliase)
+                    if (tmp == customerAliase)
                     {
                         nameIndex = i;
                         break;
                     }
                 }
+                //write 'x' on all orderd foods from order
+                foreach (var food in order.Meal.Foods)
+                {
+                    //find index of food orderd, translate to A notation and write
+                    for (int i = dateStartIndex; i < dateEndIndex; i++)
+                    {
+                        if(sheetData.Values[2][i].ToString() == food.Name)
+                        {
+                            var cell = GetExcelColumnName(i +1) + (nameIndex +1);//add +1, Google sheets index are 1 based, ValuRange are 0 based
+
+                            var updateRnage = sheet + "!" + cell;
 
 
-                
+
+                            SpreadsheetsResource.ValuesResource.UpdateRequest updateRequest = GoogleSS.Spreadsheets.Values.Update(orderMark, LipaSpredSheet,updateRnage);
+                            updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
+
+                            updateRequest.Execute();
+                        }
+                    }
+                }
+
+
+
             }
 
         }

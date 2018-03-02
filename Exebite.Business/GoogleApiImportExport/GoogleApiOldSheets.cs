@@ -50,6 +50,32 @@ namespace Exebite.Business.GoogleApiImportExport
             return historicalData;
         }
 
+        public void UpdateDailyMenu()
+        {
+            Restaurant lipaRestoraunt = _restarauntService.GetRestaurantByName("Restoran pod Lipom");
+            Restaurant hedoneRestoraunt = _restarauntService.GetRestaurantByName("Hedone");
+            Restaurant indexHauseRestoraunt = _restarauntService.GetRestaurantByName("Index House");
+            Restaurant teglasRestoraunt = _restarauntService.GetRestaurantByName("Teglas");
+            Restaurant extraFoodRestoraunt = _restarauntService.GetRestaurantByName("Extra food");
+
+            // Get daily menu and update info in database
+            //Lipa
+            lipaRestoraunt.DailyMenu = _lipa.GetDailyMenu();
+            _restarauntService.UpdateRestourant(lipaRestoraunt);
+            //Teglas
+            teglasRestoraunt.DailyMenu = _teglas.GetDailyMenu();
+            _restarauntService.UpdateRestourant(teglasRestoraunt);
+            //Hedone
+            hedoneRestoraunt.DailyMenu = _hedone.GetDailyMenu();
+            _restarauntService.UpdateRestourant(hedoneRestoraunt);
+            //Index house
+            indexHauseRestoraunt.DailyMenu = _indexHouse.GetDailyMenu();
+            _restarauntService.UpdateRestourant(indexHauseRestoraunt);
+            // Extra food
+            extraFoodRestoraunt.DailyMenu = _extraFood.GetDailyMenu();
+            _restarauntService.UpdateRestourant(extraFoodRestoraunt);
+        }
+
         public void WriteOrdersToSheets(List<Order> orders)
         {
             throw new NotImplementedException();
