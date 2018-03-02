@@ -49,15 +49,18 @@ namespace FoodOrdering.Unity
                 switch (choise)
                 {
                     case '1':
-                        var dailyMenuLipa = lipaStrategy.GetDailyMenu();
-                        _lipa.DailyMenu.Clear();
-                        _lipa.DailyMenu.AddRange(dailyMenuLipa);
-                        restarauntService.UpdateRestourant(_lipa);
+                        //var dailyMenuLipa = lipaStrategy.GetDailyMenu();
+                        //_lipa.DailyMenu.Clear();
+                        //_lipa.DailyMenu.AddRange(dailyMenuLipa);
+                        //restarauntService.UpdateRestourant(_lipa);
+                        oldSheets.UpdateDailyMenu();
                         break;
 
                     case '2':
-                        var orders = orderService.GetAllOrdersForRestoraunt(1).Where(o => o.Date == DateTime.Today).ToList();
-                        lipaStrategy.PlaceOrders(orders);
+                        //var orders = orderService.GetAllOrdersForRestoraunt(1).Where(o => o.Date == DateTime.Today).ToList();
+                        //lipaStrategy.PlaceOrders(orders);
+                        var allOrders = orderService.GettOrdersForDate(DateTime.Today);
+                        oldSheets.WriteOrdersToSheets(allOrders);
                         break;
 
                     case '3':

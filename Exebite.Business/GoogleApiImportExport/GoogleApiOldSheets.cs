@@ -15,24 +15,24 @@ namespace Exebite.Business.GoogleApiImportExport
 
         IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
         IGoogleSheetServiceFactory _googleSheetServiceFactory;
-        private IRestarauntService _restarauntService;
-        private IRestaurantStrategy _lipa;
-        private IRestaurantStrategy _hedone;
-        private IRestaurantStrategy _indexHouse;
-        private IRestaurantStrategy _teglas;
-        private IRestaurantStrategy _extraFood;
+        private IRestarauntService _restaurantService;
+        private IRestaurantStrategy _lipaStrategy;
+        private IRestaurantStrategy _hedoneStrategy;
+        private IRestaurantStrategy _indexHouseStrategy;
+        private IRestaurantStrategy _teglasStrategy;
+        private IRestaurantStrategy _extraFoodStrategy;
 
         public GoogleApiOldSheets(IGoogleSheetServiceFactory googleSheetServiceFactory, IGoogleSpreadsheetIdFactory googleSpreadsheetIdFactory, IRestarauntService restarauntService)
         {
             _googleSpreadsheetIdFactory = googleSpreadsheetIdFactory;
             _googleSheetServiceFactory = googleSheetServiceFactory;
-            _restarauntService = restarauntService;
+            _restaurantService = restarauntService;
 
-            _lipa = new LipaStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
-            _hedone = new HedoneStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
-            _indexHouse = new IndexHouseStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
-            _teglas = new TeglasStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
-            _extraFood = new ExtraFoodStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
+            _lipaStrategy = new LipaStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
+            //_hedoneStrategy = new HedoneStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
+            //_indexHouseStrategy = new IndexHouseStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
+            //_teglasStrategy = new TeglasStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
+            //_extraFoodStrategy = new ExtraFoodStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
         }
         /// <summary>
         /// Gets all oreger that are in spreadsheets
@@ -41,44 +41,67 @@ namespace Exebite.Business.GoogleApiImportExport
         public List<Order> GetHistoricalData()
         {
             List<Order> historicalData = new List<Order>();
-            historicalData.AddRange(_lipa.GetHistoricalData());
-            historicalData.AddRange(_hedone.GetHistoricalData());
-            historicalData.AddRange(_indexHouse.GetHistoricalData());
-            historicalData.AddRange(_teglas.GetHistoricalData());
-            historicalData.AddRange(_extraFood.GetHistoricalData());
+            historicalData.AddRange(_lipaStrategy.GetHistoricalData());
+            //historicalData.AddRange(_hedoneStrategy.GetHistoricalData());
+            //historicalData.AddRange(_indexHouseStrategy.GetHistoricalData());
+            //historicalData.AddRange(_teglasStrategy.GetHistoricalData());
+            //historicalData.AddRange(_extraFoodStrategy.GetHistoricalData());
 
             return historicalData;
         }
 
         public void UpdateDailyMenu()
         {
-            Restaurant lipaRestoraunt = _restarauntService.GetRestaurantByName("Restoran pod Lipom");
-            Restaurant hedoneRestoraunt = _restarauntService.GetRestaurantByName("Hedone");
-            Restaurant indexHauseRestoraunt = _restarauntService.GetRestaurantByName("Index House");
-            Restaurant teglasRestoraunt = _restarauntService.GetRestaurantByName("Teglas");
-            Restaurant extraFoodRestoraunt = _restarauntService.GetRestaurantByName("Extra food");
+            Restaurant lipaRestoraunt = _restaurantService.GetRestaurantByName("Restoran pod Lipom");
+            Restaurant hedoneRestoraunt = _restaurantService.GetRestaurantByName("Hedone");
+            Restaurant indexHauseRestoraunt = _restaurantService.GetRestaurantByName("Index House");
+            Restaurant teglasRestoraunt = _restaurantService.GetRestaurantByName("Teglas");
+            Restaurant extraFoodRestoraunt = _restaurantService.GetRestaurantByName("Extra food");
 
             // Get daily menu and update info in database
             //Lipa
-            lipaRestoraunt.DailyMenu = _lipa.GetDailyMenu();
-            _restarauntService.UpdateRestourant(lipaRestoraunt);
-            //Teglas
-            teglasRestoraunt.DailyMenu = _teglas.GetDailyMenu();
-            _restarauntService.UpdateRestourant(teglasRestoraunt);
-            //Hedone
-            hedoneRestoraunt.DailyMenu = _hedone.GetDailyMenu();
-            _restarauntService.UpdateRestourant(hedoneRestoraunt);
-            //Index house
-            indexHauseRestoraunt.DailyMenu = _indexHouse.GetDailyMenu();
-            _restarauntService.UpdateRestourant(indexHauseRestoraunt);
-            // Extra food
-            extraFoodRestoraunt.DailyMenu = _extraFood.GetDailyMenu();
-            _restarauntService.UpdateRestourant(extraFoodRestoraunt);
+            lipaRestoraunt.DailyMenu = _lipaStrategy.GetDailyMenu();
+            _restaurantService.UpdateRestourant(lipaRestoraunt);
+
+            //TODO implement and uncoment
+
+            ////Teglas
+            //teglasRestoraunt.DailyMenu = _teglas.GetDailyMenu();
+            //_restarauntService.UpdateRestourant(teglasRestoraunt);
+            ////Hedone
+            //hedoneRestoraunt.DailyMenu = _hedone.GetDailyMenu();
+            //_restarauntService.UpdateRestourant(hedoneRestoraunt);
+            ////Index house
+            //indexHauseRestoraunt.DailyMenu = _indexHouse.GetDailyMenu();
+            //_restarauntService.UpdateRestourant(indexHauseRestoraunt);
+            //// Extra food
+            //extraFoodRestoraunt.DailyMenu = _extraFood.GetDailyMenu();
+            //_restarauntService.UpdateRestourant(extraFoodRestoraunt);
         }
 
         public void WriteOrdersToSheets(List<Order> orders)
         {
-            throw new NotImplementedException();
+            Restaurant lipaRestaraunt = _restaurantService.GetRestaurantByName("Restoran pod Lipom");
+            Restaurant hedoneRestoraunt = _restaurantService.GetRestaurantByName("Hedone");
+            Restaurant indexHauseRestoraunt = _restaurantService.GetRestaurantByName("Index House");
+            Restaurant teglasRestoraunt = _restaurantService.GetRestaurantByName("Teglas");
+            Restaurant extraFoodRestoraunt = _restaurantService.GetRestaurantByName("Extra food");
+
+
+            List<Order> lipaOrders = orders.Where(o => o.Meal.Foods[0].Restaurant.Id == lipaRestaraunt.Id).ToList();
+            _lipaStrategy.PlaceOrders(lipaOrders);
+            
+            //List<Order> hedoneOrders = orders.Where(o => o.Meal.Foods[0].Restaurant.Id == hedoneRestoraunt.Id).ToList();
+            //_hedoneStrategy.PlaceOrders(hedoneOrders);
+
+            //List<Order> teglasOrder = orders.Where(o => o.Meal.Foods[0].Restaurant.Id == teglasRestoraunt.Id).ToList();
+            //_teglasStrategy.PlaceOrders(teglasOrder);
+
+            //List<Order> indexHouseOrders = orders.Where(o => o.Meal.Foods[0].Restaurant.Id == indexHauseRestoraunt.Id).ToList();
+            //_indexHouseStrategy.PlaceOrders(indexHouseOrders);
+
+            //List<Order> extraFoodOrders = orders.Where(o => o.Meal.Foods[0].Restaurant.Id == extraFoodRestoraunt.Id).ToList();
+            //_extraFoodStrategy.PlaceOrders(extraFoodOrders);
         }
     }
 }
