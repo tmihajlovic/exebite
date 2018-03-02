@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessTest", "DataAcces
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Execom.ClientDemo", "Execom.ClientDemo\Execom.ClientDemo.csproj", "{8CB5112E-58EE-4C9A-8937-148A7E34D50C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobScheduler", "JobScheduler\JobScheduler.csproj", "{B82F6A1F-2522-4AC1-A6D5-D7B9C25F1BA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{8CB5112E-58EE-4C9A-8937-148A7E34D50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CB5112E-58EE-4C9A-8937-148A7E34D50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CB5112E-58EE-4C9A-8937-148A7E34D50C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B82F6A1F-2522-4AC1-A6D5-D7B9C25F1BA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82F6A1F-2522-4AC1-A6D5-D7B9C25F1BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82F6A1F-2522-4AC1-A6D5-D7B9C25F1BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82F6A1F-2522-4AC1-A6D5-D7B9C25F1BA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +104,7 @@ Global
 		{FF5784EA-E58E-49C0-98A3-CA1F5DDFBF94} = {AA1D2537-F97C-4E8A-8C0B-DE52BFB72EF3}
 		{F23FFC2E-2040-4373-8884-EE3FD2B934A3} = {496B851D-D11B-4831-B3A8-C28494C52D50}
 		{8CB5112E-58EE-4C9A-8937-148A7E34D50C} = {761FBE2D-8104-4490-A0BF-319845671EE4}
+		{B82F6A1F-2522-4AC1-A6D5-D7B9C25F1BA4} = {AA1D2537-F97C-4E8A-8C0B-DE52BFB72EF3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9631173F-68BC-4A5E-A5AA-D641BFE32333}

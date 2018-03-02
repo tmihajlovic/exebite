@@ -7,6 +7,6 @@ namespace Exebite.Business.GoogleApiImportExport
     {
         void UpdateDailyMenu();
         List<Order> GetHistoricalData();
-        void WriteOrdersToSheets(List<Order> orders);
+        void WriteOrdersToSheets();
     }
 }

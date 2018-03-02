@@ -15,6 +15,7 @@ namespace Exebite.Business.GoogleApiImportExport
 
         IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
         IGoogleSheetServiceFactory _googleSheetServiceFactory;
+        IOrderService _orderService;
         private IRestarauntService _restaurantService;
         private IRestaurantStrategy _lipaStrategy;
         private IRestaurantStrategy _hedoneStrategy;
@@ -22,11 +23,12 @@ namespace Exebite.Business.GoogleApiImportExport
         private IRestaurantStrategy _teglasStrategy;
         private IRestaurantStrategy _extraFoodStrategy;
 
-        public GoogleApiOldSheets(IGoogleSheetServiceFactory googleSheetServiceFactory, IGoogleSpreadsheetIdFactory googleSpreadsheetIdFactory, IRestarauntService restarauntService)
+        public GoogleApiOldSheets(IGoogleSheetServiceFactory googleSheetServiceFactory, IGoogleSpreadsheetIdFactory googleSpreadsheetIdFactory, IRestarauntService restarauntService, IOrderService orderService)
         {
             _googleSpreadsheetIdFactory = googleSpreadsheetIdFactory;
             _googleSheetServiceFactory = googleSheetServiceFactory;
             _restaurantService = restarauntService;
+            _orderService = orderService;
 
             _lipaStrategy = new LipaStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
             //_hedoneStrategy = new HedoneStrategy(googleSheetServiceFactory, googleSpreadsheetIdFactory);
@@ -79,16 +81,19 @@ namespace Exebite.Business.GoogleApiImportExport
             //_restarauntService.UpdateRestourant(extraFoodRestoraunt);
         }
 
-        public void WriteOrdersToSheets(List<Order> orders)
+        public void WriteOrdersToSheets()
         {
+            var orders = _orderService.GettOrdersForDate(DateTime.Today);
+
             Restaurant lipaRestaraunt = _restaurantService.GetRestaurantByName("Restoran pod Lipom");
             Restaurant hedoneRestoraunt = _restaurantService.GetRestaurantByName("Hedone");
             Restaurant indexHauseRestoraunt = _restaurantService.GetRestaurantByName("Index House");
             Restaurant teglasRestoraunt = _restaurantService.GetRestaurantByName("Teglas");
             Restaurant extraFoodRestoraunt = _restaurantService.GetRestaurantByName("Extra food");
 
+            
 
-            List<Order> lipaOrders = orders.Where(o => o.Meal.Foods[0].Restaurant.Id == lipaRestaraunt.Id).ToList();
+            List<Order> lipaOrders = orders.Where(o => o.Meal.Foods.FirstOrDefault().Restaurant.Id == lipaRestaraunt.Id).ToList();
             _lipaStrategy.PlaceOrders(lipaOrders);
             
             //List<Order> hedoneOrders = orders.Where(o => o.Meal.Foods[0].Restaurant.Id == hedoneRestoraunt.Id).ToList();

@@ -59,8 +59,7 @@ namespace FoodOrdering.Unity
                     case '2':
                         //var orders = orderService.GetAllOrdersForRestoraunt(1).Where(o => o.Date == DateTime.Today).ToList();
                         //lipaStrategy.PlaceOrders(orders);
-                        var allOrders = orderService.GettOrdersForDate(DateTime.Today);
-                        oldSheets.WriteOrdersToSheets(allOrders);
+                        oldSheets.WriteOrdersToSheets();
                         break;
 
                     case '3':
