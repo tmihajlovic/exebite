@@ -18,10 +18,10 @@ namespace Exebite.Business.GoogleApiImportExport
         IOrderService _orderService;
         private IRestarauntService _restaurantService;
         private IRestaurantStrategy _lipaStrategy;
-        private IRestaurantStrategy _hedoneStrategy;
-        private IRestaurantStrategy _indexHouseStrategy;
-        private IRestaurantStrategy _teglasStrategy;
-        private IRestaurantStrategy _extraFoodStrategy;
+        //private IRestaurantStrategy _hedoneStrategy;
+        //private IRestaurantStrategy _indexHouseStrategy;
+        //private IRestaurantStrategy _teglasStrategy;
+        //private IRestaurantStrategy _extraFoodStrategy;
 
         public GoogleApiOldSheets(IGoogleSheetServiceFactory googleSheetServiceFactory, IGoogleSpreadsheetIdFactory googleSpreadsheetIdFactory, IRestarauntService restarauntService, IOrderService orderService)
         {

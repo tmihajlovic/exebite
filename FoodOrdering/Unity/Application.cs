@@ -3,11 +3,10 @@ using Exebite.Model;
 using Exebite.GoogleSpreadsheetApi.GoogleSSFactory;
 using Exebite.GoogleSpreadsheetApi.RestaurantConectors;
 using System;
-using System.Collections.Generic;
 using Unity;
 using Exebite.Business.GoogleApiImportExport;
 using Exebite.GoogleSpreadsheetApi.Strategies;
-using System.Linq;
+using Exebite.JobScheduler;
 
 namespace FoodOrdering.Unity
 {
@@ -43,6 +42,7 @@ namespace FoodOrdering.Unity
                 Console.WriteLine("Job to do:");
                 Console.WriteLine("1 - Update daily menu");
                 Console.WriteLine("2 - Write orders to sheet");
+                Console.WriteLine("3 - Write orders to sheet thru scheduler");
                 Console.WriteLine("q - quit");
                 choise = Console.ReadKey().KeyChar;
 
@@ -63,6 +63,8 @@ namespace FoodOrdering.Unity
                         break;
 
                     case '3':
+                        JobSchedulerService jss = new JobSchedulerService();
+                        jss.TestExternalSetup();
                         break;
                     case 'q':
                         loopBreak = true;

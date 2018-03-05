@@ -6,20 +6,19 @@ using Unity;
 
 namespace Exebite.JobScheduler.Jobs
 {
-    public class UpdateDailyMenus : IJob
+    public class WriteOrders : IJob
     {
         IGoogleApiOldSheets _oldSheets;
-        
 
-        public UpdateDailyMenus()
+
+        public WriteOrders()
         {
             _oldSheets = UnityConfig.Container.Resolve<IGoogleApiOldSheets>();
         }
         public Task Execute(IJobExecutionContext context)
         {
-            var task = Task.Run(() => _oldSheets.UpdateDailyMenu());
+            var task = Task.Run(() => _oldSheets.WriteOrdersToSheets());
             return task;
         }
     }
 }
-

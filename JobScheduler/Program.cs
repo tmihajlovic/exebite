@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Topshelf;
 
-namespace JobScheduler
+namespace Exebite.JobScheduler
 {
     class Program
     {
@@ -13,19 +9,20 @@ namespace JobScheduler
         {
             var rc = HostFactory.Run(x =>
             {
-                x.Service<JobSchedulerService>(s =>
+                x.Service<JobSchedulerWorker>(s =>
                 {
-                    s.ConstructUsing(name => new JobSchedulerService());
+                    s.ConstructUsing(name => new JobSchedulerWorker());
                     s.WhenStarted(tc => tc.Start());
-                    s.WhenStopped(tc => tc.Stop());
+                    s.WhenStopped(tc => tc.Stop()); 
+                    
                 });
-                x.RunAsLocalSystem();
-
+                x.RunAsLocalService();
                 x.SetDescription("Job Scheduler Service");
                 x.SetDisplayName("Job Scheduler Service");
                 x.SetServiceName("JobSchedulerService");
+                
             });
-
+            
             var exitCode = (int)Convert.ChangeType(rc, rc.GetTypeCode());
             Environment.ExitCode = exitCode;
         }

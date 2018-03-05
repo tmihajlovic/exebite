@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Unity;
 
-namespace JobScheduler.Unity
+namespace Exebite.JobScheduler.Unity
 {
     /// <summary>
     /// Specifies the Unity configuration for the main container.
@@ -27,7 +23,7 @@ namespace JobScheduler.Unity
 
         public static void RegisterTypes(IUnityContainer container)
         {
-            Exebite.Business.Unity.UnityConfig.RegisterTypes(container);
+            Business.Unity.UnityConfig.RegisterTypes(container);
 
         }
     }

@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessTest", "DataAcces
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Execom.ClientDemo", "Execom.ClientDemo\Execom.ClientDemo.csproj", "{8CB5112E-58EE-4C9A-8937-148A7E34D50C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobScheduler", "JobScheduler\JobScheduler.csproj", "{B82F6A1F-2522-4AC1-A6D5-D7B9C25F1BA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.JobScheduler", "JobScheduler\Exebite.JobScheduler.csproj", "{B82F6A1F-2522-4AC1-A6D5-D7B9C25F1BA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
