@@ -22,6 +22,7 @@ namespace FoodOrdering.Unity
             IFoodService foodService = UnityConfig.Container.Resolve<IFoodService>();
             ICustomerService customerService = UnityConfig.Container.Resolve<ICustomerService>();
             IGoogleApiOldSheets oldSheets = UnityConfig.Container.Resolve<IGoogleApiOldSheets>();
+            IJobSchedulerRepository jobSchedulerRepository = UnityConfig.Container.Resolve<IJobSchedulerRepository>();
 
             LipaConector lipaConector = new LipaConector(GoogleSSFactory, GoogleSSIdFactory);
             TeglasConector teglasConector = new TeglasConector(GoogleSSFactory, GoogleSSIdFactory);
@@ -63,8 +64,11 @@ namespace FoodOrdering.Unity
                         break;
 
                     case '3':
-                        JobSchedulerService jss = new JobSchedulerService();
-                        jss.TestExternalSetup();
+                        jobSchedulerRepository.RemoveAllData();
+                        jobSchedulerRepository.RegisterJobsToDB();
+                        var cron = "0 0/1 * 1/1 * ? *";
+                        jobSchedulerRepository.ScheduleJobCronExpresion("WriteOrders", "GoogleSheets", cron, "TestWrite");
+
                         break;
                     case 'q':
                         loopBreak = true;

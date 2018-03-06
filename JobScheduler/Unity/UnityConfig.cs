@@ -23,6 +23,7 @@ namespace Exebite.JobScheduler.Unity
 
         public static void RegisterTypes(IUnityContainer container)
         {
+            container.RegisterType<IJobSchedulerRepository, JobSchedulerRepository>();
             Business.Unity.UnityConfig.RegisterTypes(container);
 
         }

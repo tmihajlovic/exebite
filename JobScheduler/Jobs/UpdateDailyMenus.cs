@@ -11,9 +11,9 @@ namespace Exebite.JobScheduler.Jobs
         IGoogleApiOldSheets _oldSheets;
         
 
-        public UpdateDailyMenus()
+        public UpdateDailyMenus(IGoogleApiOldSheets googleApiOldSheets)
         {
-            _oldSheets = UnityConfig.Container.Resolve<IGoogleApiOldSheets>();
+            _oldSheets = googleApiOldSheets;
         }
         public Task Execute(IJobExecutionContext context)
         {

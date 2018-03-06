@@ -192,8 +192,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IJobSchedulerRepository.cs" />
+    <Compile Include="JobSchedulerRepository.cs" />
     <Compile Include="JobSchedulerService.cs" />
-    <Compile Include="JobSchedulerWorker.cs" />
     <Compile Include="Jobs\UpdateDailyMenus.cs" />
     <Compile Include="Jobs\WriteOrders.cs" />
     <Compile Include="Program.cs" />

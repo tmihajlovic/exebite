@@ -27,6 +27,7 @@ namespace FoodOrdering.Unity
             Exebite.DataAccess.Unity.UnityConfig.RegisterTypes(container);
             Exebite.Business.Unity.UnityConfig.RegisterTypes(container);
             Exebite.GoogleSpreadsheetApi.Unity.UnityConfig.RegisterTypes(container);
+            Exebite.JobScheduler.Unity.UnityConfig.RegisterTypes(container);
         }
     }
 }

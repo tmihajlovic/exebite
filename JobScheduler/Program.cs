@@ -9,9 +9,9 @@ namespace Exebite.JobScheduler
         {
             var rc = HostFactory.Run(x =>
             {
-                x.Service<JobSchedulerWorker>(s =>
+                x.Service<JobSchedulerService>(s =>
                 {
-                    s.ConstructUsing(name => new JobSchedulerWorker());
+                    s.ConstructUsing(name => new JobSchedulerService());
                     s.WhenStarted(tc => tc.Start());
                     s.WhenStopped(tc => tc.Stop()); 
                     
