@@ -23,12 +23,14 @@ namespace Exebite.JobScheduler
             var UpdateDailyMenusJob = JobBuilder.Create<UpdateDailyMenus>()
                 .WithIdentity("UpdateDailyMenus", "GoogleSheets")
                 .StoreDurably()
+                .RequestRecovery(true)
                 .Build();
             scheduler.AddJob(UpdateDailyMenusJob, true);
             
             var WriteOrders = JobBuilder.Create<WriteOrders>()
                 .WithIdentity("WriteOrders", "GoogleSheets")
                 .StoreDurably()
+                .RequestRecovery(true)
                 .Build();
             scheduler.AddJob(WriteOrders, true);
         }

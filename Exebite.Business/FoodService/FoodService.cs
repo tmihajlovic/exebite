@@ -32,6 +32,7 @@ namespace Exebite.Business
 
         public Food GetOrCreateFood(Food food)
         {
+            this._foodHandler.GetByRestaurant(null);
             var foodFromDB = this.GetFoodByName(food);
             if(foodFromDB != null)
             {

@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Exebite.GoogleSpreadsheetApi.GoogleSSFactory
 {
-    public  class GoogleSheetServiceFactory : IGoogleSheetServiceFactory
+    public class GoogleSheetServiceFactory : IGoogleSheetServiceFactory
     {
         public SheetsService GetService()
         {

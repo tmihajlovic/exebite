@@ -6,23 +6,20 @@ using System;
 using Unity;
 using Exebite.Business.GoogleApiImportExport;
 using Exebite.GoogleSpreadsheetApi.Strategies;
-using Exebite.JobScheduler;
+//using Exebite.JobScheduler;
 
 namespace FoodOrdering.Unity
 {
-    class Application : IApplication
+    internal class Application : IApplication
     {
         public void Run(string[] args)
         {
-            IGoogleDataImporter dataImporter = UnityConfig.Container.Resolve<IGoogleDataImporter>();
             IOrderService orderService = UnityConfig.Container.Resolve<IOrderService>();
             IRestarauntService restarauntService = UnityConfig.Container.Resolve<IRestarauntService>();
             IGoogleSheetServiceFactory GoogleSSFactory = UnityConfig.Container.Resolve<IGoogleSheetServiceFactory>();
             IGoogleSpreadsheetIdFactory GoogleSSIdFactory = UnityConfig.Container.Resolve<IGoogleSpreadsheetIdFactory>();
-            IFoodService foodService = UnityConfig.Container.Resolve<IFoodService>();
-            ICustomerService customerService = UnityConfig.Container.Resolve<ICustomerService>();
             IGoogleApiOldSheets oldSheets = UnityConfig.Container.Resolve<IGoogleApiOldSheets>();
-            IJobSchedulerRepository jobSchedulerRepository = UnityConfig.Container.Resolve<IJobSchedulerRepository>();
+            //IJobSchedulerRepository jobSchedulerRepository = UnityConfig.Container.Resolve<IJobSchedulerRepository>();
 
             LipaConector lipaConector = new LipaConector(GoogleSSFactory, GoogleSSIdFactory);
             TeglasConector teglasConector = new TeglasConector(GoogleSSFactory, GoogleSSIdFactory);
@@ -63,11 +60,11 @@ namespace FoodOrdering.Unity
                         oldSheets.WriteOrdersToSheets();
                         break;
 
-                    case '3':
-                        jobSchedulerRepository.RemoveAllData();
-                        jobSchedulerRepository.RegisterJobsToDB();
-                        var cron = "0 0/1 * 1/1 * ? *";
-                        jobSchedulerRepository.ScheduleJobCronExpresion("WriteOrders", "GoogleSheets", cron, "TestWrite");
+                    //case '3':
+                    //    jobSchedulerRepository.RemoveAllData();
+                    //    jobSchedulerRepository.RegisterJobsToDB();
+                    //    var cron = "0 0/1 * 1/1 * ? *";
+                    //    jobSchedulerRepository.ScheduleJobCronExpression("WriteOrders", "GoogleSheets", cron, "TestWrite");
 
                         break;
                     case 'q':

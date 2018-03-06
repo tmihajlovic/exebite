@@ -34,7 +34,11 @@ namespace Exebite.DataAccess.Repositories
             }
         }
         
-
+        /// <summary>
+        /// Update the meal entity.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public override Meal Update(Meal entity)
         {
             using (var context = _factory.Create())
