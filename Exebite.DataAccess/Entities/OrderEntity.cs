@@ -19,10 +19,12 @@ namespace Exebite.DataAccess.Entities
 
         [ForeignKey(nameof(Meal))]
         public int MealId { get; set; }
+
         public virtual MealEntity Meal { get; set; }
 
         [ForeignKey(nameof(Customer))]
         public int CustomerId { get; set; }
+
         public virtual CustomerEntity Customer { get; set; }
     }
 }

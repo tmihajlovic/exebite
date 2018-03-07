@@ -218,12 +218,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Exebite.Business\Exebite.Business.csproj">
-      <Project>{4a72d8ee-1fd0-4b45-97df-638593bd9354}</Project>
+      <Project>{b960306b-c425-430e-bfa3-e8b2ad71d8bd}</Project>
       <Name>Exebite.Business</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Exebite.DataAccess\Exebite.DataAccess.csproj">
-      <Project>{ff5784ea-e58e-49c0-98a3-ca1f5ddfbf94}</Project>
-      <Name>Exebite.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Exebite.Model\Exebite.Model.csproj">
       <Project>{18A84D46-D8D4-44F1-B203-DA16BAD63DD0}</Project>

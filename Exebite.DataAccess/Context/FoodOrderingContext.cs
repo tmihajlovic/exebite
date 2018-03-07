@@ -1,31 +1,57 @@
 ﻿using Exebite.DataAccess.Entities;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Exebite.DataAccess.Context
 {
     public class FoodOrderingContext : DbContext
     {
-        public DbSet<FoodEntity> Foods{ get; set; }
-        public DbSet<OrderEntity> Orders { get; set; }
-        public DbSet<CustomerEntity> Customers { get; set; }
-        public DbSet<MealEntity> Meals { get; set; }
-        public DbSet<RestaurantEntity> Restaurants { get; set; }
-        public DbSet<RecipeEntity> Recipes { get; set; }
-        public DbSet<LocationEntity> Locations { get; set; }
-        public DbSet<CustomerAliasesEntity> CustomerAliases { get; set; }
+        private DbContextOptions<FoodOrderingContext> _dbContextOptions;
 
-
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        public FoodOrderingContext(DbContextOptions<FoodOrderingContext> dbContextOptions)
+            : base(dbContextOptions)
         {
-            modelBuilder.Entity<RestaurantEntity>()
-               .HasMany(f => f.Foods);
+            _dbContextOptions = dbContextOptions;
+        }
 
+        public DbSet<FoodEntity> Foods { get; set; }
+
+        public DbSet<OrderEntity> Orders { get; set; }
+
+        public DbSet<CustomerEntity> Customers { get; set; }
+
+        public DbSet<MealEntity> Meals { get; set; }
+
+        public DbSet<RestaurantEntity> Restaurants { get; set; }
+
+        public DbSet<RecipeEntity> Recipes { get; set; }
+
+        public DbSet<LocationEntity> Locations { get; set; }
+
+        public DbSet<CustomerAliasesEntities> CustomerAliases { get; set; }
+
+        public DbSet<FoodEntityMealEntities> FoodEntityMealEntities { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<FoodEntity>()
-                .HasRequired(r => r.Restaurant)
+                .HasOne(r => r.Restaurant)
                 .WithMany(f => f.Foods);
 
-            
+            modelBuilder.Entity<FoodEntity>()
+                .HasMany(r => r.Recipes);
+
+            modelBuilder.Entity<RecipeEntity>()
+                .HasMany(f => f.Foods);
+
+            modelBuilder.Entity<RecipeEntity>()
+                .HasOne(f => f.MainCourse);
+
+            modelBuilder.Entity<FoodEntityMealEntities>()
+                .HasKey(t => new { t.FoodEntityId, t.MealEntityId });
+
+            modelBuilder.Entity<CustomerAliasesEntities>()
+                .HasOne(c => c.Customer)
+                .WithMany(a => a.Aliases);
         }
     }
 }

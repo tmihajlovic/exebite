@@ -10,11 +10,14 @@ namespace Exebite.DataAccess.Entities
     {
         [Key]
         public int Id { get; set; }
-        
+
         public decimal Price { get; set; }
 
+        [NotMapped]
         public virtual List<FoodEntity> Foods { get; set; }
-        
-        public virtual List<OrderEntity> Orders { get; set; }
+
+        public virtual OrderEntity Order { get; set; }
+
+        public virtual List<FoodEntityMealEntities> FoodEntityMealEntities { get; set; }
     }
 }

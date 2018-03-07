@@ -83,6 +83,7 @@ namespace Exebite.Business.GoogleApiImportExport
 
         public void WriteOrdersToSheets()
         {
+            var test = _orderService.GetAllOrders();
             var orders = _orderService.GettOrdersForDate(DateTime.Today);
 
             Restaurant lipaRestaraunt = _restaurantService.GetRestaurantByName("Restoran pod Lipom");

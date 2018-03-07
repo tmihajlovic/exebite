@@ -19,10 +19,11 @@ namespace Exebite.DataAccess.Entities
 
         [ForeignKey(nameof(Location))]
         public int LocationId { get; set; }
+
         public virtual LocationEntity Location { get; set; }
 
         public virtual List<OrderEntity> Orders{ get; set; }
 
-        public virtual List<CustomerAliasesEntity> Aliases { get; set; }
+        public virtual List<CustomerAliasesEntities> Aliases { get; set; }
     }
 }

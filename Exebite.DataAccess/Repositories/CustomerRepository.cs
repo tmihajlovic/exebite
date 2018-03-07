@@ -7,14 +7,13 @@ namespace Exebite.DataAccess.Repositories
 {
     public class CustomerRepository : DatabaseRepository<Customer,CustomerEntity>, ICustomerRepository
     {
-        IFoodOrderingContextFactory _factory;
-        
+        private IFoodOrderingContextFactory _factory;
+
         public CustomerRepository(IFoodOrderingContextFactory factory)
-            :base(factory)
+            : base(factory)
         {
             this._factory = factory;
         }
-        
 
         public Customer GetByName(string name)
         {
@@ -31,11 +30,13 @@ namespace Exebite.DataAccess.Repositories
             using (var context = _factory.Create())
             {
                 var customerEntity = AutoMapperHelper.Instance.GetMappedValue<CustomerEntity>(entity);
-                //TPMCODE 
-                if(customerEntity.Location == null)
+
+                // TPMCODE
+                if (customerEntity.Location == null)
                 {
                     customerEntity.Location = context.Locations.FirstOrDefault(l => l.Id == 1);
                 }
+
                 var location = context.Locations.FirstOrDefault(l => l.Name == customerEntity.Location.Name);
                 if (location != null)
                 {
@@ -48,7 +49,6 @@ namespace Exebite.DataAccess.Repositories
                 return result;
             }
         }
-        
 
         public override Customer Update(Customer entity)
         {
@@ -61,10 +61,11 @@ namespace Exebite.DataAccess.Repositories
 
                 oldCustomerEntity.Aliases.Clear();
                 oldCustomerEntity.Aliases.AddRange(customerEntity.Aliases);
-                //bind
-                for(int i =0; i < oldCustomerEntity.Aliases.Count; i++)
+
+                // bind
+                for (int i =0; i < oldCustomerEntity.Aliases.Count; i++)
                 {
-                    var restId =  oldCustomerEntity.Aliases[i].Restaurant.Id;
+                    var restId = oldCustomerEntity.Aliases[i].Restaurant.Id;
                     oldCustomerEntity.Aliases[i].Restaurant = context.Restaurants.First(r => r.Id ==restId) ;
                     oldCustomerEntity.Aliases[i].Customer = oldCustomerEntity;
                 }

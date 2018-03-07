@@ -1,6 +1,7 @@
 ﻿using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace Exebite.DataAccess.Repositories
 {
     public class OrderRepository : DatabaseRepository<Order,OrderEntity>, IOrderRepository
     {
-        IFoodOrderingContextFactory _factory;
-        ICustomerRepository _cusomerHandler;
+        private IFoodOrderingContextFactory _factory;
+        private ICustomerRepository _cusomerHandler;
 
         public OrderRepository(IFoodOrderingContextFactory factory, ICustomerRepository customerHandler)
             :base(factory)
@@ -23,12 +24,11 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var orderEntityList = context.Orders.Where(o => 
-                    o.Customer.Balance == customer.Balance 
+                var orderEntityList = context.Orders.Where(o =>
+                    o.Customer.Balance == customer.Balance
                     && o.Customer.Name == customer.Name
                     && o.Customer.Location.Name == customer.Location.Name
-                    && o.Customer.Location.Address == customer.Location.Address
-                );
+                    && o.Customer.Location.Address == customer.Location.Address);
 
                 var orderList = new List<Order>();
 
@@ -66,7 +66,8 @@ namespace Exebite.DataAccess.Repositories
             {
                 var orderEntity = AutoMapperHelper.Instance.GetMappedValue<OrderEntity>(entity);
                 var customer = context.Customers.FirstOrDefault(c => c.Name == orderEntity.Customer.Name);
-                //bind customer
+
+                // bind customer
                 if (customer != null)
                 {
                     orderEntity.Customer = customer;
@@ -87,8 +88,9 @@ namespace Exebite.DataAccess.Repositories
                         orderEntity.Customer.LocationId = 1;
                     }
                 }
-                //bind Foods
-                for(int i=0; i < orderEntity.Meal.Foods.Count; i++)
+
+                // bind Foods
+                for (int i = 0; i < orderEntity.Meal.Foods.Count; i++)
                 {
                     string name = orderEntity.Meal.Foods[i].Name;
                     var tmpFood = context.Foods.FirstOrDefault(f => f.Name == name);
@@ -113,7 +115,7 @@ namespace Exebite.DataAccess.Repositories
                 context.Entry(oldOredeEntity).CurrentValues.SetValues(orderEntity);
                 var customer = context.Customers.FirstOrDefault(c => c.Name == orderEntity.Customer.Name);
 
-                //bind customer
+                // bind customer
                 if (customer != null)
                 {
                     orderEntity.Customer = customer;
@@ -136,7 +138,8 @@ namespace Exebite.DataAccess.Repositories
                 }
                 var restName = orderEntity.Meal.Foods[0].Restaurant.Name;
                 var restaurant = context.Restaurants.FirstOrDefault(r => r.Name == restName);
-                //bind Foods
+
+                // bind Foods
                 for (int i = 0; i < orderEntity.Meal.Foods.Count; i++)
                 {
                     string name = orderEntity.Meal.Foods[i].Name;
@@ -159,6 +162,22 @@ namespace Exebite.DataAccess.Repositories
                 var result = AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity);
                 return result;
             }
+        }
+
+        public override IEnumerable<Order> GetAll()
+        {
+            List<Order> result = new List<Order>();
+            using (var context = _factory.Create())
+            {
+                var orderEntitys = context.Orders.ToList();
+                var test = orderEntitys.FirstOrDefault();
+                foreach (var orderEntity in orderEntitys)
+                {
+                    result.Add(AutoMapperHelper.Instance.GetMappedValue<Order>(orderEntity));
+                }
+            }
+
+            return result.AsEnumerable();
         }
     }
 }

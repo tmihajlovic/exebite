@@ -5,11 +5,13 @@ using System.Linq;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public abstract class DatabaseRepository<TModel, TEntity> : IDatabaseRepository<TModel> where TModel: class where TEntity : class
+    public abstract class DatabaseRepository<TModel, TEntity> : IDatabaseRepository<TModel>
+        where TModel : class
+        where TEntity : class
     {
-        IFoodOrderingContextFactory _factory;
-        
-        public DatabaseRepository(IFoodOrderingContextFactory factory)
+        private IFoodOrderingContextFactory _factory;
+
+        protected DatabaseRepository(IFoodOrderingContextFactory factory)
         {
             _factory = factory;
         }
@@ -17,18 +19,20 @@ namespace Exebite.DataAccess.Repositories
         public abstract TModel Insert(TModel entity);
 
         public abstract TModel Update(TModel entity);
-        
-        public IEnumerable<TModel> GetAll()
+
+        public virtual IEnumerable<TModel> GetAll()
         {
             using (var context = _factory.Create())
             {
                 List<TModel> itemList = new List<TModel>();
                 IQueryable<TEntity> itemSet = context.Set<TEntity>().AsQueryable();
-                foreach(var item in itemSet)
+
+                foreach (var item in itemSet)
                 {
                     var itemModel = AutoMapperHelper.Instance.GetMappedValue<TModel>(item);
                     itemList.Add(itemModel);
                 }
+
                 return itemList;
             }
         }
@@ -39,12 +43,14 @@ namespace Exebite.DataAccess.Repositories
             {
                 var itemSet = context.Set<TEntity>();
                 var itemEntity = itemSet.Find(Id);
+
                 var item = AutoMapperHelper.Instance.GetMappedValue<TModel>(itemEntity);
                 return item;
             }
+
             throw new NotImplementedException();
         }
-        
+
         public void Delete(int Id)
         {
             using (var context = _factory.Create())

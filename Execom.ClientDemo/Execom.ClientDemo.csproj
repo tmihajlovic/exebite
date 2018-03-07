@@ -456,7 +456,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Exebite.Business\Exebite.Business.csproj">
-      <Project>{4A72D8EE-1FD0-4B45-97DF-638593BD9354}</Project>
+      <Project>{b960306b-c425-430e-bfa3-e8b2ad71d8bd}</Project>
       <Name>Exebite.Business</Name>
     </ProjectReference>
     <ProjectReference Include="..\Exebite.Model\Exebite.Model.csproj">
