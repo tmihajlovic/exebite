@@ -17,7 +17,7 @@ namespace Exebite.JobScheduler
         public void Start()
         {
             Task.Run(() => _scheduler.Start());
-            _scheduler.TriggerJob(new JobKey("WriteOrders", "GoogleSheets"));
+            //_scheduler.TriggerJob(new JobKey("WriteOrders", "GoogleSheets"));
             //JobSchedulerRepository jsb = new JobSchedulerRepository();
             //_scheduler.Clear();
             //jsb.RegisterJobsToDB();

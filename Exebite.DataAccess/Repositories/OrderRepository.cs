@@ -1,23 +1,28 @@
-﻿using Exebite.DataAccess.Context;
-using Exebite.DataAccess.Entities;
-using Exebite.Model;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper.QueryableExtensions;
+using Exebite.DataAccess.Entities;
+using Exebite.DataAccess.Migrations;
+using Exebite.Model;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class OrderRepository : DatabaseRepository<Order,OrderEntity>, IOrderRepository
+    public class OrderRepository : DatabaseRepository<Order, OrderEntity>, IOrderRepository
     {
         private IFoodOrderingContextFactory _factory;
         private ICustomerRepository _cusomerHandler;
 
         public OrderRepository(IFoodOrderingContextFactory factory, ICustomerRepository customerHandler)
-            :base(factory)
+            : base(factory)
         {
             _cusomerHandler = customerHandler;
             _factory = factory;
+        }
+
+        protected OrderRepository(IFoodOrderingContextFactory factory)
+            : base(factory)
+        {
         }
 
         public IEnumerable<Order> GetOrdersForCustomer(Customer customer)
@@ -46,17 +51,18 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var orderEntityList = context.Orders.Where(o => o.Date == date);
+                var orderEntityList = context.Orders.Where(o => o.Date == date).ProjectTo<Order>(); // .Select(x => AutoMapperHelper.Instance.GetMappedValue<Order>(x));
 
-                var orderList = new List<Order>();
+                // var orderList = new List<Order>();
 
-                foreach (var orderEntity in orderEntityList)
-                {
-                    var order = AutoMapperHelper.Instance.GetMappedValue<Order>(orderEntity);
-                    orderList.Add(order);
-                }
+                // foreach (var orderEntity in orderEntityList)
+                // {
+                //    var order = AutoMapperHelper.Instance.GetMappedValue<Order>(orderEntity);
+                //    orderList.Add(order);
+                // }
+                return orderEntityList.ToList();
 
-                return orderList;
+                // return orderList;
             }
         }
 
@@ -79,7 +85,7 @@ namespace Exebite.DataAccess.Repositories
                         Name = orderEntity.Customer.Name,
                         Balance = 0
                     };
-                    if(orderEntity.Customer.Name.Contains("JD"))
+                    if (orderEntity.Customer.Name.Contains("JD"))
                     {
                         orderEntity.Customer.LocationId = 2;
                     }
@@ -102,7 +108,6 @@ namespace Exebite.DataAccess.Repositories
 
                 var result = AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity);
                 return result;
-
             }
         }
 
@@ -136,6 +141,7 @@ namespace Exebite.DataAccess.Repositories
                         orderEntity.Customer.LocationId = 1;
                     }
                 }
+
                 var restName = orderEntity.Meal.Foods[0].Restaurant.Name;
                 var restaurant = context.Restaurants.FirstOrDefault(r => r.Name == restName);
 
@@ -156,28 +162,13 @@ namespace Exebite.DataAccess.Repositories
                         }
                     }
                 }
+
                 context.SaveChanges();
 
                 var resultEntity = context.Orders.FirstOrDefault(o => o.Id == entity.Id);
                 var result = AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity);
                 return result;
             }
-        }
-
-        public override IEnumerable<Order> GetAll()
-        {
-            List<Order> result = new List<Order>();
-            using (var context = _factory.Create())
-            {
-                var orderEntitys = context.Orders.ToList();
-                var test = orderEntitys.FirstOrDefault();
-                foreach (var orderEntity in orderEntitys)
-                {
-                    result.Add(AutoMapperHelper.Instance.GetMappedValue<Order>(orderEntity));
-                }
-            }
-
-            return result.AsEnumerable();
         }
     }
 }

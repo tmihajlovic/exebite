@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
+using Exebite.DataAccess.Migrations;
 using Exebite.Model;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class FoodRepository : DatabaseRepository<Food,FoodEntity>, IFoodRepository
+    public class FoodRepository : DatabaseRepository<Food, FoodEntity>, IFoodRepository
     {
-        IFoodOrderingContextFactory _factory;
+        private IFoodOrderingContextFactory _factory;
+
         public FoodRepository(IFoodOrderingContextFactory factory)
-            :base(factory)
+            : base(factory)
         {
             this._factory = factory;
         }
@@ -42,7 +43,6 @@ namespace Exebite.DataAccess.Repositories
                 return result;
             }
         }
-        
 
         public override Food Update(Food entity)
         {
@@ -61,6 +61,5 @@ namespace Exebite.DataAccess.Repositories
                 return result;
             }
         }
-        
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Exebite.DataAccess.Context;
+using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Entities;
 using Exebite.Model;
 

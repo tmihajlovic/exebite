@@ -5,9 +5,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Exebite.DataAccess.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
-
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -73,30 +72,61 @@ namespace Exebite.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomerAliases",
+                name: "Food",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CustomerId = table.Column<int>(nullable: true),
-                    RestaurantId = table.Column<int>(nullable: true),
-                    Alias = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    Type = table.Column<int>(nullable: false),
+                    Price = table.Column<decimal>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    IsInactive = table.Column<bool>(nullable: false),
+                    RestaurantId = table.Column<int>(nullable: false),
+                    RestaurantEntityId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerAliases", x => x.Id);
+                    table.PrimaryKey("PK_Food", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CustomerAliases_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CustomerAliases_Restaurant_RestaurantId",
-                        column: x => x.RestaurantId,
+                        name: "FK_Food_Restaurant_RestaurantEntityId",
+                        column: x => x.RestaurantEntityId,
                         principalTable: "Restaurant",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Food_Restaurant_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomerAliasesEntities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Alias = table.Column<string>(nullable: true),
+                    CustomerId = table.Column<int>(nullable: false),
+                    RestaurantId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerAliasesEntities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomerAliasesEntities_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CustomerAliasesEntities_Restaurant_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -139,6 +169,12 @@ namespace Exebite.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_FoodEntityMealEntities", x => new { x.FoodEntityId, x.MealEntityId });
                     table.ForeignKey(
+                        name: "FK_FoodEntityMealEntities_Food_FoodEntityId",
+                        column: x => x.FoodEntityId,
+                        principalTable: "Food",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_FoodEntityMealEntities_Meal_MealEntityId",
                         column: x => x.MealEntityId,
                         principalTable: "Meal",
@@ -152,50 +188,41 @@ namespace Exebite.DataAccess.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    MainCourseId = table.Column<int>(nullable: false),
-                    FoodEntityId = table.Column<int>(nullable: true)
+                    MainCourseId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Recipe", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Recipe_Food_MainCourseId",
+                        column: x => x.MainCourseId,
+                        principalTable: "Food",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Food",
+                name: "FoodEntityRecipeEntity",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Type = table.Column<int>(nullable: false),
-                    Price = table.Column<decimal>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    IsInactive = table.Column<bool>(nullable: false),
-                    RestaurantId = table.Column<int>(nullable: false),
-                    RecipeEntityId = table.Column<int>(nullable: true),
-                    RestaurantEntityId = table.Column<int>(nullable: true)
+                    FoodEntityId = table.Column<int>(nullable: false),
+                    RecepieEntityId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Food", x => x.Id);
+                    table.PrimaryKey("PK_FoodEntityRecipeEntity", x => new { x.FoodEntityId, x.RecepieEntityId });
                     table.ForeignKey(
-                        name: "FK_Food_Recipe_RecipeEntityId",
-                        column: x => x.RecipeEntityId,
+                        name: "FK_FoodEntityRecipeEntity_Food_FoodEntityId",
+                        column: x => x.FoodEntityId,
+                        principalTable: "Food",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FoodEntityRecipeEntity_Recipe_RecepieEntityId",
+                        column: x => x.RecepieEntityId,
                         principalTable: "Recipe",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Food_Restaurant_RestaurantEntityId",
-                        column: x => x.RestaurantEntityId,
-                        principalTable: "Restaurant",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Food_Restaurant_RestaurantId",
-                        column: x => x.RestaurantId,
-                        principalTable: "Restaurant",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -204,19 +231,14 @@ namespace Exebite.DataAccess.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerAliases_CustomerId",
-                table: "CustomerAliases",
+                name: "IX_CustomerAliasesEntities_CustomerId",
+                table: "CustomerAliasesEntities",
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerAliases_RestaurantId",
-                table: "CustomerAliases",
+                name: "IX_CustomerAliasesEntities_RestaurantId",
+                table: "CustomerAliasesEntities",
                 column: "RestaurantId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Food_RecipeEntityId",
-                table: "Food",
-                column: "RecipeEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Food_RestaurantEntityId",
@@ -234,6 +256,11 @@ namespace Exebite.DataAccess.Migrations
                 column: "MealEntityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FoodEntityRecipeEntity_RecepieEntityId",
+                table: "FoodEntityRecipeEntity",
+                column: "RecepieEntityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Order_CustomerId",
                 table: "Order",
                 column: "CustomerId");
@@ -245,62 +272,27 @@ namespace Exebite.DataAccess.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Recipe_FoodEntityId",
-                table: "Recipe",
-                column: "FoodEntityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Recipe_MainCourseId",
                 table: "Recipe",
                 column: "MainCourseId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_FoodEntityMealEntities_Food_FoodEntityId",
-                table: "FoodEntityMealEntities",
-                column: "FoodEntityId",
-                principalTable: "Food",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Recipe_Food_FoodEntityId",
-                table: "Recipe",
-                column: "FoodEntityId",
-                principalTable: "Food",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Recipe_Food_MainCourseId",
-                table: "Recipe",
-                column: "MainCourseId",
-                principalTable: "Food",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Food_Restaurant_RestaurantEntityId",
-                table: "Food");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Food_Restaurant_RestaurantId",
-                table: "Food");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Food_Recipe_RecipeEntityId",
-                table: "Food");
-
             migrationBuilder.DropTable(
-                name: "CustomerAliases");
+                name: "CustomerAliasesEntities");
 
             migrationBuilder.DropTable(
                 name: "FoodEntityMealEntities");
 
             migrationBuilder.DropTable(
+                name: "FoodEntityRecipeEntity");
+
+            migrationBuilder.DropTable(
                 name: "Order");
+
+            migrationBuilder.DropTable(
+                name: "Recipe");
 
             migrationBuilder.DropTable(
                 name: "Customer");
@@ -309,16 +301,13 @@ namespace Exebite.DataAccess.Migrations
                 name: "Meal");
 
             migrationBuilder.DropTable(
+                name: "Food");
+
+            migrationBuilder.DropTable(
                 name: "Location");
 
             migrationBuilder.DropTable(
                 name: "Restaurant");
-
-            migrationBuilder.DropTable(
-                name: "Recipe");
-
-            migrationBuilder.DropTable(
-                name: "Food");
         }
     }
 }

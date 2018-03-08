@@ -1,7 +1,7 @@
 ﻿using Exebite.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Exebite.DataAccess.Context
+namespace Exebite.DataAccess.Migrations
 {
     public class FoodOrderingContext : DbContext
     {
@@ -31,20 +31,14 @@ namespace Exebite.DataAccess.Context
 
         public DbSet<FoodEntityMealEntities> FoodEntityMealEntities { get; set; }
 
+        public DbSet<FoodEntityRecipeEntity> FoodEntityRecipeEntity { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<FoodEntity>()
                 .HasOne(r => r.Restaurant)
-                .WithMany(f => f.Foods);
-
-            modelBuilder.Entity<FoodEntity>()
-                .HasMany(r => r.Recipes);
-
-            modelBuilder.Entity<RecipeEntity>()
-                .HasMany(f => f.Foods);
-
-            modelBuilder.Entity<RecipeEntity>()
-                .HasOne(f => f.MainCourse);
+                .WithMany(f => f.Foods)
+                .HasForeignKey(k => k.RestaurantId);
 
             modelBuilder.Entity<FoodEntityMealEntities>()
                 .HasKey(t => new { t.FoodEntityId, t.MealEntityId });
@@ -52,6 +46,18 @@ namespace Exebite.DataAccess.Context
             modelBuilder.Entity<CustomerAliasesEntities>()
                 .HasOne(c => c.Customer)
                 .WithMany(a => a.Aliases);
+
+            modelBuilder.Entity<FoodEntityRecipeEntity>()
+                .HasKey(k => new { k.FoodEntityId, k.RecepieEntityId });
+
+            modelBuilder.Entity<FoodEntityRecipeEntity>()
+                .HasOne(r => r.RecipeEntity)
+                .WithMany(fr => fr.FoodEntityRecipeEntities)
+                .HasForeignKey(k => k.RecepieEntityId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<RestaurantEntity>()
+                .HasMany(f => f.DailyMenu);
         }
     }
 }

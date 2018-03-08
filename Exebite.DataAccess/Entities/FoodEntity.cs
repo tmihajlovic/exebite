@@ -24,6 +24,7 @@ namespace Exebite.DataAccess.Entities
         [NotMapped]
         public virtual List<MealEntity> Meals { get; set; }
 
+        [NotMapped]
         public virtual List<RecipeEntity> Recipes { get; set; }
 
         [ForeignKey(nameof(Restaurant))]
@@ -32,5 +33,7 @@ namespace Exebite.DataAccess.Entities
         public virtual RestaurantEntity Restaurant { get; set; }
 
         public virtual List<FoodEntityMealEntities> FoodEntityMealEntity { get; set; }
+
+        public virtual List<FoodEntityRecipeEntity> FoodEntityRecipeEntities { get; set; }
     }
 }

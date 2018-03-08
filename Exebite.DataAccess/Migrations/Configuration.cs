@@ -4,6 +4,7 @@ namespace Exebite.DataAccess.Migrations
     {
         public Configuration()
         {
+
         }
 
         //protected override void Seed(Exebite.DataAccess.Context.FoodOrderingContext context)

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace Exebite.DataAccess.Context
+namespace Exebite.DataAccess.Migrations
 {
     public class FoodOrderingContextFactory : IFoodOrderingContextFactory, IDesignTimeDbContextFactory<FoodOrderingContext>
     {

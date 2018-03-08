@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.Model;
+using System.Linq;
 
 namespace Exebite.DataAccess
 {
@@ -23,6 +24,7 @@ namespace Exebite.DataAccess
                 cfg.CreateMap(typeof(LocationEntity), typeof(Location));
                 cfg.CreateMap(typeof(RecipeEntity), typeof(Recipe));
                 cfg.CreateMap(typeof(MealEntity), typeof(Meal));
+                cfg.CreateMap<MealEntity, Meal>().ForMember(f => f.Foods, v => v.MapFrom(c => c.FoodEntityMealEntities.Select(fl => fl.FoodEntity).ToList())); // Populate Food list from helper property for many-to-many
                 cfg.CreateMap(typeof(CustomerAliasesEntities), typeof(CustomerAliases));
 
                 cfg.CreateMap(typeof(Customer), typeof(CustomerEntity));
@@ -33,12 +35,13 @@ namespace Exebite.DataAccess
                 cfg.CreateMap(typeof(Location), typeof(LocationEntity));
                 cfg.CreateMap(typeof(Recipe), typeof(RecipeEntity));
                 cfg.CreateMap(typeof(Meal), typeof(MealEntity));
+                cfg.CreateMap<Meal, MealEntity>().ForMember(fm => fm.FoodEntityMealEntities, v => v.MapFrom(c => c.Foods.Select(f => new FoodEntityMealEntities { FoodEntityId = f.Id, MealEntityId = c.Id }).ToList())); // Populate helper property from food list
                 cfg.CreateMap(typeof(CustomerAliases), typeof(CustomerAliasesEntities));
             });
         }
 
         /// <summary>
-        /// Instance of the class
+        /// Gets instance of the class
         /// </summary>
         public static AutoMapperHelper Instance
         {
@@ -55,7 +58,6 @@ namespace Exebite.DataAccess
                 return _instance;
             }
         }
-
 
         /// <summary>
         /// Maps one object to another. Used for entity mapping.

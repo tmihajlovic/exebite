@@ -2,17 +2,17 @@
 
 namespace Exebite.DataAccess.Entities
 {
-    [Table(nameof(FoodEntityMealEntities))]
-    public class FoodEntityMealEntities
+    [Table(nameof(FoodEntityRecipeEntity))]
+    public class FoodEntityRecipeEntity
     {
         public int FoodEntityId { get; set; }
 
         [ForeignKey("FoodEntityId")]
         public virtual FoodEntity FoodEntity { get; set; }
 
-        public int MealEntityId { get; set; }
+        public int RecepieEntityId { get; set; }
 
-        [ForeignKey("MealEntityId")]
-        public virtual MealEntity MealEntity { get; set; }
+        [ForeignKey("RecepieEntityId")]
+        public virtual RecipeEntity RecipeEntity { get; set; }
     }
 }

@@ -1,6 +1,7 @@
-﻿using Exebite.DataAccess.Context;
+﻿using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Unity;
+
 namespace Exebite.DataAccess.Unity
 {
     public static class UnityConfig
@@ -8,7 +9,6 @@ namespace Exebite.DataAccess.Unity
         public static void RegisterTypes(IUnityContainer container)
         {
             container.RegisterType<IFoodOrderingContextFactory, FoodOrderingContextFactory>();
-            //container.RegisterType<typeof( IDatabaseRepository<> ),typeof(DatabaseRepository<>)>();
             container.RegisterType<ICustomerRepository, CustomerRepository>();
             container.RegisterType<IFoodRepository, FoodRepository>();
             container.RegisterType<ILocationRepository,LocationRepository>();
@@ -16,7 +16,6 @@ namespace Exebite.DataAccess.Unity
             container.RegisterType<IOrderRepository,OrderRepository>();
             container.RegisterType<IRecipeRepository, RecipeRepository>();
             container.RegisterType<IRestaurantRepository, RestaurantRepository>();
-            
         }
     }
 }

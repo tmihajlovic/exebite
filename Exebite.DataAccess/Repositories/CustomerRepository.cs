@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
+using Exebite.DataAccess.Migrations;
 using Exebite.Model;
 
 namespace Exebite.DataAccess.Repositories
@@ -14,36 +14,32 @@ namespace Exebite.DataAccess.Repositories
         {
             this._factory = factory;
         }
-
+        
         public Customer GetByName(string name)
         {
             using (var context = _factory.Create())
             {
-                var customerEntity = context.Customers.Where(ce => ce.Name == name).FirstOrDefault();
-                var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(customerEntity);
-                return customer;
+                var customerEntity = context.Customers.FirstOrDefault(ce => ce.Name == name);
+                if (customerEntity != null)
+                {
+                    var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(customerEntity);
+                    return customer;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
-        public override Customer Insert(Customer entity)
+        public override Customer Insert(Customer customer)
         {
             using (var context = _factory.Create())
             {
-                var customerEntity = AutoMapperHelper.Instance.GetMappedValue<CustomerEntity>(entity);
+                var customerEntity = AutoMapperHelper.Instance.GetMappedValue<CustomerEntity>(customer);
+                customerEntity.Location = context.Locations.Find(customerEntity.LocationId);
 
-                // TPMCODE
-                if (customerEntity.Location == null)
-                {
-                    customerEntity.Location = context.Locations.FirstOrDefault(l => l.Id == 1);
-                }
-
-                var location = context.Locations.FirstOrDefault(l => l.Name == customerEntity.Location.Name);
-                if (location != null)
-                {
-                    customerEntity.Location = location;
-                }
-
-                var resultEntity = context.Customers.Add(customerEntity);
+                var resultEntity = context.Customers.Update(customerEntity).Entity;
                 context.SaveChanges();
                 var result = AutoMapperHelper.Instance.GetMappedValue<Customer>(resultEntity);
                 return result;
@@ -59,16 +55,17 @@ namespace Exebite.DataAccess.Repositories
                 oldCustomerEntity.LocationId = customerEntity.Location.Id;
                 context.Entry(oldCustomerEntity).CurrentValues.SetValues(customerEntity);
 
+                // bind db values
+                oldCustomerEntity.Location = context.Locations.Find(oldCustomerEntity.LocationId);
+                for (int i = 0; i < customerEntity.Aliases.Count; i++)
+                {
+                    var restId = customerEntity.Aliases[i].Restaurant.Id;
+                    customerEntity.Aliases[i].Restaurant = context.Restaurants.First(r => r.Id == restId);
+                    customerEntity.Aliases[i].Customer = oldCustomerEntity;
+                }
+
                 oldCustomerEntity.Aliases.Clear();
                 oldCustomerEntity.Aliases.AddRange(customerEntity.Aliases);
-
-                // bind
-                for (int i =0; i < oldCustomerEntity.Aliases.Count; i++)
-                {
-                    var restId = oldCustomerEntity.Aliases[i].Restaurant.Id;
-                    oldCustomerEntity.Aliases[i].Restaurant = context.Restaurants.First(r => r.Id ==restId) ;
-                    oldCustomerEntity.Aliases[i].Customer = oldCustomerEntity;
-                }
 
                 context.SaveChanges();
                 var resultEntity = context.Customers.FirstOrDefault(c => c.Id == entity.Id);
