@@ -1,8 +1,10 @@
-﻿using Exebite.DataAccess.Migrations;
-using Exebite.DataAccess.Repositories;
+﻿using AutoMapper.QueryableExtensions;
+using Exebite.DataAccess.Entities;
+using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Linq;
 using Unity;
 using Unity.Resolution;
@@ -15,6 +17,9 @@ namespace Exebite.DataAccess.Test.Tests
         private static IFoodOrderingContextFactory _factory;
         private static ICustomerRepository _customerRepository;
         private static IUnityContainer _container;
+        private static List<Location> _locations;
+        private static List<Customer> _customers;
+        private static List<Restaurant> _restaurants;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
@@ -24,6 +29,12 @@ namespace Exebite.DataAccess.Test.Tests
             Unity.UnityConfig.RegisterTypes(_container);
             _customerRepository = _container.Resolve<ICustomerRepository>(new ParameterOverride("factory", _factory));
             InMemorySeed.Seed(_factory);
+            using (var context = _factory.Create())
+            {
+                _locations = context.Locations.Select(l => AutoMapperHelper.Instance.GetMappedValue<Location>(l)).ToList();
+                _customers = context.Customers.Select(c => AutoMapperHelper.Instance.GetMappedValue<Customer>(c)).ToList();
+                _restaurants = context.Restaurants.Select(r => AutoMapperHelper.Instance.GetMappedValue<Restaurant>(r)).ToList();
+            }
         }
 
         [TestMethod]
@@ -44,6 +55,7 @@ namespace Exebite.DataAccess.Test.Tests
         public void GetAllCustomers()
         {
             var result = _customerRepository.GetAll().ToList();
+            Assert.AreNotEqual(result.Count, 0);
         }
 
         [TestMethod]
@@ -64,7 +76,14 @@ namespace Exebite.DataAccess.Test.Tests
         public void UpdateAlias()
         {
             var customer = _customerRepository.GetByID(1);
-            customer.Aliases.Add(new CustomerAliases { Alias = "Test Alisas", Customer = customer, Restaurant = new Restaurant { Id = 1 } });
+            var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(_restaurants.FirstOrDefault());
+            var newAlisas = new CustomerAliases
+            {
+                Alias = "Test Alisas",
+                Customer = customer,
+                Restaurant = restaurant
+            };
+            customer.Aliases.Add(newAlisas);
             var result = _customerRepository.Update(customer);
             Assert.AreEqual(result.Aliases.First().Alias, "Test Alisas");
         }
@@ -73,7 +92,8 @@ namespace Exebite.DataAccess.Test.Tests
         public void UpdateLocation()
         {
             var customer = _customerRepository.GetByID(1);
-            customer.Location = new Location { Id = 2 };
+            var newLocation = AutoMapperHelper.Instance.GetMappedValue<Location>(_locations.FirstOrDefault(l => l.Id == 2));
+            customer.Location = newLocation;
             var result = _customerRepository.Update(customer);
             Assert.AreEqual(result.Location.Name, "JD");
         }
@@ -92,8 +112,10 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void RemoveCustomer()
         {
-            _customerRepository.Delete(1);
-            var result = _customerRepository.GetByID(1);
+            var customerForDelete = _customerRepository.GetByName("Test Customer for delete");
+            _customerRepository.Delete(customerForDelete.Id);
+            var result = _customerRepository.GetByID(customerForDelete.Id);
+            Assert.IsNull(result);
         }
     }
 }

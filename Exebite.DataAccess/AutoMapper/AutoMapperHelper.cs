@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.Model;
 using System.Linq;
@@ -34,8 +35,7 @@ namespace Exebite.DataAccess
                 cfg.CreateMap(typeof(Restaurant), typeof(RestaurantEntity));
                 cfg.CreateMap(typeof(Location), typeof(LocationEntity));
                 cfg.CreateMap(typeof(Recipe), typeof(RecipeEntity));
-                cfg.CreateMap(typeof(Meal), typeof(MealEntity));
-                cfg.CreateMap<Meal, MealEntity>().ForMember(fm => fm.FoodEntityMealEntities, v => v.MapFrom(c => c.Foods.Select(f => new FoodEntityMealEntities { FoodEntityId = f.Id, MealEntityId = c.Id }).ToList())); // Populate helper property from food list
+                cfg.CreateMap(typeof(Meal), typeof(MealEntity)).ConvertUsing<MealToMealEntityConverter>();
                 cfg.CreateMap(typeof(CustomerAliases), typeof(CustomerAliasesEntities));
             });
         }

@@ -16,8 +16,6 @@ namespace Exebite.DataAccess.Entities
         [NotMapped]
         public virtual List<FoodEntity> Foods { get; set; }
 
-        public virtual OrderEntity Order { get; set; }
-
         public virtual List<FoodEntityMealEntities> FoodEntityMealEntities { get; set; }
     }
 }

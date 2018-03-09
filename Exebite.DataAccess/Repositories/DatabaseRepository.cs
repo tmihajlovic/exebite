@@ -45,14 +45,14 @@ namespace Exebite.DataAccess.Repositories
         /// <summary>
         /// Get <see cref="TModel"/> by Id
         /// </summary>
-        /// <param name="Id">Id of object</param>
+        /// <param name="id">Id of object</param>
         /// <returns><see cref="TModel"/> from database</returns>
-        public TModel GetByID(int Id)
+        public TModel GetByID(int id)
         {
             using (var context = _factory.Create())
             {
                 var itemSet = context.Set<TEntity>();
-                var itemEntity = itemSet.Find(Id);
+                var itemEntity = itemSet.Find(id);
                 if (itemEntity != null)
                 {
                     var item = AutoMapperHelper.Instance.GetMappedValue<TModel>(itemEntity);
@@ -70,13 +70,13 @@ namespace Exebite.DataAccess.Repositories
         /// <summary>
         /// Delete object from database
         /// </summary>
-        /// <param name="Id">Id of object to be deleted</param>
-        public void Delete(int Id)
+        /// <param name="id">Id of object to be deleted</param>
+        public void Delete(int id)
         {
             using (var context = _factory.Create())
             {
                 var itemSet = context.Set<TEntity>();
-                var item = itemSet.Find(Id);
+                var item = itemSet.Find(id);
                 itemSet.Remove(item);
                 context.SaveChanges();
             }

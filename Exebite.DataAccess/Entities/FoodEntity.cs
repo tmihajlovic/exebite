@@ -21,12 +21,6 @@ namespace Exebite.DataAccess.Entities
 
         public bool IsInactive { get; set; }
 
-        [NotMapped]
-        public virtual List<MealEntity> Meals { get; set; }
-
-        [NotMapped]
-        public virtual List<RecipeEntity> Recipes { get; set; }
-
         [ForeignKey(nameof(Restaurant))]
         public int RestaurantId { get; set; }
 

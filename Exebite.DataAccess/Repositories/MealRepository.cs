@@ -1,31 +1,31 @@
 ﻿using System.Linq;
-using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Entities;
+using Exebite.DataAccess.Migrations;
 using Exebite.Model;
 
 namespace Exebite.DataAccess.Repositories
 {
     public class MealRepository : DatabaseRepository<Meal, MealEntity>, IMealRepository
     {
-        IFoodOrderingContextFactory _factory;
+        private IFoodOrderingContextFactory _factory;
+
         public MealRepository(IFoodOrderingContextFactory factory)
-            :base(factory)
+            : base(factory)
         {
             this._factory = factory;
         }
-        
+
         public override Meal Insert(Meal entity)
         {
             using (var context = _factory.Create())
             {
                 var mealEntity = AutoMapperHelper.Instance.GetMappedValue<MealEntity>(entity);
-                
-                //bind food
-                for(int i=0; i<mealEntity.Foods.Count; i++)
+
+                // bind food
+                for (int i = 0; i < mealEntity.Foods.Count; i++)
                 {
                     mealEntity.Foods[i] = context.Foods.SingleOrDefault(f => f.Id == mealEntity.Foods[i].Id);
                 }
-
 
                 var resultEntity = context.Meals.Add(mealEntity);
                 context.SaveChanges();
@@ -33,12 +33,7 @@ namespace Exebite.DataAccess.Repositories
                 return result;
             }
         }
-        
-        /// <summary>
-        /// Update the meal entity.
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
+
         public override Meal Update(Meal entity)
         {
             using (var context = _factory.Create())
@@ -47,9 +42,8 @@ namespace Exebite.DataAccess.Repositories
                 var oldMealEntity = context.Meals.SingleOrDefault(m => m.Id == entity.Id);
                 context.Entry(oldMealEntity).CurrentValues.SetValues(mealEntity);
 
-                //bind food
-
-                for(int i =0; i< oldMealEntity.Foods.Count; i++)
+                // bind food
+                for (int i = 0; i < oldMealEntity.Foods.Count; i++)
                 {
                     oldMealEntity.Foods[i] = context.Foods.SingleOrDefault(f => f.Id == oldMealEntity.Foods[i].Id);
                 }
@@ -62,7 +56,5 @@ namespace Exebite.DataAccess.Repositories
                 return result;
             }
         }
-        
-
     }
 }

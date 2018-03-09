@@ -37,7 +37,7 @@ namespace Exebite.DataAccess.Repositories
             using (var context = _factory.Create())
             {
                 var foodEntity = AutoMapperHelper.Instance.GetMappedValue<FoodEntity>(entity);
-                var resultEntity = context.Foods.Add(foodEntity);
+                var resultEntity = context.Foods.Update(foodEntity).Entity;
                 context.SaveChanges();
                 var result = AutoMapperHelper.Instance.GetMappedValue<Food>(resultEntity);
                 return result;
@@ -49,14 +49,14 @@ namespace Exebite.DataAccess.Repositories
             using (var context = _factory.Create())
             {
                 var foodEntity = AutoMapperHelper.Instance.GetMappedValue<FoodEntity>(entity);
-                var oldFoodEntity = context.Foods.SingleOrDefault(f => f.Name == entity.Name);
-
-                oldFoodEntity.Price = entity.Price;
-                oldFoodEntity.Description = entity.Description;
-                oldFoodEntity.Type = entity.Type;
-
+                foodEntity.FoodEntityMealEntity = new List<FoodEntityMealEntities>();
+                foodEntity.FoodEntityMealEntity.AddRange(context.FoodEntityMealEntities.Where(f => f.FoodEntityId == foodEntity.Id));
+                var dbFood = context.Foods.Find(entity.Id);
+                context.Entry(dbFood).CurrentValues.SetValues(foodEntity);
+                dbFood.FoodEntityMealEntity.Clear();
+                dbFood.FoodEntityMealEntity.AddRange(foodEntity.FoodEntityMealEntity);
                 context.SaveChanges();
-                var resultEntity = context.Foods.FirstOrDefault(f => f.Id == oldFoodEntity.Id);
+                var resultEntity = context.Foods.FirstOrDefault(f => f.Id == foodEntity.Id);
                 var result = AutoMapperHelper.Instance.GetMappedValue<Food>(resultEntity);
                 return result;
             }
