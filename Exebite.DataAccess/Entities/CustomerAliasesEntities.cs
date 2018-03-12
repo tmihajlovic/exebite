@@ -20,6 +20,5 @@ namespace Exebite.DataAccess.Entities
 
         [ForeignKey("RestaurantId")]
         public virtual RestaurantEntity Restaurant { get; set; }
-
     }
 }

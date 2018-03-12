@@ -28,7 +28,7 @@ namespace Exebite.JobScheduler
                     });
 
                 var exitCode = (int)Convert.ChangeType(rc, rc.GetTypeCode());
-                Environment.ExitCode = exitCode; 
+                Environment.ExitCode = exitCode;
             }
         }
     }

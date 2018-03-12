@@ -18,6 +18,7 @@ namespace Exebite.DataAccess.Test.InMemoryDB
             context.Restaurants.Add(new Entities.RestaurantEntity { Name = "Index House" });
             context.Restaurants.Add(new Entities.RestaurantEntity { Name = "Teglas" });
             context.Restaurants.Add(new Entities.RestaurantEntity { Name = "Extra Food" });
+            context.Restaurants.Add(new Entities.RestaurantEntity { Name = "For delete" });
             context.SaveChanges();
 
             // Seed locations
@@ -31,7 +32,8 @@ namespace Exebite.DataAccess.Test.InMemoryDB
             {
                 Name = "Test Customer",
                 AppUserId = "TestAppUserId",
-                Location = context.Locations.Single(l => l.Id == 1), Balance = 0,
+                Location = context.Locations.Single(l => l.Id == 1),
+                Balance = 0,
                 LocationId = 1
             });
             context.Customers.Add(new Entities.CustomerEntity
@@ -44,25 +46,73 @@ namespace Exebite.DataAccess.Test.InMemoryDB
             });
             context.SaveChanges();
 
+            // Seed alias
+            context.CustomerAliases.Add(new Entities.CustomerAliasesEntities
+            {
+                Alias = "Test customer alias",
+                Customer = context.Customers.Find(1),
+                CustomerId = 1,
+                Restaurant = context.Restaurants.Find(1),
+                RestaurantId = 1
+            });
+            context.SaveChanges();
+
             // Seed food
             context.Foods.Add(new Entities.FoodEntity
             {
                 Name = "Test food",
                 Description = "Test food description",
-                IsInactive = false, Price = 100,
+                IsInactive = false,
+                Price = 100,
                 Type = Model.FoodType.MAIN_COURSE,
                 RestaurantId = 1,
                 Restaurant = context.Restaurants.Find(1)
             });
+
             context.Foods.Add(new Entities.FoodEntity
             {
                 Name = "Test food for delete",
                 Description = "Food for delete",
-                IsInactive = false, Price = 100,
+                IsInactive = false,
+                Price = 100,
                 Type = Model.FoodType.MAIN_COURSE,
                 RestaurantId = 1,
                 Restaurant = context.Restaurants.Find(1)
             });
+
+            context.Foods.Add(new Entities.FoodEntity
+            {
+                Name = "Test side dish",
+                Description = "Side dish",
+                IsInactive = false,
+                Price = 100,
+                Type = Model.FoodType.SIDE_DISH,
+                RestaurantId = 1,
+                Restaurant = context.Restaurants.Find(1)
+            });
+
+            context.Foods.Add(new Entities.FoodEntity
+            {
+                Name = "Test condament 1",
+                Description = "Condament",
+                IsInactive = false,
+                Price = 100,
+                Type = Model.FoodType.CONDIMENTS,
+                RestaurantId = 1,
+                Restaurant = context.Restaurants.Find(1)
+            });
+
+            context.Foods.Add(new Entities.FoodEntity
+            {
+                Name = "Test salad",
+                Description = "Salad",
+                IsInactive = false,
+                Price = 100,
+                Type = Model.FoodType.SALAD,
+                RestaurantId = 1,
+                Restaurant = context.Restaurants.Find(1)
+            });
+
             context.SaveChanges();
 
             // Seed orders
@@ -109,6 +159,45 @@ namespace Exebite.DataAccess.Test.InMemoryDB
                     FoodEntity = context.Foods.Find(1),
                     MealEntity = tmp2.Entity.Meal,
                     MealEntityId = tmp2.Entity.Meal.Id
+                }
+            };
+            context.SaveChanges();
+
+            // Seed recipes
+            var recipe1 = context.Recipes.Add(new Entities.RecipeEntity
+            {
+                MainCourse = context.Foods.Find(1),
+                MainCourseId = 1,
+                Restaurant = context.Restaurants.Find(1),
+                RestaurantId = 1
+            });
+            recipe1.Entity.FoodEntityRecipeEntities = new List<Entities.FoodEntityRecipeEntity>
+            {
+                new Entities.FoodEntityRecipeEntity
+                {
+                     FoodEntity = context.Foods.FirstOrDefault(f => f.Type == Model.FoodType.CONDIMENTS),
+                     FoodEntityId = context.Foods.FirstOrDefault(f => f.Type == Model.FoodType.CONDIMENTS).Id,
+                     RecipeEntity = recipe1.Entity,
+                     RecepieEntityId = recipe1.Entity.Id
+                }
+            };
+            context.SaveChanges();
+
+            var recipe2 = context.Recipes.Add(new Entities.RecipeEntity
+            {
+                MainCourse = context.Foods.Find(1),
+                MainCourseId = 1,
+                Restaurant = context.Restaurants.Find(1),
+                RestaurantId = 1
+            });
+            recipe2.Entity.FoodEntityRecipeEntities = new List<Entities.FoodEntityRecipeEntity>
+            {
+                new Entities.FoodEntityRecipeEntity
+                {
+                     FoodEntity = context.Foods.FirstOrDefault(f => f.Type == Model.FoodType.SIDE_DISH),
+                     FoodEntityId = context.Foods.FirstOrDefault(f => f.Type == Model.FoodType.SIDE_DISH).Id,
+                     RecipeEntity = recipe2.Entity,
+                     RecepieEntityId = recipe2.Entity.Id
                 }
             };
             context.SaveChanges();

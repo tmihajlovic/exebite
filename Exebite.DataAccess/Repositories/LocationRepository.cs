@@ -19,10 +19,10 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var locEntity = AutoMapperHelper.Instance.GetMappedValue<LocationEntity>(entity);
+                var locEntity = AutoMapperHelper.Instance.GetMappedValue<LocationEntity>(entity, context);
                 var resultEntity = context.Locations.Update(locEntity).Entity;
                 context.SaveChanges();
-                var result = AutoMapperHelper.Instance.GetMappedValue<Location>(resultEntity);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Location>(resultEntity, context);
                 return result;
             }
         }
@@ -31,11 +31,11 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var locationEntity = AutoMapperHelper.Instance.GetMappedValue<LocationEntity>(entity);
+                var locationEntity = AutoMapperHelper.Instance.GetMappedValue<LocationEntity>(entity, context);
                 context.Attach(locationEntity);
                 context.SaveChanges();
                 var resultEntry = context.Locations.FirstOrDefault(l => l.Id == entity.Id);
-                var result = AutoMapperHelper.Instance.GetMappedValue<Location>(resultEntry);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Location>(resultEntry, context);
                 return result;
             }
         }

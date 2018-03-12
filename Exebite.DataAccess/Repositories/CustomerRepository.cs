@@ -22,7 +22,7 @@ namespace Exebite.DataAccess.Repositories
                 var customerEntity = context.Customers.FirstOrDefault(ce => ce.Name == name);
                 if (customerEntity != null)
                 {
-                    var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(customerEntity);
+                    var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(customerEntity, context);
                     return customer;
                 }
                 else
@@ -36,10 +36,10 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var customerEntity = AutoMapperHelper.Instance.GetMappedValue<CustomerEntity>(customer);
+                var customerEntity = AutoMapperHelper.Instance.GetMappedValue<CustomerEntity>(customer, context);
                 var resultEntity = context.Customers.Update(customerEntity).Entity;
                 context.SaveChanges();
-                var result = AutoMapperHelper.Instance.GetMappedValue<Customer>(resultEntity);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Customer>(resultEntity, context);
                 return result;
             }
         }
@@ -48,11 +48,11 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var customerEntity = AutoMapperHelper.Instance.GetMappedValue<CustomerEntity>(entity);
+                var customerEntity = AutoMapperHelper.Instance.GetMappedValue<CustomerEntity>(entity, context);
                 context.Attach(customerEntity);
                 context.SaveChanges();
                 var resultEntity = context.Customers.FirstOrDefault(c => c.Id == entity.Id);
-                var result = AutoMapperHelper.Instance.GetMappedValue<Customer>(resultEntity);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Customer>(resultEntity, context);
                 return result;
             }
         }

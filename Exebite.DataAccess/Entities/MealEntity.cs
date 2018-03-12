@@ -13,9 +13,6 @@ namespace Exebite.DataAccess.Entities
 
         public decimal Price { get; set; }
 
-        [NotMapped]
-        public virtual List<FoodEntity> Foods { get; set; }
-
         public virtual List<FoodEntityMealEntities> FoodEntityMealEntities { get; set; }
     }
 }

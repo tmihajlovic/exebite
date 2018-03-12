@@ -148,6 +148,7 @@
     <Compile Include="Customer.cs" />
     <Compile Include="CustomerAliases.cs" />
     <Compile Include="Food.cs" />
+    <Compile Include="FoodType.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Meal.cs" />

@@ -35,7 +35,7 @@ namespace Exebite.DataAccess.Repositories
 
                 foreach (var orderEntity in orderEntityList)
                 {
-                    var order = AutoMapperHelper.Instance.GetMappedValue<Order>(orderEntity);
+                    var order = AutoMapperHelper.Instance.GetMappedValue<Order>(orderEntity, context);
                     orderList.Add(order);
                 }
 
@@ -51,7 +51,7 @@ namespace Exebite.DataAccess.Repositories
                 var orderList = new List<Order>();
                 foreach (var orderEntity in orderEntityList)
                 {
-                    var order = AutoMapperHelper.Instance.GetMappedValue<Order>(orderEntity);
+                    var order = AutoMapperHelper.Instance.GetMappedValue<Order>(orderEntity, context);
                     orderList.Add(order);
                 }
 
@@ -63,12 +63,12 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var orderEntity = AutoMapperHelper.Instance.GetMappedValue<OrderEntity>(entity);
+                var orderEntity = AutoMapperHelper.Instance.GetMappedValue<OrderEntity>(entity, context);
 
-                var resultEntity = context.Update(orderEntity);
+                var resultEntity = context.Update(orderEntity).Entity;
                 context.SaveChanges();
 
-                var result = AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity, context);
                 return result;
             }
         }
@@ -77,12 +77,14 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var orderEntity = AutoMapperHelper.Instance.GetMappedValue<OrderEntity>(entity);
-                context.Attach(orderEntity);
+                var orderEntity = AutoMapperHelper.Instance.GetMappedValue<OrderEntity>(entity, context);
+                context.Update(orderEntity.Meal);
+                var oldEntity = context.Orders.FirstOrDefault(o => o.Id == entity.Id);
+                context.Entry(oldEntity).CurrentValues.SetValues(orderEntity);
                 context.SaveChanges();
 
                 var resultEntity = context.Orders.FirstOrDefault(o => o.Id == entity.Id);
-                var result = AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity, context);
                 return result;
             }
         }

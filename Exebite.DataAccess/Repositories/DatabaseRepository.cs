@@ -34,7 +34,7 @@ namespace Exebite.DataAccess.Repositories
 
                 foreach (var item in itemSet)
                 {
-                    var itemModel = AutoMapperHelper.Instance.GetMappedValue<TModel>(item);
+                    var itemModel = AutoMapperHelper.Instance.GetMappedValue<TModel>(item, context);
                     itemList.Add(itemModel);
                 }
 
@@ -55,7 +55,7 @@ namespace Exebite.DataAccess.Repositories
                 var itemEntity = itemSet.Find(id);
                 if (itemEntity != null)
                 {
-                    var item = AutoMapperHelper.Instance.GetMappedValue<TModel>(itemEntity);
+                    var item = AutoMapperHelper.Instance.GetMappedValue<TModel>(itemEntity, context);
                     return item;
                 }
                 else

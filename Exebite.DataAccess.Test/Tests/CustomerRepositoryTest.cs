@@ -29,12 +29,6 @@ namespace Exebite.DataAccess.Test.Tests
             Unity.UnityConfig.RegisterTypes(_container);
             _customerRepository = _container.Resolve<ICustomerRepository>(new ParameterOverride("factory", _factory));
             InMemorySeed.Seed(_factory);
-            using (var context = _factory.Create())
-            {
-                _locations = context.Locations.Select(l => AutoMapperHelper.Instance.GetMappedValue<Location>(l)).ToList();
-                _customers = context.Customers.Select(c => AutoMapperHelper.Instance.GetMappedValue<Customer>(c)).ToList();
-                _restaurants = context.Restaurants.Select(r => AutoMapperHelper.Instance.GetMappedValue<Restaurant>(r)).ToList();
-            }
         }
 
         [TestMethod]
@@ -75,27 +69,33 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void UpdateAlias()
         {
-            var customer = _customerRepository.GetByID(1);
-            var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(_restaurants.FirstOrDefault());
-            var newAlisas = new CustomerAliases
+            using (var context = _factory.Create())
             {
-                Alias = "Test Alisas",
-                Customer = customer,
-                Restaurant = restaurant
-            };
-            customer.Aliases.Add(newAlisas);
-            var result = _customerRepository.Update(customer);
-            Assert.AreEqual(result.Aliases.First().Alias, "Test Alisas");
+                var customer = _customerRepository.GetByID(1);
+                var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(context.Restaurants.FirstOrDefault(), context);
+                var newAlisas = new CustomerAliases
+                {
+                    Alias = "Test Alisas",
+                    Customer = customer,
+                    Restaurant = restaurant
+                };
+                customer.Aliases.Add(newAlisas);
+                var result = _customerRepository.Update(customer);
+                Assert.IsNotNull(result.Aliases.Where(a => a.Alias == "Test Alisas"));
+            }
         }
 
         [TestMethod]
         public void UpdateLocation()
         {
-            var customer = _customerRepository.GetByID(1);
-            var newLocation = AutoMapperHelper.Instance.GetMappedValue<Location>(_locations.FirstOrDefault(l => l.Id == 2));
-            customer.Location = newLocation;
-            var result = _customerRepository.Update(customer);
-            Assert.AreEqual(result.Location.Name, "JD");
+            using (var context = _factory.Create())
+            {
+                var customer = _customerRepository.GetByID(1);
+                var newLocation = AutoMapperHelper.Instance.GetMappedValue<Location>(context.Locations.FirstOrDefault(l => l.Id == 2), context);
+                customer.Location = newLocation;
+                var result = _customerRepository.Update(customer);
+                Assert.AreEqual(result.Location.Name, "JD");
+            }
         }
 
         [TestMethod]

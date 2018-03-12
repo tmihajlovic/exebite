@@ -45,55 +45,63 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void GetFoodsByRestaurant()
         {
-            var context = _factory.Create();
-            var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(context.Restaurants.Find(1));
-            var result = _foodRepository.GetByRestaurant(restaurant).ToList();
-            Assert.AreNotEqual(result.Count, 0);
+            using (var context = _factory.Create())
+            {
+                var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(context.Restaurants.Find(1), context);
+                var result = _foodRepository.GetByRestaurant(restaurant).ToList();
+                Assert.AreNotEqual(result.Count, 0); 
+            }
         }
 
         [TestMethod]
         public void InsertFood()
         {
-            var context = _factory.Create();
-            var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(context.Restaurants.Find(1));
-
-            var newFood = new Food()
+            using (var context = _factory.Create())
             {
-                Name = "NewFood",
-                Description = "New Food",
-                IsInactive = false,
-                Price = 100,
-                Type = FoodType.MAIN_COURSE,
-                Restaurant = restaurant
-            };
-            var result = _foodRepository.Insert(newFood);
-            Assert.IsNotNull(result);
+                var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(context.Restaurants.Find(1), context);
+
+                var newFood = new Food()
+                {
+                    Name = "NewFood",
+                    Description = "New Food",
+                    IsInactive = false,
+                    Price = 100,
+                    Type = FoodType.MAIN_COURSE,
+                    Restaurant = restaurant
+                };
+                var result = _foodRepository.Insert(newFood);
+                Assert.IsNotNull(result);
+            }
         }
 
         [TestMethod]
         public void UpdateFood()
         {
-            var context = _factory.Create();
-            var food = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.Find(1));
-            food.Name = "NewName";
-            food.Description = "NewDesc";
-            food.Price = 200;
-            food.Type = FoodType.DESERT;
-            var result = _foodRepository.Update(food);
-            Assert.AreEqual(result.Name, food.Name);
-            Assert.AreEqual(result.Description, food.Description);
-            Assert.AreEqual(result.Price, food.Price);
-            Assert.AreEqual(result.Type, food.Type);
+            using (var context = _factory.Create())
+            {
+                var food = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.Find(1), context);
+                food.Name = "NewName";
+                food.Description = "NewDesc";
+                food.Price = 200;
+                food.Type = FoodType.DESERT;
+                var result = _foodRepository.Update(food);
+                Assert.AreEqual(result.Name, food.Name);
+                Assert.AreEqual(result.Description, food.Description);
+                Assert.AreEqual(result.Price, food.Price);
+                Assert.AreEqual(result.Type, food.Type); 
+            }
         }
 
         [TestMethod]
         public void DeleteFood()
         {
-            var context = _factory.Create();
-            var food = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.First(f => f.Name == "Test food for delete"));
-            _foodRepository.Delete(food.Id);
-            var result = _foodRepository.GetByID(food.Id);
-            Assert.IsNull(result);
+            using (var context = _factory.Create())
+            {
+                var food = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.First(f => f.Name == "Test food for delete"), context);
+                _foodRepository.Delete(food.Id);
+                var result = _foodRepository.GetByID(food.Id);
+                Assert.IsNull(result); 
+            }
         }
     }
 }

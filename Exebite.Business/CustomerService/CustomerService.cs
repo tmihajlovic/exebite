@@ -7,18 +7,17 @@ namespace Exebite.Business
 {
     public class CustomerService : ICustomerService
     {
+        private ICustomerRepository _customerHandler;
 
-        ICustomerRepository _customerHandler;
+        public CustomerService(ICustomerRepository customerHandler)
+        {
+            _customerHandler = customerHandler;
+        }
 
         public Customer GetCustomerByIdentityId(string Id)
         {
             var users = _customerHandler.GetAll();
             return users.FirstOrDefault(c => c.AppUserId == Id);
-        }
-
-        public CustomerService(ICustomerRepository customerHandler)
-        {
-            _customerHandler = customerHandler;
         }
 
         public List<Customer> GetAllCustomers()
@@ -50,6 +49,5 @@ namespace Exebite.Business
         {
             _customerHandler.Delete(customerId);
         }
-
     }
 }

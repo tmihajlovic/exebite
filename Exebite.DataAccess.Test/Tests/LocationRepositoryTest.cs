@@ -57,23 +57,27 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void UpdateLocation()
         {
-            var context = _factory.Create();
-            var location = AutoMapperHelper.Instance.GetMappedValue<Location>(context.Locations.Find(1));
-            location.Name = "UpdatedName";
-            location.Address = "UpdatedAddress";
-            var result = _locationRepository.Update(location);
-            Assert.AreEqual(result.Name, location.Name);
-            Assert.AreEqual(result.Address, location.Address);
+            using (var context = _factory.Create())
+            {
+                var location = AutoMapperHelper.Instance.GetMappedValue<Location>(context.Locations.Find(1), context);
+                location.Name = "UpdatedName";
+                location.Address = "UpdatedAddress";
+                var result = _locationRepository.Update(location);
+                Assert.AreEqual(result.Name, location.Name);
+                Assert.AreEqual(result.Address, location.Address); 
+            }
         }
 
         [TestMethod]
         public void DeleteLocation()
         {
-            var context = _factory.Create();
-            var location = AutoMapperHelper.Instance.GetMappedValue<Location>(context.Locations.First(l => l.Name == "For delete"));
-            _locationRepository.Delete(location.Id);
-            var result = _locationRepository.GetByID(location.Id);
-            Assert.IsNull(result);
+            using (var context = _factory.Create())
+            {
+                var location = AutoMapperHelper.Instance.GetMappedValue<Location>(context.Locations.First(l => l.Name == "For delete"), context);
+                _locationRepository.Delete(location.Id);
+                var result = _locationRepository.GetByID(location.Id);
+                Assert.IsNull(result);
+            }
         }
     }
 }

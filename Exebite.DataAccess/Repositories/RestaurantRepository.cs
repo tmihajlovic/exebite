@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Entities;
+using Exebite.DataAccess.Migrations;
 using Exebite.Model;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class RestaurantRepository : DatabaseRepository<Restaurant,RestaurantEntity> ,IRestaurantRepository
+    public class RestaurantRepository : DatabaseRepository<Restaurant, RestaurantEntity>, IRestaurantRepository
     {
-        IFoodOrderingContextFactory _factory;
+        private IFoodOrderingContextFactory _factory;
 
         public RestaurantRepository(IFoodOrderingContextFactory factory)
-            :base(factory)
+            : base(factory)
         {
             _factory = factory;
         }
@@ -21,7 +21,12 @@ namespace Exebite.DataAccess.Repositories
             using (var context = _factory.Create())
             {
                 var restaurantEntity = context.Restaurants.Where(r => r.Name == name).FirstOrDefault();
-                var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(restaurantEntity);
+                if (restaurantEntity == null)
+                {
+                    return null;
+                }
+
+                var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(restaurantEntity, context);
                 return restaurant;
             }
         }
@@ -30,11 +35,11 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var restaurantEntity = AutoMapperHelper.Instance.GetMappedValue<RestaurantEntity>(entity);
+                var restaurantEntity = AutoMapperHelper.Instance.GetMappedValue<RestaurantEntity>(entity, context);
 
-                var addedEntity = context.Restaurants.Add(restaurantEntity);
+                var addedEntity = context.Restaurants.Add(restaurantEntity).Entity;
                 context.SaveChanges();
-                var addedModel = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(addedEntity);
+                var addedModel = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(addedEntity, context);
                 return addedModel;
             }
         }
@@ -43,15 +48,17 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var restaurantEntity = AutoMapperHelper.Instance.GetMappedValue<RestaurantEntity>(entity);
+                var restaurantEntity = AutoMapperHelper.Instance.GetMappedValue<RestaurantEntity>(entity, context);
 
                 var dbRestaurant = context.Restaurants.FirstOrDefault(r => r.Id == entity.Id);
                 context.Entry(dbRestaurant).CurrentValues.SetValues(restaurantEntity);
 
                 List<FoodEntity> foodList = context.Foods.Where(f => f.Restaurant.Id == dbRestaurant.Id).ToList();
-                //clear old menu
+
+                // clear old menu
                 dbRestaurant.DailyMenu.Clear();
-                //bind daily food entitys
+
+                // bind daily food entitys
                 for (int i = 0; i < restaurantEntity.DailyMenu.Count; i++)
                 {
                     var tmpfood = foodList.FirstOrDefault(f => f.Name == restaurantEntity.DailyMenu[i].Name);
@@ -66,34 +73,10 @@ namespace Exebite.DataAccess.Repositories
                     }
                 }
 
-                //bind all food entitys
-                for (int i = 0; i < restaurantEntity.Foods.Count; i++)
-                {
-                    var tmpfood = foodList.FirstOrDefault(f => f.Name == restaurantEntity.Foods[i].Name);
-                    if (tmpfood != null)
-                    {
-                        dbRestaurant.Foods.Add(tmpfood);
-                    }
-                    else
-                    {
-                        restaurantEntity.Foods[i].Restaurant = dbRestaurant;
-                        restaurantEntity.Foods[i].IsInactive = false;
-                        dbRestaurant.Foods.Add(restaurantEntity.Foods[i]);
-                    }
-                }
-                //inactivate deleted food
-                for(int i = 0; i<foodList.Count; i++)
-                {
-                    if(restaurantEntity.Foods.FirstOrDefault(f => f.Name == foodList[i].Name) == null)
-                    {
-                        foodList[i].IsInactive = true;
-                    }
-                }
-
                 context.SaveChanges();
-                
+
                 var resultEntity = context.Restaurants.FirstOrDefault(r => r.Id == entity.Id);
-                var result = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(resultEntity);
+                var result = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(resultEntity, context);
                 return result;
             }
         }

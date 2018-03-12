@@ -41,7 +41,7 @@ namespace Exebite.DataAccess.Migrations
                 .HasForeignKey(k => k.RestaurantId);
 
             modelBuilder.Entity<FoodEntityMealEntities>()
-                .HasKey(t => new { t.FoodEntityId, t.MealEntityId });
+                .HasKey(t => t.Id);
 
             modelBuilder.Entity<CustomerAliasesEntities>()
                 .HasOne(c => c.Customer)
@@ -58,6 +58,9 @@ namespace Exebite.DataAccess.Migrations
 
             modelBuilder.Entity<RestaurantEntity>()
                 .HasMany(f => f.DailyMenu);
+
+            modelBuilder.Entity<FoodEntityRecipeEntity>()
+                .HasKey(k => new { k.FoodEntityId, k.RecepieEntityId });
         }
     }
 }
