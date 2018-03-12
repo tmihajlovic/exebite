@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>Exebite.Business.Test</AssemblyName>
+
+    <RootNamespace>Exebite.Business.Test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Exebite.DataAccess\Exebite.DataAccess.csproj" />
+    <ProjectReference Include="..\Exebite.Business\Exebite.Business.csproj" />
   </ItemGroup>
 
 </Project>

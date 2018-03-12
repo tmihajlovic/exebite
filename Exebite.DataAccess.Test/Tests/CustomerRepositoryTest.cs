@@ -17,9 +17,6 @@ namespace Exebite.DataAccess.Test.Tests
         private static IFoodOrderingContextFactory _factory;
         private static ICustomerRepository _customerRepository;
         private static IUnityContainer _container;
-        private static List<Location> _locations;
-        private static List<Customer> _customers;
-        private static List<Restaurant> _restaurants;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
