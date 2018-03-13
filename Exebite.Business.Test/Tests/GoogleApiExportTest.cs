@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Exebite.Business.GoogleApiImportExport;
 using Exebite.Business.Test.Mocks;
-using Exebite.DataAccess;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
-using Exebite.GoogleSpreadsheetApi.RestaurantConectorsInterfaces;
+using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Exebite.Business.Test.Tests

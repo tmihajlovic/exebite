@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using Exebite.GoogleSpreadsheetApi.RestaurantConectorsInterfaces;
+using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
-using GoogleSpreadsheetApi.Kasa;
 
 namespace Exebite.Business.GoogleApiImportExport
 {

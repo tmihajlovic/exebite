@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Exebite.GoogleSpreadsheetApi.RestaurantConectorsInterfaces;
+using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
 
 namespace Exebite.Business.Test.Mocks

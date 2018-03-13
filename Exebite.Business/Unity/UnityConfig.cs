@@ -15,9 +15,8 @@ namespace Exebite.Business.Unity
             container.RegisterType<IRestaurantService, RestaurantService>();
             container.RegisterType<IGoogleDataImporter, GoogleApiImport>();
             container.RegisterType<IGoogleDataExporter, GoogleApiExport>();
-            container.RegisterType<IGoogleApiOldSheets, GoogleApiOldSheets>();
             DataAccess.Unity.UnityConfig.RegisterTypes(container);
-            GoogleSpreadsheetApi.Unity.UnityConfig.RegisterTypes(container);
+            GoogleSheetAPI.Unity.UnityConfig.RegisterTypes(container);
         }
     }
 }

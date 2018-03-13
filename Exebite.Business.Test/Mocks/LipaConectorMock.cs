@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Exebite.DataAccess;
 using Exebite.DataAccess.Migrations;
-using Exebite.GoogleSpreadsheetApi.RestaurantConectorsInterfaces;
+using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
 
 namespace Exebite.Business.Test.Mocks

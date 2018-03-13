@@ -233,7 +233,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Exebite.Model\Exebite.Model.csproj">
+    <ProjectReference Include="..\..\Exebite.Model\Exebite.Model.csproj">
       <Project>{18A84D46-D8D4-44F1-B203-DA16BAD63DD0}</Project>
       <Name>Exebite.Model</Name>
     </ProjectReference>
