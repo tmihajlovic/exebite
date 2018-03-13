@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Exebite.Model
 {
-    class Payment
+    public class Payment
     {
         public int Id { get; set; }
 
@@ -15,6 +15,5 @@ namespace Exebite.Model
         public decimal Amount { get; set; }
 
         public DateTime Date { get; set; }
-
     }
 }

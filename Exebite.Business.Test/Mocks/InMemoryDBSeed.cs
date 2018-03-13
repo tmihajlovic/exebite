@@ -38,7 +38,7 @@ namespace Exebite.Business.Test.Mocks
             context.Customers.Add(new DataAccess.Entities.CustomerEntity
             {
                 Name = "Test Customer for delete",
-                AppUserId = "TestAppUserId",
+                AppUserId = "TestAppUserId2",
                 Location = context.Locations.Single(l => l.Id == 1),
                 Balance = 0,
                 LocationId = 1
@@ -184,8 +184,8 @@ namespace Exebite.Business.Test.Mocks
 
             var recipe2 = context.Recipes.Add(new DataAccess.Entities.RecipeEntity
             {
-                MainCourse = context.Foods.Find(1),
-                MainCourseId = 1,
+                MainCourse = context.Foods.Find(2),
+                MainCourseId = 2,
                 Restaurant = context.Restaurants.Find(1),
                 RestaurantId = 1
             });

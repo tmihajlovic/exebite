@@ -8,15 +8,11 @@ namespace Exebite.Business
 {
     public class OrderService : IOrderService
     {
-        IOrderRepository _orderHandler;
-        ICustomerRepository _customerHandler;
-        IRestaurantRepository _restaurantHandler;
+        private IOrderRepository _orderHandler;
 
-        public OrderService(IOrderRepository orderHandler, ICustomerRepository customerHandler, IRestaurantRepository restaurantHandler)
+        public OrderService(IOrderRepository orderHandler)
         {
             _orderHandler = orderHandler;
-            _customerHandler = customerHandler;
-            _restaurantHandler = restaurantHandler;
         }
 
         public List<Order> GetAllOrders()
@@ -26,13 +22,7 @@ namespace Exebite.Business
 
         public List<Order> GetAllOrdersForCustomer(int customerId)
         {
-            var customer = _customerHandler.GetByID(customerId);
-            if (customer == null)
-            {
-                return null;
-            }
-            return _orderHandler.GetOrdersForCustomer(customer).ToList();
-
+            return _orderHandler.GetOrdersForCustomer(customerId).ToList();
         }
 
         public List<Order> GetAllOrdersForRestoraunt(int restorauntId)
@@ -51,14 +41,14 @@ namespace Exebite.Business
             return _orderHandler.GetOrdersForDate(date).ToList();
         }
 
-        public void PlaceOreder(Order order)
+        public Order PlaceOreder(Order order)
         {
-            _orderHandler.Insert(order);
+            return _orderHandler.Insert(order);
         }
 
-        public void EditOrder(Order order)
+        public Order EditOrder(Order order)
         {
-            _orderHandler.Update(order);
+            return _orderHandler.Update(order);
         }
 
         public void CancelOrder(int orderId)

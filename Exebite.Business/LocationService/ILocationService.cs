@@ -1,19 +1,48 @@
-﻿using Exebite.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Exebite.Model;
 
 namespace Exebite.Business
 {
     public interface ILocationService
     {
+        /// <summary>
+        /// Get all location
+        /// </summary>
+        /// <returns>List of locations</returns>
         List<Location> GetAllLocations();
+
+        /// <summary>
+        /// Get <see cref="Location"/> by Id
+        /// </summary>
+        /// <param name="locationId">Id of location</param>
+        /// <returns>location with given Id</returns>
         Location GetLocationById(int locationId);
+
+        /// <summary>
+        /// Get <see cref="Location"/> by name
+        /// </summary>
+        /// <param name="name">name of location</param>
+        /// <returns>Location with given name</returns>
         Location GetLocationByName(string name);
-        void CreateNewLocation(Location location);
-        void UpdateLocation(Location location);
+
+        /// <summary>
+        /// Create new location
+        /// </summary>
+        /// <param name="location"><see cref="Location"/>to be created</param>
+        /// <returns>New location from database</returns>
+        Location CreateNewLocation(Location location);
+
+        /// <summary>
+        /// Update location info
+        /// </summary>
+        /// <param name="location"><see cref="Location"/> with new info</param>
+        /// <returns>Updated locatoin form database</returns>
+        Location UpdateLocation(Location location);
+
+        /// <summary>
+        /// Delete location from database
+        /// </summary>
+        /// <param name="locationId">Id of location to be deleted</param>
         void DeleteLocation(int locationId);
     }
 }

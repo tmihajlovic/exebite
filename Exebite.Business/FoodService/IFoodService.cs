@@ -1,20 +1,42 @@
-﻿using Exebite.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Exebite.Model;
 
 namespace Exebite.Business
 {
     public interface IFoodService
     {
+        /// <summary>
+        /// Get all foods in database
+        /// </summary>
+        /// <returns>List of all <see cref="Food"/> </returns>
         List<Food> GetAllFoods();
-        Food GetFoodById(int Id);
-        Food GetFoodByName(Food food);
-        Food GetOrCreateFood(Food food);
-        void CrateNewFood(Food food);
-        void UpdateFood(Food food);
+
+        /// <summary>
+        /// Gets <see cref="Food"/> with given Id
+        /// </summary>
+        /// <param name="id">Id of food</param>
+        /// <returns>Food with given Id</returns>
+        Food GetFoodById(int id);
+
+        /// <summary>
+        /// Create new <see cref="Food"/>
+        /// </summary>
+        /// <param name="food">new food from database</param>
+        /// <returns>Created food from database</returns>
+        Food CreateNewFood(Food food);
+
+        /// <summary>
+        /// Update food info
+        /// </summary>
+        /// <param name="food"><see cref="Food"/> with updated info</param>
+        /// <returns>Updated food from database</returns>
+        Food UpdateFood(Food food);
+
+        /// <summary>
+        /// Delete food from database
+        /// </summary>
+        /// <param name="foodId">Id of foood to be deleted</param>
         void Delete(int foodId);
     }
 }

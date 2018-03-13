@@ -12,7 +12,7 @@ namespace Exebite.Business.Unity
             container.RegisterType<ICustomerService, CustomerService>();
             container.RegisterType<IFoodService, FoodService>();
             container.RegisterType<ILocationService, LocationService>();
-            container.RegisterType<IRestarauntService, RestarauntService>();
+            container.RegisterType<IRestaurantService, RestaurantService>();
             container.RegisterType<IGoogleDataImporter, GoogleApiImport>();
             container.RegisterType<IGoogleDataExporter, GoogleApiExport>();
             container.RegisterType<IGoogleApiOldSheets, GoogleApiOldSheets>();

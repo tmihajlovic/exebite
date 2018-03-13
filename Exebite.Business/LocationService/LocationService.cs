@@ -7,7 +7,7 @@ namespace Exebite.Business
 {
     public class LocationService : ILocationService
     {
-        ILocationRepository _locationHandler;
+        private ILocationRepository _locationHandler;
 
         public LocationService(ILocationRepository locationHandler)
         {
@@ -27,17 +27,16 @@ namespace Exebite.Business
         public Location GetLocationByName(string name)
         {
             return _locationHandler.GetAll().SingleOrDefault(l => l.Name == name);
-            
         }
 
-        public void UpdateLocation(Location location)
+        public Location UpdateLocation(Location location)
         {
-            _locationHandler.Update(location);
+            return _locationHandler.Update(location);
         }
 
-        public void CreateNewLocation(Location location)
+        public Location CreateNewLocation(Location location)
         {
-            _locationHandler.Insert(location);
+            return _locationHandler.Insert(location);
         }
 
         public void DeleteLocation(int locationId)

@@ -49,8 +49,8 @@ namespace Exebite.DataAccess.Test.Tests
             using (var context = _factory.Create())
             {
                 var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(context.Customers.Find(1), context);
-                var result = _orderRepository.GetOrdersForCustomer(customer).ToList();
-                Assert.AreEqual(result.Count, customer.Orders.Count); 
+                var result = _orderRepository.GetOrdersForCustomer(customer.Id).ToList();
+                Assert.AreEqual(result.Count, customer.Orders.Count);
             }
         }
 
@@ -72,7 +72,7 @@ namespace Exebite.DataAccess.Test.Tests
                 order.Meal.Foods.Add(newFood);
                 var result = _orderRepository.Update(order);
                 Assert.AreEqual(result.Note, order.Note);
-                Assert.AreEqual(result.Meal.Foods.Count, order.Meal.Foods.Count); 
+                Assert.AreEqual(result.Meal.Foods.Count, order.Meal.Foods.Count);
             }
         }
 
@@ -91,7 +91,7 @@ namespace Exebite.DataAccess.Test.Tests
                 order.Date = DateTime.Now;
                 order.Customer = customer;
                 var result = _orderRepository.Insert(order);
-                Assert.IsNotNull(result); 
+                Assert.IsNotNull(result);
             }
         }
     }

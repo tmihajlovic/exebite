@@ -49,7 +49,7 @@ namespace Exebite.DataAccess.Test.Tests
             {
                 var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(context.Restaurants.Find(1), context);
                 var result = _foodRepository.GetByRestaurant(restaurant).ToList();
-                Assert.AreNotEqual(result.Count, 0); 
+                Assert.AreNotEqual(result.Count, 0);
             }
         }
 
@@ -88,7 +88,7 @@ namespace Exebite.DataAccess.Test.Tests
                 Assert.AreEqual(result.Name, food.Name);
                 Assert.AreEqual(result.Description, food.Description);
                 Assert.AreEqual(result.Price, food.Price);
-                Assert.AreEqual(result.Type, food.Type); 
+                Assert.AreEqual(result.Type, food.Type);
             }
         }
 
@@ -100,7 +100,7 @@ namespace Exebite.DataAccess.Test.Tests
                 var food = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.First(f => f.Name == "Test food for delete"), context);
                 _foodRepository.Delete(food.Id);
                 var result = _foodRepository.GetByID(food.Id);
-                Assert.IsNull(result); 
+                Assert.IsNull(result);
             }
         }
     }

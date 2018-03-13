@@ -1,6 +1,6 @@
-﻿using Exebite.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Exebite.Model;
 
 namespace Exebite.DataAccess
 {
@@ -18,8 +18,8 @@ namespace Exebite.DataAccess
         /// <summary>
         /// Get orders for given <see cref="Customer"/>
         /// </summary>
-        /// <param name="customer">Customer to get orders for</param>
+        /// <param name="customerId">Id of cutomer</param>
         /// <returns>List of all customers orders</returns>
-        IEnumerable<Order> GetOrdersForCustomer(Customer customer);
+        IEnumerable<Order> GetOrdersForCustomer(int customerId);
     }
 }

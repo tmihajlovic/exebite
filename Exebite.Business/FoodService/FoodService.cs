@@ -7,7 +7,7 @@ namespace Exebite.Business
 {
     public class FoodService : IFoodService
     {
-        IFoodRepository _foodHandler;
+        private IFoodRepository _foodHandler;
 
         public FoodService(IFoodRepository foodHandler)
         {
@@ -19,46 +19,24 @@ namespace Exebite.Business
             return _foodHandler.GetAll().ToList();
         }
 
-        public Food GetFoodById(int Id)
+        public Food GetFoodById(int id)
         {
-            return _foodHandler.GetByID(Id);
+            return _foodHandler.GetByID(id);
         }
 
-        public Food GetFoodByName(Food food)
+        public Food CreateNewFood(Food food)
         {
-            var allFood = this.GetAllFoods();
-            return allFood.SingleOrDefault(f => f.Name == food.Name && f.Restaurant.Id == food.Restaurant.Id);
+            return _foodHandler.Insert(food);
         }
 
-        public Food GetOrCreateFood(Food food)
+        public Food UpdateFood(Food food)
         {
-            this._foodHandler.GetByRestaurant(null);
-            var foodFromDB = this.GetFoodByName(food);
-            if(foodFromDB != null)
-            {
-                return foodFromDB;
-            }
-            else
-            {
-                _foodHandler.Insert(foodFromDB);
-                return this.GetFoodByName(food);
-            }
-        }
-
-        public void CrateNewFood(Food food)
-        {
-            _foodHandler.Insert(food);
-        }
-
-        public void UpdateFood(Food food)
-        {
-            _foodHandler.Update(food);
+            return _foodHandler.Update(food);
         }
 
         public void Delete(int foodId)
         {
             _foodHandler.Delete(foodId);
         }
-
     }
 }

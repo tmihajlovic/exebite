@@ -8,9 +8,9 @@ namespace Exebite.Business
 {
     public class MenuService : IMenuService
     {
-        IRestaurantRepository _restaurantHandler;
-        IFoodRepository _foodHandler;
-        IRecipeRepository _recipeHandler;
+        private IRestaurantRepository _restaurantHandler;
+        private IFoodRepository _foodHandler;
+        private IRecipeRepository _recipeHandler;
 
         public MenuService(IRestaurantRepository restaurantHandler, IFoodRepository foodHandler, IRecipeRepository recipeHandler)
         {
@@ -24,17 +24,17 @@ namespace Exebite.Business
             return _restaurantHandler.GetAll().ToList();
         }
 
-        public int CheckPrice(Meal meal)
+        public decimal CheckPrice(Meal meal)
         {
-            //TODO: when special offers are done implement check 
+            // TODO: when special offers are done implement check
             throw new NotImplementedException();
         }
 
         public List<Food> CheckAvailableSideDishes(int foodId)
         {
             var food = _foodHandler.GetByID(foodId);
-            var AllRecipe = _recipeHandler.GetAll();
-            return AllRecipe.SingleOrDefault(r => r.MainCourse == food).SideDish;
+            var allRecipe = _recipeHandler.GetAll();
+            return allRecipe.SingleOrDefault(r => r.MainCourse.Id == food.Id).SideDish;
         }
     }
 }

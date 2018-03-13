@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper.QueryableExtensions;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Migrations;
 using Exebite.Model;
@@ -11,25 +10,19 @@ namespace Exebite.DataAccess.Repositories
     public class OrderRepository : DatabaseRepository<Order, OrderEntity>, IOrderRepository
     {
         private IFoodOrderingContextFactory _factory;
-        private ICustomerRepository _cusomerHandler;
 
-        public OrderRepository(IFoodOrderingContextFactory factory, ICustomerRepository customerHandler)
+        public OrderRepository(IFoodOrderingContextFactory factory)
             : base(factory)
         {
-            _cusomerHandler = customerHandler;
             _factory = factory;
             var mapper = AutoMapperHelper.Instance;
         }
 
-        public IEnumerable<Order> GetOrdersForCustomer(Customer customer)
+        public IEnumerable<Order> GetOrdersForCustomer(int customerId)
         {
             using (var context = _factory.Create())
             {
-                var orderEntityList = context.Orders.Where(o =>
-                    o.Customer.Balance == customer.Balance
-                    && o.Customer.Name == customer.Name
-                    && o.Customer.Location.Name == customer.Location.Name
-                    && o.Customer.Location.Address == customer.Location.Address);
+                var orderEntityList = context.Orders.Where(o => o.CustomerId == customerId);
 
                 var orderList = new List<Order>();
 

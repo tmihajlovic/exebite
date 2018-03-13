@@ -5,11 +5,11 @@ using Exebite.Model;
 
 namespace Exebite.Business
 {
-    public class RestarauntService : IRestarauntService
+    public class RestaurantService : IRestaurantService
     {
-        IRestaurantRepository _restaurantRepository;
+        private IRestaurantRepository _restaurantRepository;
 
-        public RestarauntService(IRestaurantRepository restaurantHandler)
+        public RestaurantService(IRestaurantRepository restaurantHandler)
         {
             _restaurantRepository = restaurantHandler;
         }
@@ -19,9 +19,9 @@ namespace Exebite.Business
             return _restaurantRepository.GetAll().ToList();
         }
 
-        public Restaurant GetRestaurantById(int Id)
+        public Restaurant GetRestaurantById(int id)
         {
-            return _restaurantRepository.GetByID(Id);
+            return _restaurantRepository.GetByID(id);
         }
 
         public Restaurant GetRestaurantByName(string name)
@@ -29,14 +29,14 @@ namespace Exebite.Business
             return _restaurantRepository.GetByName(name);
         }
 
-        public void CreateNewRestaurant(Restaurant restaurant)
+        public Restaurant CreateNewRestaurant(Restaurant restaurant)
         {
-            _restaurantRepository.Insert(restaurant);
+            return _restaurantRepository.Insert(restaurant);
         }
 
-        public void UpdateRestourant(Restaurant restaurant)
+        public Restaurant UpdateRestourant(Restaurant restaurant)
         {
-            _restaurantRepository.Update(restaurant);
+            return _restaurantRepository.Update(restaurant);
         }
 
         public void DeleteRestourant(int restaurantId)

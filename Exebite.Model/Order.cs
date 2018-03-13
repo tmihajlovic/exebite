@@ -15,6 +15,5 @@ namespace Exebite.Model
         public Customer Customer { get; set; }
 
         public string Note { get; set; }
-
     }
 }
