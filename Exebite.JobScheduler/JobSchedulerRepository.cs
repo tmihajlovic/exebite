@@ -1,7 +1,7 @@
-﻿using Exebite.JobScheduler.Jobs;
+﻿using System.Threading.Tasks;
+using Exebite.JobScheduler.Jobs;
 using Quartz;
 using Quartz.Impl;
-using System.Threading.Tasks;
 
 namespace Exebite.JobScheduler
 {
@@ -20,30 +20,31 @@ namespace Exebite.JobScheduler
         /// </summary>
         public void RegisterJobsToDB()
         {
-            var UpdateDailyMenusJob = JobBuilder.Create<UpdateDailyMenus>()
+            var updateDailyMenusJob = JobBuilder.Create<UpdateDailyMenus>()
                 .WithIdentity("UpdateDailyMenus", "GoogleSheets")
                 .StoreDurably()
                 .RequestRecovery(true)
                 .Build();
-            scheduler.AddJob(UpdateDailyMenusJob, true);
-            
-            var WriteOrders = JobBuilder.Create<WriteOrders>()
+            scheduler.AddJob(updateDailyMenusJob, true);
+
+            var writeOrders = JobBuilder.Create<WriteOrders>()
                 .WithIdentity("WriteOrders", "GoogleSheets")
                 .StoreDurably()
                 .RequestRecovery(true)
                 .Build();
-            scheduler.AddJob(WriteOrders, true);
+            scheduler.AddJob(writeOrders, true);
         }
 
         /// <summary>
         /// Schedule job base on cron expresion
         /// </summary>
         /// <param name="jobName">Job to be schedule</param>
+        /// <param name="jobGroup">Job group</param>
         /// <param name="cronExpression">Cron expresion</param>
         /// <param name="name">Name of trigger</param>
         public void ScheduleJobCronExpression(string jobName, string jobGroup, string cronExpression, string name)
         {
-            var jobKey = new JobKey(jobName,jobGroup);
+            var jobKey = new JobKey(jobName, jobGroup);
             var trigger = TriggerBuilder.Create()
                 .WithIdentity(name)
                 .ForJob(jobKey)
@@ -61,7 +62,6 @@ namespace Exebite.JobScheduler
         /// </summary>
         public void RemoveAllData()
         {
-
             scheduler.Clear();
         }
 

@@ -12,6 +12,7 @@ namespace Exebite.GoogleSheetAPI.Unity
         {
             container.RegisterType<IGoogleSheetServiceFactory, GoogleSheetServiceFactory>();
             container.RegisterType<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>();
+            container.RegisterType<IGoogleSheetService, GoogleSheetService>();
 
             container.RegisterType<IRestaurantConector, RestaurantConector>();
             container.RegisterType<IHedoneConector,HedoneConector>();

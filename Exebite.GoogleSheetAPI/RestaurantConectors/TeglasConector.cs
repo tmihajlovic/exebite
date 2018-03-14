@@ -1,35 +1,33 @@
-﻿using Exebite.GoogleSheetAPI.GoogleSSFactory;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Exebite.GoogleSheetAPI.GoogleSSFactory;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Exebite.GoogleSheetAPI.RestaurantConectors
 {
     public class TeglasConector : RestaurantConector, ITeglasConector
     {
-        public static string ordersSheet = "Narudzbine";
-        public static string foodListSheet = "Cene i opis";
-        public static string menuSheet = "Meni";
+        private static string _ordersSheet = "Narudzbine";
+        private static string _foodListSheet = "Cene i opis";
+        private static string _menuSheet = "Meni";
 
-        Restaurant restaurant;
-        SheetsService GoogleSS;
-        private string sheetId;
+        private Restaurant _restaurant;
+        private string _sheetId;
 
-        public TeglasConector(IGoogleSheetServiceFactory GoogleSSFactory, IGoogleSpreadsheetIdFactory GoogleSSIdFactory)
+        public TeglasConector(IGoogleSheetService googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
+            : base(googleSheetService)
         {
-            GoogleSS = GoogleSSFactory.GetService();
-            sheetId = GoogleSSIdFactory.GetTeglas();
-            restaurant = new Restaurant { Name = "Teglas" };
-            _sheetId = sheetId;
-            _ordersSheet = ordersSheet;
-            _GoogleSS = GoogleSS;
-            _foodListSheet = foodListSheet;
-            _restaurant = restaurant;
+            _sheetId = googleSSIdFactory.GetTeglas();
+            _restaurant = new Restaurant { Name = "Teglas" };
+            SheetId = _sheetId;
+            OrdersSheet = _ordersSheet;
+            FoodListSheet = _foodListSheet;
+            Restaurant = _restaurant;
         }
-        
+
         public override void WriteMenu(List<Food> foods)
         {
             List<object> header = new List<object> { "Naziv jela", "Opis", "Cena", "Tip" };
@@ -47,16 +45,9 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
                 foodRange.Values.Add(foodData);
             }
 
-            ClearValuesRequest body = new ClearValuesRequest();
-            SpreadsheetsResource.ValuesResource.ClearRequest clearRequest = GoogleSS.Spreadsheets.Values.Clear(body, sheetId, foodListSheet);
-            clearRequest.Execute();
-
-            SpreadsheetsResource.ValuesResource.UpdateRequest updateRequest = GoogleSS.Spreadsheets.Values.Update(foodRange, sheetId, foodListSheet);
-            updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
-
-            updateRequest.Execute();
-
-
+            // Clear sheet and write new data
+            GoogleSheetService.Clear(_sheetId, _foodListSheet);
+            GoogleSheetService.Update(foodRange, _sheetId, _foodListSheet);
         }
 
         public override List<Food> GetDailyMenu()
@@ -72,13 +63,9 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         {
             IEnumerable<Food> aaFood = new List<Food>();
 
-            var range = menuSheet + "!A2:A1000";
-            SpreadsheetsResource.ValuesResource.GetRequest request =
-                        GoogleSS.Spreadsheets.Values.Get(sheetId, range);
-            request.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.COLUMNS;
-            ValueRange sheetData = request.Execute();
-
-            aaFood = sheetData.Values[0].Select(f => new Food { Name = f.ToString(), Restaurant = restaurant }).ToList();
+            var range = _menuSheet + "!A2:A1000";
+            ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
+            aaFood = sheetData.Values.First().Select(f => new Food { Name = f.ToString(), Restaurant = _restaurant }).ToList();
             return aaFood;
         }
     }

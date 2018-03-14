@@ -15,25 +15,19 @@ namespace Exebite.GoogleSheetAPI.GoogleSSFactory
             UserCredential credential;
             using (var stream = new FileStream(jsonFile, FileMode.Open, FileAccess.Read))
             {
-
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     new[] { "https://www.googleapis.com/auth/spreadsheets" },
                     "user",
-                    CancellationToken.None
-                ).Result;
-
+                    CancellationToken.None).Result;
             }
 
-            SheetsService SSservice = new SheetsService(new BaseClientService.Initializer()
+            SheetsService sSservice = new SheetsService(new BaseClientService.Initializer()
             {
-
                 HttpClientInitializer = credential,
-                ApplicationName = "LunchOrder"
-
+                ApplicationName = "Exebite"
             });
-
-            return SSservice;
+            return sSservice;
         }
     }
 }

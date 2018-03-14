@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
 
@@ -41,7 +42,7 @@ namespace Exebite.Business.GoogleApiImportExport
             AddAndUpdateFood(lipaRestoraunt, _lipaConector);
 
             // Update daily menu
-            lipaRestoraunt.DailyMenu = _lipaConector.GetDailyMenu();
+            lipaRestoraunt.DailyMenu = FoodsFromDB(lipaRestoraunt, _lipaConector.GetDailyMenu());
             _restarauntService.UpdateRestourant(lipaRestoraunt);
 
             // Teglas
@@ -49,7 +50,7 @@ namespace Exebite.Business.GoogleApiImportExport
             AddAndUpdateFood(teglasRestoraunt, _teglasConector);
 
             // Update daily menu
-            teglasRestoraunt.DailyMenu = _teglasConector.GetDailyMenu();
+            teglasRestoraunt.DailyMenu = FoodsFromDB(teglasRestoraunt, _teglasConector.GetDailyMenu());
             _restarauntService.UpdateRestourant(teglasRestoraunt);
 
             // Hedone
@@ -57,7 +58,7 @@ namespace Exebite.Business.GoogleApiImportExport
             AddAndUpdateFood(hedoneRestoraunt, _hedoneConector);
 
             // Update daily menu
-            hedoneRestoraunt.DailyMenu = _hedoneConector.GetDailyMenu();
+            hedoneRestoraunt.DailyMenu = FoodsFromDB(hedoneRestoraunt, _hedoneConector.GetDailyMenu());
             _restarauntService.UpdateRestourant(hedoneRestoraunt);
         }
 
@@ -94,6 +95,24 @@ namespace Exebite.Business.GoogleApiImportExport
                     _foodService.UpdateFood(food);
                 }
             }
+        }
+
+        /// <summary>
+        /// Finds <see cref="Food"/> in database based on sheet data
+        /// </summary>
+        /// <param name="restaurant">Restaurant to get food for</param>
+        /// <param name="foods">Food list from sheet</param>
+        /// <returns>Food list from database</returns>
+        private List<Food> FoodsFromDB(Restaurant restaurant, List<Food> foods)
+        {
+            List<Food> result = new List<Food>();
+            List<Food> dbFood = _foodService.GetAllFoods().Where(f => f.Restaurant.Id == restaurant.Id).ToList();
+            foreach (var food in foods)
+            {
+                result.Add(dbFood.First(f => f.Name == food.Name));
+            }
+
+            return result;
         }
     }
 }

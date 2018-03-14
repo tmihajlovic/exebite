@@ -1,44 +1,42 @@
-﻿using Exebite.GoogleSheetAPI.GoogleSSFactory;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Exebite.GoogleSheetAPI.GoogleSSFactory;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Exebite.GoogleSheetAPI.RestaurantConectors
 {
-    public class HedoneConector : RestaurantConector , IHedoneConector
+    public class HedoneConector : RestaurantConector, IHedoneConector
     {
-        public static string dailyMenuSheet = "Dnevni meni";
-        public static string alwaysAvailableSheet = "Uvek dostupno";
-        public static string foodListSheet = "Cene i opis";
-        public static string ordersSheet = "Narudzbine";
+        private static string dailyMenuSheet = "Dnevni meni";
+        private static string alwaysAvailableSheet = "Uvek dostupno";
+        private static string foodListSheet = "Cene i opis";
+        private static string ordersSheet = "Narudzbine";
 
-        Restaurant restaurant;
-        SheetsService GoogleSS;
-        private string sheetId;
+        private Restaurant _restaurant;
+        private string _sheetId;
 
-        public HedoneConector(IGoogleSheetServiceFactory GoogleSSFactory, IGoogleSpreadsheetIdFactory GoogleSSIdFactory)
+        public HedoneConector(IGoogleSheetService googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
+            : base(googleSheetService)
         {
-            GoogleSS = GoogleSSFactory.GetService();
-            sheetId = GoogleSSIdFactory.GetHedone();
-            restaurant =new Restaurant { Name = "Hedone" };
-            _sheetId = sheetId;
-            _ordersSheet = ordersSheet;
-            _GoogleSS = GoogleSS;
-            _dailyMenuSheet = dailyMenuSheet;
-            _foodListSheet = foodListSheet;
-            _restaurant = restaurant;
+            _sheetId = googleSSIdFactory.GetHedone();
+            _restaurant = new Restaurant { Name = "Hedone" };
+            SheetId = _sheetId;
+            OrdersSheet = ordersSheet;
+            DailyMenuSheet = dailyMenuSheet;
+            FoodListSheet = foodListSheet;
+            Restaurant = _restaurant;
         }
-        
+
         public override void WriteMenu(List<Food> foods)
         {
             List<object> header = new List<object> { "Naziv jela", "Opis", "Cena", "Tip" };
             ValueRange foodRange = new ValueRange();
             foodRange.Values = new List<IList<object>>();
             foodRange.Values.Add(header);
-            
+
             foreach (var food in foods)
             {
                 List<object> foodData = new List<object>();
@@ -49,17 +47,10 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
                 foodRange.Values.Add(foodData);
             }
 
-            ClearValuesRequest body = new ClearValuesRequest();
-            SpreadsheetsResource.ValuesResource.ClearRequest clearRequest = GoogleSS.Spreadsheets.Values.Clear(body, sheetId, foodListSheet);
-            clearRequest.Execute();
-
-            SpreadsheetsResource.ValuesResource.UpdateRequest updateRequest = GoogleSS.Spreadsheets.Values.Update(foodRange, sheetId, foodListSheet);
-            updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
-
-            updateRequest.Execute();
-
+            // Clear sheet and write new data
+            GoogleSheetService.Clear(_sheetId, foodListSheet);
+            GoogleSheetService.Update(foodRange, _sheetId, foodListSheet);
         }
-
 
         public override List<Food> GetDailyMenu()
         {
@@ -74,42 +65,9 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         private IEnumerable<Food> DailyMenu()
         {
             IEnumerable<Food> dailyFood = new List<Food>();
-
-            //var today = DateTime.Today.DayOfWeek;
-            //string todayDayColumn = "A";
-            //switch (today)
-            //{
-            //    case DayOfWeek.Monday:
-            //        todayDayColumn = "A";
-            //        break;
-
-            //    case DayOfWeek.Tuesday:
-            //        todayDayColumn = "B";
-            //        break;
-
-            //    case DayOfWeek.Wednesday:
-            //        todayDayColumn = "C";
-            //        break;
-
-            //    case DayOfWeek.Thursday:
-            //        todayDayColumn = "D";
-            //        break;
-
-            //    case DayOfWeek.Friday:
-            //        todayDayColumn = "E";
-            //        break;
-            //}
-
-
             var range = dailyMenuSheet + "!A3:A1000";
-
-            SpreadsheetsResource.ValuesResource.GetRequest request =
-                        GoogleSS.Spreadsheets.Values.Get(sheetId, range);
-            request.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.COLUMNS;
-            ValueRange sheetData = request.Execute();
-
-            dailyFood = sheetData.Values[0].Select(f => new Food { Name = f.ToString(), Restaurant = restaurant }).ToList();
-
+            ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
+            dailyFood = sheetData.Values.First().Select(f => new Food { Name = f.ToString(), Restaurant = _restaurant }).ToList();
             return dailyFood;
         }
 
@@ -118,14 +76,9 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
             IEnumerable<Food> aaFood = new List<Food>();
 
             var range = alwaysAvailableSheet + "!A2:A1000";
-            SpreadsheetsResource.ValuesResource.GetRequest request =
-                        GoogleSS.Spreadsheets.Values.Get(sheetId, range);
-            request.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.COLUMNS;
-            ValueRange sheetData = request.Execute();
-
-            aaFood = sheetData.Values[0].Select(f => new Food { Name = f.ToString(), Restaurant = restaurant }).ToList();
+            ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
+            aaFood = sheetData.Values.First().Select(f => new Food { Name = f.ToString(), Restaurant = _restaurant }).ToList();
             return aaFood;
         }
-        
     }
 }
