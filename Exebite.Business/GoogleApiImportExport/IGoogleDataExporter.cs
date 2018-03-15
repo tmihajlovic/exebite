@@ -8,9 +8,8 @@ namespace Exebite.Business.GoogleApiImportExport
         /// <summary>
         /// Place orders in sheet of restaurant
         /// </summary>
-        /// <param name="orderList">Orders to place</param>
-        /// <param name="restaurant">Restaurant to place orders to</param>
-        void PlaceOrders(List<Order> orderList, Restaurant restaurant);
+        /// <param name="restaurantName">Name of restaurant to place orders</param>
+        void PlaceOrdersForRestaurant(string restaurantName);
 
         /// <summary>
         /// Order Daily menu sheet so first column is today and place corect dates

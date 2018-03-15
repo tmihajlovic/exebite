@@ -1,8 +1,8 @@
-﻿using Exebite.DataAccess.Migrations;
+﻿using System.Linq;
+using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 using Unity;
 using Unity.Resolution;
 
@@ -61,7 +61,7 @@ namespace Exebite.DataAccess.Test.Tests
                 location.Address = "UpdatedAddress";
                 var result = _locationRepository.Update(location);
                 Assert.AreEqual(result.Name, location.Name);
-                Assert.AreEqual(result.Address, location.Address); 
+                Assert.AreEqual(result.Address, location.Address);
             }
         }
 

@@ -17,7 +17,7 @@ namespace Exebite.JobScheduler.Unity
           });
 
         /// <summary>
-        /// Configured Unity Container.
+        /// Gets configured Unity Container.
         /// </summary>
         public static IUnityContainer Container => container.Value;
 
@@ -25,7 +25,6 @@ namespace Exebite.JobScheduler.Unity
         {
             container.RegisterType<IJobSchedulerRepository, JobSchedulerRepository>();
             Business.Unity.UnityConfig.RegisterTypes(container);
-
         }
     }
 }

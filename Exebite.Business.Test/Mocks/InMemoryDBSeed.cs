@@ -11,6 +11,12 @@ namespace Exebite.Business.Test.Mocks
         {
             var context = contextFactory.Create();
 
+            var isSeeded = context.Restaurants.Any();
+            if (isSeeded == true)
+            {
+                return;
+            }
+
             // Seed restaurants
             context.Restaurants.Add(new DataAccess.Entities.RestaurantEntity { Name = "Restoran pod Lipom" });
             context.Restaurants.Add(new DataAccess.Entities.RestaurantEntity { Name = "Hedone" });
@@ -184,8 +190,8 @@ namespace Exebite.Business.Test.Mocks
 
             var recipe2 = context.Recipes.Add(new DataAccess.Entities.RecipeEntity
             {
-                MainCourse = context.Foods.Find(2),
-                MainCourseId = 2,
+                MainCourse = context.Foods.Find(3),
+                MainCourseId = 3,
                 Restaurant = context.Restaurants.Find(1),
                 RestaurantId = 1
             });

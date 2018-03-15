@@ -29,8 +29,8 @@ namespace Exebite.Business.Test.Tests
         {
             _factory = new InMemoryDBFactory();
             _lipaConector = new LipaConectorMock(_factory);
-            _hedoneConector = new HedoneConectorMock();
-            _teglasConector = new TeglasConectorMock();
+            _hedoneConector = new HedoneConectorMock(_factory);
+            _teglasConector = new TeglasConectorMock(_factory);
             _restaurantService = new RestaurantService(new RestaurantRepository(_factory));
             _foodService = new FoodService(new FoodRepository(_factory));
             _googleDataImporter = new GoogleApiImport(_restaurantService, _foodService, _lipaConector, _teglasConector, _hedoneConector);

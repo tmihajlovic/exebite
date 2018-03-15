@@ -15,7 +15,7 @@ namespace Exebite.JobScheduler.Jobs
 
         public Task Execute(IJobExecutionContext context)
         {
-            throw new System.NotImplementedException();
+            return Task.Run(() => _googleDataExporter.PlaceOrdersForRestaurant("Restoran pod Lipom"));
         }
     }
 }

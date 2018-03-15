@@ -1,11 +1,8 @@
-﻿using Exebite.DataAccess.Migrations;
+﻿using System.Linq;
+using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Unity;
 using Unity.Resolution;
 

@@ -9,10 +9,9 @@ namespace Exebite.GoogleSheetAPI.Kasa
 {
     public class KasaConector : IKasaConector
     {
-
-        SheetsService _googleSS;
-        string _sheetId;
-        string _range = "Kasa";
+        private SheetsService _googleSS;
+        private string _sheetId;
+        private string _range = "Kasa";
 
         public KasaConector(IGoogleSheetServiceFactory googleSheetServiceFactory, IGoogleSpreadsheetIdFactory googleSpreadsheetIdFactory)
         {
@@ -29,12 +28,12 @@ namespace Exebite.GoogleSheetAPI.Kasa
             request.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.COLUMNS;
             ValueRange sheetData = request.Execute();
 
-            var names = sheetData.Values[0].Skip(1); //take 1st column, 2nd row and on for names
-            foreach( var name in names)
+            var names = sheetData.Values[0].Skip(1); // Take 1st column, 2nd row and on for names
+            foreach (var name in names)
             {
                 var newCustomer = new Customer();
                 newCustomer.Name = name.ToString();
-                if(newCustomer.Name.EndsWith("JD"))
+                if (newCustomer.Name.EndsWith("JD"))
                 {
                     newCustomer.Location = new Location { Name = "JD" };
                 }
@@ -42,9 +41,9 @@ namespace Exebite.GoogleSheetAPI.Kasa
                 {
                     newCustomer.Location = new Location { Name = "Bulevar" };
                 }
+
                 customerList.Add(newCustomer);
             }
-            
 
             return customerList;
         }

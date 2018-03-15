@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Exebite.DataAccess;
 using Exebite.DataAccess.Migrations;
@@ -46,13 +47,13 @@ namespace Exebite.Business.Test.Mocks
                 result.AddRange(foodList.Take(foodList.Count - 1)); // Add one food less to be marked inactive
                 var newFoodEntity = new DataAccess.Entities.FoodEntity
                 {
-                    Name = "Test food from conector",
+                    Name = "Test food from conector for: " + restaurant.Name,
                     Description = "Test food from conector description",
                     IsInactive = false,
                     Price = 100,
                     Type = Model.FoodType.MAIN_COURSE,
-                    RestaurantId = 1,
-                    Restaurant = context.Restaurants.Find(1)
+                    RestaurantId = restaurant.Id,
+                    Restaurant = restaurant
                 };
                 result.Add(AutoMapperHelper.Instance.GetMappedValue<Food>(newFoodEntity, context));
             }
@@ -62,14 +63,26 @@ namespace Exebite.Business.Test.Mocks
 
         public void PlaceOrders(List<Order> orders)
         {
+            if (orders == null)
+            {
+                throw new Exception("Data is null");
+            }
         }
 
         public void WriteKasaTab(List<Customer> customerList)
         {
+            if (customerList == null)
+            {
+                throw new Exception("Data is null");
+            }
         }
 
         public void WriteMenu(List<Food> foods)
         {
+            if (foods == null)
+            {
+                throw new Exception("Data is null");
+            }
         }
     }
 }

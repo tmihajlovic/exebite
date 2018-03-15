@@ -48,7 +48,6 @@ namespace Exebite.DataAccess.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
         }
     }
 }

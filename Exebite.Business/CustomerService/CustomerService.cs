@@ -14,10 +14,10 @@ namespace Exebite.Business
             _customerHandler = customerHandler;
         }
 
-        public Customer GetCustomerByIdentityId(string Id)
+        public Customer GetCustomerByIdentityId(string id)
         {
             var users = _customerHandler.GetAll();
-            return users.FirstOrDefault(c => c.AppUserId == Id);
+            return users.FirstOrDefault(c => c.AppUserId == id);
         }
 
         public List<Customer> GetAllCustomers()
@@ -25,9 +25,9 @@ namespace Exebite.Business
             return _customerHandler.GetAll().ToList();
         }
 
-        public Customer GetCustomerById(int Id)
+        public Customer GetCustomerById(int id)
         {
-            return _customerHandler.GetByID(Id);
+            return _customerHandler.GetByID(id);
         }
 
         public Customer GetCustomerByName(string name)

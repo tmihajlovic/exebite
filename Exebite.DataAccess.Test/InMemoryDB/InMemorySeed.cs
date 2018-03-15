@@ -1,8 +1,7 @@
-﻿using Exebite.DataAccess.Migrations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Exebite.DataAccess.Migrations;
 
 namespace Exebite.DataAccess.Test.InMemoryDB
 {
@@ -11,6 +10,12 @@ namespace Exebite.DataAccess.Test.InMemoryDB
         public static void Seed(IFoodOrderingContextFactory contextFactory)
         {
             var context = contextFactory.Create();
+
+            var isSeeded = context.Restaurants.Any();
+            if (isSeeded == true)
+            {
+                return;
+            }
 
             // Seed restaurants
             context.Restaurants.Add(new Entities.RestaurantEntity { Name = "Restoran pod Lipom" });

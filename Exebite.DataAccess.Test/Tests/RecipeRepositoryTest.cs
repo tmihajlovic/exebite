@@ -1,11 +1,9 @@
-﻿using Exebite.DataAccess.Migrations;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Unity;
 using Unity.Resolution;
 
@@ -109,9 +107,12 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void DeleteRecipe()
         {
-            _recepieRepository.Delete(2);
-            var result = _recepieRepository.GetByID(2);
-            Assert.IsNull(result);
+            using (var context = _factory.Create())
+            {
+                _recepieRepository.Delete(2);
+                var result = _recepieRepository.GetByID(2);
+                Assert.IsNull(result);
+            }
         }
     }
 }

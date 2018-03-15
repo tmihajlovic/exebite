@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
 
@@ -9,13 +11,14 @@ namespace Exebite.Business.GoogleApiImportExport
         // Services
         private IOrderService _orderService;
         private ICustomerService _customerService;
+        private IRestaurantService _restaurantService;
 
         // Conectors
         private ILipaConector _lipaConector;
         private IHedoneConector _hedoneConector;
         private ITeglasConector _teglasConector;
 
-        public GoogleApiExport(ITeglasConector teglasConector, IHedoneConector hedoneConector, ILipaConector lipaConector, IOrderService orderService, ICustomerService customerService)
+        public GoogleApiExport(ITeglasConector teglasConector, IHedoneConector hedoneConector, ILipaConector lipaConector, IOrderService orderService, ICustomerService customerService, IRestaurantService restaurantService)
         {
             // Conectors
             _lipaConector = lipaConector;
@@ -25,27 +28,33 @@ namespace Exebite.Business.GoogleApiImportExport
             // Services
             _orderService = orderService;
             _customerService = customerService;
+            _restaurantService = restaurantService;
         }
 
         /// <summary>
-        /// Place orders
+        /// Place orders for retestaurant
         /// </summary>
-        /// <param name="orderList">List of orders to place</param>
-        /// <param name="restaurant">Restaurant to place orders to</param>
-        public void PlaceOrders(List<Order> orderList, Restaurant restaurant)
+        /// <param name="restaurantName">Name of restaurant</param>
+        public void PlaceOrdersForRestaurant(string restaurantName)
         {
-            switch (restaurant.Name)
+            switch (restaurantName)
             {
                 case "Restoran pod Lipom":
-                    _lipaConector.PlaceOrders(orderList);
+                    var lipa = _restaurantService.GetRestaurantByName(restaurantName);
+                    var lipaOrders = _orderService.GetAllOrdersForRestoraunt(lipa.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
+                    _lipaConector.PlaceOrders(lipaOrders);
                     break;
 
                 case "Hedone":
-                    _hedoneConector.PlaceOrders(orderList);
+                    var hedone = _restaurantService.GetRestaurantByName(restaurantName);
+                    var hedoneOrders = _orderService.GetAllOrdersForRestoraunt(hedone.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
+                    _hedoneConector.PlaceOrders(hedoneOrders);
                     break;
 
                 case "Teglas":
-                    _teglasConector.PlaceOrders(orderList);
+                    var teglas = _restaurantService.GetRestaurantByName(restaurantName);
+                    var teglasOrders = _orderService.GetAllOrdersForRestoraunt(teglas.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
+                    _teglasConector.PlaceOrders(teglasOrders);
                     break;
             }
         }

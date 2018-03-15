@@ -15,11 +15,10 @@ namespace Exebite.GoogleSheetAPI.Unity
             container.RegisterType<IGoogleSheetService, GoogleSheetService>();
 
             container.RegisterType<IRestaurantConector, RestaurantConector>();
-            container.RegisterType<IHedoneConector,HedoneConector>();
+            container.RegisterType<IHedoneConector, HedoneConector>();
             container.RegisterType<ILipaConector, LipaConector>();
             container.RegisterType<ITeglasConector, TeglasConector>();
             container.RegisterType<IKasaConector, KasaConector>();
-
         }
     }
 }

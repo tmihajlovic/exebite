@@ -1,6 +1,6 @@
-﻿using Exebite.Model;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Exebite.Model;
 
 namespace Exebite.DataAccess.Entities
 {
@@ -13,6 +13,5 @@ namespace Exebite.DataAccess.Entities
         public string Name { get; set; }
 
         public string Address { get; set; }
-
     }
 }

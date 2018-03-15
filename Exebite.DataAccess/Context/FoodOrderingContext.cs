@@ -54,7 +54,7 @@ namespace Exebite.DataAccess.Migrations
                 .HasOne(r => r.RecipeEntity)
                 .WithMany(fr => fr.FoodEntityRecipeEntities)
                 .HasForeignKey(k => k.RecepieEntityId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<RestaurantEntity>()
                 .HasMany(f => f.DailyMenu);

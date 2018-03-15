@@ -4,9 +4,9 @@ using Unity;
 
 namespace Exebite.JobScheduler
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             using (var container = new UnityContainer())
             {
@@ -18,13 +18,11 @@ namespace Exebite.JobScheduler
                             s.ConstructUsing(name => new JobSchedulerService());
                             s.WhenStarted(tc => tc.Start());
                             s.WhenStopped(tc => tc.Stop());
-
                         });
 
                         x.SetDescription("Job Scheduler Service");
                         x.SetDisplayName("Job Scheduler Service");
                         x.SetServiceName("JobSchedulerService");
-
                     });
 
                 var exitCode = (int)Convert.ChangeType(rc, rc.GetTypeCode());

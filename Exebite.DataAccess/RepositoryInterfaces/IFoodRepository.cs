@@ -1,5 +1,5 @@
-﻿using Exebite.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Exebite.Model;
 
 namespace Exebite.DataAccess
 {

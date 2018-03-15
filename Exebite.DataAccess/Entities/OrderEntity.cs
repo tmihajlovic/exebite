@@ -1,7 +1,7 @@
-﻿using Exebite.Model;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Exebite.Model;
 
 namespace Exebite.DataAccess.Entities
 {

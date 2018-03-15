@@ -30,14 +30,6 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void CheckPrice()
-        {
-            Meal newMeal = new Meal();
-            var result = _menuService.CheckPrice(newMeal);
-        }
-
-        [TestMethod]
         public void CheckAvailableSideDishes()
         {
             var food = _menuService.GetRestorantsWithMenus().First().Foods.First();

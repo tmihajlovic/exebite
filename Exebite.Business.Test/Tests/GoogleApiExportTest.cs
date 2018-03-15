@@ -34,9 +34,9 @@ namespace Exebite.Business.Test.Tests
             _customerService = new CustomerService(new CustomerRepository(_factory));
             _restaurantService = new RestaurantService(new RestaurantRepository(_factory));
             _lipaConector = new LipaConectorMock(_factory);
-            _hedoneConector = new HedoneConectorMock();
-            _teglasConector = new TeglasConectorMock();
-            _googleDataExporter = new GoogleApiExport(_teglasConector, _hedoneConector, _lipaConector, _orderService, _customerService);
+            _hedoneConector = new HedoneConectorMock(_factory);
+            _teglasConector = new TeglasConectorMock(_factory);
+            _googleDataExporter = new GoogleApiExport(_teglasConector, _hedoneConector, _lipaConector, _orderService, _customerService,  _restaurantService);
             InMemoryDBSeed.Seed(_factory);
         }
 
@@ -44,8 +44,7 @@ namespace Exebite.Business.Test.Tests
         public void PlaceOrders()
         {
             var restaurant = _restaurantService.GetRestaurantById(1);
-            var orders = _orderService.GetAllOrders().Where(o => o.Meal.Foods.First().Restaurant.Id == restaurant.Id).ToList();
-            _googleDataExporter.PlaceOrders(orders, restaurant);
+            _googleDataExporter.PlaceOrdersForRestaurant(restaurant.Name);
         }
 
         [TestMethod]
