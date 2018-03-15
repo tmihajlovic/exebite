@@ -96,7 +96,7 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var foodEntity = context.Foods.Find(3);
+                var foodEntity = context.Foods.First(f => f.Type == FoodType.SALAD);
                 var food = AutoMapperHelper.Instance.GetMappedValue<Food>(foodEntity, context);
                 var result = _recepieRepository.GetRecipesForFood(food);
                 Assert.AreEqual(result.Count, 0);
