@@ -33,8 +33,19 @@ namespace Exebite.Business
         public List<Food> CheckAvailableSideDishes(int foodId)
         {
             var food = _foodHandler.GetByID(foodId);
+            if (food == null)
+            {
+                throw new ArgumentException("Non existing food");
+            }
+
             var allRecipe = _recipeHandler.GetAll();
-            return allRecipe.SingleOrDefault(r => r.MainCourse.Id == food.Id).SideDish;
+            var foodRecipe = allRecipe.SingleOrDefault(r => r.MainCourse.Id == food.Id);
+            if (foodRecipe != null)
+            {
+                return foodRecipe.SideDish;
+            }
+
+            return new List<Food>();
         }
     }
 }

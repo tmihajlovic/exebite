@@ -56,6 +56,9 @@ namespace Exebite.Business.GoogleApiImportExport
                     var teglasOrders = _orderService.GetAllOrdersForRestoraunt(teglas.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
                     _teglasConector.PlaceOrders(teglasOrders);
                     break;
+
+                default:
+                    throw new ArgumentException("Invalid restaurant");
             }
         }
 

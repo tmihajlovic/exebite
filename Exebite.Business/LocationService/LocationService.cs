@@ -26,6 +26,11 @@ namespace Exebite.Business
 
         public Location GetLocationByName(string name)
         {
+            if (name == string.Empty)
+            {
+                throw new System.ArgumentException("Name cant be empty string");
+            }
+
             return _locationHandler.GetAll().SingleOrDefault(l => l.Name == name);
         }
 
@@ -36,12 +41,21 @@ namespace Exebite.Business
 
         public Location CreateNewLocation(Location location)
         {
+            if (location == null)
+            {
+                throw new System.ArgumentNullException(nameof(location));
+            }
+
             return _locationHandler.Insert(location);
         }
 
         public void DeleteLocation(int locationId)
         {
-            _locationHandler.Delete(locationId);
+            var location = _locationHandler.GetByID(locationId);
+            if (location != null)
+            {
+                _locationHandler.Delete(locationId);
+            }
         }
     }
 }

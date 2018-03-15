@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
@@ -37,11 +38,34 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
+        public void GetRestaurantById_NonExisting()
+        {
+            var id = 0;
+            var result = _restaurantService.GetRestaurantById(id);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void GetRestaurantByName()
         {
             var name = "Restoran pod Lipom";
             var result = _restaurantService.GetRestaurantByName(name);
             Assert.AreEqual(result.Name, name);
+        }
+
+        [TestMethod]
+        public void GetRestaurantByName_NonExisting()
+        {
+            var name = "NonExistingRestaurant";
+            var result = _restaurantService.GetRestaurantByName(name);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetRestaurantByName_StringEmpty()
+        {
+             _restaurantService.GetRestaurantByName(string.Empty);
         }
 
         [TestMethod]
@@ -53,6 +77,13 @@ namespace Exebite.Business.Test.Tests
             };
             var result = _restaurantService.CreateNewRestaurant(newRestaurant);
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CreateNewRestaurant_IsNull()
+        {
+            _restaurantService.CreateNewRestaurant(null);
         }
 
         [TestMethod]
@@ -76,6 +107,12 @@ namespace Exebite.Business.Test.Tests
             _restaurantService.DeleteRestourant(restaurant.Id);
             var result = _restaurantService.GetRestaurantById(restaurant.Id);
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void DeleteRestourant_NonExisting()
+        {
+            _restaurantService.DeleteRestourant(0);
         }
     }
 }

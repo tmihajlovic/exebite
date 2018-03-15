@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess;
 using Exebite.DataAccess.Migrations;
@@ -37,6 +38,13 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
+        public void GetCustomerById_NonExisting()
+        {
+            var result = _customerService.GetCustomerById(0);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void GetCustomerByIdentityId()
         {
             var appId = "TestAppUserId";
@@ -45,11 +53,42 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetCustomerByIdentityId_StringEmpity()
+        {
+            var appId = string.Empty;
+            var result = _customerService.GetCustomerByIdentityId(appId);
+        }
+
+        [TestMethod]
+        public void GetCustomerByIdentityId_NonExisting()
+        {
+            var appId = "NonExistingId";
+            var result = _customerService.GetCustomerByIdentityId(appId);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void GetCustomerByName()
         {
             var name = "Test Customer";
             var result = _customerService.GetCustomerByName(name);
             Assert.AreEqual(result.Name, name);
+        }
+
+        [TestMethod]
+        public void GetCustomerByName_NonExisting()
+        {
+            var name = "Non existing customer";
+            var result = _customerService.GetCustomerByName(name);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetCustomerByName_EmptyString()
+        {
+            _customerService.GetCustomerByName(string.Empty);
         }
 
         [TestMethod]
@@ -67,6 +106,13 @@ namespace Exebite.Business.Test.Tests
                 var result = _customerService.CreateCustomer(newCustomer);
                 Assert.IsNotNull(result);
             }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CreateCustomer_Null()
+        {
+            _customerService.CreateCustomer(null);
         }
 
         [TestMethod]
@@ -93,6 +139,12 @@ namespace Exebite.Business.Test.Tests
             _customerService.DeleteCustomer(customer.Id);
             var result = _customerService.GetCustomerByName(customerName);
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void DeleteCustomer_NonExisting()
+        {
+            _customerService.DeleteCustomer(0);
         }
     }
 }

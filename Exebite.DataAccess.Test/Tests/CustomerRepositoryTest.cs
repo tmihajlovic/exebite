@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
@@ -40,6 +41,13 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void InsertNewCustomer_Invalid_IsNull()
+        {
+            _customerRepository.Insert(null);
+        }
+
+        [TestMethod]
         public void GetAllCustomers()
         {
             var result = _customerRepository.GetAll().ToList();
@@ -54,10 +62,31 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        public void GetCustomerById_NonExisting()
+        {
+            var result = _customerRepository.GetByID(0);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void GetCustomerByName()
         {
             var result = _customerRepository.GetByName("Test Customer");
             Assert.AreEqual(result.Id, 1);
+        }
+
+        [TestMethod]
+        public void GetCustomerByName_NonExisting()
+        {
+            var result = _customerRepository.GetByName("Non Existing Customer");
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetCustomerByName_StringEmpty()
+        {
+            _customerRepository.GetByName(string.Empty);
         }
 
         [TestMethod]
@@ -104,12 +133,25 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UpdateCustomer_IsNull()
+        {
+            _customerRepository.Update(null);
+        }
+
+        [TestMethod]
         public void RemoveCustomer()
         {
             var customerForDelete = _customerRepository.GetByName("Test Customer for delete");
             _customerRepository.Delete(customerForDelete.Id);
             var result = _customerRepository.GetByID(customerForDelete.Id);
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void RemoveCustomer_NonExisting()
+        {
+            _customerRepository.Delete(0);
         }
     }
 }

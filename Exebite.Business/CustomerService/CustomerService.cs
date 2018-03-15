@@ -16,6 +16,11 @@ namespace Exebite.Business
 
         public Customer GetCustomerByIdentityId(string id)
         {
+            if (id == string.Empty)
+            {
+                throw new System.ArgumentException("Id cant be empty string");
+            }
+
             var users = _customerHandler.GetAll();
             return users.FirstOrDefault(c => c.AppUserId == id);
         }
@@ -32,12 +37,22 @@ namespace Exebite.Business
 
         public Customer GetCustomerByName(string name)
         {
+            if (name == string.Empty)
+            {
+                throw new System.ArgumentException("Name cant be empty string");
+            }
+
             return _customerHandler.GetByName(name);
         }
 
         public Customer CreateCustomer(Customer customer)
         {
-           return _customerHandler.Insert(customer);
+            if (customer == null)
+            {
+                throw new System.ArgumentNullException(nameof(customer));
+            }
+
+            return _customerHandler.Insert(customer);
         }
 
         public Customer UpdateCustomer(Customer customer)
@@ -47,7 +62,11 @@ namespace Exebite.Business
 
         public void DeleteCustomer(int customerId)
         {
-            _customerHandler.Delete(customerId);
+            var exist = _customerHandler.GetByID(customerId);
+            if (exist != null)
+            {
+                _customerHandler.Delete(customerId);
+            }
         }
     }
 }

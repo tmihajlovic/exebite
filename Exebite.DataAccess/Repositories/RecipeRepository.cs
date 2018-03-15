@@ -18,6 +18,11 @@ namespace Exebite.DataAccess.Repositories
 
         public List<Recipe> GetRecipesForFood(Food food)
         {
+            if (food == null)
+            {
+                throw new System.ArgumentNullException(nameof(food));
+            }
+
             using (var context = _factory.Create())
             {
                 var entities = context.FoodEntityRecipeEntity.Where(fe => fe.FoodEntityId == food.Id).Select(r => r.RecipeEntity).ToList();
@@ -27,6 +32,11 @@ namespace Exebite.DataAccess.Repositories
 
         public List<Recipe> GetRecipesForMainCourse(Food mainCourse)
         {
+            if (mainCourse == null)
+            {
+                throw new System.ArgumentNullException(nameof(mainCourse));
+            }
+
             using (var context = _factory.Create())
             {
                 var entities = context.Recipes.Where(r => r.MainCourseId == mainCourse.Id);
@@ -36,6 +46,11 @@ namespace Exebite.DataAccess.Repositories
 
         public override Recipe Insert(Recipe entity)
         {
+            if (entity == null)
+            {
+                throw new System.ArgumentNullException(nameof(entity));
+            }
+
             using (var context = _factory.Create())
             {
                 var recipeEntity = AutoMapperHelper.Instance.GetMappedValue<RecipeEntity>(entity, context);
@@ -48,6 +63,11 @@ namespace Exebite.DataAccess.Repositories
 
         public override Recipe Update(Recipe entity)
         {
+            if (entity == null)
+            {
+                throw new System.ArgumentNullException(nameof(entity));
+            }
+
             using (var context = _factory.Create())
             {
                 var recipeEntity = AutoMapperHelper.Instance.GetMappedValue<RecipeEntity>(entity, context);

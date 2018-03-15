@@ -65,6 +65,12 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 
             var range = _menuSheet + "!A2:A1000";
             ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
+
+            // Null and empty check
+            if (!(sheetData != null && sheetData.Values != null && sheetData.Values.Any()))
+            {
+                return aaFood;
+            }
             aaFood = sheetData.Values.First().Select(f => new Food { Name = f.ToString(), Restaurant = _restaurant }).ToList();
             return aaFood;
         }

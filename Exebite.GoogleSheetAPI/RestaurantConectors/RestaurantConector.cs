@@ -190,10 +190,17 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         public List<Food> LoadAllFoods()
         {
             ValueRange sheetData = GoogleSheetService.GetRows(SheetId, FoodListSheet);
+            IEnumerable<Food> foods = new List<Food>();
+
+            // Null and empty check
+            if (!(sheetData != null && sheetData.Values != null && sheetData.Values.Any()))
+            {
+                return foods.ToList();
+            }
 
             var foodData = sheetData.Values.Skip(1);
 
-            var foods = foodData.Select(item => new Food()
+            foods = foodData.Select(item => new Food()
             {
                 Name = item[0].ToString(),
                 Description = item[1].ToString(),

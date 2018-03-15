@@ -40,6 +40,14 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
+        public void GetOrderById_NonExisting()
+        {
+            var id = 0;
+            var result = _orderService.GetOrderById(id);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void GetAllOrdersForCustomer()
         {
             var customerId = 1;
@@ -47,6 +55,13 @@ namespace Exebite.Business.Test.Tests
             var result = orders.Where(o => o.Customer.Id != customerId).ToList();
             Assert.AreNotSame(orders.Count, 0);
             Assert.AreEqual(result.Count, 0);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetAllOrdersForCustomer_NonExistingCustomer()
+        {
+            _orderService.GetAllOrdersForCustomer(0);
         }
 
         [TestMethod]
@@ -59,13 +74,32 @@ namespace Exebite.Business.Test.Tests
             Assert.AreEqual(result.Count, 0);
         }
 
-        public void GettOrdersForDate()
+        [TestMethod]
+        public void GetAllOrdersForRestoraunt_NonExistingRestaurant()
+        {
+            var restaurantId = 0;
+            var orders = _orderService.GetAllOrdersForRestoraunt(restaurantId);
+            var result = orders.Where(o => o.Meal.Foods.First().Restaurant.Id != restaurantId).ToList();
+            Assert.AreEqual(orders.Count, 0);
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        [TestMethod]
+        public void GetOrdersForDate()
         {
             var date = DateTime.Today;
-            var orders = _orderService.GettOrdersForDate(date);
+            var orders = _orderService.GetOrdersForDate(date);
             var result = orders.Where(o => o.Date != date).ToList();
             Assert.AreNotEqual(orders.Count, 0);
             Assert.AreEqual(result.Count, 0);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetOrdersForDate_DateIsTomorow()
+        {
+            var date = DateTime.Today.AddDays(1);
+            _orderService.GetOrdersForDate(date);
         }
 
         [TestMethod]
@@ -85,6 +119,13 @@ namespace Exebite.Business.Test.Tests
                 var result = _orderService.PlaceOreder(order);
                 Assert.IsNotNull(result);
             }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void PlaceOrder_IsNull()
+        {
+            _orderService.PlaceOreder(null);
         }
 
         [TestMethod]
@@ -109,6 +150,12 @@ namespace Exebite.Business.Test.Tests
             _orderService.CancelOrder(order.Id);
             var result = _orderService.GetOrderById(order.Id);
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void CancelOrder_NonExisting()
+        {
+            _orderService.CancelOrder(0);
         }
     }
 }

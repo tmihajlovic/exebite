@@ -26,6 +26,11 @@ namespace Exebite.Business
 
         public Food CreateNewFood(Food food)
         {
+            if (food == null)
+            {
+                throw new System.ArgumentNullException(nameof(food));
+            }
+
             return _foodHandler.Insert(food);
         }
 
@@ -36,7 +41,11 @@ namespace Exebite.Business
 
         public void Delete(int foodId)
         {
-            _foodHandler.Delete(foodId);
+            var food = _foodHandler.GetByID(foodId);
+            if (food != null)
+            {
+                _foodHandler.Delete(foodId);
+            }
         }
     }
 }

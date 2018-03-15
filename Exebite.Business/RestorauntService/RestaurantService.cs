@@ -26,11 +26,21 @@ namespace Exebite.Business
 
         public Restaurant GetRestaurantByName(string name)
         {
+            if (name == string.Empty)
+            {
+                throw new System.ArgumentException("Name can't be empty string");
+            }
+
             return _restaurantRepository.GetByName(name);
         }
 
         public Restaurant CreateNewRestaurant(Restaurant restaurant)
         {
+            if (restaurant == null)
+            {
+                throw new System.ArgumentNullException(nameof(restaurant));
+            }
+
             return _restaurantRepository.Insert(restaurant);
         }
 
@@ -41,7 +51,11 @@ namespace Exebite.Business
 
         public void DeleteRestourant(int restaurantId)
         {
-            _restaurantRepository.Delete(restaurantId);
+            var restaurant = _restaurantRepository.GetByID(restaurantId);
+            if (restaurant != null)
+            {
+                _restaurantRepository.Delete(restaurantId);
+            }
         }
     }
 }

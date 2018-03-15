@@ -67,6 +67,12 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
             IEnumerable<Food> dailyFood = new List<Food>();
             var range = dailyMenuSheet + "!A3:A1000";
             ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
+
+            // Null and empty check
+            if (!(sheetData != null && sheetData.Values != null && sheetData.Values.Any()))
+            {
+                return dailyFood;
+            }
             dailyFood = sheetData.Values.First().Select(f => new Food { Name = f.ToString(), Restaurant = _restaurant }).ToList();
             return dailyFood;
         }
@@ -77,6 +83,12 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 
             var range = alwaysAvailableSheet + "!A2:A1000";
             ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
+
+            // Null and empty check
+            if (!(sheetData != null && sheetData.Values != null && sheetData.Values.Any()))
+            {
+                return aaFood;
+            }
             aaFood = sheetData.Values.First().Select(f => new Food { Name = f.ToString(), Restaurant = _restaurant }).ToList();
             return aaFood;
         }

@@ -22,6 +22,12 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
+                var customer = context.Customers.Find(customerId);
+                if (customer == null)
+                {
+                    throw new ArgumentException("Non existing customer!");
+                }
+
                 var orderEntityList = context.Orders.Where(o => o.CustomerId == customerId);
 
                 var orderList = new List<Order>();
@@ -54,6 +60,11 @@ namespace Exebite.DataAccess.Repositories
 
         public override Order Insert(Order entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
             using (var context = _factory.Create())
             {
                 var orderEntity = AutoMapperHelper.Instance.GetMappedValue<OrderEntity>(entity, context);
@@ -68,6 +79,11 @@ namespace Exebite.DataAccess.Repositories
 
         public override Order Update(Order entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
             using (var context = _factory.Create())
             {
                 var orderEntity = AutoMapperHelper.Instance.GetMappedValue<OrderEntity>(entity, context);

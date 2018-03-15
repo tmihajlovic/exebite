@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Exebite.Business.GoogleApiImportExport;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess.Migrations;
@@ -45,6 +46,21 @@ namespace Exebite.Business.Test.Tests
         {
             var restaurant = _restaurantService.GetRestaurantById(1);
             _googleDataExporter.PlaceOrdersForRestaurant(restaurant.Name);
+        }
+
+        [TestMethod]
+        public void PlaceOrders_NoOrders()
+        {
+            var restaurant = _restaurantService.GetRestaurantById(2);
+            _googleDataExporter.PlaceOrdersForRestaurant(restaurant.Name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void PlaceOrders_NonExistingRestaurant()
+        {
+            var restaurantName = "Non Existing Restaurant";
+            _googleDataExporter.PlaceOrdersForRestaurant(restaurantName);
         }
 
         [TestMethod]

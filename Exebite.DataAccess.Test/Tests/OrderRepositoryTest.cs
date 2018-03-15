@@ -42,6 +42,13 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        public void GetOrderById_NonExisting()
+        {
+            var result = _orderRepository.GetByID(0);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void GetOrdersForCustomer()
         {
             using (var context = _factory.Create())
@@ -50,6 +57,13 @@ namespace Exebite.DataAccess.Test.Tests
                 var result = _orderRepository.GetOrdersForCustomer(customer.Id).ToList();
                 Assert.AreEqual(result.Count, customer.Orders.Count);
             }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetOrdersForCustomer_NonExistingCustomer()
+        {
+            _orderRepository.GetOrdersForCustomer(0);
         }
 
         [TestMethod]
@@ -75,6 +89,13 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UpdateOrder_IsNull()
+        {
+            _orderRepository.Update(null);
+        }
+
+        [TestMethod]
         public void AddOrder()
         {
             using (var context = _factory.Create())
@@ -91,6 +112,13 @@ namespace Exebite.DataAccess.Test.Tests
                 var result = _orderRepository.Insert(order);
                 Assert.IsNotNull(result);
             }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void AddOrder_IsNull()
+        {
+            _orderRepository.Insert(null);
         }
     }
 }

@@ -11,8 +11,12 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
     public class TeglasConectorTest
     {
         private static ITeglasConector _teglasConector;
+        private static ITeglasConector _teglasConector_NullCheck;
+        private static ITeglasConector _teglasConector_EmptyCheck;
         private static IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
         private static IGoogleSheetService _googleSheetService;
+        private static IGoogleSheetService _googleSheetService_returnNull;
+        private static IGoogleSheetService _googleSheetService_returnEmpty;
         private static string restaurantName = "Hedone";
         private FakeDataFactory fakeDataFactory = new FakeDataFactory(restaurantName);
 
@@ -21,7 +25,11 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         {
             _googleSpreadsheetIdFactory = new GoogleSpreadsheetIdFactory();
             _googleSheetService = new GoogleSheetServiceFake();
+            _googleSheetService_returnNull = new GoogleSheetServiceFake_ReturnNull();
+            _googleSheetService_returnEmpty = new GoogleSheetServiceFake_ReturnEmpty();
             _teglasConector = new TeglasConector(_googleSheetService, _googleSpreadsheetIdFactory);
+            _teglasConector_NullCheck = new TeglasConector(_googleSheetService_returnNull, _googleSpreadsheetIdFactory);
+            _teglasConector_EmptyCheck = new TeglasConector(_googleSheetService_returnEmpty, _googleSpreadsheetIdFactory);
         }
 
         [TestMethod]
@@ -61,6 +69,34 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         public void WriteKasaTab()
         {
             _teglasConector.WriteKasaTab(fakeDataFactory.GetCustomers());
+        }
+
+        [TestMethod]
+        public void GetDailyMenu_NullResponce()
+        {
+            var result = _teglasConector_NullCheck.GetDailyMenu();
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        [TestMethod]
+        public void LoadAllFoods_NullResponce()
+        {
+            var result = _teglasConector_NullCheck.LoadAllFoods();
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        [TestMethod]
+        public void GetDailyMenu_EmptyResponce()
+        {
+            var result = _teglasConector_EmptyCheck.GetDailyMenu();
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        [TestMethod]
+        public void LoadAllFoods_EmptyResponce()
+        {
+            var result = _teglasConector_EmptyCheck.LoadAllFoods();
+            Assert.AreEqual(result.Count, 0);
         }
     }
 }

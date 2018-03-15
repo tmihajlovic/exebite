@@ -17,6 +17,11 @@ namespace Exebite.DataAccess.Repositories
 
         public override Location Insert(Location entity)
         {
+            if (entity == null)
+            {
+                throw new System.ArgumentNullException(nameof(entity));
+            }
+
             using (var context = _factory.Create())
             {
                 var locEntity = AutoMapperHelper.Instance.GetMappedValue<LocationEntity>(entity, context);
@@ -29,6 +34,11 @@ namespace Exebite.DataAccess.Repositories
 
         public override Location Update(Location entity)
         {
+            if (entity == null)
+            {
+                throw new System.ArgumentNullException(nameof(entity));
+            }
+
             using (var context = _factory.Create())
             {
                 var locationEntity = AutoMapperHelper.Instance.GetMappedValue<LocationEntity>(entity, context);

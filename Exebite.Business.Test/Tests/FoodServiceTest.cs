@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess;
 using Exebite.DataAccess.Migrations;
@@ -38,6 +39,13 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
+        public void GetFoodById_NonExisting()
+        {
+            var result = _foodService.GetFoodById(0);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void CrateNewFood()
         {
             using (var context = _factory.Create())
@@ -54,6 +62,13 @@ namespace Exebite.Business.Test.Tests
                 var result = _foodService.CreateNewFood(newFood);
                 Assert.IsNotNull(result);
             }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CreateNewFood_IsNull()
+        {
+            _foodService.CreateNewFood(null);
         }
 
         [TestMethod]
@@ -78,6 +93,13 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UpdateFood_IsNull()
+        {
+            _foodService.UpdateFood(null);
+        }
+
+        [TestMethod]
         public void DeleteFood()
         {
             var foodName = "Test food for delete";
@@ -85,6 +107,12 @@ namespace Exebite.Business.Test.Tests
             _foodService.Delete(foodForDelete.Id);
             var result = _foodService.GetFoodById(foodForDelete.Id);
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void DeleteFood_NonExisting()
+        {
+            _foodService.Delete(0);
         }
     }
 }

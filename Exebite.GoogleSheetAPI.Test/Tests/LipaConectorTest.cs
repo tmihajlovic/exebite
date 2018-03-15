@@ -12,8 +12,12 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
     public class LipaConectorTest
     {
         private static ILipaConector _lipaConector;
+        private static ILipaConector _lipaConector_NullCheck;
+        private static ILipaConector _lipaConector_EmptyCheck;
         private static IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
         private static IGoogleSheetService _googleSheetService;
+        private static IGoogleSheetService _googleSheetService_returnNull;
+        private static IGoogleSheetService _googleSheetService_returnEmpty;
         private static string restaurantName = "Restoran pod Lipom";
         private FakeDataFactory fakeDataFactory = new FakeDataFactory(restaurantName);
 
@@ -22,7 +26,11 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         {
             _googleSpreadsheetIdFactory = new GoogleSpreadsheetIdFactory();
             _googleSheetService = new GoogleSheetServiceFake();
+            _googleSheetService_returnNull = new GoogleSheetServiceFake_ReturnNull();
+            _googleSheetService_returnEmpty = new GoogleSheetServiceFake_ReturnEmpty();
             _lipaConector = new LipaConector(_googleSheetService, _googleSpreadsheetIdFactory);
+            _lipaConector_NullCheck = new LipaConector(_googleSheetService_returnNull, _googleSpreadsheetIdFactory);
+            _lipaConector_EmptyCheck = new LipaConector(_googleSheetService_returnEmpty, _googleSpreadsheetIdFactory);
         }
 
         [TestMethod]
@@ -68,6 +76,34 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         public void DnevniMenuSheetSetup()
         {
             _lipaConector.DnevniMenuSheetSetup();
+        }
+
+        [TestMethod]
+        public void GetDailyMenu_NullCheck()
+        {
+            var result = _lipaConector_NullCheck.GetDailyMenu();
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        [TestMethod]
+        public void LoadAllFoods_NullCheck()
+        {
+            var result = _lipaConector_NullCheck.LoadAllFoods();
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        [TestMethod]
+        public void GetDailyMenu_EmptyResponce()
+        {
+            var result = _lipaConector_EmptyCheck.GetDailyMenu();
+            Assert.AreEqual(result.Count, 0);
+        }
+
+        [TestMethod]
+        public void LoadAllFoods_EmptyResponce()
+        {
+            var result = _lipaConector_EmptyCheck.LoadAllFoods();
+            Assert.AreEqual(result.Count, 0);
         }
     }
 }

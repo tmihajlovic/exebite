@@ -18,6 +18,11 @@ namespace Exebite.DataAccess.Repositories
 
         public Restaurant GetByName(string name)
         {
+            if (name == string.Empty)
+            {
+                throw new System.ArgumentException("Name can't be empty");
+            }
+
             using (var context = _factory.Create())
             {
                 var restaurantEntity = context.Restaurants.Where(r => r.Name == name).FirstOrDefault();
@@ -33,6 +38,11 @@ namespace Exebite.DataAccess.Repositories
 
         public override Restaurant Insert(Restaurant entity)
         {
+            if (entity == null)
+            {
+                throw new System.ArgumentNullException(nameof(entity));
+            }
+
             using (var context = _factory.Create())
             {
                 var restaurantEntity = AutoMapperHelper.Instance.GetMappedValue<RestaurantEntity>(entity, context);
@@ -46,6 +56,11 @@ namespace Exebite.DataAccess.Repositories
 
         public override Restaurant Update(Restaurant entity)
         {
+            if (entity == null)
+            {
+                throw new System.ArgumentNullException(nameof(entity));
+            }
+
             using (var context = _factory.Create())
             {
                 var restaurantEntity = AutoMapperHelper.Instance.GetMappedValue<RestaurantEntity>(entity, context);

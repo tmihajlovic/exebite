@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
@@ -40,10 +41,31 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        public void GetRestaurantById_NonExisting()
+        {
+            var result = _restaurantRepository.GetByID(0);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void GetRestaurantByName()
         {
             var result = _restaurantRepository.GetByName("Teglas");
             Assert.AreEqual(result.Name, "Teglas");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetRestaurantByName_NameEmpty()
+        {
+            var result = _restaurantRepository.GetByName(string.Empty);
+        }
+
+        [TestMethod]
+        public void GetRestaurantByName_NonExisting()
+        {
+            var result = _restaurantRepository.GetByName("Non existing restauran");
+            Assert.IsNull(result);
         }
 
         [TestMethod]
@@ -59,6 +81,13 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void InsertRestaurant_IsNull()
+        {
+            _restaurantRepository.Insert(null);
+        }
+
+        [TestMethod]
         public void UpdateRestaurantDailyMenu()
         {
             var restaurant = _restaurantRepository.GetByID(1);
@@ -69,12 +98,25 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UpdateRestaurantDailyMenu_IsNull()
+        {
+            var result = _restaurantRepository.Update(null);
+        }
+
+        [TestMethod]
         public void RemoveRestaurant()
         {
             var restaurant = _restaurantRepository.GetByName("For delete");
             _restaurantRepository.Delete(restaurant.Id);
             var result = _restaurantRepository.GetByName("For delete");
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void RemoveRestaurant_NonExisting()
+        {
+            _restaurantRepository.Delete(0);
         }
     }
 }

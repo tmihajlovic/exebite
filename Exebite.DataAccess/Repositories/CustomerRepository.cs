@@ -17,6 +17,11 @@ namespace Exebite.DataAccess.Repositories
 
         public Customer GetByName(string name)
         {
+            if (name == string.Empty)
+            {
+                throw new System.ArgumentException("Name can't be empty string");
+            }
+
             using (var context = _factory.Create())
             {
                 var customerEntity = context.Customers.FirstOrDefault(ce => ce.Name == name);
@@ -34,6 +39,11 @@ namespace Exebite.DataAccess.Repositories
 
         public override Customer Insert(Customer customer)
         {
+            if (customer == null)
+            {
+                throw new System.ArgumentNullException(nameof(customer));
+            }
+
             using (var context = _factory.Create())
             {
                 var customerEntity = AutoMapperHelper.Instance.GetMappedValue<CustomerEntity>(customer, context);
@@ -46,6 +56,11 @@ namespace Exebite.DataAccess.Repositories
 
         public override Customer Update(Customer entity)
         {
+            if (entity == null)
+            {
+                throw new System.ArgumentNullException(nameof(entity));
+            }
+
             using (var context = _factory.Create())
             {
                 var customerEntity = AutoMapperHelper.Instance.GetMappedValue<CustomerEntity>(entity, context);

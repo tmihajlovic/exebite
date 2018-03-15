@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Test.InMemoryDB;
@@ -41,6 +42,13 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        public void GetRecipeById_NonExisting()
+        {
+            var result = _recepieRepository.GetByID(0);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void GetRecipesForMainCourse()
         {
             using (var context = _factory.Create())
@@ -53,6 +61,25 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        public void GetRecipesForMainCourse_NoSideDishes()
+        {
+            using (var context = _factory.Create())
+            {
+                var mainCourseEntity = context.Foods.Find(3);
+                var mainCourse = AutoMapperHelper.Instance.GetMappedValue<Food>(mainCourseEntity, context);
+                var result = _recepieRepository.GetRecipesForMainCourse(mainCourse);
+                Assert.AreEqual(result.Count, 0);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetRecipesForMainCourse_MainCourseIsNull()
+        {
+            _recepieRepository.GetRecipesForMainCourse(null);
+        }
+
+        [TestMethod]
         public void GetRecipesForFood()
         {
             using (var context = _factory.Create())
@@ -62,6 +89,25 @@ namespace Exebite.DataAccess.Test.Tests
                 var result = _recepieRepository.GetRecipesForFood(food);
                 Assert.IsNotNull(result);
             }
+        }
+
+        [TestMethod]
+        public void GetRecipesForFood_NoRecipes()
+        {
+            using (var context = _factory.Create())
+            {
+                var foodEntity = context.Foods.Find(3);
+                var food = AutoMapperHelper.Instance.GetMappedValue<Food>(foodEntity, context);
+                var result = _recepieRepository.GetRecipesForFood(food);
+                Assert.AreEqual(result.Count, 0);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetRecipesForFood_FoodIsNull()
+        {
+            _recepieRepository.GetRecipesForFood(null);
         }
 
         [TestMethod]
@@ -90,6 +136,13 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void InsertRecipe_IsNull()
+        {
+            _recepieRepository.Insert(null);
+        }
+
+        [TestMethod]
         public void UpdateRecipe()
         {
             using (var context = _factory.Create())
@@ -105,6 +158,13 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UpdateRecipe_IsNull()
+        {
+            _recepieRepository.Update(null);
+        }
+
+        [TestMethod]
         public void DeleteRecipe()
         {
             using (var context = _factory.Create())
@@ -113,6 +173,12 @@ namespace Exebite.DataAccess.Test.Tests
                 var result = _recepieRepository.GetByID(2);
                 Assert.IsNull(result);
             }
+        }
+
+        [TestMethod]
+        public void DeleteRecipe_NonExisting()
+        {
+            _recepieRepository.Delete(0);
         }
     }
 }

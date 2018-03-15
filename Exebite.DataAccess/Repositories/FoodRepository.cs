@@ -18,6 +18,11 @@ namespace Exebite.DataAccess.Repositories
 
         public IEnumerable<Food> GetByRestaurant(Restaurant restaurant)
         {
+            if (restaurant == null)
+            {
+                throw new System.ArgumentNullException(nameof(restaurant));
+            }
+
             using (var context = _factory.Create())
             {
                 var foodEntities = new List<Food>();
@@ -34,6 +39,11 @@ namespace Exebite.DataAccess.Repositories
 
         public override Food Insert(Food entity)
         {
+            if (entity == null)
+            {
+                throw new System.ArgumentNullException(nameof(entity));
+            }
+
             using (var context = _factory.Create())
             {
                 var foodEntity = AutoMapperHelper.Instance.GetMappedValue<FoodEntity>(entity, context);
@@ -46,6 +56,11 @@ namespace Exebite.DataAccess.Repositories
 
         public override Food Update(Food entity)
         {
+            if (entity == null)
+            {
+                throw new System.ArgumentNullException(nameof(entity));
+            }
+
             using (var context = _factory.Create())
             {
                 var foodEntity = AutoMapperHelper.Instance.GetMappedValue<FoodEntity>(entity, context);

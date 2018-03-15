@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
@@ -40,6 +41,13 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        public void GetFoodById_NonExisting()
+        {
+            var result = _foodRepository.GetByID(0);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void GetFoodsByRestaurant()
         {
             using (var context = _factory.Create())
@@ -48,6 +56,13 @@ namespace Exebite.DataAccess.Test.Tests
                 var result = _foodRepository.GetByRestaurant(restaurant).ToList();
                 Assert.AreNotEqual(result.Count, 0);
             }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetFoodsByRestaurant_NonExistingRestaurant()
+        {
+            var resulet = _foodRepository.GetByRestaurant(null);
         }
 
         [TestMethod]
@@ -72,6 +87,13 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void InsertFood_IsNull()
+        {
+            _foodRepository.Insert(null);
+        }
+
+        [TestMethod]
         public void UpdateFood()
         {
             using (var context = _factory.Create())
@@ -90,6 +112,13 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UpdateFood_IsNull()
+        {
+            _foodRepository.Update(null);
+        }
+
+        [TestMethod]
         public void DeleteFood()
         {
             using (var context = _factory.Create())
@@ -99,6 +128,12 @@ namespace Exebite.DataAccess.Test.Tests
                 var result = _foodRepository.GetByID(food.Id);
                 Assert.IsNull(result);
             }
+        }
+
+        [TestMethod]
+        public void DeleteFood_NonExisting()
+        {
+            _foodRepository.Delete(0);
         }
     }
 }

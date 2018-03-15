@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
@@ -40,6 +41,13 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        public void GetLocationById_NonExisting()
+        {
+            var result = _locationRepository.GetByID(0);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void InsertLocation()
         {
             var newLocation = new Location()
@@ -49,6 +57,13 @@ namespace Exebite.DataAccess.Test.Tests
             };
             var result = _locationRepository.Insert(newLocation);
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void InsertLocation_IsNull()
+        {
+            _locationRepository.Insert(null);
         }
 
         [TestMethod]
@@ -66,6 +81,13 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UpdateLocation_IsNull()
+        {
+            _locationRepository.Update(null);
+        }
+
+        [TestMethod]
         public void DeleteLocation()
         {
             using (var context = _factory.Create())
@@ -75,6 +97,12 @@ namespace Exebite.DataAccess.Test.Tests
                 var result = _locationRepository.GetByID(location.Id);
                 Assert.IsNull(result);
             }
+        }
+
+        [TestMethod]
+        public void DeleteLocation_NonExisting()
+        {
+            _locationRepository.Delete(0);
         }
     }
 }

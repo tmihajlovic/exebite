@@ -1,4 +1,5 @@
-﻿using Exebite.Business.Test.Mocks;
+﻿using System;
+using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.Model;
@@ -36,11 +37,33 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
+        public void GetLocationById_NonExisting()
+        {
+            var result = _locationService.GetLocationById(0);
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public void GetLocationByName()
         {
             var name = "Bulevar";
             var result = _locationService.GetLocationByName(name);
             Assert.AreEqual(result.Name, name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetLocationByName_StringEmpty()
+        {
+            _locationService.GetLocationByName(string.Empty);
+        }
+
+        [TestMethod]
+        public void GetLocationByName_NonExisting()
+        {
+            var name = "NonExistingLocaiotn";
+            var result = _locationService.GetLocationByName(name);
+            Assert.IsNull(result);
         }
 
         [TestMethod]
@@ -53,6 +76,13 @@ namespace Exebite.Business.Test.Tests
             };
             var result = _locationService.CreateNewLocation(newLocation);
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CreateNewLocaiotn_IsNull()
+        {
+            _locationService.CreateNewLocation(null);
         }
 
         [TestMethod]
@@ -78,6 +108,12 @@ namespace Exebite.Business.Test.Tests
             _locationService.DeleteLocation(location.Id);
             var result = _locationService.GetLocationById(location.Id);
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void DeleteLocation_NonExisting()
+        {
+            _locationService.DeleteLocation(0);
         }
     }
 }

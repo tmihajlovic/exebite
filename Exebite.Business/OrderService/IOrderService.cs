@@ -38,7 +38,7 @@ namespace Exebite.Business
         /// </summary>
         /// <param name="date">Date to get orders for</param>
         /// <returns>List of orders placed on given date</returns>
-        List<Order> GettOrdersForDate(DateTime date);
+        List<Order> GetOrdersForDate(DateTime date);
 
         /// <summary>
         /// Place new order in database

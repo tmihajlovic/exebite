@@ -63,8 +63,6 @@ namespace Exebite.DataAccess.Repositories
                     return null;
                 }
             }
-
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -77,8 +75,11 @@ namespace Exebite.DataAccess.Repositories
             {
                 var itemSet = context.Set<TEntity>();
                 var item = itemSet.Find(id);
-                itemSet.Remove(item);
-                context.SaveChanges();
+                if (item != null)
+                {
+                    itemSet.Remove(item);
+                    context.SaveChanges();
+                }
             }
         }
     }

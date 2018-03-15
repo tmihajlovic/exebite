@@ -28,7 +28,7 @@ namespace Exebite.Business
         public List<Order> GetAllOrdersForRestoraunt(int restorauntId)
         {
             var allOrders = this.GetAllOrders();
-            return allOrders.Where(o => o.Meal.Foods[0].Restaurant.Id == restorauntId).ToList();
+            return allOrders.Where(o => o.Meal.Foods.First().Restaurant.Id == restorauntId).ToList();
         }
 
         public Order GetOrderById(int orderId)
@@ -36,13 +36,23 @@ namespace Exebite.Business
             return _orderHandler.GetByID(orderId);
         }
 
-        public List<Order> GettOrdersForDate(DateTime date)
+        public List<Order> GetOrdersForDate(DateTime date)
         {
+            if (date > DateTime.Today)
+            {
+                throw new ArgumentException("Date can't be in furure");
+            }
+
             return _orderHandler.GetOrdersForDate(date).ToList();
         }
 
         public Order PlaceOreder(Order order)
         {
+            if (order == null)
+            {
+                throw new ArgumentNullException(nameof(order));
+            }
+
             return _orderHandler.Insert(order);
         }
 
@@ -53,7 +63,11 @@ namespace Exebite.Business
 
         public void CancelOrder(int orderId)
         {
-            _orderHandler.Delete(orderId);
+            var order = _orderHandler.GetByID(orderId);
+            if (order != null)
+            {
+                _orderHandler.Delete(orderId);
+            }
         }
     }
 }

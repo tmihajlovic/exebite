@@ -36,5 +36,20 @@ namespace Exebite.Business.Test.Tests
             var result = _menuService.CheckAvailableSideDishes(food.Id);
             Assert.IsNotNull(result);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void CheckAvailableSideDishes_FoodNonExisting()
+        {
+            _menuService.CheckAvailableSideDishes(0);
+        }
+
+        [TestMethod]
+        public void CheckAvailableSideDishes_NoSideDishes()
+        {
+            var food = _menuService.GetRestorantsWithMenus().First().Foods.Last();
+            var result = _menuService.CheckAvailableSideDishes(food.Id);
+            Assert.AreEqual(result.Count, 0);
+        }
     }
 }
