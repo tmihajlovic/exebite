@@ -9,8 +9,7 @@ namespace Exebite.DataAccess.Test.InMemoryDB
 
         public FoodOrderingContext Create()
         {
-            var db = new FoodOrderingContext(options);
-            return db;
+            return new FoodOrderingContext(options);
         }
     }
 }

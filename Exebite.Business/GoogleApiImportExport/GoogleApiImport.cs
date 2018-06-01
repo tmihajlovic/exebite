@@ -7,7 +7,7 @@ namespace Exebite.Business.GoogleApiImportExport
 {
     public class GoogleApiImport : IGoogleDataImporter
     {
-        private IRestaurantService _restarauntService;
+        private IRestaurantService _restaurantService;
         private IFoodService _foodService;
 
         // conectors
@@ -15,9 +15,9 @@ namespace Exebite.Business.GoogleApiImportExport
         private IHedoneConector _hedoneConector;
         private ITeglasConector _teglasConector;
 
-        public GoogleApiImport(IRestaurantService restarauntService, IFoodService foodService, ILipaConector lipaConector, ITeglasConector teglasConector, IHedoneConector hedoneConector)
+        public GoogleApiImport(IRestaurantService restaurantService, IFoodService foodService, ILipaConector lipaConector, ITeglasConector teglasConector, IHedoneConector hedoneConector)
         {
-            _restarauntService = restarauntService;
+            _restaurantService = restaurantService;
             _foodService = foodService;
 
             // conectors to a new sheets
@@ -27,49 +27,49 @@ namespace Exebite.Business.GoogleApiImportExport
         }
 
         /// <summary>
-        /// Update daily menu for restorants
+        /// Update daily menu for restaurants
         /// </summary>
         public void UpdateRestorauntsMenu()
         {
-            Restaurant lipaRestoraunt = _restarauntService.GetRestaurantByName("Restoran pod Lipom");
-            Restaurant hedoneRestoraunt = _restarauntService.GetRestaurantByName("Hedone");
-            Restaurant teglasRestoraunt = _restarauntService.GetRestaurantByName("Teglas");
+            Restaurant lipaRestaurant = _restaurantService.GetRestaurantByName("Restoran pod Lipom");
+            Restaurant hedoneRestaurant = _restaurantService.GetRestaurantByName("Hedone");
+            Restaurant teglasRestaurant = _restaurantService.GetRestaurantByName("Teglas");
 
             // Get food from sheet, update database for new and changed and update daily menu
 
             // Lipa
             // Check if all food exist in DB
-            AddAndUpdateFood(lipaRestoraunt, _lipaConector);
+            AddAndUpdateFood(lipaRestaurant, _lipaConector);
 
             // Update daily menu
-            lipaRestoraunt.DailyMenu = FoodsFromDB(lipaRestoraunt, _lipaConector.GetDailyMenu());
-            _restarauntService.UpdateRestourant(lipaRestoraunt);
+            lipaRestaurant.DailyMenu = FoodsFromDB(lipaRestaurant, _lipaConector.GetDailyMenu());
+            _restaurantService.UpdateRestourant(lipaRestaurant);
 
             // Teglas
             // Check if all food exist in DB
-            AddAndUpdateFood(teglasRestoraunt, _teglasConector);
+            AddAndUpdateFood(teglasRestaurant, _teglasConector);
 
             // Update daily menu
-            teglasRestoraunt.DailyMenu = FoodsFromDB(teglasRestoraunt, _teglasConector.GetDailyMenu());
-            _restarauntService.UpdateRestourant(teglasRestoraunt);
+            teglasRestaurant.DailyMenu = FoodsFromDB(teglasRestaurant, _teglasConector.GetDailyMenu());
+            _restaurantService.UpdateRestourant(teglasRestaurant);
 
             // Hedone
             // Check if all food exist in DB
-            AddAndUpdateFood(hedoneRestoraunt, _hedoneConector);
+            AddAndUpdateFood(hedoneRestaurant, _hedoneConector);
 
             // Update daily menu
-            hedoneRestoraunt.DailyMenu = FoodsFromDB(hedoneRestoraunt, _hedoneConector.GetDailyMenu());
-            _restarauntService.UpdateRestourant(hedoneRestoraunt);
+            hedoneRestaurant.DailyMenu = FoodsFromDB(hedoneRestaurant, _hedoneConector.GetDailyMenu());
+            _restaurantService.UpdateRestourant(hedoneRestaurant);
         }
 
         /// <summary>
         /// Updates <see cref="Food"/> info in database, if food doesn't exist creates new one
         /// </summary>
         /// <param name="restaurant">Restaurant food is loaded from</param>
-        /// <param name="conector">Restaurant conector</param>
-        private void AddAndUpdateFood(Restaurant restaurant, IRestaurantConector conector)
+        /// <param name="connector">Restaurant connector</param>
+        private void AddAndUpdateFood(Restaurant restaurant, IRestaurantConector connector)
         {
-            var sheetFoods = conector.LoadAllFoods();
+            var sheetFoods = connector.LoadAllFoods();
             foreach (var food in sheetFoods)
             {
                 var dbFood = restaurant.Foods.SingleOrDefault(f => f.Name == food.Name);

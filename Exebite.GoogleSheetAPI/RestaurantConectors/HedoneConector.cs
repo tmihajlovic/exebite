@@ -3,7 +3,6 @@ using System.Linq;
 using Exebite.GoogleSheetAPI.GoogleSSFactory;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
-using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 
 namespace Exebite.GoogleSheetAPI.RestaurantConectors

@@ -65,7 +65,9 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
                 }
 
                 var dateTomorow = body.Values[1][1].ToString();
-                if (dateTomorow != DateTime.Today.AddDays(1).Date.ToString("dd-MM-yyyy"))
+                int addDays = CheckDate(dateToday);
+
+                if (dateTomorow != DateTime.Today.AddDays(addDays).Date.ToString("dd-MM-yyyy"))
                 {
                     throw new Exception("Tomorow date wrong!");
                 }
@@ -121,6 +123,18 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
                     throw new Exception("Bad data formating");
                 }
             }
+        }
+
+        private int CheckDate(string dateToday)
+        {
+            var checkDate = DateTime.Parse(dateToday);
+            int addDays = 1;
+            if (checkDate.DayOfWeek == DayOfWeek.Friday)
+            {
+                addDays = 3;
+            }
+
+            return addDays;
         }
     }
 }
