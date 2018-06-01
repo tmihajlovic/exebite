@@ -1,4 +1,9 @@
 ﻿-- this script is for SQL Server and Azure SQL
+USE [master]
+GO
+
+CREATE DATABASE [Exebite.JobScheduler];
+
 
 USE [Exebite.JobScheduler]
 GO
