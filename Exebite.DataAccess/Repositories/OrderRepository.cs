@@ -9,7 +9,7 @@ namespace Exebite.DataAccess.Repositories
 {
     public class OrderRepository : DatabaseRepository<Order, OrderEntity>, IOrderRepository
     {
-        private IFoodOrderingContextFactory _factory;
+        private readonly IFoodOrderingContextFactory _factory;
 
         public OrderRepository(IFoodOrderingContextFactory factory)
             : base(factory)
@@ -72,8 +72,7 @@ namespace Exebite.DataAccess.Repositories
                 var resultEntity = context.Update(orderEntity).Entity;
                 context.SaveChanges();
 
-                var result = AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity, context);
-                return result;
+                return AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity, context);
             }
         }
 
@@ -93,8 +92,7 @@ namespace Exebite.DataAccess.Repositories
                 context.SaveChanges();
 
                 var resultEntity = context.Orders.FirstOrDefault(o => o.Id == entity.Id);
-                var result = AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity, context);
-                return result;
+                return AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity, context);
             }
         }
     }

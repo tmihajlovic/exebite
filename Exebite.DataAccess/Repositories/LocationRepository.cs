@@ -7,7 +7,7 @@ namespace Exebite.DataAccess.Repositories
 {
     public class LocationRepository : DatabaseRepository<Location, LocationEntity>, ILocationRepository
     {
-        private IFoodOrderingContextFactory _factory;
+        private readonly IFoodOrderingContextFactory _factory;
 
         public LocationRepository(IFoodOrderingContextFactory factory)
             : base(factory)
@@ -27,8 +27,7 @@ namespace Exebite.DataAccess.Repositories
                 var locEntity = AutoMapperHelper.Instance.GetMappedValue<LocationEntity>(entity, context);
                 var resultEntity = context.Locations.Update(locEntity).Entity;
                 context.SaveChanges();
-                var result = AutoMapperHelper.Instance.GetMappedValue<Location>(resultEntity, context);
-                return result;
+                return AutoMapperHelper.Instance.GetMappedValue<Location>(resultEntity, context);
             }
         }
 
@@ -45,8 +44,7 @@ namespace Exebite.DataAccess.Repositories
                 context.Attach(locationEntity);
                 context.SaveChanges();
                 var resultEntry = context.Locations.FirstOrDefault(l => l.Id == entity.Id);
-                var result = AutoMapperHelper.Instance.GetMappedValue<Location>(resultEntry, context);
-                return result;
+                return AutoMapperHelper.Instance.GetMappedValue<Location>(resultEntry, context);
             }
         }
     }

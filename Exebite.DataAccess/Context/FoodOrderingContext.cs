@@ -5,7 +5,7 @@ namespace Exebite.DataAccess.Migrations
 {
     public class FoodOrderingContext : DbContext
     {
-        private DbContextOptions<FoodOrderingContext> _dbContextOptions;
+        private readonly DbContextOptions<FoodOrderingContext> _dbContextOptions;
 
         public FoodOrderingContext(DbContextOptions<FoodOrderingContext> dbContextOptions)
             : base(dbContextOptions)

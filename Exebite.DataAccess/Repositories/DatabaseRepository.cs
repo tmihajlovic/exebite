@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Exebite.DataAccess.Migrations;
 
@@ -9,7 +8,7 @@ namespace Exebite.DataAccess.Repositories
         where TModel : class
         where TEntity : class
     {
-        private IFoodOrderingContextFactory _factory;
+        private readonly IFoodOrderingContextFactory _factory;
 
         protected DatabaseRepository(IFoodOrderingContextFactory factory)
         {

@@ -7,7 +7,7 @@ namespace Exebite.DataAccess.Repositories
 {
     public class CustomerRepository : DatabaseRepository<Customer, CustomerEntity>, ICustomerRepository
     {
-        private IFoodOrderingContextFactory _factory;
+        private readonly IFoodOrderingContextFactory _factory;
 
         public CustomerRepository(IFoodOrderingContextFactory factory)
             : base(factory)
@@ -27,8 +27,7 @@ namespace Exebite.DataAccess.Repositories
                 var customerEntity = context.Customers.FirstOrDefault(ce => ce.Name == name);
                 if (customerEntity != null)
                 {
-                    var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(customerEntity, context);
-                    return customer;
+                    return AutoMapperHelper.Instance.GetMappedValue<Customer>(customerEntity, context);
                 }
                 else
                 {
@@ -49,8 +48,7 @@ namespace Exebite.DataAccess.Repositories
                 var customerEntity = AutoMapperHelper.Instance.GetMappedValue<CustomerEntity>(customer, context);
                 var resultEntity = context.Customers.Update(customerEntity).Entity;
                 context.SaveChanges();
-                var result = AutoMapperHelper.Instance.GetMappedValue<Customer>(resultEntity, context);
-                return result;
+                return AutoMapperHelper.Instance.GetMappedValue<Customer>(resultEntity, context);
             }
         }
 
@@ -67,8 +65,7 @@ namespace Exebite.DataAccess.Repositories
                 context.Attach(customerEntity);
                 context.SaveChanges();
                 var resultEntity = context.Customers.FirstOrDefault(c => c.Id == entity.Id);
-                var result = AutoMapperHelper.Instance.GetMappedValue<Customer>(resultEntity, context);
-                return result;
+                return AutoMapperHelper.Instance.GetMappedValue<Customer>(resultEntity, context);
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Exebite.JobScheduler.Jobs;
+﻿using Exebite.JobScheduler.Jobs;
 using Quartz;
 using Quartz.Impl;
 
@@ -36,11 +35,11 @@ namespace Exebite.JobScheduler
         }
 
         /// <summary>
-        /// Schedule job base on cron expresion
+        /// Schedule job base on cron expression
         /// </summary>
         /// <param name="jobName">Job to be schedule</param>
         /// <param name="jobGroup">Job group</param>
-        /// <param name="cronExpression">Cron expresion</param>
+        /// <param name="cronExpression">Cron expression</param>
         /// <param name="name">Name of trigger</param>
         public void ScheduleJobCronExpression(string jobName, string jobGroup, string cronExpression, string name)
         {
@@ -58,7 +57,7 @@ namespace Exebite.JobScheduler
         }
 
         /// <summary>
-        /// Remuves all data from the database
+        /// Removes all data from the database
         /// </summary>
         public void RemoveAllData()
         {

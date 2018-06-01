@@ -3,7 +3,6 @@ using System.Linq;
 using Exebite.GoogleSheetAPI.GoogleSSFactory;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
-using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 
 namespace Exebite.GoogleSheetAPI.RestaurantConectors
@@ -30,26 +29,25 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         }
 
         /// <summary>
-        /// Vrite menu with all foods in DB to sheet. Used for initial writing of old menu
+        /// Write menu with all foods in DB to sheet. Used for initial writing of old menu
         /// </summary>
-        /// <param name="foods">List of all food to be writen</param>
+        /// <param name="foods">List of all food to be written</param>
         public override void WriteMenu(List<Food> foods)
         {
-            // Initaize object and add header
-            List<object> header = new List<object> { "Naziv jela", "Opis", "Cena", "Tip" };
-            ValueRange foodRange = new ValueRange();
-            foodRange.Values = new List<IList<object>>();
-            foodRange.Values.Add(header);
+            // Initialize object and add header
+            var header = new List<object> { "Naziv jela", "Opis", "Cena", "Tip" };
+            ValueRange foodRange = new ValueRange { Values = new List<IList<object>> { header } };
 
             // Add food to list
             foreach (var food in foods)
             {
-                List<object> foodData = new List<object>();
-                foodData.Add(food.Name);
-                foodData.Add(food.Description);
-                foodData.Add(food.Price);
-                foodData.Add(GetLocalFoodType(food.Type));
-                foodRange.Values.Add(foodData);
+                foodRange.Values.Add(new List<object>
+                {
+                    food.Name,
+                    food.Description,
+                    food.Price,
+                    GetLocalFoodType(food.Type)
+                });
             }
 
             // Clear sheet and write new data
@@ -63,7 +61,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         /// <returns>List of foods</returns>
         public override List<Food> GetDailyMenu()
         {
-            // Method in case always available menu is interduced
+            // Method in case always available menu is introduced
             List<Food> allFood = new List<Food>();
             allFood.AddRange(DailyMenu());
             return allFood;
@@ -72,7 +70,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         /// <summary>
         /// Get food from daily menu for today
         /// </summary>
-        /// <returns>List of toaday available foof</returns>
+        /// <returns>List of today available food</returns>
         private IEnumerable<Food> DailyMenu()
         {
             IEnumerable<Food> dailyFood = new List<Food>();

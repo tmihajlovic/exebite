@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
-using Exebite.Model;
 
 namespace Exebite.Business.GoogleApiImportExport
 {
@@ -32,7 +30,7 @@ namespace Exebite.Business.GoogleApiImportExport
         }
 
         /// <summary>
-        /// Place orders for retestaurant
+        /// Place orders for restaurant
         /// </summary>
         /// <param name="restaurantName">Name of restaurant</param>
         public void PlaceOrdersForRestaurant(string restaurantName)

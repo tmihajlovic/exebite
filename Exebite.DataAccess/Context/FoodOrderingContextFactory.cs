@@ -7,7 +7,7 @@ namespace Exebite.DataAccess.Migrations
     {
         private static string connString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Exebite.DataAccess.Context.FoodOrderingContext;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        private DbContextOptions<FoodOrderingContext> options = new DbContextOptionsBuilder<FoodOrderingContext>().UseSqlServer(connString).UseLazyLoadingProxies().Options;
+        private readonly DbContextOptions<FoodOrderingContext> options = new DbContextOptionsBuilder<FoodOrderingContext>().UseSqlServer(connString).UseLazyLoadingProxies().Options;
 
         public FoodOrderingContext Create()
         {

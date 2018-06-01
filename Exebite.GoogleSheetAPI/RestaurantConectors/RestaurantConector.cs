@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
-using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 
 namespace Exebite.GoogleSheetAPI.RestaurantConectors
@@ -44,7 +43,8 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
                 throw new ArgumentNullException(nameof(orders));
             }
 
-            List<object> header = new List<object> { "Jelo", "Komada", "Cena", "Cena Ukupno", "Narucili" };
+            var header = new List<object> { "Jelo", "Komada", "Cena", "Cena Ukupno", "Narucili" };
+            var orderRange = new ValueRange { Values = new List<IList<object>> { header } };
 
             List<Food> listOFOrderdFood = new List<Food>();
             foreach (var order in orders)
@@ -56,14 +56,11 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
             }
 
             var distinctFood = listOFOrderdFood.GroupBy(f => f.Id).Select(o => o.FirstOrDefault());
-            ValueRange orderRange = new ValueRange();
-            orderRange.Values = new List<IList<object>>();
-            orderRange.Values.Add(header);
             int rowCounter = 2; // First row with orders, used for formula
             foreach (var food in distinctFood)
             {
-                List<object> customerList = new List<object>();
-                List<object> formatedData = new List<object>();
+                var customerList = new List<object>();
+                var formatedData = new List<object>();
 
                 foreach (var order in orders)
                 {
@@ -114,8 +111,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
                 }
             }
 
-            ValueRange updatedRange = new ValueRange();
-            updatedRange.Values = new List<IList<object>>();
+            ValueRange updatedRange = new ValueRange { Values = new List<IList<object>>() };
             int daysToAdd = 0;
 
             // Insert today and after
@@ -149,8 +145,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
             }
 
             // Transpose values
-            ValueRange formatedRange = new ValueRange();
-            formatedRange.Values = new List<IList<object>>();
+            ValueRange formatedRange = new ValueRange { Values = new List<IList<object>>() };
 
             bool empty = true;
             int rowNum = 0;
@@ -214,7 +209,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         }
 
         /// <summary>
-        /// Populte Kasa tab
+        /// Populate Kasa tab
         /// </summary>
         /// <param name="customerList">List of <see cref="Customer"/></param>
         public void WriteKasaTab(List<Customer> customerList)
@@ -225,17 +220,16 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
             }
 
             List<object> header = new List<object> { "Id", "Ime i prezime", "Suma" };
-            ValueRange kasaData = new ValueRange();
-            kasaData.Values = new List<IList<object>>();
-            kasaData.Values.Add(header);
+            ValueRange kasaData = new ValueRange { Values = new List<IList<object>> { header } };
 
             foreach (var customer in customerList)
             {
-                var row = new List<object>();
-                row.Add(customer.Id);
-                row.Add(customer.Name);
-                row.Add(customer.Orders.Where(o => o.Meal.Foods[0].Restaurant.Name == Restaurant.Name).Sum(o => o.Price));
-                kasaData.Values.Add(row);
+                kasaData.Values.Add(new List<object>
+                {
+                    customer.Id,
+                    customer.Name,
+                    customer.Orders.Where(o => o.Meal.Foods[0].Restaurant.Name == Restaurant.Name).Sum(o => o.Price)
+                });
             }
 
             GoogleSheetService.Clear(SheetId, _kasaSheet);
@@ -270,6 +264,10 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 
                 case DayOfWeek.Friday:
                     dayString = "Petak";
+                    break;
+                case DayOfWeek.Saturday:
+                case DayOfWeek.Sunday:
+                default:
                     break;
             }
 

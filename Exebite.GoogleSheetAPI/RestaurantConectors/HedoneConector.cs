@@ -32,19 +32,18 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 
         public override void WriteMenu(List<Food> foods)
         {
-            List<object> header = new List<object> { "Naziv jela", "Opis", "Cena", "Tip" };
-            ValueRange foodRange = new ValueRange();
-            foodRange.Values = new List<IList<object>>();
-            foodRange.Values.Add(header);
+            var header = new List<object> { "Naziv jela", "Opis", "Cena", "Tip" };
+            var foodRange = new ValueRange { Values = new List<IList<object>> { header } };
 
             foreach (var food in foods)
             {
-                List<object> foodData = new List<object>();
-                foodData.Add(food.Name);
-                foodData.Add(food.Description);
-                foodData.Add(food.Price);
-                foodData.Add(GetLocalFoodType(food.Type));
-                foodRange.Values.Add(foodData);
+                foodRange.Values.Add(new List<object>
+                {
+                    food.Name,
+                    food.Description,
+                    food.Price,
+                    GetLocalFoodType(food.Type)
+                });
             }
 
             // Clear sheet and write new data
@@ -54,7 +53,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 
         public override List<Food> GetDailyMenu()
         {
-            List<Food> allFood = new List<Food>();
+            var allFood = new List<Food>();
 
             allFood.AddRange(DailyMenu());
             allFood.AddRange(AaMenu());
@@ -64,33 +63,30 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 
         private IEnumerable<Food> DailyMenu()
         {
-            IEnumerable<Food> dailyFood = new List<Food>();
             var range = dailyMenuSheet + "!A3:A1000";
             ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
 
             // Null and empty check
             if (!(sheetData != null && sheetData.Values != null && sheetData.Values.Any()))
             {
-                return dailyFood;
+                return new List<Food>();
             }
-            dailyFood = sheetData.Values.First().Select(f => new Food { Name = f.ToString(), Restaurant = _restaurant }).ToList();
-            return dailyFood;
+
+            return sheetData.Values.First().Select(f => new Food { Name = f.ToString(), Restaurant = _restaurant }).ToList();
         }
 
         private IEnumerable<Food> AaMenu()
         {
-            IEnumerable<Food> aaFood = new List<Food>();
-
             var range = alwaysAvailableSheet + "!A2:A1000";
             ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
 
             // Null and empty check
             if (!(sheetData != null && sheetData.Values != null && sheetData.Values.Any()))
             {
-                return aaFood;
+                return new List<Food>();
             }
-            aaFood = sheetData.Values.First().Select(f => new Food { Name = f.ToString(), Restaurant = _restaurant }).ToList();
-            return aaFood;
+
+            return sheetData.Values.First().Select(f => new Food { Name = f.ToString(), Restaurant = _restaurant }).ToList();
         }
     }
 }

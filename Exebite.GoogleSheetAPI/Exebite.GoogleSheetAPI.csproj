@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Apis" Version="1.32.2" />
+    <PackageReference Include="Roslyn.Analyzers" Version="1.0.3.4" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
     <PackageReference Include="Unity" Version="5.7.3" />
   </ItemGroup>
@@ -26,10 +27,10 @@
 
   <ItemGroup>
     <Reference Include="Google.Apis.Auth">
-      <HintPath>..\OLD\GoogleSpreadsheetApi\bin\Debug\Google.Apis.Auth.dll</HintPath>
+      <HintPath>..\packages\Google.Apis.Auth.1.32.2\lib\netstandard1.3\Google.Apis.Auth.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis.Sheets.v4">
-      <HintPath>..\OLD\GoogleSpreadsheetApi\bin\Debug\Google.Apis.Sheets.v4.dll</HintPath>
+      <HintPath>..\packages\Google.Apis.Sheets.v4.1.32.2.1155\lib\netstandard1.3\Google.Apis.Sheets.v4.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -469,7 +469,7 @@
       <Project>{18a84d46-d8d4-44f1-b203-da16bad63dd0}</Project>
       <Name>Exebite.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GoogleSpreadsheetApi\Exebite.GoogleSpreadsheetApi.csproj">
+    <ProjectReference Include="..\OLD\GoogleSpreadsheetApi\Exebite.GoogleSpreadsheetApi.OLD.csproj">
       <Project>{05506757-bed4-4f0b-8fac-f93a60cfcaf5}</Project>
       <Name>Exebite.GoogleSpreadsheetApi</Name>
     </ProjectReference>

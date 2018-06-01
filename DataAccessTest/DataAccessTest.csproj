@@ -272,6 +272,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Exebite.DataAccess\Exebite.DataAccess.csproj">
+      <Project>{8910e895-a3a5-43be-9b24-5ea4e5d1962c}</Project>
+      <Name>Exebite.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Exebite.Model\Exebite.Model.csproj">
       <Project>{18A84D46-D8D4-44F1-B203-DA16BAD63DD0}</Project>
       <Name>Exebite.Model</Name>
