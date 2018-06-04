@@ -9,9 +9,9 @@ namespace Exebite.GoogleSheetAPI.Kasa
 {
     public class KasaConector : IKasaConector
     {
+        private readonly string _sheetId;
+        private readonly string _range = "Kasa";
         private SheetsService _googleSS;
-        private string _sheetId;
-        private string _range = "Kasa";
 
         public KasaConector(IGoogleSheetServiceFactory googleSheetServiceFactory, IGoogleSpreadsheetIdFactory googleSpreadsheetIdFactory)
         {
@@ -31,8 +31,7 @@ namespace Exebite.GoogleSheetAPI.Kasa
             var names = sheetData.Values[0].Skip(1); // Take 1st column, 2nd row and on for names
             foreach (var name in names)
             {
-                var newCustomer = new Customer();
-                newCustomer.Name = name.ToString();
+                var newCustomer = new Customer { Name = name.ToString() };
                 if (newCustomer.Name.EndsWith("JD"))
                 {
                     newCustomer.Location = new Location { Name = "JD" };

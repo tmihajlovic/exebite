@@ -9,7 +9,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 {
     public abstract class RestaurantConector : IRestaurantConector
     {
-        private string _kasaSheet = "Kasa";
+        private readonly string _kasaSheet = "Kasa";
 
         public RestaurantConector(IGoogleSheetService googleSheetService)
         {

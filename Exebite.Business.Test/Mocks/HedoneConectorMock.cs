@@ -47,11 +47,11 @@ namespace Exebite.Business.Test.Mocks
                 result.AddRange(foodList.Take(foodList.Count - 1)); // Add one food less to be marked inactive
                 var newFoodEntity = new DataAccess.Entities.FoodEntity
                 {
-                    Name = "Test food from conector for: " + restaurant.Name,
-                    Description = "Test food from conector description",
+                    Name = "Test food from connector for: " + restaurant.Name,
+                    Description = "Test food from connector description",
                     IsInactive = false,
                     Price = 100,
-                    Type = Model.FoodType.MAIN_COURSE,
+                    Type = FoodType.MAIN_COURSE,
                     RestaurantId = restaurant.Id,
                     Restaurant = restaurant
                 };

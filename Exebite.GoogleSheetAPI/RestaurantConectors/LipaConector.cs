@@ -13,8 +13,9 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         private static string foodListSheet = "Cene i opis";
         private static string ordersSheet = "Narudzbine";
 
+        private readonly string _sheetId;
+
         private Restaurant _restaurant;
-        private string _sheetId;
 
         public LipaConector(IGoogleSheetService googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
             : base(googleSheetService)

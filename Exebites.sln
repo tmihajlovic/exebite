@@ -55,6 +55,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.GoogleSheetAPI", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.GoogleSheetAPI.Test", "Exebite.GoogleSheetAPI.Test\Exebite.GoogleSheetAPI.Test.csproj", "{77D501CE-FD2E-4DC4-AFDE-455D53A790D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.API", "Exebite.API\Exebite.API.csproj", "{7477239A-E5F1-428E-98E5-265435C31420}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,10 @@ Global
 		{77D501CE-FD2E-4DC4-AFDE-455D53A790D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77D501CE-FD2E-4DC4-AFDE-455D53A790D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77D501CE-FD2E-4DC4-AFDE-455D53A790D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7477239A-E5F1-428E-98E5-265435C31420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7477239A-E5F1-428E-98E5-265435C31420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7477239A-E5F1-428E-98E5-265435C31420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7477239A-E5F1-428E-98E5-265435C31420}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,6 +162,7 @@ Global
 		{05506757-BED4-4F0B-8FAC-F93A60CFCAF5} = {D9A9960E-892E-40F1-9710-4133892CEFFA}
 		{8ABB8947-1606-4C1F-81C9-1DE94F80129A} = {67F104A6-6AAD-465B-B4DD-D70E4385D211}
 		{77D501CE-FD2E-4DC4-AFDE-455D53A790D4} = {5E298C35-AE52-47B5-A6D8-4480730FD786}
+		{7477239A-E5F1-428E-98E5-265435C31420} = {761FBE2D-8104-4490-A0BF-319845671EE4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9631173F-68BC-4A5E-A5AA-D641BFE32333}

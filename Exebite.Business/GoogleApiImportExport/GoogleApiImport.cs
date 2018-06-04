@@ -10,7 +10,7 @@ namespace Exebite.Business.GoogleApiImportExport
         private IRestaurantService _restaurantService;
         private IFoodService _foodService;
 
-        // conectors
+        // connectors
         private ILipaConector _lipaConector;
         private IHedoneConector _hedoneConector;
         private ITeglasConector _teglasConector;
@@ -20,7 +20,7 @@ namespace Exebite.Business.GoogleApiImportExport
             _restaurantService = restaurantService;
             _foodService = foodService;
 
-            // conectors to a new sheets
+            // connectors to a new sheets
             _lipaConector = lipaConector;
             _hedoneConector = hedoneConector;
             _teglasConector = teglasConector;

@@ -7,11 +7,11 @@ namespace Exebite.Business
 {
     public class CustomerService : ICustomerService
     {
-        private ICustomerRepository _customerHandler;
+        private ICustomerRepository _customerRepository;
 
-        public CustomerService(ICustomerRepository customerHandler)
+        public CustomerService(ICustomerRepository customerRepository)
         {
-            _customerHandler = customerHandler;
+            _customerRepository = customerRepository;
         }
 
         public Customer GetCustomerByIdentityId(string id)
@@ -21,18 +21,18 @@ namespace Exebite.Business
                 throw new System.ArgumentException("Id cant be empty string");
             }
 
-            var users = _customerHandler.GetAll();
+            var users = _customerRepository.GetAll();
             return users.FirstOrDefault(c => c.AppUserId == id);
         }
 
         public List<Customer> GetAllCustomers()
         {
-            return _customerHandler.GetAll().ToList();
+            return _customerRepository.GetAll().ToList();
         }
 
         public Customer GetCustomerById(int id)
         {
-            return _customerHandler.GetByID(id);
+            return _customerRepository.GetByID(id);
         }
 
         public Customer GetCustomerByName(string name)
@@ -42,7 +42,7 @@ namespace Exebite.Business
                 throw new System.ArgumentException("Name cant be empty string");
             }
 
-            return _customerHandler.GetByName(name);
+            return _customerRepository.GetByName(name);
         }
 
         public Customer CreateCustomer(Customer customer)
@@ -52,20 +52,20 @@ namespace Exebite.Business
                 throw new System.ArgumentNullException(nameof(customer));
             }
 
-            return _customerHandler.Insert(customer);
+            return _customerRepository.Insert(customer);
         }
 
         public Customer UpdateCustomer(Customer customer)
         {
-           return _customerHandler.Update(customer);
+            return _customerRepository.Update(customer);
         }
 
         public void DeleteCustomer(int customerId)
         {
-            var exist = _customerHandler.GetByID(customerId);
+            var exist = _customerRepository.GetByID(customerId);
             if (exist != null)
             {
-                _customerHandler.Delete(customerId);
+                _customerRepository.Delete(customerId);
             }
         }
     }

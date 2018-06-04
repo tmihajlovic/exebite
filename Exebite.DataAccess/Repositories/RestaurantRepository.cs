@@ -71,7 +71,7 @@ namespace Exebite.DataAccess.Repositories
                 // clear old menu
                 dbRestaurant.DailyMenu.Clear();
 
-                // bind daily food entitys
+                // bind daily food entities
                 for (int i = 0; i < restaurantEntity.DailyMenu.Count; i++)
                 {
                     var tmpfood = foodList.FirstOrDefault(f => f.Name == restaurantEntity.DailyMenu[i].Name);
