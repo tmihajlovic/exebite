@@ -12,7 +12,7 @@ namespace Exebite.DataAccess.Repositories
         public LocationRepository(IFoodOrderingContextFactory factory)
             : base(factory)
         {
-            this._factory = factory;
+            _factory = factory;
         }
 
         public override Location Insert(Location entity)
