@@ -1,9 +1,10 @@
 ﻿using Exebite.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Exebite.DataAccess.Migrations
 {
-    public class FoodOrderingContext : DbContext
+    public class FoodOrderingContext : DbContext, IFoodOrderingContext
     {
         private readonly DbContextOptions<FoodOrderingContext> _dbContextOptions;
 

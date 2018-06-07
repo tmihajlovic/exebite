@@ -12,6 +12,8 @@ namespace Exebite.Model
 
         public Location Location { get; set; }
 
+        public int LocationId { get; set; }
+
         public virtual List<Order> Orders { get; set; }
 
         public virtual List<CustomerAliases> Aliases { get; set; }

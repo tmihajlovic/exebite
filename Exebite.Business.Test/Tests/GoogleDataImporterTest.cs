@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Exebite.Business.GoogleApiImportExport;
 using Exebite.Business.Test.Mocks;
+using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
@@ -23,6 +24,8 @@ namespace Exebite.Business.Test.Tests
         private static IHedoneConector _hedoneConector;
         private static ILipaConector _lipaConector;
         private static ITeglasConector _teglasConector;
+        private static IExebiteMapper _mapper;
+
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
@@ -31,8 +34,8 @@ namespace Exebite.Business.Test.Tests
             _lipaConector = new LipaConectorMock(_factory);
             _hedoneConector = new HedoneConectorMock(_factory);
             _teglasConector = new TeglasConectorMock(_factory);
-            _restaurantService = new RestaurantService(new RestaurantRepository(_factory));
-            _foodService = new FoodService(new FoodRepository(_factory));
+            _restaurantService = new RestaurantService(new RestaurantRepository(_factory, _mapper));
+            _foodService = new FoodService(new FoodRepository(_factory, _mapper));
             _googleDataImporter = new GoogleApiImport(_restaurantService, _foodService, _lipaConector, _teglasConector, _hedoneConector);
             InMemoryDBSeed.Seed(_factory);
         }

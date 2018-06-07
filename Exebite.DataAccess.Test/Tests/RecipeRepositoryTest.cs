@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Exebite.DataAccess.Migrations;
+using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unity;
-using Unity.Resolution;
+// using Unity;
+// using Unity.Resolution;
 
 namespace Exebite.DataAccess.Test.Tests
 {
@@ -15,15 +16,15 @@ namespace Exebite.DataAccess.Test.Tests
     {
         private static IFoodOrderingContextFactory _factory;
         private static IRecipeRepository _recepieRepository;
-        private static IUnityContainer _container;
+       // private static IUnityContainer _container;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
             _factory = new InMemoryDBFactory();
-            _container = new UnityContainer();
-            Unity.UnityConfig.RegisterTypes(_container);
-            _recepieRepository = _container.Resolve<IRecipeRepository>(new ParameterOverride("factory", _factory));
+            // _container = new UnityContainer();
+            // Unity.UnityConfig.RegisterTypes(_container);
+           // _recepieRepository = _container.Resolve<IRecipeRepository>(new ParameterOverride("factory", _factory));
             InMemorySeed.Seed(_factory);
         }
 

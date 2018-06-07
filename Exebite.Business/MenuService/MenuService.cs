@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Exebite.DataAccess;
+using Exebite.DataAccess.Repositories;
 using Exebite.Model;
 
 namespace Exebite.Business

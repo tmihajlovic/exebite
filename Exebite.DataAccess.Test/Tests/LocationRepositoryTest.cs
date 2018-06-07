@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Exebite.DataAccess.Migrations;
+using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,7 +22,7 @@ namespace Exebite.DataAccess.Test.Tests
         {
             _factory = new InMemoryDBFactory();
             _container = new UnityContainer();
-            Unity.UnityConfig.RegisterTypes(_container);
+            // Unity.UnityConfig.RegisterTypes(_container);
             _locationRepository = _container.Resolve<ILocationRepository>(new ParameterOverride("factory", _factory));
             InMemorySeed.Seed(_factory);
         }

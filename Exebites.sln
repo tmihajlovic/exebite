@@ -57,7 +57,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.GoogleSheetAPI.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.API", "Exebite.API\Exebite.API.csproj", "{7477239A-E5F1-428E-98E5-265435C31420}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.API.Test", "Exebite.API.Test\Exebite.API.Test.csproj", "{6A54491D-DC55-42DF-A7BC-EB4545559108}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ExeBite.Database", "ExeBite.Database\ExeBite.Database.sqlproj", "{E510C53E-1B2A-4DC3-9186-89A4206F8623}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,10 +141,12 @@ Global
 		{7477239A-E5F1-428E-98E5-265435C31420}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7477239A-E5F1-428E-98E5-265435C31420}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7477239A-E5F1-428E-98E5-265435C31420}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A54491D-DC55-42DF-A7BC-EB4545559108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A54491D-DC55-42DF-A7BC-EB4545559108}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A54491D-DC55-42DF-A7BC-EB4545559108}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A54491D-DC55-42DF-A7BC-EB4545559108}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E510C53E-1B2A-4DC3-9186-89A4206F8623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E510C53E-1B2A-4DC3-9186-89A4206F8623}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E510C53E-1B2A-4DC3-9186-89A4206F8623}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E510C53E-1B2A-4DC3-9186-89A4206F8623}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E510C53E-1B2A-4DC3-9186-89A4206F8623}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E510C53E-1B2A-4DC3-9186-89A4206F8623}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

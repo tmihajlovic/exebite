@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Migrations;
 using Exebite.Model;
@@ -10,8 +11,8 @@ namespace Exebite.DataAccess.Repositories
     {
         private readonly IFoodOrderingContextFactory _factory;
 
-        public RecipeRepository(IFoodOrderingContextFactory factory)
-            : base(factory)
+        public RecipeRepository(IFoodOrderingContextFactory factory, IExebiteMapper mapper)
+            : base(factory, mapper)
         {
             _factory = factory;
         }

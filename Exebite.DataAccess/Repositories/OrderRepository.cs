@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Migrations;
 using Exebite.Model;
@@ -11,11 +12,10 @@ namespace Exebite.DataAccess.Repositories
     {
         private readonly IFoodOrderingContextFactory _factory;
 
-        public OrderRepository(IFoodOrderingContextFactory factory)
-            : base(factory)
+        public OrderRepository(IFoodOrderingContextFactory factory, IExebiteMapper mapper)
+            : base(factory,mapper)
         {
             _factory = factory;
-            var mapper = AutoMapperHelper.Instance;
         }
 
         public IEnumerable<Order> GetOrdersForCustomer(int customerId)

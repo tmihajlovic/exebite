@@ -1,5 +1,6 @@
 ﻿using System;
 using Exebite.Business.Test.Mocks;
+using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.Model;
@@ -12,12 +13,14 @@ namespace Exebite.Business.Test.Tests
     {
         private static ILocationService _locationService;
         private static IFoodOrderingContextFactory _factory;
+        private static IExebiteMapper _mapper;
+
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
             _factory = new InMemoryDBFactory();
-            _locationService = new LocationService(new LocationRepository(_factory));
+            _locationService = new LocationService(new LocationRepository(_factory, _mapper));
             InMemoryDBSeed.Seed(_factory);
         }
 

@@ -1,13 +1,7 @@
-﻿using Exebite.API.Models;
-using Exebite.Business;
+﻿using Exebite.Business;
 using Exebite.DataAccess;
-using Exebite.DataAccess.Migrations;
-using Exebite.DataAccess.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,19 +20,12 @@ namespace Exebite.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
+            services.AddDataAccessServices();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IRestaurantService, RestaurantService>();
-            services.AddTransient<ICustomerRepository, CustomerRepository>();
-            services.AddTransient<ILocationRepository, LocationRepository>();
-            services.AddTransient<IRestaurantRepository, RestaurantRepository>();
-            services.AddTransient<IFoodOrderingContextFactory, FoodOrderingContextFactory>();
             services.AddTransient<IMenuService, MenuService>();
-            services.AddTransient<IFoodRepository, FoodRepository>();
-            services.AddTransient<IRecipeRepository, RecipeRepository>();
             services.AddTransient<IOrderService, OrderService>();
-            services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IFoodService, FoodService>();
         }
 

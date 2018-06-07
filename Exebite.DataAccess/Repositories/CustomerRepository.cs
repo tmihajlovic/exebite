@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Migrations;
 using Exebite.Model;
@@ -9,11 +11,24 @@ namespace Exebite.DataAccess.Repositories
     {
         private readonly IFoodOrderingContextFactory _factory;
 
-        public CustomerRepository(IFoodOrderingContextFactory factory)
-            : base(factory)
+        public CustomerRepository(IFoodOrderingContextFactory factory, IExebiteMapper mapper)
+            : base(factory, mapper)
         {
-            this._factory = factory;
+            _factory = factory;
         }
+
+        public override IList<Customer> GetAll()
+        {
+            using (var context = _factory.Create())
+            {
+                var items = context.Customers
+                                .ToList();
+
+                // hack, ProjectTo not working
+                return items.Select(x => _exebiteMapper.Map<Customer>(x)).ToList();
+            }
+        }
+
 
         public Customer GetByName(string name)
         {

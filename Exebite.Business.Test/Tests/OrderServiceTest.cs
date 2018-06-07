@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess;
+using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.Model;
@@ -15,12 +16,16 @@ namespace Exebite.Business.Test.Tests
     {
         private static IOrderService _orderService;
         private static IFoodOrderingContextFactory _factory;
+        private static IExebiteMapper _mapper;
+
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
+            _mapper = new ExebiteMapper();
+
             _factory = new InMemoryDBFactory();
-            _orderService = new OrderService(new OrderRepository(_factory));
+            _orderService = new OrderService(new OrderRepository(_factory, _mapper));
             InMemoryDBSeed.Seed(_factory);
         }
 

@@ -9,3 +9,8 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1652:Enable XML documentation output", Justification = "<Pending>")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:Field names must not begin with underscore", Justification = "<Pending>")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1404:Code analysis suppression must have justification", Justification = "<Pending>")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.JobScheduler.Jobs.UpdateDailyMenus")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.JobScheduler.Jobs.WriteOrders")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.JobScheduler.JobSchedulerRepository")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.JobScheduler.JobSchedulerService")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.JobScheduler.Program")]

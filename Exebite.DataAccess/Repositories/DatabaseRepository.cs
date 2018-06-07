@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper.QueryableExtensions;
+using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
 
 namespace Exebite.DataAccess.Repositories
@@ -9,10 +11,12 @@ namespace Exebite.DataAccess.Repositories
         where TEntity : class
     {
         private readonly IFoodOrderingContextFactory _factory;
+        protected readonly IExebiteMapper _exebiteMapper;
 
-        protected DatabaseRepository(IFoodOrderingContextFactory factory)
+        protected DatabaseRepository(IFoodOrderingContextFactory factory, IExebiteMapper exebiteMapper)
         {
             _factory = factory;
+            _exebiteMapper = exebiteMapper;
         }
 
         /// <summary>
@@ -24,20 +28,23 @@ namespace Exebite.DataAccess.Repositories
 
         public abstract TModel Update(TModel entity);
 
-        public virtual IEnumerable<TModel> GetAll()
+        public virtual IList<TModel> GetAll()
         {
             using (var context = _factory.Create())
             {
-                List<TModel> itemList = new List<TModel>();
-                IQueryable<TEntity> itemSet = context.Set<TEntity>().AsQueryable();
+                //List<TModel> itemList = new List<TModel>();
+                var items = context
+                                .Set<TEntity>()
+                                //.AsQueryable()
+                                .ProjectTo<TModel>(_exebiteMapper.ConfigurationProvider).ToList();
 
-                foreach (var item in itemSet)
-                {
-                    var itemModel = AutoMapperHelper.Instance.GetMappedValue<TModel>(item, context);
-                    itemList.Add(itemModel);
-                }
+                //foreach (var item in itemSet)
+                //{
+                //    var itemModel = AutoMapperHelper.Instance.GetMappedValue<TModel>(item, context);
+                //    itemList.Add(itemModel);
+                //}
 
-                return itemList;
+                return items;
             }
         }
 
