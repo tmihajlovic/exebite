@@ -25,7 +25,7 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
-        public void GetAllOrders()
+        public void GetAllOrders_ObjectIsNotNull()
         {
             var result = _orderService.GetAllOrders();
             Assert.IsNotNull(result);
@@ -48,13 +48,11 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
-        public void GetAllOrdersForCustomer()
+        public void GetAllOrdersForCustomer_ExistingCustomer_ConutOfOrdersAreNotZero()
         {
             var customerId = 1;
             var orders = _orderService.GetAllOrdersForCustomer(customerId);
-            var result = orders.Where(o => o.Customer.Id != customerId).ToList();
             Assert.AreNotSame(orders.Count, 0);
-            Assert.AreEqual(result.Count, 0);
         }
 
         [TestMethod]
@@ -65,27 +63,23 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
-        public void GetAllOrdersForRestoraunt()
+        public void GetAllOrdersForRestoraunt_RestorauntExists_OrdersCountIsNotZero()
         {
             var restaurantId = 1;
             var orders = _orderService.GetAllOrdersForRestoraunt(restaurantId);
-            var result = orders.Where(o => o.Meal.Foods.First().Restaurant.Id != restaurantId).ToList();
             Assert.AreNotEqual(orders.Count, 0);
-            Assert.AreEqual(result.Count, 0);
         }
 
         [TestMethod]
-        public void GetAllOrdersForRestoraunt_NonExistingRestaurant()
+        public void GetAllOrdersForRestoraunt_NonExistingRestaurant_OrdersIsEmpty()
         {
             var restaurantId = 0;
             var orders = _orderService.GetAllOrdersForRestoraunt(restaurantId);
-            var result = orders.Where(o => o.Meal.Foods.First().Restaurant.Id != restaurantId).ToList();
             Assert.AreEqual(orders.Count, 0);
-            Assert.AreEqual(result.Count, 0);
         }
 
         [TestMethod]
-        public void GetOrdersForDate()
+        public void GetOrdersForDate_DateIsToday_ReturnedOnlyOrdersForPassedDate()
         {
             var date = DateTime.Today;
             var orders = _orderService.GetOrdersForDate(date);
@@ -96,14 +90,14 @@ namespace Exebite.Business.Test.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void GetOrdersForDate_DateIsTomorow()
+        public void GetOrdersForDate_DateIsTomorow_ArgumentExceptionThrown()
         {
             var date = DateTime.Today.AddDays(1);
             _orderService.GetOrdersForDate(date);
         }
 
         [TestMethod]
-        public void CreateOreder()
+        public void CreateOreder_ValidOrderPassed_OrderCreated()
         {
             using (var context = _factory.Create())
             {
@@ -126,20 +120,20 @@ namespace Exebite.Business.Test.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void CreateOrder_IsNull()
+        public void CreateOrder_IsNull_ArgumentNullExceptionThrown()
         {
             _orderService.CreateOrder(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void UpdateOrder_IsNull()
+        public void UpdateOrder_IsNull_ArgumentNullExceptionThrown()
         {
             _orderService.UpdateOrder(null);
         }
 
         [TestMethod]
-        public void UpdateOrder()
+        public void UpdateOrder_ValidFoodAdded_OrderUpdated()
         {
             using (var context = _factory.Create())
             {
@@ -153,7 +147,7 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
-        public void DeleteOrder()
+        public void DeleteOrder_ExistingOrderPassed_OrderDeleted()
         {
             var orderNote = "For delete";
             var order = _orderService.GetAllOrders().FirstOrDefault(o => o.Note == orderNote);
@@ -163,7 +157,7 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
-        public void DeleteOrder_NonExisting()
+        public void DeleteOrder_NonExistingOrderPassed_NoException()
         {
             _orderService.DeleteOrder(0);
         }
