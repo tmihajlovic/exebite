@@ -25,7 +25,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllOrders()
+        public IActionResult GetOrders()
         {
             var model = new OrdersViewModel
             {
@@ -49,6 +49,38 @@ namespace Exebite.API.Controllers
             return Ok(model);
         }
 
+        [HttpGet("id")]
+        public IActionResult GetOrder(int id)
+        {
+            var model = new OrdersViewModel
+            {
+                Customer = _customerService.GetCustomerByIdentityId(User.Identity.Name),
+                ListOfRestaurants = _menuService.GetRestorantsWithMenus(),
+                TodayFoods = new List<Food>()
+            };
+
+            if (model.Customer == null)
+            {
+                return NotFound();
+            }
+
+            var order = _orderService.GetOrderById(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            model.ListOfOrders = new List<Order> { order };
+            model.CurentOrder = new Order { Customer = model.Customer, Meal = new Meal { Foods = new List<Food>() } };
+            foreach (var restaurant in model.ListOfRestaurants)
+            {
+                model.TodayFoods.AddRange(restaurant.DailyMenu);
+            }
+
+            return Ok(model);
+        }
+
+        [HttpGet("OrdersHistory")]
         public IActionResult OrdersHistory()
         {
             OrdersHistoryViewModel model = new OrdersHistoryViewModel
@@ -61,15 +93,15 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            model.Customer.Orders = model.Customer.Orders.OrderBy(o => o.Date).Reverse().ToList();
+            model.Customer.Orders = model.Customer.Orders.OrderByDescending(o => o.Date).ToList();
 
             return Ok(model);
         }
 
-
-        public IActionResult PlaceOrder(string[] inputId, string note)
+        [HttpPost]
+        public IActionResult CreateOrder([FromBody] CreateOrderModel model)
         {
-            if (inputId.Count() == 0)
+            if (model.FoodIds == null || model.FoodIds.Count() == 0)
             {
                 return BadRequest();
             }
@@ -78,7 +110,7 @@ namespace Exebite.API.Controllers
             {
                 Customer = _customerService.GetCustomerByIdentityId(User.Identity.Name),
                 Date = DateTime.Today,
-                Note = note,
+                Note = model.Note,
                 Meal = new Meal { Foods = new List<Food>() }
             };
 
@@ -87,23 +119,52 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            foreach (var id in inputId)
+            foreach (var id in model.FoodIds)
             {
-                newOrder.Meal.Foods.Add(_foodService.GetFoodById(int.Parse(id)));
+                newOrder.Meal.Foods.Add(_foodService.GetFoodById(id));
             }
 
             newOrder.Meal.Price = newOrder.Meal.Foods.Sum(f => f.Price);
             newOrder.Price = newOrder.Meal.Price;
-            _orderService.PlaceOreder(newOrder);
+            var createdOrder = _orderService.CreateOrder(newOrder);
 
+            return Ok(createdOrder.Id);
+        }
+
+        [HttpPut]
+        public IActionResult UpdateOrder([FromBody] UpdateOrderModel model)
+        {
+            if (model.FoodIds == null || model.FoodIds.Count() == 0)
+            {
+                return BadRequest();
+            }
+
+            Order currentOrder = _orderService.GetOrderById(model.Id);
+            currentOrder.Meal.Foods.Clear();
+            if (currentOrder == null)
+            {
+                return NotFound();
+            }
+
+            currentOrder.Meal.Foods = new List<Food>();
+            foreach (var id in model.FoodIds)
+            {
+                currentOrder.Meal.Foods.Add(_foodService.GetFoodById(id));
+            }
+
+            currentOrder.Meal.Price = currentOrder.Meal.Foods.Sum(f => f.Price);
+            currentOrder.Price = currentOrder.Meal.Price;
+            var updatedOrder = _orderService.UpdateOrder(currentOrder);
+
+            return Ok(updatedOrder);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteOrder(int id)
+        {
+            _orderService.DeleteOrder(id);
             return NoContent();
         }
 
-        public IActionResult CancelOrder(int orderId)
-        {
-            // int i = int.Parse(orderId);
-            _orderService.CancelOrder(orderId);
-            return Ok();
-        }
     }
 }

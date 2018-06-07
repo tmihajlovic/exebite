@@ -9,8 +9,7 @@ namespace Exebite.Business.Test.Mocks
 
         public FoodOrderingContext Create()
         {
-            var db = new FoodOrderingContext(options);
-            return db;
+            return new FoodOrderingContext(options);
         }
     }
 }

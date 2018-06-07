@@ -45,19 +45,19 @@ namespace Exebite.Business
         /// </summary>
         /// <param name="order">New <see cref="Order"/></param>
         /// <returns>New order from database</returns>
-        Order PlaceOreder(Order order);
+        Order CreateOrder(Order order);
 
         /// <summary>
         /// Update order data
         /// </summary>
         /// <param name="order"><see cref="Order"/> with new data</param>
         /// <returns>Updated order from database</returns>
-        Order EditOrder(Order order);
+        Order UpdateOrder(Order order);
 
         /// <summary>
         /// Cancel order
         /// </summary>
         /// <param name="orderId">Id of order</param>
-        void CancelOrder(int orderId);
+        void DeleteOrder(int orderId);
     }
 }

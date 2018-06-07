@@ -32,7 +32,7 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
-        public void GetOrderById()
+        public void GetOrderById_IdValid_ObjectReturned()
         {
             var id = 1;
             var result = _orderService.GetOrderById(id);
@@ -40,7 +40,7 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
-        public void GetOrderById_NonExisting()
+        public void GetOrderById_IdNonExisting_NullIsReturned()
         {
             var id = 0;
             var result = _orderService.GetOrderById(id);
@@ -59,7 +59,7 @@ namespace Exebite.Business.Test.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void GetAllOrdersForCustomer_NonExistingCustomer()
+        public void GetAllOrdersForCustomer_NonExistingCustomer_ArgumentExceptionThrown()
         {
             _orderService.GetAllOrdersForCustomer(0);
         }
@@ -103,33 +103,43 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
-        public void PlaceOreder()
+        public void CreateOreder()
         {
             using (var context = _factory.Create())
             {
                 var food1 = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.First(), context);
                 var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(context.Customers.First(), context);
-                var order = new Order();
-                order.Meal = new Meal();
-                order.Meal.Foods = new List<Food>();
-                order.Note = "New note";
-                order.Meal.Foods.Add(food1);
-                order.Date = DateTime.Now;
-                order.Customer = customer;
-                var result = _orderService.PlaceOreder(order);
+                var order = new Order
+                {
+                    Meal = new Meal
+                    {
+                        Foods = new List<Food> { food1 }
+                    },
+                    Note = "New note",
+                    Date = DateTime.Now,
+                    Customer = customer
+                };
+                var result = _orderService.CreateOrder(order);
                 Assert.IsNotNull(result);
             }
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void PlaceOrder_IsNull()
+        public void CreateOrder_IsNull()
         {
-            _orderService.PlaceOreder(null);
+            _orderService.CreateOrder(null);
         }
 
         [TestMethod]
-        public void EditOrder()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UpdateOrder_IsNull()
+        {
+            _orderService.UpdateOrder(null);
+        }
+
+        [TestMethod]
+        public void UpdateOrder()
         {
             using (var context = _factory.Create())
             {
@@ -137,25 +147,25 @@ namespace Exebite.Business.Test.Tests
                 var foodToAdd = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.Where(f => f.Type == FoodType.SIDE_DISH).First(), context);
                 var order = _orderService.GetOrderById(id);
                 order.Meal.Foods.Add(foodToAdd);
-                var result = _orderService.EditOrder(order);
+                var result = _orderService.UpdateOrder(order);
                 Assert.AreEqual(result.Meal.Foods.Count, 2);
             }
         }
 
         [TestMethod]
-        public void CancelOrder()
+        public void DeleteOrder()
         {
             var orderNote = "For delete";
             var order = _orderService.GetAllOrders().FirstOrDefault(o => o.Note == orderNote);
-            _orderService.CancelOrder(order.Id);
+            _orderService.DeleteOrder(order.Id);
             var result = _orderService.GetOrderById(order.Id);
             Assert.IsNull(result);
         }
 
         [TestMethod]
-        public void CancelOrder_NonExisting()
+        public void DeleteOrder_NonExisting()
         {
-            _orderService.CancelOrder(0);
+            _orderService.DeleteOrder(0);
         }
     }
 }

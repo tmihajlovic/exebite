@@ -8,21 +8,21 @@ namespace Exebite.Business
 {
     public class OrderService : IOrderService
     {
-        private IOrderRepository _orderHandler;
+        private IOrderRepository _orderRepository;
 
-        public OrderService(IOrderRepository orderHandler)
+        public OrderService(IOrderRepository orderRepository)
         {
-            _orderHandler = orderHandler;
+            _orderRepository = orderRepository;
         }
 
         public List<Order> GetAllOrders()
         {
-             return _orderHandler.GetAll().ToList();
+            return _orderRepository.GetAll().ToList();
         }
 
         public List<Order> GetAllOrdersForCustomer(int customerId)
         {
-            return _orderHandler.GetOrdersForCustomer(customerId).ToList();
+            return _orderRepository.GetOrdersForCustomer(customerId).ToList();
         }
 
         public List<Order> GetAllOrdersForRestoraunt(int restorauntId)
@@ -33,40 +33,45 @@ namespace Exebite.Business
 
         public Order GetOrderById(int orderId)
         {
-            return _orderHandler.GetByID(orderId);
+            return _orderRepository.GetByID(orderId);
         }
 
         public List<Order> GetOrdersForDate(DateTime date)
         {
             if (date > DateTime.Today)
             {
-                throw new ArgumentException("Date can't be in furure");
+                throw new ArgumentException("Date can't be in future");
             }
 
-            return _orderHandler.GetOrdersForDate(date).ToList();
+            return _orderRepository.GetOrdersForDate(date).ToList();
         }
 
-        public Order PlaceOreder(Order order)
+        public Order CreateOrder(Order order)
         {
             if (order == null)
             {
                 throw new ArgumentNullException(nameof(order));
             }
 
-            return _orderHandler.Insert(order);
+            return _orderRepository.Insert(order);
         }
 
-        public Order EditOrder(Order order)
+        public Order UpdateOrder(Order order)
         {
-            return _orderHandler.Update(order);
+            if (order == null)
+            {
+                throw new ArgumentNullException(nameof(order));
+            }
+
+            return _orderRepository.Update(order);
         }
 
-        public void CancelOrder(int orderId)
+        public void DeleteOrder(int orderId)
         {
-            var order = _orderHandler.GetByID(orderId);
+            var order = _orderRepository.GetByID(orderId);
             if (order != null)
             {
-                _orderHandler.Delete(orderId);
+                _orderRepository.Delete(orderId);
             }
         }
     }
