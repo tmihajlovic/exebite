@@ -25,7 +25,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetOrders()
+        public IActionResult Get()
         {
             var model = new OrdersViewModel
             {
@@ -51,7 +51,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpGet("id")]
-        public IActionResult GetOrder(int id)
+        public IActionResult Get(int id)
         {
             var model = new OrdersViewModel
             {
@@ -82,7 +82,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateOrder([FromBody] CreateOrderModel model)
+        public IActionResult Create([FromBody] CreateOrderModel model)
         {
             if (model.FoodIds == null || model.FoodIds.Count() == 0)
             {
@@ -115,7 +115,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateOrder([FromBody] UpdateOrderModel model)
+        public IActionResult Update([FromBody] UpdateOrderModel model)
         {
             if (model.FoodIds == null || model.FoodIds.Count() == 0)
             {
@@ -148,7 +148,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteOrder(int id)
+        public IActionResult Delete(int id)
         {
             _orderService.DeleteOrder(id);
             return NoContent();

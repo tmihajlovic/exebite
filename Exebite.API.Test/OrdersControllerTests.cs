@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -20,21 +19,21 @@ namespace Exebite.API.Test
         private Mock<IFoodService> _foodService;
 
         [Fact]
-        public void GetOrders_CustomerDoesNotExists_NotFoundResultReturned()
+        public void Get_CustomerDoesNotExists_NotFoundResultReturned()
         {
             // Arrange
             var sut = CreateOrdersControllerInstance();
             CreateClaimForUser(sut);
 
             // Act
-            var result = sut.GetOrders();
+            var result = sut.Get();
 
             // Assert
             Assert.Equal(typeof(NotFoundResult), result.GetType());
         }
 
         [Fact]
-        public void GetOrders_CustomerDoesNotExists_OkObjectResultReturned()
+        public void Get_CustomerDoesNotExists_OkObjectResultReturned()
         {
             // Arrange
             string foodName = "test food";
@@ -55,7 +54,7 @@ namespace Exebite.API.Test
             CreateClaimForUser(sut);
 
             // Act
-            var result = sut.GetOrders();
+            var result = sut.Get();
 
             // Assert
             Assert.Equal(typeof(OkObjectResult), result.GetType());
