@@ -53,9 +53,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.GoogleSpreadsheetAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.GoogleSheetAPI", "Exebite.GoogleSheetAPI\Exebite.GoogleSheetAPI.csproj", "{8ABB8947-1606-4C1F-81C9-1DE94F80129A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.GoogleSheetAPI.Test", "Exebite.GoogleSheetAPI.Test\Exebite.GoogleSheetAPI.Test.csproj", "{77D501CE-FD2E-4DC4-AFDE-455D53A790D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.GoogleSheetAPI.Test", "Exebite.GoogleSheetAPI.Test\Exebite.GoogleSheetAPI.Test.csproj", "{77D501CE-FD2E-4DC4-AFDE-455D53A790D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.API", "Exebite.API\Exebite.API.csproj", "{7477239A-E5F1-428E-98E5-265435C31420}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.API", "Exebite.API\Exebite.API.csproj", "{7477239A-E5F1-428E-98E5-265435C31420}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.API.Test", "Exebite.API.Test\Exebite.API.Test.csproj", "{6A54491D-DC55-42DF-A7BC-EB4545559108}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,6 +141,10 @@ Global
 		{7477239A-E5F1-428E-98E5-265435C31420}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7477239A-E5F1-428E-98E5-265435C31420}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7477239A-E5F1-428E-98E5-265435C31420}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A54491D-DC55-42DF-A7BC-EB4545559108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A54491D-DC55-42DF-A7BC-EB4545559108}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A54491D-DC55-42DF-A7BC-EB4545559108}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A54491D-DC55-42DF-A7BC-EB4545559108}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,6 +169,7 @@ Global
 		{8ABB8947-1606-4C1F-81C9-1DE94F80129A} = {67F104A6-6AAD-465B-B4DD-D70E4385D211}
 		{77D501CE-FD2E-4DC4-AFDE-455D53A790D4} = {5E298C35-AE52-47B5-A6D8-4480730FD786}
 		{7477239A-E5F1-428E-98E5-265435C31420} = {761FBE2D-8104-4490-A0BF-319845671EE4}
+		{6A54491D-DC55-42DF-A7BC-EB4545559108} = {5E298C35-AE52-47B5-A6D8-4480730FD786}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9631173F-68BC-4A5E-A5AA-D641BFE32333}

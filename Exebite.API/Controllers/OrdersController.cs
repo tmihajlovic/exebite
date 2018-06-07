@@ -39,6 +39,7 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
+            // todo: where is not used good, in method GetAllOrdersForCustomer, we already do ToList()
             model.ListOfOrders = _orderService.GetAllOrdersForCustomer(model.Customer.Id).Where(o => o.Date == DateTime.Today).ToList();
             model.CurentOrder = new Order { Customer = model.Customer, Meal = new Meal { Foods = new List<Food>() } };
             foreach (var restaurant in model.ListOfRestaurants)
@@ -128,7 +129,6 @@ namespace Exebite.API.Controllers
             }
 
             Order currentOrder = _orderService.GetOrderByIdForCustomer(model.Id, currentCustomer.Id);
-            currentOrder.Meal.Foods.Clear();
             if (currentOrder == null)
             {
                 return NotFound();
