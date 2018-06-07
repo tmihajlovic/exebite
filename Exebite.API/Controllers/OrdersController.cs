@@ -80,24 +80,6 @@ namespace Exebite.API.Controllers
             return Ok(model);
         }
 
-        [HttpGet("OrdersHistory")]
-        public IActionResult OrdersHistory()
-        {
-            OrdersHistoryViewModel model = new OrdersHistoryViewModel
-            {
-                Customer = _customerService.GetCustomerByIdentityId(User.Identity.Name)
-            };
-
-            if (model.Customer == null)
-            {
-                return NotFound();
-            }
-
-            model.Customer.Orders = model.Customer.Orders.OrderByDescending(o => o.Date).ToList();
-
-            return Ok(model);
-        }
-
         [HttpPost]
         public IActionResult CreateOrder([FromBody] CreateOrderModel model)
         {
@@ -156,7 +138,7 @@ namespace Exebite.API.Controllers
             currentOrder.Price = currentOrder.Meal.Price;
             var updatedOrder = _orderService.UpdateOrder(currentOrder);
 
-            return Ok(updatedOrder);
+            return Ok(updatedOrder.Id);
         }
 
         [HttpDelete("{id}")]

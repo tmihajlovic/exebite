@@ -11,9 +11,4 @@ namespace Exebite.API.Models
         public Customer Customer { get; set; }
         public List<Restaurant> ListOfRestaurants { get; set; }
     }
-
-    public class OrdersHistoryViewModel
-    {
-        public Customer Customer { get; set; }
-    }
 }
