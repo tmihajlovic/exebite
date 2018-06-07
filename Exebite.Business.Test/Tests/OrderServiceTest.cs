@@ -35,7 +35,8 @@ namespace Exebite.Business.Test.Tests
         public void GetOrderById_IdValid_ObjectReturned()
         {
             var id = 1;
-            var result = _orderService.GetOrderById(id);
+            var customerId = 1;
+            var result = _orderService.GetOrderByIdForCustomer(id, customerId);
             Assert.AreEqual(result.Id, id);
         }
 
@@ -43,7 +44,8 @@ namespace Exebite.Business.Test.Tests
         public void GetOrderById_IdNonExisting_NullIsReturned()
         {
             var id = 0;
-            var result = _orderService.GetOrderById(id);
+            var customerId = 1;
+            var result = _orderService.GetOrderByIdForCustomer(id, customerId);
             Assert.IsNull(result);
         }
 
@@ -137,9 +139,10 @@ namespace Exebite.Business.Test.Tests
         {
             using (var context = _factory.Create())
             {
+                var customerId = 1;
                 var id = 1;
                 var foodToAdd = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.Where(f => f.Type == FoodType.SIDE_DISH).First(), context);
-                var order = _orderService.GetOrderById(id);
+                var order = _orderService.GetOrderByIdForCustomer(id, customerId);
                 order.Meal.Foods.Add(foodToAdd);
                 var result = _orderService.UpdateOrder(order);
                 Assert.AreEqual(result.Meal.Foods.Count, 2);
@@ -149,10 +152,11 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void DeleteOrder_ExistingOrderPassed_OrderDeleted()
         {
+            var customerId = 1;
             var orderNote = "For delete";
             var order = _orderService.GetAllOrders().FirstOrDefault(o => o.Note == orderNote);
             _orderService.DeleteOrder(order.Id);
-            var result = _orderService.GetOrderById(order.Id);
+            var result = _orderService.GetOrderByIdForCustomer(order.Id, customerId);
             Assert.IsNull(result);
         }
 
