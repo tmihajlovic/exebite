@@ -42,6 +42,26 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
+        public Order GetOrderForCustomer(int orderId, int customerId)
+        {
+            using (var context = _factory.Create())
+            {
+                var customer = context.Customers.Find(customerId);
+                if (customer == null)
+                {
+                    throw new ArgumentException("Non existing customer!");
+                }
+
+                var order = context.Orders.FirstOrDefault(o => o.CustomerId == customerId && o.Id == orderId);
+                if (order == null)
+                {
+                    return null;
+                }
+
+                return AutoMapperHelper.Instance.GetMappedValue<Order>(order, context);
+            }
+        }
+
         public IEnumerable<Order> GetOrdersForDate(DateTime date)
         {
             using (var context = _factory.Create())

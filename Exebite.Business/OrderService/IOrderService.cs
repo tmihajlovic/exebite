@@ -13,11 +13,12 @@ namespace Exebite.Business
         List<Order> GetAllOrders();
 
         /// <summary>
-        /// Gets <see cref="Order"/> by Id
+        /// Gets <see cref="Order"/> by Id and customer id
         /// </summary>
         /// <param name="orderId">Id of order</param>
-        /// <returns>Order with given Id</returns>
-        Order GetOrderById(int orderId);
+        /// <param name="customerId">Id of the customer</param>
+        /// <returns>Order with given id and customer id, otherwise null</returns>
+        Order GetOrderByIdForCustomer(int orderId, int customerId);
 
         /// <summary>
         /// Gets all orders placed by <see cref="Customer"/>

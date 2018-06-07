@@ -31,9 +31,9 @@ namespace Exebite.Business
             return allOrders.Where(o => o.Meal.Foods.First().Restaurant.Id == restorauntId).ToList();
         }
 
-        public Order GetOrderById(int orderId)
+        public Order GetOrderByIdForCustomer(int orderId, int customerId)
         {
-            return _orderRepository.GetByID(orderId);
+            return _orderRepository.GetOrderForCustomer(orderId, customerId);
         }
 
         public List<Order> GetOrdersForDate(DateTime date)

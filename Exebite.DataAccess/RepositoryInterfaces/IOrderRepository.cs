@@ -18,8 +18,16 @@ namespace Exebite.DataAccess
         /// <summary>
         /// Get orders for given <see cref="Customer"/>
         /// </summary>
-        /// <param name="customerId">Id of cutomer</param>
+        /// <param name="customerId">Id of customer</param>
         /// <returns>List of all customers orders</returns>
         IEnumerable<Order> GetOrdersForCustomer(int customerId);
+
+        /// <summary>
+        /// Get orders for given <see cref="Customer"/>
+        /// </summary>
+        /// <param name="orderId">Id of the order</param>
+        /// <param name="customerId">Id of the customer</param>
+        /// <returns>Order if exists for that customer, otherwise null.</returns>
+        Order GetOrderForCustomer(int orderId, int customerId);
     }
 }

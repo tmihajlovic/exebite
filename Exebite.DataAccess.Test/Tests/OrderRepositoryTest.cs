@@ -67,6 +67,42 @@ namespace Exebite.DataAccess.Test.Tests
         }
 
         [TestMethod]
+        public void GetOrderForCustomer_CustomerAndOrderExists_OrderNotNull()
+        {
+            using (var context = _factory.Create())
+            {
+                int existingOrderId = 1;
+                var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(context.Customers.Find(1), context);
+                var result = _orderRepository.GetOrderForCustomer(existingOrderId, customer.Id);
+                Assert.IsNotNull(result);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetOrderForCustomer_CustomerDoseNotExistsOrderExists_ArgumentExceptionThrown()
+        {
+            using (var context = _factory.Create())
+            {
+                int existingOrderId = 1;
+                int nonExistingCustomerId = 999;
+                var result = _orderRepository.GetOrderForCustomer(existingOrderId, nonExistingCustomerId);
+            }
+        }
+
+        [TestMethod]
+        public void GetOrderForCustomer_CustomerExistsOrderDoesNotExists_OrderIsNull()
+        {
+            using (var context = _factory.Create())
+            {
+                int nonExistingOrderId = 999;
+                var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(context.Customers.Find(1), context);
+                var result = _orderRepository.GetOrderForCustomer(nonExistingOrderId, customer.Id);
+                Assert.IsNull(result);
+            }
+        }
+
+        [TestMethod]
         public void GetOrdersForDate()
         {
             var result = _orderRepository.GetOrdersForDate(DateTime.Today).ToList();

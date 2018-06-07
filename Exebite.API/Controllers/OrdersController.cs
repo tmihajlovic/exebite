@@ -64,7 +64,7 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            var order = _orderService.GetOrderById(id);
+            var order = _orderService.GetOrderByIdForCustomer(id, model.Customer.Id);
             if (order == null)
             {
                 return NotFound();
@@ -121,7 +121,13 @@ namespace Exebite.API.Controllers
                 return BadRequest();
             }
 
-            Order currentOrder = _orderService.GetOrderById(model.Id);
+            var currentCustomer = _customerService.GetCustomerByIdentityId(User.Identity.Name);
+            if (currentCustomer == null)
+            {
+                return NotFound();
+            }
+
+            Order currentOrder = _orderService.GetOrderByIdForCustomer(model.Id, currentCustomer.Id);
             currentOrder.Meal.Foods.Clear();
             if (currentOrder == null)
             {
