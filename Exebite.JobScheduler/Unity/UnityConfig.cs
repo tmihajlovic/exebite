@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Exebite.Business;
+using Exebite.Business.GoogleApiImportExport;
+using Exebite.GoogleSheetAPI;
+using Exebite.GoogleSheetAPI.GoogleSSFactory;
+using Exebite.GoogleSheetAPI.Kasa;
+using Exebite.GoogleSheetAPI.RestaurantConectors;
+using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
+using System;
 using Unity;
 
 namespace Exebite.JobScheduler.Unity
@@ -24,7 +31,24 @@ namespace Exebite.JobScheduler.Unity
         public static void RegisterTypes(IUnityContainer container)
         {
             container.RegisterType<IJobSchedulerRepository, JobSchedulerRepository>();
-            Business.Unity.UnityConfig.RegisterTypes(container);
+            container.RegisterType<IMenuService, MenuService>();
+            container.RegisterType<IOrderService, OrderService>();
+            container.RegisterType<ICustomerService, CustomerService>();
+            container.RegisterType<IFoodService, FoodService>();
+            container.RegisterType<ILocationService, LocationService>();
+            container.RegisterType<IRestaurantService, RestaurantService>();
+            container.RegisterType<IGoogleDataImporter, GoogleApiImport>();
+            container.RegisterType<IGoogleDataExporter, GoogleApiExport>();
+
+            container.RegisterType<IGoogleSheetServiceFactory, GoogleSheetServiceFactory>();
+            container.RegisterType<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>();
+            container.RegisterType<IGoogleSheetService, GoogleSheetService>();
+
+            container.RegisterType<IRestaurantConector, RestaurantConector>();
+            container.RegisterType<IHedoneConector, HedoneConector>();
+            container.RegisterType<ILipaConector, LipaConector>();
+            container.RegisterType<ITeglasConector, TeglasConector>();
+            container.RegisterType<IKasaConector, KasaConector>();
         }
     }
 }

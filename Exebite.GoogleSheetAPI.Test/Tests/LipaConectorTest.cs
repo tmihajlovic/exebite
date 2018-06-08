@@ -6,7 +6,6 @@ using Exebite.GoogleSheetAPI.Test.Mocks;
 
 namespace Exebite.GoogleSheetAPI.Test.Tests
 {
-    using Exebite.Test;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -25,12 +24,11 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            var container = ServiceProviderWrapper.GetContainer();
-
+            _googleSpreadsheetIdFactory = new GoogleSpreadsheetIdFactory();
+            _googleSheetService = new GoogleSheetServiceFake();
             _googleSheetService_returnNull = new GoogleSheetServiceFake_ReturnNull();
             _googleSheetService_returnEmpty = new GoogleSheetServiceFake_ReturnEmpty();
-            _lipaConector = container.Resolve<ILipaConector>();
-            _googleSheetService = container.Resolve<IGoogleSheetService>();
+            _lipaConector = new LipaConector(_googleSheetService, _googleSpreadsheetIdFactory);
             _lipaConector_NullCheck = new LipaConector(_googleSheetService_returnNull, _googleSpreadsheetIdFactory);
             _lipaConector_EmptyCheck = new LipaConector(_googleSheetService_returnEmpty, _googleSpreadsheetIdFactory);
         }

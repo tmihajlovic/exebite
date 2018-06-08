@@ -32,11 +32,14 @@
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
-    <PackageReference Include="Unity" Version="5.7.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Exebite.Business\Exebite.Business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Unity\" />
   </ItemGroup>
 
 </Project>

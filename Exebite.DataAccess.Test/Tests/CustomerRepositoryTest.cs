@@ -6,8 +6,6 @@ using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unity;
-using Unity.Resolution;
 
 namespace Exebite.DataAccess.Test.Tests
 {
