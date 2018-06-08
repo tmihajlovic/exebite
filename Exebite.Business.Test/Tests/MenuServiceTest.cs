@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Exebite.Business.Test.Mocks;
-using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
-using Exebite.DataAccess.Repositories;
-using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Exebite.Business.Test.Tests
@@ -14,14 +11,13 @@ namespace Exebite.Business.Test.Tests
     {
         private static IMenuService _menuService;
         private static IFoodOrderingContextFactory _factory;
-        private static IExebiteMapper _mapper;
-
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            _factory = new InMemoryDBFactory();
-            _menuService = new MenuService(new RestaurantRepository(_factory,_mapper), new FoodRepository(_factory, _mapper), new RecipeRepository(_factory, _mapper));
+            var container = ServiceProviderWrapper.GetContainer();
+            _menuService = container.Resolve<IMenuService>();
+            _factory = container.Resolve<IFoodOrderingContextFactory>();
             InMemoryDBSeed.Seed(_factory);
         }
 

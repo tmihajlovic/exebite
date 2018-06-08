@@ -31,7 +31,7 @@ namespace Exebite.API.Controllers
 
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetOrders()
         {
             var model = new OrdersViewModel
             {
@@ -57,7 +57,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetOrder(int id)
         {
             var model = new OrdersViewModel
             {
@@ -156,11 +156,10 @@ namespace Exebite.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteOrder(int id)
         {
             _orderService.DeleteOrder(id);
             return NoContent();
         }
-
     }
 }

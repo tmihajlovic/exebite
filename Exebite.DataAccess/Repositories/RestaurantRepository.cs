@@ -17,6 +17,19 @@ namespace Exebite.DataAccess.Repositories
             _factory = factory;
         }
 
+        public override IList<Restaurant> GetAll()
+        {
+
+            using (var dc = _factory.Create())
+            {
+                var items = dc.Restaurants.ToList();
+
+                return items.Select(x => _exebiteMapper.Map<Restaurant>(x)).ToList();
+            }
+
+        }
+
+
         public Restaurant GetByName(string name)
         {
             if (name == string.Empty)

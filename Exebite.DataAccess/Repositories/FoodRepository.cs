@@ -14,7 +14,16 @@ namespace Exebite.DataAccess.Repositories
         public FoodRepository(IFoodOrderingContextFactory factory, IExebiteMapper mapper)
             : base(factory, mapper)
         {
-            this._factory = factory;
+            _factory = factory;
+        }
+
+        public override IList<Food> GetAll()
+        {
+            using (var context = _factory.Create())
+            {
+                var items = context.Foods.ToList();
+                return items.Select(_exebiteMapper.Map<Food>).ToList();
+            }
         }
 
         public IEnumerable<Food> GetByRestaurant(Restaurant restaurant)

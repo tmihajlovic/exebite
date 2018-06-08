@@ -13,7 +13,7 @@ namespace Exebite.DataAccess.Repositories
         private readonly IFoodOrderingContextFactory _factory;
 
         public OrderRepository(IFoodOrderingContextFactory factory, IExebiteMapper mapper)
-            : base(factory,mapper)
+            : base(factory, mapper)
         {
             _factory = factory;
         }

@@ -29,7 +29,6 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-
         public Customer GetByName(string name)
         {
             if (name == string.Empty)

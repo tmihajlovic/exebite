@@ -32,16 +32,16 @@ namespace Exebite.Business.Test.Tests
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            _factory = new InMemoryDBFactory();
-            _mapper = new ExebiteMapper();
-            
-            _orderService = new OrderService(new OrderRepository(_factory, _mapper));
-            _customerService = new CustomerService(new CustomerRepository(_factory, _mapper));
-            _restaurantService = new RestaurantService(new RestaurantRepository(_factory, _mapper));
-            _lipaConector = new LipaConectorMock(_factory);
-            _hedoneConector = new HedoneConectorMock(_factory);
-            _teglasConector = new TeglasConectorMock(_factory);
-            _googleDataExporter = new GoogleApiExport(_teglasConector, _hedoneConector, _lipaConector, _orderService, _customerService,  _restaurantService);
+            //_factory = new InMemoryDBFactory();
+            //_mapper = new ExebiteMapper();
+
+            //_orderService = new OrderService(new OrderRepository(_factory, _mapper));
+            //_customerService = new CustomerService(new CustomerRepository(_factory, _mapper));
+            //_restaurantService = new RestaurantService(new RestaurantRepository(_factory, _mapper));
+            //_lipaConector = new LipaConectorMock(_factory);
+            //_hedoneConector = new HedoneConectorMock(_factory);
+            //_teglasConector = new TeglasConectorMock(_factory);
+            //_googleDataExporter = new GoogleApiExport(_teglasConector, _hedoneConector, _lipaConector, _orderService, _customerService,  _restaurantService);
             InMemoryDBSeed.Seed(_factory);
         }
 

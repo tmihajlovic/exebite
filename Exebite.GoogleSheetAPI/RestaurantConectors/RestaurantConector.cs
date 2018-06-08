@@ -78,7 +78,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
                 }
 
                 formatedData.Add(food.Name);
-                formatedData.Add(customerList.Count());
+                formatedData.Add(customerList.Count);
                 formatedData.Add(food.Price);
                 formatedData.Add("=" + "B" + rowCounter + "*" + "C" + rowCounter); // Add formula to sum
                 rowCounter++;

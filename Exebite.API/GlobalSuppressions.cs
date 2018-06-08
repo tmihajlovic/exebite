@@ -1,7 +1,6 @@
-﻿
-// This file is used by Code Analysis to maintain SuppressMessage 
+﻿// This file is used by Code Analysis to maintain SuppressMessage
 // attributes that are applied to this project.
-// Project-level suppressions either have no target or are given 
+// Project-level suppressions either have no target or are given
 // a specific target and scoped to a namespace, type, member, etc.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:Field names must not begin with underscore", Justification = "<Pending>", Scope = "member", Target = "~F:Exebite.API.Controllers.OrdersController._menuService")]
@@ -15,9 +14,13 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:Field names must not begin with underscore", Justification = "<Pending>", Scope = "member", Target = "~F:Exebite.API.Controllers.OrdersController._foodService")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:Field names must not begin with underscore", Justification = "<Pending>", Scope = "member", Target = "~F:Exebite.API.Controllers.OrdersController._orderService")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>")]
-//[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.API.Controllers.OrdersController")]
-//[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.API.Models.CreateOrderModel")]
-//[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.API.Models.OrdersViewModel")]
-//[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.API.Models.UpdateOrderModel")]
-//[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.API.Program")]
-//[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.API.Startup")]
+
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File must have header", Justification = "<Pending>")]
+
+// [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File must have header", Justification = "<Pending>", Scope = "namespace", Target = "~N:Exebite.API.Models")]
+// [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.API.Controllers.OrdersController")]
+// [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.API.Models.CreateOrderModel")]
+// [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.API.Models.OrdersViewModel")]
+// [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.API.Models.UpdateOrderModel")]
+// [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.API.Program")]
+// [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.API.Startup")]

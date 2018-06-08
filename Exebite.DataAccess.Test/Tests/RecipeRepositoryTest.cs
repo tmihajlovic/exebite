@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
+using Exebite.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// using Unity;
-// using Unity.Resolution;
 
 namespace Exebite.DataAccess.Test.Tests
 {
@@ -16,16 +16,18 @@ namespace Exebite.DataAccess.Test.Tests
     {
         private static IFoodOrderingContextFactory _factory;
         private static IRecipeRepository _recepieRepository;
-       // private static IUnityContainer _container;
+        private static IExebiteMapper _mapper;
+        
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            _factory = new InMemoryDBFactory();
-            // _container = new UnityContainer();
-            // Unity.UnityConfig.RegisterTypes(_container);
-           // _recepieRepository = _container.Resolve<IRecipeRepository>(new ParameterOverride("factory", _factory));
+            var container = ServiceProviderWrapper.GetContainer();
+            _factory = container.Resolve<IFoodOrderingContextFactory>();
             InMemorySeed.Seed(_factory);
+
+            _mapper = container.Resolve<IExebiteMapper>();
+            _recepieRepository = container.Resolve<IRecipeRepository>();
         }
 
         [TestMethod]
@@ -55,7 +57,7 @@ namespace Exebite.DataAccess.Test.Tests
             using (var context = _factory.Create())
             {
                 var mainCourseEntity = context.Foods.Find(1);
-                var mainCourse = AutoMapperHelper.Instance.GetMappedValue<Food>(mainCourseEntity, context);
+                var mainCourse = _mapper.Map<Food>(mainCourseEntity);
                 var result = _recepieRepository.GetRecipesForMainCourse(mainCourse);
                 Assert.IsNotNull(result);
             }
@@ -117,11 +119,11 @@ namespace Exebite.DataAccess.Test.Tests
             using (var context = _factory.Create())
             {
                 var restaurantEntity = context.Restaurants.Find(1);
-                var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(restaurantEntity, context);
+                var restaurant = _mapper.Map<Restaurant>(restaurantEntity);
                 var foodEntity = context.Foods.First();
-                var food = AutoMapperHelper.Instance.GetMappedValue<Food>(foodEntity, context);
+                var food = _mapper.Map<Food>(foodEntity);
                 var condamentEntity = context.Foods.FirstOrDefault(f => f.Type == FoodType.CONDIMENTS);
-                var condament = AutoMapperHelper.Instance.GetMappedValue<Food>(condamentEntity, context);
+                var condament = _mapper.Map<Food>(condamentEntity);
                 Recipe newRecipe = new Recipe
                 {
                     MainCourse = food,

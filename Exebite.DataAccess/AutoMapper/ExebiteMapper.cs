@@ -1,15 +1,18 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.Model;
-using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Exebite.DataAccess.AutoMapper
 {
     public class ExebiteMapper : Mapper, IExebiteMapper
     {
-        public ExebiteMapper()
+        public ExebiteMapper(IServiceProvider provider)
             : base(new MapperConfiguration(cfg =>
              {
+                 cfg.ConstructServicesUsing(x => provider.GetService(x));
                  cfg.CreateMap(typeof(CustomerEntity), typeof(Customer));
                  cfg.CreateMap(typeof(OrderEntity), typeof(Order));
                  cfg.CreateMap(typeof(FoodEntity), typeof(Food));
@@ -40,7 +43,6 @@ namespace Exebite.DataAccess.AutoMapper
 
              }))
         {
-
         }
     }
 }

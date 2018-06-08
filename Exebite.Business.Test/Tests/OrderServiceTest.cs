@@ -16,17 +16,15 @@ namespace Exebite.Business.Test.Tests
     {
         private static IOrderService _orderService;
         private static IFoodOrderingContextFactory _factory;
-        private static IExebiteMapper _mapper;
-
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            _mapper = new ExebiteMapper();
-
-            _factory = new InMemoryDBFactory();
-            _orderService = new OrderService(new OrderRepository(_factory, _mapper));
+            var container = ServiceProviderWrapper.GetContainer();
+            _factory = container.Resolve<IFoodOrderingContextFactory>();
             InMemoryDBSeed.Seed(_factory);
+
+            _orderService = container.Resolve<IOrderService>();
         }
 
         [TestMethod]

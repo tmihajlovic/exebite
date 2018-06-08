@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
+using Exebite.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unity;
-using Unity.Resolution;
 
 namespace Exebite.DataAccess.Test.Tests
 {
@@ -16,15 +16,13 @@ namespace Exebite.DataAccess.Test.Tests
     {
         private static IFoodOrderingContextFactory _factory;
         private static IOrderRepository _orderRepository;
-        private static IUnityContainer _container;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            _factory = new InMemoryDBFactory();
-            _container = new UnityContainer();
-           // Unity.UnityConfig.RegisterTypes(_container);
-            _orderRepository = _container.Resolve<IOrderRepository>(new ParameterOverride("factory", _factory));
+            var cointeiner = ServiceProviderWrapper.GetContainer();
+            _orderRepository = cointeiner.Resolve<IOrderRepository>();
+            _factory = cointeiner.Resolve<IFoodOrderingContextFactory>();
             InMemorySeed.Seed(_factory);
         }
 

@@ -3,6 +3,7 @@ using Exebite.GoogleSheetAPI.GoogleSSFactory;
 using Exebite.GoogleSheetAPI.RestaurantConectors;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.GoogleSheetAPI.Test.Mocks;
+using Exebite.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Exebite.GoogleSheetAPI.Test.Tests
@@ -23,11 +24,13 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            _googleSpreadsheetIdFactory = new GoogleSpreadsheetIdFactory();
+
+            var container = ServiceProviderWrapper.GetContainer();
+            _googleSpreadsheetIdFactory = container.Resolve<IGoogleSpreadsheetIdFactory>();
             _googleSheetService = new GoogleSheetServiceFake();
             _googleSheetService_returnNull = new GoogleSheetServiceFake_ReturnNull();
             _googleSheetService_returnEmpty = new GoogleSheetServiceFake_ReturnEmpty();
-            _hedoneConector = new HedoneConector(_googleSheetService, _googleSpreadsheetIdFactory);
+            _hedoneConector = container.Resolve<IHedoneConector>();
             _hedoneConector_NullCheck = new HedoneConector(_googleSheetService_returnNull, _googleSpreadsheetIdFactory);
             _hedoneConector_EmptyCheck = new HedoneConector(_googleSheetService_returnEmpty, _googleSpreadsheetIdFactory);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
@@ -15,15 +16,14 @@ namespace Exebite.DataAccess.Test.Tests
     {
         private static IFoodOrderingContextFactory _factory;
         private static ICustomerRepository _customerRepository;
-        private static IUnityContainer _container;
+        private static IExebiteMapper _mapper;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            _factory = new InMemoryDBFactory();
-            _container = new UnityContainer();
-            // Unity.UnityConfig.RegisterTypes(_container);
-            _customerRepository = _container.Resolve<ICustomerRepository>(new ParameterOverride("factory", _factory));
+            //_factory = new InMemoryDBFactory();
+            //_mapper = new ExebiteMapper(new ServiceProvider());
+            //_customerRepository = new CustomerRepository(_factory, _mapper);
             InMemorySeed.Seed(_factory);
         }
 

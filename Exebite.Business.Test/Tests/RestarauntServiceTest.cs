@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Exebite.Business.Test.Mocks;
-using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
-using Exebite.DataAccess.Repositories;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,16 +11,14 @@ namespace Exebite.Business.Test.Tests
     public class RestarauntServiceTest
     {
         private static IRestaurantService _restaurantService;
-        private static IFoodOrderingContextFactory _factory;
-        private static IExebiteMapper _mapper;
-
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            _factory = new InMemoryDBFactory();
-            _restaurantService = new RestaurantService(new RestaurantRepository(_factory, _mapper));
-            InMemoryDBSeed.Seed(_factory);
+            var cointeiner = ServiceProviderWrapper.GetContainer();
+            _restaurantService = cointeiner.Resolve<IRestaurantService>();
+            var factory = cointeiner.Resolve<IFoodOrderingContextFactory>();
+            InMemoryDBSeed.Seed(factory);
         }
 
         [TestMethod]
@@ -68,7 +64,7 @@ namespace Exebite.Business.Test.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void GetRestaurantByName_StringEmpty()
         {
-             _restaurantService.GetRestaurantByName(string.Empty);
+            _restaurantService.GetRestaurantByName(string.Empty);
         }
 
         [TestMethod]

@@ -4,9 +4,8 @@ using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
+using Exebite.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unity;
-using Unity.Resolution;
 
 namespace Exebite.DataAccess.Test.Tests
 {
@@ -15,17 +14,14 @@ namespace Exebite.DataAccess.Test.Tests
     {
         private static IFoodOrderingContextFactory _factory;
         private static IFoodRepository _foodRepository;
-        private static IUnityContainer _container;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            _factory = new InMemoryDBFactory();
-            _container = new UnityContainer();
-
-            // Unity.UnityConfig.RegisterTypes(_container);
-            _foodRepository = _container.Resolve<IFoodRepository>(new ParameterOverride("factory", _factory));
+            var container = ServiceProviderWrapper.GetContainer();
+            _factory = container.Resolve<IFoodOrderingContextFactory>();
             InMemorySeed.Seed(_factory);
+            _foodRepository = container.Resolve<IFoodRepository>();
         }
 
         [TestMethod]

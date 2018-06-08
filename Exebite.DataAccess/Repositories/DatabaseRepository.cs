@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AutoMapper.QueryableExtensions;
 using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
 
@@ -10,8 +9,9 @@ namespace Exebite.DataAccess.Repositories
         where TModel : class
         where TEntity : class
     {
+        private protected readonly IExebiteMapper _exebiteMapper;
+
         private readonly IFoodOrderingContextFactory _factory;
-        protected readonly IExebiteMapper _exebiteMapper;
 
         protected DatabaseRepository(IFoodOrderingContextFactory factory, IExebiteMapper exebiteMapper)
         {
@@ -30,21 +30,14 @@ namespace Exebite.DataAccess.Repositories
 
         public virtual IList<TModel> GetAll()
         {
-            using (var context = _factory.Create())
+            using (var dc = _factory.Create())
             {
-                //List<TModel> itemList = new List<TModel>();
-                var items = context
-                                .Set<TEntity>()
-                                //.AsQueryable()
-                                .ProjectTo<TModel>(_exebiteMapper.ConfigurationProvider).ToList();
-
-                //foreach (var item in itemSet)
-                //{
-                //    var itemModel = AutoMapperHelper.Instance.GetMappedValue<TModel>(item, context);
-                //    itemList.Add(itemModel);
-                //}
-
-                return items;
+                var items = dc
+                    .Set<TEntity>()
+                    .ToList();
+                return items
+                    .Select(x => _exebiteMapper.Map<TModel>(x))
+                    .ToList();
             }
         }
 
@@ -61,7 +54,7 @@ namespace Exebite.DataAccess.Repositories
                 var itemEntity = itemSet.Find(id);
                 if (itemEntity != null)
                 {
-                    var item = AutoMapperHelper.Instance.GetMappedValue<TModel>(itemEntity, context);
+                    var item = _exebiteMapper.Map<TModel>(itemEntity);
                     return item;
                 }
                 else

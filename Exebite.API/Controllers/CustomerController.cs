@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Exebite.DataAccess;
+﻿using System.Linq;
 using Exebite.DataAccess.Repositories;
+using Exebite.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exebite.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/Customer")]
+#if !DEBUG
+    [Authorize]
+#endif
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository _customerRepository;
@@ -30,28 +32,37 @@ namespace Exebite.API.Controllers
                 x.Balance,
                 x.Name,
                 x.LocationId
-                //,
-                //x.Orders
             }));
         }
 
         // GET: api/Customer/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            var customer = _customerRepository.GetByID(id);
+            return Ok(new
+            {
+                customer.Id,
+                customer.AppUserId,
+                customer.Balance,
+                customer.Name,
+                customer.LocationId
+            });
         }
 
         // POST: api/Customer
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]Customer value)
         {
+            var id = _customerRepository.Insert(value);
+            return Ok(new { id });
         }
 
         // PUT: api/Customer/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
+            // _customerRepository.Update()
         }
 
         // DELETE: api/ApiWithActions/5

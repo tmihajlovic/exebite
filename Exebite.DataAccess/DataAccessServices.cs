@@ -8,7 +8,6 @@ namespace Exebite.DataAccess
 {
     public static class DataAccessServices
     {
-
         public static IServiceCollection AddDataAccessServices(this IServiceCollection collection)
         {
             collection.AddTransient<ICustomerRepository, CustomerRepository>();

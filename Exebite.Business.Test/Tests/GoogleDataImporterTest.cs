@@ -26,17 +26,18 @@ namespace Exebite.Business.Test.Tests
         private static ITeglasConector _teglasConector;
         private static IExebiteMapper _mapper;
 
-
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            _factory = new InMemoryDBFactory();
-            _lipaConector = new LipaConectorMock(_factory);
-            _hedoneConector = new HedoneConectorMock(_factory);
-            _teglasConector = new TeglasConectorMock(_factory);
-            _restaurantService = new RestaurantService(new RestaurantRepository(_factory, _mapper));
-            _foodService = new FoodService(new FoodRepository(_factory, _mapper));
-            _googleDataImporter = new GoogleApiImport(_restaurantService, _foodService, _lipaConector, _teglasConector, _hedoneConector);
+            //_factory = new InMemoryDBFactory();
+            //_lipaConector = new LipaConectorMock(_factory);
+            //_hedoneConector = new HedoneConectorMock(_factory);
+            //_teglasConector = new TeglasConectorMock(_factory);
+            //_mapper = new ExebiteMapper( new );
+            
+            //_restaurantService = new RestaurantService(new RestaurantRepository(_factory, _mapper));
+            //_foodService = new FoodService(new FoodRepository(_factory, _mapper));
+            //_googleDataImporter = new GoogleApiImport(_restaurantService, _foodService, _lipaConector, _teglasConector, _hedoneConector);
             InMemoryDBSeed.Seed(_factory);
         }
 
