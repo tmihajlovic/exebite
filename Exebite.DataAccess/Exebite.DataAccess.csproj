@@ -28,11 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Exebite.Model\Exebite.Model.csproj" />
+    <Folder Include="RepositoryInterfaces\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="RepositoryInterfaces\" />
+    <ProjectReference Include="..\Exebite.Model\Exebite.Model.csproj" />
   </ItemGroup>
 
 </Project>
