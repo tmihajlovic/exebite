@@ -4,11 +4,14 @@ using System.Linq;
 using Exebite.API.Models;
 using Exebite.Business;
 using Exebite.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exebite.API.Controllers
 {
+    [Produces("application/json")]
     [Route("api/orders")]
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly ICustomerService _customerService;
@@ -23,6 +26,9 @@ namespace Exebite.API.Controllers
             _orderService = orderService;
             _foodService = foodService;
         }
+
+        //todo: check if here should be get for all orders by date for all users
+
 
         [HttpGet]
         public IActionResult Get()

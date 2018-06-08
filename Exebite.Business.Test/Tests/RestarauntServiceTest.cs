@@ -98,7 +98,7 @@ namespace Exebite.Business.Test.Tests
             var foods = restaurant.Foods;
             restaurant.DailyMenu.Clear();
             restaurant.DailyMenu.AddRange(foods.Take(foodCount));
-            var result = _restaurantService.UpdateRestourant(restaurant);
+            var result = _restaurantService.UpdateRestaurant(restaurant);
             Assert.AreEqual(result.DailyMenu.Count, foodCount);
         }
 
@@ -107,7 +107,7 @@ namespace Exebite.Business.Test.Tests
         {
             var name = "For delete";
             var restaurant = _restaurantService.GetRestaurantByName(name);
-            _restaurantService.DeleteRestourant(restaurant.Id);
+            _restaurantService.DeleteRestaurant(restaurant.Id);
             var result = _restaurantService.GetRestaurantById(restaurant.Id);
             Assert.IsNull(result);
         }
@@ -115,7 +115,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void DeleteRestourant_NonExisting()
         {
-            _restaurantService.DeleteRestourant(0);
+            _restaurantService.DeleteRestaurant(0);
         }
     }
 }

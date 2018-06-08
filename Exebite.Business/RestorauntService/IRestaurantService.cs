@@ -37,12 +37,12 @@ namespace Exebite.Business
         /// </summary>
         /// <param name="restaurant">Restaurant with new info</param>
         /// <returns>Updated restaurant from database</returns>
-        Restaurant UpdateRestourant(Restaurant restaurant);
+        Restaurant UpdateRestaurant(Restaurant restaurant);
 
         /// <summary>
         /// Delete restaurant from database
         /// </summary>
         /// <param name="restaurantId">Id of restaurant</param>
-        void DeleteRestourant(int restaurantId);
+        void DeleteRestaurant(int restaurantId);
     }
 }

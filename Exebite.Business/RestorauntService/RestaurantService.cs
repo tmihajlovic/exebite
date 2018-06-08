@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Exebite.DataAccess;
 using Exebite.DataAccess.Repositories;
 using Exebite.Model;
 
@@ -45,12 +44,12 @@ namespace Exebite.Business
             return _restaurantRepository.Insert(restaurant);
         }
 
-        public Restaurant UpdateRestourant(Restaurant restaurant)
+        public Restaurant UpdateRestaurant(Restaurant restaurant)
         {
             return _restaurantRepository.Update(restaurant);
         }
 
-        public void DeleteRestourant(int restaurantId)
+        public void DeleteRestaurant(int restaurantId)
         {
             var restaurant = _restaurantRepository.GetByID(restaurantId);
             if (restaurant != null)

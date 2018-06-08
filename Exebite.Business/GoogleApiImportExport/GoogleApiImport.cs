@@ -43,7 +43,7 @@ namespace Exebite.Business.GoogleApiImportExport
 
             // Update daily menu
             lipaRestaurant.DailyMenu = FoodsFromDB(lipaRestaurant, _lipaConector.GetDailyMenu());
-            _restaurantService.UpdateRestourant(lipaRestaurant);
+            _restaurantService.UpdateRestaurant(lipaRestaurant);
 
             // Teglas
             // Check if all food exist in DB
@@ -51,7 +51,7 @@ namespace Exebite.Business.GoogleApiImportExport
 
             // Update daily menu
             teglasRestaurant.DailyMenu = FoodsFromDB(teglasRestaurant, _teglasConector.GetDailyMenu());
-            _restaurantService.UpdateRestourant(teglasRestaurant);
+            _restaurantService.UpdateRestaurant(teglasRestaurant);
 
             // Hedone
             // Check if all food exist in DB
@@ -59,7 +59,7 @@ namespace Exebite.Business.GoogleApiImportExport
 
             // Update daily menu
             hedoneRestaurant.DailyMenu = FoodsFromDB(hedoneRestaurant, _hedoneConector.GetDailyMenu());
-            _restaurantService.UpdateRestourant(hedoneRestaurant);
+            _restaurantService.UpdateRestaurant(hedoneRestaurant);
         }
 
         /// <summary>
