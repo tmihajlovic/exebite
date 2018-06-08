@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Exebite.API.Models;
 using Exebite.Business;
+using Exebite.DataAccess.AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,36 +14,31 @@ namespace Exebite.API.Controllers
     public class RestaurantController : Controller
     {
         private readonly IRestaurantService _restaurantService;
+        private readonly IExebiteMapper _exebiteMapper;
 
-        public RestaurantController(IRestaurantService restaurantService)
+        public RestaurantController(IRestaurantService restaurantService, IExebiteMapper exebiteMapper)
         {
             _restaurantService = restaurantService;
+            _exebiteMapper = exebiteMapper;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var restaurants = _restaurantService.GetAllRestaurants();
-            List<RestaurantViewModel> model = new List<RestaurantViewModel>();
-            foreach (var restaurant in restaurants)
-            {
-                model.Add(new RestaurantViewModel { Id = restaurant.Id, Name = restaurant.Name });
-            }
-
-            return Ok(model);
+            var restaurants = _restaurantService.GetAllRestaurants().Select(_exebiteMapper.Map<RestaurantViewModel>);
+            return Ok(restaurants);
         }
 
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
-            var restaurantFromDb = _restaurantService.GetRestaurantById(id);
-            if (restaurantFromDb == null)
+            var restaurant = _restaurantService.GetRestaurantById(id);
+            if (restaurant == null)
             {
                 return BadRequest();
             }
 
-            var restaurant = new RestaurantViewModel { Id = restaurantFromDb.Id, Name = restaurantFromDb.Name };
-            return Ok(restaurant);
+            return Ok(_exebiteMapper.Map<RestaurantViewModel>(restaurant));
         }
 
         [HttpPost]

@@ -5,10 +5,10 @@ namespace Exebite.API.Models
 {
     public class OrdersViewModel
     {
-        public List<Food> TodayFoods { get; set; }
-        public List<Order> ListOfOrders { get; set; }
-        public Order CurentOrder { get; set; }
-        public Customer Customer { get; set; }
-        public List<Restaurant> ListOfRestaurants { get; set; }
+        public List<Food> TodayFoods { get; set; } = new List<Food>();
+        public List<Order> ListOfOrders { get; set; } = new List<Order>();
+        public Order CurentOrder { get; set; } = new Order();
+        public Customer Customer { get; set; } = new Customer();
+        public List<Restaurant> ListOfRestaurants { get; set; } = new List<Restaurant>();
     }
 }

@@ -88,7 +88,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateOrderModel model)
+        public IActionResult Post([FromBody] CreateOrderModel model)
         {
             if (model.FoodIds == null || model.FoodIds.Count() == 0)
             {
@@ -121,8 +121,9 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] UpdateOrderModel model)
+        public IActionResult Put([FromBody] UpdateOrderModel model) //todo: after Mladen check in, check if Id is in model or not and should it be there or not?
         {
+            // todo: check if we should support note update, because we should support whole object update on http put
             if (model.FoodIds == null || model.FoodIds.Count() == 0)
             {
                 return BadRequest();
@@ -148,6 +149,7 @@ namespace Exebite.API.Controllers
 
             currentOrder.Meal.Price = currentOrder.Meal.Foods.Sum(f => f.Price);
             currentOrder.Price = currentOrder.Meal.Price;
+            currentOrder.Note = model.Note;
             var updatedOrder = _orderService.UpdateOrder(currentOrder);
 
             return Ok(updatedOrder.Id);
