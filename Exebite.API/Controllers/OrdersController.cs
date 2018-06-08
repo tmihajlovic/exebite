@@ -56,7 +56,7 @@ namespace Exebite.API.Controllers
             return Ok(model);
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var model = new OrdersViewModel
