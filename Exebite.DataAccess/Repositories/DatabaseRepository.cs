@@ -11,7 +11,7 @@ namespace Exebite.DataAccess.Repositories
     {
         private protected readonly IExebiteMapper _exebiteMapper;
 
-        private readonly IFoodOrderingContextFactory _factory;
+        private protected readonly IFoodOrderingContextFactory _factory;
 
         protected DatabaseRepository(IFoodOrderingContextFactory factory, IExebiteMapper exebiteMapper)
         {

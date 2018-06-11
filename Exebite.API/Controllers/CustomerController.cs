@@ -36,7 +36,7 @@ namespace Exebite.API.Controllers
         }
 
         // GET: api/Customer/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var customer = _customerRepository.GetByID(id);

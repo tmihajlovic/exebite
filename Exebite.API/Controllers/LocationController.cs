@@ -28,7 +28,7 @@ namespace Exebite.API.Controllers
             return Ok(locations);
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var location = _locationService.GetLocationById(id);
@@ -50,7 +50,7 @@ namespace Exebite.API.Controllers
 
             var createdLocation = _locationService.CreateNewLocation(_exebiteMapper.Map<Model.Location>(model));
 
-            return Ok(createdLocation.Id);
+            return Ok(new { createdLocation.Id });
         }
 
         [HttpPut("{id}")]
@@ -71,7 +71,7 @@ namespace Exebite.API.Controllers
             currentLocation.Address = model.Address;
 
             var updatedLocation = _locationService.UpdateLocation(currentLocation);
-            return Ok(updatedLocation.Id);
+            return Ok(new { updatedLocation.Id });
         }
 
         [HttpDelete("{id}")]

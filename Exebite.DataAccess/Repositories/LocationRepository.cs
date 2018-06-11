@@ -8,12 +8,9 @@ namespace Exebite.DataAccess.Repositories
 {
     public class LocationRepository : DatabaseRepository<Location, LocationEntity>, ILocationRepository
     {
-        private readonly IFoodOrderingContextFactory _factory;
-
         public LocationRepository(IFoodOrderingContextFactory factory, IExebiteMapper mapper)
             : base(factory, mapper)
         {
-            _factory = factory;
         }
 
         public override Location Insert(Location entity)
@@ -25,10 +22,10 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var locEntity = AutoMapperHelper.Instance.GetMappedValue<LocationEntity>(entity, context);
+                var locEntity = _exebiteMapper.Map<LocationEntity>(entity);
                 var resultEntity = context.Locations.Update(locEntity).Entity;
                 context.SaveChanges();
-                return AutoMapperHelper.Instance.GetMappedValue<Location>(resultEntity, context);
+                return _exebiteMapper.Map<Location>(resultEntity);
             }
         }
 
@@ -41,11 +38,11 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var locationEntity = AutoMapperHelper.Instance.GetMappedValue<LocationEntity>(entity, context);
-                context.Attach(locationEntity);
+                var locationEntity = _exebiteMapper.Map<LocationEntity>(entity);
+                context.Update(locationEntity);
                 context.SaveChanges();
-                var resultEntry = context.Locations.FirstOrDefault(l => l.Id == entity.Id);
-                return AutoMapperHelper.Instance.GetMappedValue<Location>(resultEntry, context);
+                var resultEntity = context.Locations.FirstOrDefault(l => l.Id == entity.Id);
+                return _exebiteMapper.Map<Location>(resultEntity);
             }
         }
     }

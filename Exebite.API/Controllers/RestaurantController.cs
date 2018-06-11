@@ -29,7 +29,7 @@ namespace Exebite.API.Controllers
             return Ok(restaurants);
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var restaurant = _restaurantService.GetRestaurantById(id);
