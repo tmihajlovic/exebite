@@ -30,7 +30,7 @@ namespace Exebite.API.Controllers
         // todo: check if here should be get for all orders by date for all users
 
         [HttpGet]
-        public IActionResult GetOrders()
+        public IActionResult Get()
         {
             var model = new OrdersViewModel
             {
@@ -56,7 +56,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetOrder(int id)
+        public IActionResult Get(int id)
         {
             var model = new OrdersViewModel
             {
@@ -155,7 +155,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteOrder(int id)
+        public IActionResult Delete(int id)
         {
             _orderService.DeleteOrder(id);
             return NoContent();
