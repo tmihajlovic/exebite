@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
 
@@ -9,14 +10,14 @@ namespace Exebite.DataAccess.Repositories
         where TModel : class
         where TEntity : class
     {
-        private protected readonly IExebiteMapper _exebiteMapper;
+        private protected readonly IMapper _mapper;
 
         private protected readonly IFoodOrderingContextFactory _factory;
 
-        protected DatabaseRepository(IFoodOrderingContextFactory factory, IExebiteMapper exebiteMapper)
+        protected DatabaseRepository(IFoodOrderingContextFactory factory, global::AutoMapper.IMapper mapper)
         {
             _factory = factory;
-            _exebiteMapper = exebiteMapper;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace Exebite.DataAccess.Repositories
                     .Set<TEntity>()
                     .ToList();
                 return items
-                    .Select(x => _exebiteMapper.Map<TModel>(x))
+                    .Select(x => _mapper.Map<TModel>(x))
                     .ToList();
             }
         }
@@ -54,7 +55,7 @@ namespace Exebite.DataAccess.Repositories
                 var itemEntity = itemSet.Find(id);
                 if (itemEntity != null)
                 {
-                    var item = _exebiteMapper.Map<TModel>(itemEntity);
+                    var item = _mapper.Map<TModel>(itemEntity);
                     return item;
                 }
                 else

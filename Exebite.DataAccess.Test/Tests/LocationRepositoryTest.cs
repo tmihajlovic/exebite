@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AutoMapper;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
@@ -14,12 +15,14 @@ namespace Exebite.DataAccess.Test.Tests
     {
         private static IFoodOrderingContextFactory _factory;
         private static ILocationRepository _locationRepository;
+        private static IMapper _mapper;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
             var container = ServiceProviderWrapper.GetContainer();
             _factory = container.Resolve<IFoodOrderingContextFactory>();
+            _mapper = container.Resolve<IMapper>();
             InMemorySeed.Seed(_factory);
 
             _locationRepository = container.Resolve<ILocationRepository>();
@@ -70,7 +73,7 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var location = AutoMapperHelper.Instance.GetMappedValue<Location>(context.Locations.Find(1), context);
+                var location = _mapper.Map<Location>(context.Locations.Find(1));
                 location.Name = "UpdatedName";
                 location.Address = "UpdatedAddress";
                 var result = _locationRepository.Update(location);
@@ -91,7 +94,7 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var location = AutoMapperHelper.Instance.GetMappedValue<Location>(context.Locations.First(l => l.Name == "For delete"), context);
+                var location = _mapper.Map<Location>(context.Locations.First(l => l.Name == "For delete"));
                 _locationRepository.Delete(location.Id);
                 var result = _locationRepository.GetByID(location.Id);
                 Assert.IsNull(result);

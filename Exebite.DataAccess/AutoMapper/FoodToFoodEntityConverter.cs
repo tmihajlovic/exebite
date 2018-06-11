@@ -7,31 +7,37 @@ using Exebite.Model;
 
 namespace Exebite.DataAccess.AutoMapper
 {
-    public class FoodToFoodEntityConverter : ITypeConverter<Food, FoodEntity>
+    public class FoodToFoodEntityConverter : IFoodToFoodEntityConverter
     {
-        private FoodOrderingContext _dbContext;
+        private readonly IFoodOrderingContextFactory _factory;
+
+        public FoodToFoodEntityConverter(IFoodOrderingContextFactory factory)
+        {
+            _factory = factory;
+        }
 
         public FoodEntity Convert(Food source, FoodEntity destination, ResolutionContext context)
         {
-            _dbContext = (FoodOrderingContext)context.Options.Items["dbContext"];
-
-            destination = new FoodEntity
+            using (var dbContext = _factory.Create())
             {
-                Id = source.Id,
-                Name = source.Name,
-                Type = source.Type,
-                Price = source.Price,
-                Description = source.Description,
-                IsInactive = source.IsInactive,
-                RestaurantId = source.Restaurant.Id,
-                FoodEntityMealEntity = new List<FoodEntityMealEntities>(),
-                FoodEntityRecipeEntities = new List<FoodEntityRecipeEntity>()
-            };
-                destination.Restaurant = _dbContext.Restaurants.Find(destination.RestaurantId);
-                destination.FoodEntityMealEntity = _dbContext.FoodEntityMealEntities.Where(fme => fme.FoodEntityId == source.Id).ToList();
-                destination.FoodEntityRecipeEntities = _dbContext.FoodEntityRecipeEntity.Where(fre => fre.FoodEntityId == source.Id).ToList();
+                destination = new FoodEntity
+                {
+                    Id = source.Id,
+                    Name = source.Name,
+                    Type = source.Type,
+                    Price = source.Price,
+                    Description = source.Description,
+                    IsInactive = source.IsInactive,
+                    RestaurantId = source.Restaurant.Id,
+                    FoodEntityMealEntity = new List<FoodEntityMealEntities>(),
+                    FoodEntityRecipeEntities = new List<FoodEntityRecipeEntity>()
+                };
+                destination.Restaurant = dbContext.Restaurants.Find(destination.RestaurantId);
+                destination.FoodEntityMealEntity = dbContext.FoodEntityMealEntities.Where(fme => fme.FoodEntityId == source.Id).ToList();
+                destination.FoodEntityRecipeEntities = dbContext.FoodEntityRecipeEntity.Where(fre => fre.FoodEntityId == source.Id).ToList();
 
-            return destination;
+                return destination;
+            }
         }
     }
 }

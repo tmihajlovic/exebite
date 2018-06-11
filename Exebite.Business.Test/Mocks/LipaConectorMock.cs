@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Exebite.DataAccess;
+using AutoMapper;
 using Exebite.DataAccess.Migrations;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
@@ -11,11 +11,16 @@ namespace Exebite.Business.Test.Mocks
     public class LipaConectorMock : ILipaConector
     {
         private IFoodOrderingContextFactory _factory;
+        private IMapper _mapper;
         private string restaurantName = "Restoran pod Lipom";
 
-        public LipaConectorMock(IFoodOrderingContextFactory factory)
+
+
+        public LipaConectorMock(IFoodOrderingContextFactory factory, IMapper mapper)
         {
             _factory = factory;
+            _mapper = mapper;
+
         }
 
         public void DnevniMenuSheetSetup()
@@ -29,7 +34,7 @@ namespace Exebite.Business.Test.Mocks
             {
                 var restaurant = context.Restaurants.Single(r => r.Name == restaurantName);
                 var foodEntity = context.Foods.Where(f => f.RestaurantId == restaurant.Id).ToList();
-                var foodList = foodEntity.Select(f => AutoMapperHelper.Instance.GetMappedValue<Food>(f, context)).ToList();
+                var foodList = foodEntity.Select(f => _mapper.Map<Food>(f)).ToList();
                 result.AddRange(foodList.Take(3)); // Take 3 food from all food list for daily menu
             }
 
@@ -43,7 +48,7 @@ namespace Exebite.Business.Test.Mocks
             {
                 var restaurant = context.Restaurants.Single(r => r.Name == restaurantName);
                 var foodEntity = context.Foods.Where(f => f.RestaurantId == restaurant.Id).ToList();
-                var foodList = foodEntity.Select(f => AutoMapperHelper.Instance.GetMappedValue<Food>(f, context)).ToList();
+                var foodList = foodEntity.Select(f => _mapper.Map<Food>(f)).ToList();
                 result.AddRange(foodList.Take(foodList.Count - 1)); // Add one food less to be marked inactive
                 var newFoodEntity = new DataAccess.Entities.FoodEntity
                 {
@@ -55,7 +60,7 @@ namespace Exebite.Business.Test.Mocks
                     RestaurantId = restaurant.Id,
                     Restaurant = restaurant
                 };
-                result.Add(AutoMapperHelper.Instance.GetMappedValue<Food>(newFoodEntity, context));
+                result.Add(_mapper.Map<Food>(newFoodEntity));
             }
 
             return result;

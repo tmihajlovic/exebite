@@ -7,9 +7,7 @@ namespace Exebite.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/Customer")]
-#if !DEBUG
-    [Authorize]
-#endif
+    //    [Authorize]
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository _customerRepository;

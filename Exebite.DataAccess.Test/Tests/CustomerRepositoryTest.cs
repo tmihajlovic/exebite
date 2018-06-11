@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
-using Exebite.DataAccess.AutoMapper;
+using AutoMapper;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;
+using Exebite.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Exebite.DataAccess.Test.Tests
@@ -13,16 +14,17 @@ namespace Exebite.DataAccess.Test.Tests
     public class CustomerRepositoryTest
     {
         private static IFoodOrderingContextFactory _factory;
+        private static IMapper _mapper;
         private static ICustomerRepository _customerRepository;
-        private static IExebiteMapper _mapper;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            //_factory = new InMemoryDBFactory();
-            //_mapper = new ExebiteMapper(new ServiceProvider());
-            //_customerRepository = new CustomerRepository(_factory, _mapper);
+            var container = ServiceProviderWrapper.GetContainer();
+            _factory = container.Resolve<IFoodOrderingContextFactory>();
+            _mapper = container.Resolve<IMapper>();
             InMemorySeed.Seed(_factory);
+            _customerRepository = container.Resolve<ICustomerRepository>();
         }
 
         [TestMethod]
@@ -94,7 +96,7 @@ namespace Exebite.DataAccess.Test.Tests
             using (var context = _factory.Create())
             {
                 var customer = _customerRepository.GetByID(1);
-                var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(context.Restaurants.FirstOrDefault(), context);
+                var restaurant = _mapper.Map<Restaurant>(context.Restaurants.FirstOrDefault());
                 var newAlisas = new CustomerAliases
                 {
                     Alias = "Test Alisas",
@@ -113,7 +115,7 @@ namespace Exebite.DataAccess.Test.Tests
             using (var context = _factory.Create())
             {
                 var customer = _customerRepository.GetByID(1);
-                var newLocation = AutoMapperHelper.Instance.GetMappedValue<Location>(context.Locations.FirstOrDefault(l => l.Id == 2), context);
+                var newLocation = _mapper.Map<Location>(context.Locations.FirstOrDefault(l => l.Id == 2));
                 customer.Location = newLocation;
                 var result = _customerRepository.Update(customer);
                 Assert.AreEqual(result.Location.Name, "JD");

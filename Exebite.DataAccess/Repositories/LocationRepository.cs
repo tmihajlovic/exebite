@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using AutoMapper;
 using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Migrations;
@@ -8,7 +9,7 @@ namespace Exebite.DataAccess.Repositories
 {
     public class LocationRepository : DatabaseRepository<Location, LocationEntity>, ILocationRepository
     {
-        public LocationRepository(IFoodOrderingContextFactory factory, IExebiteMapper mapper)
+        public LocationRepository(IFoodOrderingContextFactory factory, IMapper mapper)
             : base(factory, mapper)
         {
         }
@@ -22,10 +23,10 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var locEntity = _exebiteMapper.Map<LocationEntity>(entity);
+                var locEntity = _mapper.Map<LocationEntity>(entity);
                 var resultEntity = context.Locations.Update(locEntity).Entity;
                 context.SaveChanges();
-                return _exebiteMapper.Map<Location>(resultEntity);
+                return _mapper.Map<Location>(resultEntity);
             }
         }
 
@@ -38,11 +39,11 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var locationEntity = _exebiteMapper.Map<LocationEntity>(entity);
+                var locationEntity = _mapper.Map<LocationEntity>(entity);
                 context.Update(locationEntity);
                 context.SaveChanges();
                 var resultEntity = context.Locations.FirstOrDefault(l => l.Id == entity.Id);
-                return _exebiteMapper.Map<Location>(resultEntity);
+                return _mapper.Map<Location>(resultEntity);
             }
         }
     }

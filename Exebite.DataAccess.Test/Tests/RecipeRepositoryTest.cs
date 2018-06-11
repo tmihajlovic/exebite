@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Exebite.DataAccess.AutoMapper;
+using AutoMapper;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
@@ -16,17 +16,17 @@ namespace Exebite.DataAccess.Test.Tests
     {
         private static IFoodOrderingContextFactory _factory;
         private static IRecipeRepository _recepieRepository;
-        private static IExebiteMapper _mapper;
-        
+        private static IMapper _mapper;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
             var container = ServiceProviderWrapper.GetContainer();
             _factory = container.Resolve<IFoodOrderingContextFactory>();
+            _mapper = container.Resolve<IMapper>();
             InMemorySeed.Seed(_factory);
 
-            _mapper = container.Resolve<IExebiteMapper>();
+            _mapper = container.Resolve<IMapper>();
             _recepieRepository = container.Resolve<IRecipeRepository>();
         }
 
@@ -69,7 +69,7 @@ namespace Exebite.DataAccess.Test.Tests
             using (var context = _factory.Create())
             {
                 var mainCourseEntity = context.Foods.Find(3);
-                var mainCourse = AutoMapperHelper.Instance.GetMappedValue<Food>(mainCourseEntity, context);
+                var mainCourse = _mapper.Map<Food>(mainCourseEntity);
                 var result = _recepieRepository.GetRecipesForMainCourse(mainCourse);
                 Assert.AreEqual(result.Count, 0);
             }
@@ -88,7 +88,7 @@ namespace Exebite.DataAccess.Test.Tests
             using (var context = _factory.Create())
             {
                 var foodEntity = context.Foods.FirstOrDefault(f => f.Type == FoodType.CONDIMENTS);
-                var food = AutoMapperHelper.Instance.GetMappedValue<Food>(foodEntity, context);
+                var food = _mapper.Map<Food>(foodEntity);
                 var result = _recepieRepository.GetRecipesForFood(food);
                 Assert.IsNotNull(result);
             }
@@ -100,7 +100,7 @@ namespace Exebite.DataAccess.Test.Tests
             using (var context = _factory.Create())
             {
                 var foodEntity = context.Foods.First(f => f.Type == FoodType.SALAD);
-                var food = AutoMapperHelper.Instance.GetMappedValue<Food>(foodEntity, context);
+                var food = _mapper.Map<Food>(foodEntity);
                 var result = _recepieRepository.GetRecipesForFood(food);
                 Assert.AreEqual(result.Count, 0);
             }
@@ -151,9 +151,9 @@ namespace Exebite.DataAccess.Test.Tests
             using (var context = _factory.Create())
             {
                 var recipieEntity = context.Recipes.Find(1);
-                var recipie = AutoMapperHelper.Instance.GetMappedValue<Recipe>(recipieEntity, context);
+                var recipie = _mapper.Map<Recipe>(recipieEntity);
                 var newFoodEntity = context.Foods.FirstOrDefault(f => f.Type == FoodType.SALAD);
-                var newFood = AutoMapperHelper.Instance.GetMappedValue<Food>(newFoodEntity, context);
+                var newFood = _mapper.Map<Food>(newFoodEntity);
                 recipie.SideDish.Add(newFood);
                 var result = _recepieRepository.Update(recipie);
                 Assert.AreEqual(result.SideDish.Count, 2);

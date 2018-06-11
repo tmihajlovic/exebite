@@ -1,6 +1,5 @@
 ﻿using Exebite.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Exebite.DataAccess.Migrations
 {

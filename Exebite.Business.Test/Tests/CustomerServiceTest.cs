@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AutoMapper;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess;
 using Exebite.DataAccess.Migrations;
@@ -14,11 +15,15 @@ namespace Exebite.Business.Test.Tests
         private static ICustomerService _customerService;
         private static IFoodOrderingContextFactory _factory;
 
+        private static IMapper _mapper;
+
+
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
             var container = ServiceProviderWrapper.GetContainer();
             _factory = container.Resolve<IFoodOrderingContextFactory>();
+            _mapper = container.Resolve<IMapper>();
             InMemoryDBSeed.Seed(_factory);
             _customerService = container.Resolve<ICustomerService>();
         }
@@ -101,7 +106,7 @@ namespace Exebite.Business.Test.Tests
                     AppUserId = "New App ID",
                     Balance = 0,
                     Name = "New Customer",
-                    Location = AutoMapperHelper.Instance.GetMappedValue<Location>(context.Locations.First(), context)
+                    Location = _mapper.Map<Location>(context.Locations.First())
                 };
                 var result = _customerService.CreateCustomer(newCustomer);
                 Assert.IsNotNull(result);
@@ -124,7 +129,7 @@ namespace Exebite.Business.Test.Tests
                 var newLocationId = 2;
                 var customer = _customerService.GetAllCustomers().First();
                 customer.Name = newName;
-                customer.Location = AutoMapperHelper.Instance.GetMappedValue<Location>(context.Locations.Find(newLocationId), context);
+                customer.Location = _mapper.Map<Location>(context.Locations.Find(newLocationId));
                 var result = _customerService.UpdateCustomer(customer);
                 Assert.AreEqual(result.Name, newName);
                 Assert.AreEqual(result.Location.Id, newLocationId);

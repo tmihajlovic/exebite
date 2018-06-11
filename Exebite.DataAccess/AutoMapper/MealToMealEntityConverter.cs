@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Migrations;
@@ -9,38 +7,47 @@ using Exebite.Model;
 
 namespace Exebite.DataAccess.AutoMapper
 {
-    public class MealToMealEntityConverter : ITypeConverter<Meal, MealEntity>
+    public class MealToMealEntityConverter : IMealToMealEntityConverter
     {
-        private FoodOrderingContext _dbContext;
+        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMapper _mapper;
+
+        public MealToMealEntityConverter(IFoodOrderingContextFactory factory, IMapper mapper)
+        {
+            _factory = factory;
+            _mapper = mapper;
+        }
 
         public MealEntity Convert(Meal source, MealEntity destination, ResolutionContext context)
         {
-            _dbContext = (FoodOrderingContext)context.Options.Items["dbContext"];
-            destination = new MealEntity();
-            destination.Id = source.Id;
-            destination.Price = source.Price;
-            destination.Id = source.Id;
-            destination.FoodEntityMealEntities = new List<FoodEntityMealEntities>();
-            foreach (var food in source.Foods)
+            using (var dbContext = _factory.Create())
             {
-                var dbFoodMealEntity = _dbContext.FoodEntityMealEntities.SingleOrDefault(fm => fm.FoodEntityId == food.Id && fm.MealEntityId == source.Id);
-                if (dbFoodMealEntity == null)
+                destination = new MealEntity();
+                destination.Id = source.Id;
+                destination.Price = source.Price;
+                destination.Id = source.Id;
+                destination.FoodEntityMealEntities = new List<FoodEntityMealEntities>();
+                foreach (var food in source.Foods)
                 {
-                    destination.FoodEntityMealEntities.Add(new FoodEntityMealEntities
+                    var dbFoodMealEntity = dbContext.FoodEntityMealEntities.SingleOrDefault(fm => fm.FoodEntityId == food.Id && fm.MealEntityId == source.Id);
+                    if (dbFoodMealEntity == null)
                     {
-                        FoodEntity = AutoMapperHelper.Instance.GetMappedValue<FoodEntity>(food, _dbContext),
-                        FoodEntityId = food.Id,
-                        MealEntityId = source.Id,
-                        MealEntity = destination
-                    });
+                        destination.FoodEntityMealEntities.Add(new FoodEntityMealEntities
+                        {
+                            FoodEntity = _mapper.Map<FoodEntity>(food),
+                            FoodEntityId = food.Id,
+                            MealEntityId = source.Id,
+                            MealEntity = destination
+                        });
+                    }
+                    else
+                    {
+                        destination.FoodEntityMealEntities.Add(dbFoodMealEntity);
+                    }
                 }
-                else
-                {
-                    destination.FoodEntityMealEntities.Add(dbFoodMealEntity);
-                }
-            }
 
-            return destination;
+                return destination;
+            }
         }
     }
 }

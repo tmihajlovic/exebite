@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Exebite.DataAccess.AutoMapper;
+using AutoMapper;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
@@ -17,12 +17,15 @@ namespace Exebite.DataAccess.Test.Tests
         private static IFoodOrderingContextFactory _factory;
         private static IOrderRepository _orderRepository;
 
+        private static IMapper _mapper;
+
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
             var cointeiner = ServiceProviderWrapper.GetContainer();
             _orderRepository = cointeiner.Resolve<IOrderRepository>();
             _factory = cointeiner.Resolve<IFoodOrderingContextFactory>();
+            _mapper = cointeiner.Resolve<IMapper>();
             InMemorySeed.Seed(_factory);
         }
 
@@ -52,7 +55,7 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(context.Customers.Find(1), context);
+                var customer = _mapper.Map<Customer>(context.Customers.Find(1));
                 var result = _orderRepository.GetOrdersForCustomer(customer.Id).ToList();
                 Assert.AreEqual(result.Count, customer.Orders.Count);
             }
@@ -71,7 +74,7 @@ namespace Exebite.DataAccess.Test.Tests
             using (var context = _factory.Create())
             {
                 int existingOrderId = 1;
-                var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(context.Customers.Find(1), context);
+                var customer = _mapper.Map<Customer>(context.Customers.Find(1));
                 var result = _orderRepository.GetOrderForCustomer(existingOrderId, customer.Id);
                 Assert.IsNotNull(result);
             }
@@ -95,7 +98,7 @@ namespace Exebite.DataAccess.Test.Tests
             using (var context = _factory.Create())
             {
                 int nonExistingOrderId = 999;
-                var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(context.Customers.Find(1), context);
+                var customer = _mapper.Map<Customer>(context.Customers.Find(1));
                 var result = _orderRepository.GetOrderForCustomer(nonExistingOrderId, customer.Id);
                 Assert.IsNull(result);
             }
@@ -113,8 +116,8 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var order = AutoMapperHelper.Instance.GetMappedValue<Order>(context.Orders.Find(1), context);
-                var newFood = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.Find(1), context);
+                var order = _mapper.Map<Order>(context.Orders.Find(1));
+                var newFood = _mapper.Map<Food>(context.Foods.Find(1));
                 order.Note = "New note";
                 order.Meal.Foods.Add(newFood);
                 var result = _orderRepository.Update(order);
@@ -135,8 +138,8 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var newFood = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.First(), context);
-                var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(context.Customers.First(), context);
+                var newFood = _mapper.Map<Food>(context.Foods.First());
+                var customer = _mapper.Map<Customer>(context.Customers.First());
                 var order = new Order();
                 order.Meal = new Meal();
                 order.Meal.Foods = new List<Food>();

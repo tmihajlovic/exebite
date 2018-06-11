@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Migrations;
@@ -10,12 +11,11 @@ namespace Exebite.DataAccess.Repositories
 {
     public class OrderRepository : DatabaseRepository<Order, OrderEntity>, IOrderRepository
     {
-        private readonly IFoodOrderingContextFactory _factory;
 
-        public OrderRepository(IFoodOrderingContextFactory factory, IExebiteMapper mapper)
+        public OrderRepository(IFoodOrderingContextFactory factory, IMapper mapper)
             : base(factory, mapper)
         {
-            _factory = factory;
+
         }
 
         public IEnumerable<Order> GetOrdersForCustomer(int customerId)
@@ -34,7 +34,7 @@ namespace Exebite.DataAccess.Repositories
 
                 foreach (var orderEntity in orderEntityList)
                 {
-                    var order = AutoMapperHelper.Instance.GetMappedValue<Order>(orderEntity, context);
+                    var order = _mapper.Map<Order>(orderEntity);
                     orderList.Add(order);
                 }
 
@@ -58,7 +58,7 @@ namespace Exebite.DataAccess.Repositories
                     return null;
                 }
 
-                return AutoMapperHelper.Instance.GetMappedValue<Order>(order, context);
+                return _mapper.Map<Order>(order);
             }
         }
 
@@ -70,7 +70,7 @@ namespace Exebite.DataAccess.Repositories
                 var orderList = new List<Order>();
                 foreach (var orderEntity in orderEntityList)
                 {
-                    var order = AutoMapperHelper.Instance.GetMappedValue<Order>(orderEntity, context);
+                    var order = _mapper.Map<Order>(orderEntity);
                     orderList.Add(order);
                 }
 
@@ -87,12 +87,12 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var orderEntity = AutoMapperHelper.Instance.GetMappedValue<OrderEntity>(entity, context);
+                var orderEntity = _mapper.Map<OrderEntity>(entity);
 
-                var resultEntity = context.Update(orderEntity).Entity;
+                var resultEntity = context.Add(orderEntity);
                 context.SaveChanges();
 
-                return AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity, context);
+                return _mapper.Map<Order>(resultEntity);
             }
         }
 
@@ -105,14 +105,14 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var orderEntity = AutoMapperHelper.Instance.GetMappedValue<OrderEntity>(entity, context);
+                var orderEntity = _mapper.Map<OrderEntity>(entity);
                 context.Update(orderEntity.Meal);
                 var oldEntity = context.Orders.FirstOrDefault(o => o.Id == entity.Id);
                 context.Entry(oldEntity).CurrentValues.SetValues(orderEntity);
                 context.SaveChanges();
 
                 var resultEntity = context.Orders.FirstOrDefault(o => o.Id == entity.Id);
-                return AutoMapperHelper.Instance.GetMappedValue<Order>(resultEntity, context);
+                return _mapper.Map<Order>(resultEntity);
             }
         }
     }

@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using AutoMapper;
 using Exebite.DataAccess.Entities;
+using Exebite.DataAccess.Migrations;
 using Exebite.Model;
 
 namespace Exebite.DataAccess.AutoMapper
 {
-    public class RecipeToRecipeEntityConverter : ITypeConverter<Recipe, RecipeEntity>
+    public class RecipeToRecipeEntityConverter : IRecipeToRecipeEntityConverter
     {
-        private readonly IExebiteMapper _mapper;
+        private readonly IMapper _mapper;
+        private readonly IFoodOrderingContextFactory _factory;
 
-        public RecipeToRecipeEntityConverter(IExebiteMapper mapper)
+        public RecipeToRecipeEntityConverter(IMapper mapper, IFoodOrderingContextFactory factory)
         {
             _mapper = mapper;
+            _factory = factory;
         }
 
         public RecipeEntity Convert(Recipe source, RecipeEntity destination, ResolutionContext context)
@@ -30,21 +31,25 @@ namespace Exebite.DataAccess.AutoMapper
             };
             foreach (var food in source.SideDish)
             {
-                //var fre = _dbContext.FoodEntityRecipeEntity.SingleOrDefault(i => i.FoodEntityId == food.Id && i.RecepieEntityId == source.Id);
-                //if (fre == null)
-                //{
-                    destination.FoodEntityRecipeEntities.Add(new FoodEntityRecipeEntity
+                using (var dbcontext = _factory.Create())
+                {
+                    var fre = dbcontext.FoodEntityRecipeEntity.SingleOrDefault(i => i.FoodEntityId == food.Id && i.RecepieEntityId == source.Id);
+                    if (fre == null)
                     {
-                        FoodEntity = _mapper.Map<FoodEntity>(food),
-                        FoodEntityId = food.Id,
-                        RecipeEntity = destination,
-                        RecepieEntityId = source.Id
-                    });
-                //}
-                //else
-                //{
-                //    destination.FoodEntityRecipeEntities.Add(fre);
-                //}
+                        destination.FoodEntityRecipeEntities.Add(new FoodEntityRecipeEntity
+                        {
+                            FoodEntity = _mapper.Map<FoodEntity>(food),
+                            FoodEntityId = food.Id,
+                            RecipeEntity = destination,
+                            RecepieEntityId = source.Id
+                        });
+                    }
+                    else
+                    {
+                        destination.FoodEntityRecipeEntities.Add(fre);
+                    }
+                }
+
             }
 
             return destination;

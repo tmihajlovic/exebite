@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Exebite.Business.Test.Mocks;
-using Exebite.DataAccess;
-using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
-using Exebite.DataAccess.Repositories;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -16,6 +14,7 @@ namespace Exebite.Business.Test.Tests
     {
         private static IOrderService _orderService;
         private static IFoodOrderingContextFactory _factory;
+        private static IMapper _mapper;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
@@ -23,7 +22,7 @@ namespace Exebite.Business.Test.Tests
             var container = ServiceProviderWrapper.GetContainer();
             _factory = container.Resolve<IFoodOrderingContextFactory>();
             InMemoryDBSeed.Seed(_factory);
-
+            _mapper = container.Resolve<IMapper>();
             _orderService = container.Resolve<IOrderService>();
         }
 
@@ -106,8 +105,8 @@ namespace Exebite.Business.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var food1 = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.First(), context);
-                var customer = AutoMapperHelper.Instance.GetMappedValue<Customer>(context.Customers.First(), context);
+                var food1 = _mapper.Map<Food>(context.Foods.First());
+                var customer = _mapper.Map<Customer>(context.Customers.First());
                 var order = new Order
                 {
                     Meal = new Meal
@@ -144,7 +143,7 @@ namespace Exebite.Business.Test.Tests
             {
                 var customerId = 1;
                 var id = 1;
-                var foodToAdd = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.Where(f => f.Type == FoodType.SIDE_DISH).First(), context);
+                var foodToAdd = _mapper.Map<Food>(context.Foods.Where(f => f.Type == FoodType.SIDE_DISH).First());
                 var order = _orderService.GetOrderByIdForCustomer(id, customerId);
                 order.Meal.Foods.Add(foodToAdd);
                 var result = _orderService.UpdateOrder(order);

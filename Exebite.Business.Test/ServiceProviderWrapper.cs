@@ -1,5 +1,7 @@
 ﻿using System;
+using AutoMapper;
 using Exebite.Business.Test.Mocks;
+using Exebite.DataAccess;
 using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Migrations;
@@ -13,10 +15,11 @@ namespace Exebite.Business.Test
     {
         public static IServiceProvider GetContainer()
         {
+            ServiceCollectionExtensions.UseStaticRegistration = false;
+
             var serviceProvider = new ServiceCollection()
                                         .AddLogging()
                                         .AddTransient<IFoodOrderingContextFactory, InMemoryDBFactory>()
-
                                         .AddTransient<IRestaurantRepository, RestaurantRepository>()
                                         .AddTransient<IFoodRepository, FoodRepository>()
                                         .AddTransient<IRecipeRepository, RecipeRepository>()
@@ -32,7 +35,13 @@ namespace Exebite.Business.Test
                                         .AddTransient<IOrderService, OrderService>()
 
                                         .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
-                                        .AddTransient<IExebiteMapper, ExebiteMapper>()
+
+                                        .AddTransient<IMapper, Mapper>()
+                                        .AddAutoMapper(cfg => cfg.AddProfile<DataAccessMappingProfile>())
+                                        .AddTransient<IFoodToFoodEntityConverter, FoodToFoodEntityConverter>()
+                                        .AddTransient<IMealToMealEntityConverter, MealToMealEntityConverter>()
+                                        .AddTransient<IRecipeToRecipeEntityConverter, RecipeToRecipeEntityConverter>()
+
                                         .BuildServiceProvider();
             return serviceProvider;
         }

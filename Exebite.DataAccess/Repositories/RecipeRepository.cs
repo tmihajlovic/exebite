@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Migrations;
@@ -9,13 +10,11 @@ namespace Exebite.DataAccess.Repositories
 {
     public class RecipeRepository : DatabaseRepository<Recipe, RecipeEntity>, IRecipeRepository
     {
-        private readonly IFoodOrderingContextFactory _factory;
 
 
-        public RecipeRepository(IFoodOrderingContextFactory factory, IExebiteMapper mapper)
+        public RecipeRepository(IFoodOrderingContextFactory factory, IMapper mapper)
             : base(factory, mapper)
         {
-            _factory = factory;
         }
 
         public List<Recipe> GetRecipesForFood(Food food)
@@ -28,7 +27,7 @@ namespace Exebite.DataAccess.Repositories
             using (var context = _factory.Create())
             {
                 var entities = context.FoodEntityRecipeEntity.Where(fe => fe.FoodEntityId == food.Id).Select(r => r.RecipeEntity).ToList();
-                return entities.Select(r => _exebiteMapper.Map<Recipe>(r)).ToList();
+                return entities.Select(r => _mapper.Map<Recipe>(r)).ToList();
             }
         }
 
@@ -42,7 +41,7 @@ namespace Exebite.DataAccess.Repositories
             using (var context = _factory.Create())
             {
                 var entities = context.Recipes.Where(r => r.MainCourseId == mainCourse.Id).ToList();
-                return entities.Select(r => _exebiteMapper.Map<Recipe>(r)).ToList();
+                return entities.Select(r => _mapper.Map<Recipe>(r)).ToList();
             }
         }
 
@@ -55,10 +54,10 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var recipeEntity = _exebiteMapper.Map<RecipeEntity>(entity);
+                var recipeEntity = _mapper.Map<RecipeEntity>(entity);
                 var resultEntity = context.Attach(recipeEntity).Entity;
                 context.SaveChanges();
-                return _exebiteMapper.Map<Recipe>(resultEntity);
+                return _mapper.Map<Recipe>(resultEntity);
             }
         }
 
@@ -71,7 +70,7 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var recipeEntity = AutoMapperHelper.Instance.GetMappedValue<RecipeEntity>(entity, context);
+                var recipeEntity = _mapper.Map<RecipeEntity>(entity);
                 foreach (var fre in recipeEntity.FoodEntityRecipeEntities)
                 {
                     context.Attach(fre);
@@ -82,7 +81,7 @@ namespace Exebite.DataAccess.Repositories
                 context.SaveChanges();
 
                 var resultEntity = context.Recipes.FirstOrDefault(r => r.Id == entity.Id);
-                return AutoMapperHelper.Instance.GetMappedValue<Recipe>(resultEntity, context);
+                return _mapper.Map<Recipe>(resultEntity);
             }
         }
     }

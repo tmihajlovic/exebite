@@ -1,7 +1,7 @@
 ﻿using System.Linq;
+using AutoMapper;
 using Exebite.API.Models;
 using Exebite.Business;
-using Exebite.DataAccess.AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +13,9 @@ namespace Exebite.API.Controllers
     public class FoodController : Controller
     {
         private readonly IFoodService _foodService;
-        private readonly IExebiteMapper _exebiteMapper;
+        private readonly IMapper _exebiteMapper;
 
-        public FoodController(IFoodService foodService, IExebiteMapper exebiteMapper)
+        public FoodController(IFoodService foodService, IMapper exebiteMapper)
         {
             _foodService = foodService;
             _exebiteMapper = exebiteMapper;

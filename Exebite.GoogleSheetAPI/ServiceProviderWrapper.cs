@@ -1,6 +1,8 @@
 ﻿using System;
+using AutoMapper;
 using Exebite.GoogleSheetAPI;
 using Exebite.GoogleSheetAPI.GoogleSSFactory;
+using Exebite.GoogleSheetAPI.Kasa;
 using Exebite.GoogleSheetAPI.RestaurantConectors;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,14 +13,18 @@ namespace Exebite.Test
     {
         public static IServiceProvider GetContainer()
         {
-
+            ServiceCollectionExtensions.UseStaticRegistration = false;
             var serviceProvider = new ServiceCollection()
-                                        .AddTransient<IHedoneConector, HedoneConector>()
-                                        .AddTransient<ILipaConector, LipaConector>()
-                                        .AddTransient<ITeglasConector, TeglasConector>()
-                                        .AddTransient<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>()
+
                                         .AddTransient<IGoogleSheetService, GoogleSheetService>()
+                                        .AddTransient<ITeglasConector, TeglasConector>()
+                                        .AddTransient<IRestaurantConector, RestaurantConector>()
+                                        .AddTransient<ILipaConector, LipaConector>()
+                                        .AddTransient<IHedoneConector, HedoneConector>()
+                                        .AddTransient<IKasaConector, KasaConector>()
+                                        .AddTransient<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>()
                                         .AddTransient<IGoogleSheetServiceFactory, GoogleSheetServiceFactory>()
+                                        .AddAutoMapper()
                                         .BuildServiceProvider();
             return serviceProvider;
         }

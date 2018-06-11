@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using AutoMapper;
 using Exebite.Business.GoogleApiImportExport;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess.AutoMapper;
@@ -24,21 +25,24 @@ namespace Exebite.Business.Test.Tests
         private static IHedoneConector _hedoneConector;
         private static ILipaConector _lipaConector;
         private static ITeglasConector _teglasConector;
-        private static IExebiteMapper _mapper;
+        private static IMapper _mapper;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-            //_factory = new InMemoryDBFactory();
-            //_lipaConector = new LipaConectorMock(_factory);
-            //_hedoneConector = new HedoneConectorMock(_factory);
-            //_teglasConector = new TeglasConectorMock(_factory);
-            //_mapper = new ExebiteMapper( new );
-            
-            //_restaurantService = new RestaurantService(new RestaurantRepository(_factory, _mapper));
-            //_foodService = new FoodService(new FoodRepository(_factory, _mapper));
-            //_googleDataImporter = new GoogleApiImport(_restaurantService, _foodService, _lipaConector, _teglasConector, _hedoneConector);
+
+            var container = ServiceProviderWrapper.GetContainer();
+
+            _factory = container.Resolve<IFoodOrderingContextFactory>();
+
             InMemoryDBSeed.Seed(_factory);
+            _lipaConector = new LipaConectorMock(_factory, _mapper);
+            _hedoneConector = new HedoneConectorMock(_factory, _mapper);
+            _teglasConector = new TeglasConectorMock(_factory, _mapper);
+            _mapper = container.Resolve<IMapper>(); //new ExebiteMapper(ServiceProviderWrapper.GetContainer());
+            _restaurantService = container.Resolve<IRestaurantService>();
+            _foodService = container.Resolve<IFoodService>(); //new FoodService(new FoodRepository(_factory, _mapper));
+            _googleDataImporter = new GoogleApiImport(_restaurantService, _foodService, _lipaConector, _teglasConector, _hedoneConector);
         }
 
         [TestMethod]

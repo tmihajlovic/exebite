@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using AutoMapper;
 using Exebite.API.Models;
 using Exebite.Business;
 using Exebite.DataAccess.AutoMapper;
@@ -13,9 +14,9 @@ namespace Exebite.API.Controllers
     public class LocationController : Controller
     {
         private readonly ILocationService _locationService;
-        private readonly IExebiteMapper _exebiteMapper;
+        private readonly IMapper _exebiteMapper;
 
-        public LocationController(ILocationService locationService, IExebiteMapper exebiteMapper)
+        public LocationController(ILocationService locationService, IMapper exebiteMapper)
         {
             _locationService = locationService;
             _exebiteMapper = exebiteMapper;

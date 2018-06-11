@@ -1,20 +1,24 @@
-﻿using Exebite.Business;
+﻿using AutoMapper;
+using Exebite.Business;
 using Exebite.DataAccess;
-using Exebite.DataAccess.AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Exebite.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        private readonly IServiceProvider _provider;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env, IServiceProvider provider)
         {
             Configuration = configuration;
             HostingEnvironment = env;
+            _provider = provider;
         }
 
         public static IConfiguration Configuration { get; private set; }
@@ -36,6 +40,14 @@ namespace Exebite.API
                 services.AddMvc();
             }
 
+            services.AddAutoMapper(
+                cfg =>
+                {
+                    cfg.ConstructServicesUsing(x => _provider.GetService(x));
+                    cfg.AddProfile<DataAccessMappingProfile>();
+                    cfg.AddProfile<UIMappingProfile>();
+                });
+
             services.AddDataAccessServices();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<ILocationService, LocationService>();
@@ -43,7 +55,6 @@ namespace Exebite.API
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IFoodService, FoodService>();
-            services.AddTransient<IExebiteMapper, ExebiteUIMapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

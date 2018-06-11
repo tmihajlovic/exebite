@@ -1,4 +1,6 @@
 ﻿using System;
+using AutoMapper;
+using Exebite.DataAccess;
 using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Migrations;
@@ -12,17 +14,9 @@ namespace Exebite.Test
     {
         public static IServiceProvider GetContainer()
         {
+            ServiceCollectionExtensions.UseStaticRegistration = false;
             var serviceProvider = new ServiceCollection()
                                         .AddLogging()
-                                        //.AddTransient<IRestaurantRepository, RestaurantRepository>()
-                                        //.AddTransient<ICustomerRepository, CustomerRepository>()
-                                        //.AddTransient<ILocationRepository, LocationRepository>()
-                                        //.AddTransient<IRestaurantRepository, RestaurantRepository>()
-                                        //.AddTransient<IOrderRepository, OrderRepository>()
-                                        //.AddTransient<IFoodOrderingContextFactory, InMemoryDBFactory>()
-                                        //.AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
-                                        //.AddTransient<IExebiteMapper, ExebiteMapper>()
-
                                         .AddTransient<IFoodOrderingContextFactory, InMemoryDBFactory>()
 
                                         .AddTransient<IRestaurantRepository, RestaurantRepository>()
@@ -32,15 +26,12 @@ namespace Exebite.Test
                                         .AddTransient<ILocationRepository, LocationRepository>()
                                         .AddTransient<IOrderRepository, OrderRepository>()
 
-                                        //.AddTransient<IFoodService, FoodService>()
-                                        //.AddTransient<IMenuService, MenuService>()
-                                        //.AddTransient<IRestaurantService, RestaurantService>()
-                                        //.AddTransient<ICustomerService, CustomerService>()
-                                        //.AddTransient<ILocationService, LocationService>()
-                                        //.AddTransient<IOrderService, OrderService>()
-
+                                        .AddTransient<IRecipeToRecipeEntityConverter, RecipeToRecipeEntityConverter>()
+                                        .AddTransient<IFoodToFoodEntityConverter, FoodToFoodEntityConverter>()
+                                        .AddTransient<IMealToMealEntityConverter, MealToMealEntityConverter>()
                                         .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
-                                        .AddTransient<IExebiteMapper, ExebiteMapper>()
+                                        .AddAutoMapper(cfg => 
+                                        cfg.AddProfile<DataAccessMappingProfile>())
                                         .BuildServiceProvider();
             return serviceProvider;
         }

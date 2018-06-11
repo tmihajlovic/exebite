@@ -70,7 +70,8 @@ namespace Exebite.DataAccess
         /// <returns>Destination object mapped from source</returns>
         public T GetMappedValue<T>(object value, FoodOrderingContext dbContext)
         {
-            return (T)Mapper.Map(value, value.GetType(), typeof(T), o => o.Items["dbContext"] = dbContext);
+            //return (T)Mapper.Map(value, value.GetType(), typeof(T), o => o.Items["dbContext"] = dbContext);
+            return default(T);
         }
     }
 }

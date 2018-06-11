@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AutoMapper;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
@@ -14,12 +15,15 @@ namespace Exebite.DataAccess.Test.Tests
     {
         private static IFoodOrderingContextFactory _factory;
         private static IFoodRepository _foodRepository;
+        private static IMapper _mapper;
+
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
             var container = ServiceProviderWrapper.GetContainer();
             _factory = container.Resolve<IFoodOrderingContextFactory>();
+            _mapper = container.Resolve<IMapper>();
             InMemorySeed.Seed(_factory);
             _foodRepository = container.Resolve<IFoodRepository>();
         }
@@ -50,7 +54,7 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(context.Restaurants.Find(1), context);
+                var restaurant = _mapper.Map<Restaurant>(context.Restaurants.Find(1));
                 var result = _foodRepository.GetByRestaurant(restaurant).ToList();
                 Assert.AreNotEqual(result.Count, 0);
             }
@@ -68,7 +72,7 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(context.Restaurants.Find(1), context);
+                var restaurant = _mapper.Map<Restaurant>(context.Restaurants.Find(1));
 
                 var newFood = new Food()
                 {
@@ -96,7 +100,7 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var food = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.Find(1), context);
+                var food = _mapper.Map<Food>(context.Foods.Find(1));
                 food.Name = "NewName";
                 food.Description = "NewDesc";
                 food.Price = 200;
@@ -121,7 +125,7 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var food = AutoMapperHelper.Instance.GetMappedValue<Food>(context.Foods.First(f => f.Name == "Test food for delete"), context);
+                var food = _mapper.Map<Food>(context.Foods.First(f => f.Name == "Test food for delete"));
                 _foodRepository.Delete(food.Id);
                 var result = _foodRepository.GetByID(food.Id);
                 Assert.IsNull(result);

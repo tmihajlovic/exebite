@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AutoMapper;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess;
 using Exebite.DataAccess.Migrations;
@@ -13,6 +14,7 @@ namespace Exebite.Business.Test.Tests
     {
         private static IFoodService _foodService;
         private static IFoodOrderingContextFactory _factory;
+        private static IMapper _mapper;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
@@ -20,6 +22,7 @@ namespace Exebite.Business.Test.Tests
             var container = ServiceProviderWrapper.GetContainer();
             _foodService = container.Resolve<IFoodService>();
             _factory = container.Resolve<IFoodOrderingContextFactory>();
+            _mapper = container.Resolve<IMapper>();
             InMemoryDBSeed.Seed(_factory);
         }
 
@@ -57,7 +60,7 @@ namespace Exebite.Business.Test.Tests
                     IsInactive = false,
                     Price = 200,
                     Type = FoodType.MAIN_COURSE,
-                    Restaurant = AutoMapperHelper.Instance.GetMappedValue<Restaurant>(context.Restaurants.First(), context)
+                    Restaurant = _mapper.Map<Restaurant>(context.Restaurants.First())
                 };
                 var result = _foodService.CreateNewFood(newFood);
                 Assert.IsNotNull(result);

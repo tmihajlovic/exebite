@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Exebite.DataAccess.AutoMapper;
+using AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Migrations;
 using Exebite.Model;
@@ -9,12 +9,9 @@ namespace Exebite.DataAccess.Repositories
 {
     public class RestaurantRepository : DatabaseRepository<Restaurant, RestaurantEntity>, IRestaurantRepository
     {
-        private readonly IFoodOrderingContextFactory _factory;
-
-        public RestaurantRepository(IFoodOrderingContextFactory factory, IExebiteMapper mapper)
+        public RestaurantRepository(IFoodOrderingContextFactory factory, IMapper mapper)
             : base(factory, mapper)
         {
-            _factory = factory;
         }
 
         public override IList<Restaurant> GetAll()
@@ -24,7 +21,7 @@ namespace Exebite.DataAccess.Repositories
             {
                 var items = dc.Restaurants.ToList();
 
-                return items.Select(x => _exebiteMapper.Map<Restaurant>(x)).ToList();
+                return items.Select(x => _mapper.Map<Restaurant>(x)).ToList();
             }
 
         }
@@ -45,7 +42,7 @@ namespace Exebite.DataAccess.Repositories
                     return null;
                 }
 
-                return AutoMapperHelper.Instance.GetMappedValue<Restaurant>(restaurantEntity, context);
+                return _mapper.Map<Restaurant>(restaurantEntity);
             }
         }
 
@@ -58,11 +55,11 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var restaurantEntity = AutoMapperHelper.Instance.GetMappedValue<RestaurantEntity>(entity, context);
+                var restaurantEntity = _mapper.Map<RestaurantEntity>(entity);
 
                 var addedEntity = context.Restaurants.Add(restaurantEntity).Entity;
                 context.SaveChanges();
-                return AutoMapperHelper.Instance.GetMappedValue<Restaurant>(addedEntity, context);
+                return _mapper.Map<Restaurant>(addedEntity);
             }
         }
 
@@ -75,7 +72,7 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var restaurantEntity = AutoMapperHelper.Instance.GetMappedValue<RestaurantEntity>(entity, context);
+                var restaurantEntity = _mapper.Map<RestaurantEntity>(entity);
 
                 var dbRestaurant = context.Restaurants.FirstOrDefault(r => r.Id == entity.Id);
                 context.Entry(dbRestaurant).CurrentValues.SetValues(restaurantEntity);
@@ -103,7 +100,7 @@ namespace Exebite.DataAccess.Repositories
                 context.SaveChanges();
 
                 var resultEntity = context.Restaurants.FirstOrDefault(r => r.Id == entity.Id);
-                return AutoMapperHelper.Instance.GetMappedValue<Restaurant>(resultEntity, context);
+                return _mapper.Map<Restaurant>(resultEntity);
             }
         }
     }
