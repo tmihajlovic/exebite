@@ -28,7 +28,7 @@ namespace Exebite.DataAccess.AutoMapper
                     Price = source.Price,
                     Description = source.Description,
                     IsInactive = source.IsInactive,
-                    RestaurantId = source.Restaurant.Id,
+                    RestaurantId = source.RestaurantId,
                     FoodEntityMealEntity = new List<FoodEntityMealEntities>(),
                     FoodEntityRecipeEntities = new List<FoodEntityRecipeEntity>()
                 };

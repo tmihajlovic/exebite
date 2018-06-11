@@ -27,7 +27,29 @@ namespace Exebite.API.Controllers
             _foodService = foodService;
         }
 
-        // todo: check if here should be get for all orders by date for all users
+        [HttpGet("{date}")]
+        public IActionResult GetForAllUsers(DateTime date)
+        {
+            if (date == null)
+            {
+                return BadRequest();
+            }
+
+            var orders = _orderService.GetAllOrders().Where(o => o.Date == date).ToList();
+            return Ok(orders);
+        }
+
+        [HttpGet("{id}/{date}")]
+        public IActionResult GetForRestaurant(int id, DateTime date)
+        {
+            if (date == null)
+            {
+                return BadRequest();
+            }
+
+            var orders = _orderService.GetAllOrdersForRestoraunt(id).Where(o => o.Date == date).ToList();
+            return Ok(orders);
+        }
 
         [HttpGet]
         public IActionResult Get()
@@ -44,7 +66,6 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            // todo: where is not used good, in method GetAllOrdersForCustomer, we already do ToList()
             model.ListOfOrders = _orderService.GetAllOrdersForCustomer(model.Customer.Id).Where(o => o.Date == DateTime.Today).ToList();
             model.CurentOrder = new Order { Customer = model.Customer, Meal = new Meal { Foods = new List<Food>() } };
             foreach (var restaurant in model.ListOfRestaurants)
@@ -119,8 +140,8 @@ namespace Exebite.API.Controllers
             return Ok(createdOrder.Id);
         }
 
-        [HttpPut]
-        public IActionResult Put([FromBody] UpdateOrderModel model) // todo: after Mladen check in, check if Id is in model or not and should it be there or not?
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] UpdateOrderModel model)
         {
             // todo: check if we should support note update, because we should support whole object update on http put
             if (model.FoodIds == null || model.FoodIds.Count() == 0)
@@ -134,16 +155,16 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            Order currentOrder = _orderService.GetOrderByIdForCustomer(model.Id, currentCustomer.Id);
+            Order currentOrder = _orderService.GetOrderByIdForCustomer(id, currentCustomer.Id);
             if (currentOrder == null)
             {
                 return NotFound();
             }
 
             currentOrder.Meal.Foods = new List<Food>();
-            foreach (var id in model.FoodIds)
+            foreach (var foodId in model.FoodIds)
             {
-                currentOrder.Meal.Foods.Add(_foodService.GetFoodById(id));
+                currentOrder.Meal.Foods.Add(_foodService.GetFoodById(foodId));
             }
 
             currentOrder.Meal.Price = currentOrder.Meal.Foods.Sum(f => f.Price);

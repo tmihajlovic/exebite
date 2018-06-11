@@ -1,8 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using Exebite.API.Models;
 using Exebite.Business;
-using Exebite.DataAccess.AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +24,7 @@ namespace Exebite.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var locations = _locationService.GetAllLocations().Select(_exebiteMapper.Map<LocationViewModel>);
+            var locations = _exebiteMapper.Map<IEnumerable<LocationViewModel>>(_locationService.GetAllLocations());
             return Ok(locations);
         }
 
@@ -35,7 +34,7 @@ namespace Exebite.API.Controllers
             var location = _locationService.GetLocationById(id);
             if (location == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return Ok(_exebiteMapper.Map<LocationViewModel>(location));
@@ -65,11 +64,10 @@ namespace Exebite.API.Controllers
             var currentLocation = _locationService.GetLocationById(id);
             if (currentLocation == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            currentLocation.Name = model.Name;
-            currentLocation.Address = model.Address;
+            _exebiteMapper.Map(model, currentLocation);
 
             var updatedLocation = _locationService.UpdateLocation(currentLocation);
             return Ok(new { updatedLocation.Id });

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using Exebite.API.Models;
 using Exebite.Business;
@@ -25,7 +24,7 @@ namespace Exebite.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var restaurants = _restaurantService.GetAllRestaurants().Select(_exebiteMapper.Map<RestaurantViewModel>);
+            var restaurants = _exebiteMapper.Map<IEnumerable<RestaurantViewModel>>(_restaurantService.GetAllRestaurants());
             return Ok(restaurants);
         }
 

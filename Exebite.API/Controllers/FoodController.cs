@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using Exebite.API.Models;
 using Exebite.Business;
@@ -24,7 +24,7 @@ namespace Exebite.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var foods = _foodService.GetAllFoods().Select(_exebiteMapper.Map<FoodViewModel>);
+            var foods = _exebiteMapper.Map<IEnumerable<FoodViewModel>>(_foodService.GetAllFoods());
             return Ok(foods);
         }
 
@@ -34,7 +34,7 @@ namespace Exebite.API.Controllers
             var food = _foodService.GetFoodById(id);
             if (food == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return Ok(_exebiteMapper.Map<FoodViewModel>(food));
@@ -64,15 +64,10 @@ namespace Exebite.API.Controllers
             var currentFood = _foodService.GetFoodById(id);
             if (currentFood == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            currentFood.Name = model.Name;
-            currentFood.Description = model.Description;
-            currentFood.IsInactive = model.IsInactive;
-            currentFood.Price = model.Price;
-            currentFood.RestaurantId = model.RestaurantId;
-            currentFood.Type = model.Type;
+            _exebiteMapper.Map(model, currentFood);
 
             var updatedFood = _foodService.UpdateFood(currentFood);
             return Ok(new { updatedFood.Id });
