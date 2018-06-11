@@ -1,6 +1,8 @@
-﻿namespace Exebite.Model
+﻿using Exebite.Model;
+
+namespace Exebite.API.Models
 {
-    public class Food
+    public class FoodViewModel
     {
         public int Id { get; set; }
 
@@ -9,8 +11,6 @@
         public FoodType Type { get; set; }
 
         public decimal Price { get; set; }
-
-        public Restaurant Restaurant { get; set; }
 
         public int RestaurantId { get; set; }
 

@@ -32,15 +32,6 @@ namespace Exebite.DataAccess.AutoMapper
                  cfg.CreateMap(typeof(Recipe), typeof(RecipeEntity)).ConvertUsing<RecipeToRecipeEntityConverter>();
                  cfg.CreateMap(typeof(Meal), typeof(MealEntity)).ConvertUsing<MealToMealEntityConverter>();
                  cfg.CreateMap(typeof(CustomerAliases), typeof(CustomerAliasesEntities));
-
-
-                 // view models converters
-                 // cfg.CreateMap(typeof(Location), typeof(LocationViewModel));
-                 // cfg.CreateMap(typeof(Restaurant), typeof(RestaurantViewModel));
-                 // cfg.CreateMap(typeof(Location), typeof(CreateLocationModel));
-                 // cfg.CreateMap(typeof(Location), typeof(CreateLocationModel)).Reverse();
-
-
              }))
         {
         }

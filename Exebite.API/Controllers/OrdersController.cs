@@ -29,7 +29,6 @@ namespace Exebite.API.Controllers
 
         // todo: check if here should be get for all orders by date for all users
 
-
         [HttpGet]
         public IActionResult GetOrders()
         {

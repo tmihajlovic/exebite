@@ -9,20 +9,16 @@ namespace Exebite.DataAccess.Repositories
 {
     public class FoodRepository : DatabaseRepository<Food, FoodEntity>, IFoodRepository
     {
-        private readonly IFoodOrderingContextFactory _factory;
-
         public FoodRepository(IFoodOrderingContextFactory factory, IExebiteMapper mapper)
             : base(factory, mapper)
         {
-            _factory = factory;
         }
 
         public override IList<Food> GetAll()
         {
             using (var context = _factory.Create())
             {
-                var items = context.Foods.ToList();
-                return items.Select(_exebiteMapper.Map<Food>).ToList();
+                return context.Foods.Select(_exebiteMapper.Map<Food>).ToList();
             }
         }
 
@@ -39,7 +35,7 @@ namespace Exebite.DataAccess.Repositories
 
                 foreach (var food in context.Foods.Where(f => f.Restaurant.Name == restaurant.Name))
                 {
-                    var foodModel = AutoMapperHelper.Instance.GetMappedValue<Food>(food, context);
+                    var foodModel = _exebiteMapper.Map<Food>(food);
                     foodEntities.Add(foodModel);
                 }
 
@@ -56,10 +52,10 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var foodEntity = AutoMapperHelper.Instance.GetMappedValue<FoodEntity>(entity, context);
+                var foodEntity = _exebiteMapper.Map<FoodEntity>(entity);
                 var resultEntity = context.Foods.Update(foodEntity).Entity;
                 context.SaveChanges();
-                return AutoMapperHelper.Instance.GetMappedValue<Food>(resultEntity, context);
+                return _exebiteMapper.Map<Food>(resultEntity);
             }
         }
 
@@ -72,11 +68,11 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var foodEntity = AutoMapperHelper.Instance.GetMappedValue<FoodEntity>(entity, context);
+                var foodEntity = _exebiteMapper.Map<FoodEntity>(entity);
                 context.Update(foodEntity);
                 context.SaveChanges();
                 var resultEntity = context.Foods.FirstOrDefault(f => f.Id == foodEntity.Id);
-                return AutoMapperHelper.Instance.GetMappedValue<Food>(resultEntity, context);
+                return _exebiteMapper.Map<Food>(resultEntity);
             }
         }
     }

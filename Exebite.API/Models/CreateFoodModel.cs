@@ -1,16 +1,17 @@
-﻿namespace Exebite.Model
-{
-    public class Food
-    {
-        public int Id { get; set; }
+﻿using Exebite.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
+namespace Exebite.API.Models
+{
+    public class CreateFoodModel
+    {
         public string Name { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public FoodType Type { get; set; }
 
         public decimal Price { get; set; }
-
-        public Restaurant Restaurant { get; set; }
 
         public int RestaurantId { get; set; }
 
