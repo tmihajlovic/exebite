@@ -1,5 +1,4 @@
-﻿
-using Exebite.Business;
+﻿using Exebite.Business;
 using Exebite.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

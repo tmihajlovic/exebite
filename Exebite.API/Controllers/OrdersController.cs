@@ -27,7 +27,7 @@ namespace Exebite.API.Controllers
             _foodService = foodService;
         }
 
-        //todo: check if here should be get for all orders by date for all users
+        // todo: check if here should be get for all orders by date for all users
 
 
         [HttpGet]
@@ -121,7 +121,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] UpdateOrderModel model) //todo: after Mladen check in, check if Id is in model or not and should it be there or not?
+        public IActionResult Put([FromBody] UpdateOrderModel model) // todo: after Mladen check in, check if Id is in model or not and should it be there or not?
         {
             // todo: check if we should support note update, because we should support whole object update on http put
             if (model.FoodIds == null || model.FoodIds.Count() == 0)
