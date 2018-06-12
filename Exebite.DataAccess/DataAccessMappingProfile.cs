@@ -30,8 +30,6 @@ namespace Exebite.DataAccess
             CreateMap(typeof(Recipe), typeof(RecipeEntity)).ConvertUsing<IRecipeToRecipeEntityConverter>();
             CreateMap(typeof(Meal), typeof(MealEntity)).ConvertUsing<IMealToMealEntityConverter>();
             CreateMap(typeof(CustomerAliases), typeof(CustomerAliasesEntities));
-
-            
         }
 
         public override string ProfileName => "DataAccessMappingProfile";

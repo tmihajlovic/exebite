@@ -22,7 +22,13 @@ namespace Exebite.API
             CreateMap(typeof(Meal), typeof(MealEntity)).ConvertUsing<IMealToMealEntityConverter>();
             CreateMap(typeof(Order), typeof(OrderModel));
             CreateMap(typeof(CreateOrderModel), typeof(Order));
-
+            CreateMap(typeof(UpdateOrderModel), typeof(Order));
+            CreateMap(typeof(Meal), typeof(MealModel));
+            CreateMap(typeof(CreateMealModel), typeof(Meal));
+            CreateMap(typeof(UpdateMealModel), typeof(Meal));
+            CreateMap(typeof(Recipe), typeof(RecipeModel));
+            CreateMap(typeof(CreateRecipeModel), typeof(Recipe));
+            CreateMap(typeof(UpdateRecipeModel), typeof(Recipe));
         }
     }
 }
