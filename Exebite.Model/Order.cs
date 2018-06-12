@@ -12,7 +12,11 @@ namespace Exebite.Model
 
         public Meal Meal { get; set; }
 
+        public int MealId { get; set; }
+
         public Customer Customer { get; set; }
+
+        public int CustomerId { get; set; }
 
         public string Note { get; set; }
     }

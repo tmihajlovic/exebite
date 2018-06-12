@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Exebite.API.Models;
 using Exebite.Business;
 using Exebite.Model;
@@ -18,8 +19,9 @@ namespace Exebite.API.Controllers
         private readonly IMenuService _menuService;
         private readonly IOrderService _orderService;
         private readonly IFoodService _foodService;
+        private readonly IMapper _exebiteMapper;
 
-        public OrdersController(ICustomerService customerService, IMenuService menuService, IOrderService orderService, IFoodService foodService)
+        public OrdersController(ICustomerService customerService, IMenuService menuService, IOrderService orderService, IFoodService foodService, IMapper exebiteMapper)
         {
             _customerService = customerService;
             _menuService = menuService;
@@ -27,115 +29,34 @@ namespace Exebite.API.Controllers
             _foodService = foodService;
         }
 
-        [HttpGet("{date}")]
-        public IActionResult GetForAllUsers(DateTime date)
-        {
-            if (date == null)
-            {
-                return BadRequest();
-            }
-
-            var orders = _orderService.GetAllOrders().Where(o => o.Date == date).ToList();
-            return Ok(orders);
-        }
-
-        [HttpGet("{id}/{date}")]
-        public IActionResult GetForRestaurant(int id, DateTime date)
-        {
-            if (date == null)
-            {
-                return BadRequest();
-            }
-
-            var orders = _orderService.GetAllOrdersForRestoraunt(id).Where(o => o.Date == date).ToList();
-            return Ok(orders);
-        }
-
         [HttpGet]
         public IActionResult Get()
         {
-            var model = new OrdersViewModel
-            {
-                Customer = _customerService.GetCustomerByIdentityId(User.Identity.Name),
-                ListOfRestaurants = _menuService.GetRestorantsWithMenus(),
-                TodayFoods = new List<Food>()
-            };
-
-            if (model.Customer == null)
-            {
-                return NotFound();
-            }
-
-            model.ListOfOrders = _orderService.GetAllOrdersForCustomer(model.Customer.Id).Where(o => o.Date == DateTime.Today).ToList();
-            model.CurentOrder = new Order { Customer = model.Customer, Meal = new Meal { Foods = new List<Food>() } };
-            foreach (var restaurant in model.ListOfRestaurants)
-            {
-                model.TodayFoods.AddRange(restaurant.DailyMenu);
-            }
-
-            return Ok(model);
+            var listOfOrders = _orderService.GetAllOrders();
+            return Ok(_exebiteMapper.Map<IEnumerable<OrderModel>>(listOfOrders));
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var model = new OrdersViewModel
-            {
-                Customer = _customerService.GetCustomerByIdentityId(User.Identity.Name),
-                ListOfRestaurants = _menuService.GetRestorantsWithMenus(),
-                TodayFoods = new List<Food>()
-            };
-
-            if (model.Customer == null)
-            {
-                return NotFound();
-            }
-
-            var order = _orderService.GetOrderByIdForCustomer(id, model.Customer.Id);
+            var order = _orderService.GetOrderById(id);
             if (order == null)
             {
                 return NotFound();
             }
 
-            model.ListOfOrders = new List<Order> { order };
-            model.CurentOrder = new Order { Customer = model.Customer, Meal = new Meal { Foods = new List<Food>() } };
-            foreach (var restaurant in model.ListOfRestaurants)
-            {
-                model.TodayFoods.AddRange(restaurant.DailyMenu);
-            }
-
-            return Ok(model);
+            return Ok(_exebiteMapper.Map<OrderModel>(order));
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] CreateOrderModel model)
         {
-            if (model.FoodIds == null || model.FoodIds.Count() == 0)
+            if (model == null)
             {
                 return BadRequest();
             }
 
-            Order newOrder = new Order
-            {
-                Customer = _customerService.GetCustomerByIdentityId(User.Identity.Name),
-                Date = DateTime.Today,
-                Note = model.Note,
-                Meal = new Meal { Foods = new List<Food>() }
-            };
-
-            if (newOrder.Customer == null)
-            {
-                return NotFound();
-            }
-
-            foreach (var id in model.FoodIds)
-            {
-                newOrder.Meal.Foods.Add(_foodService.GetFoodById(id));
-            }
-
-            newOrder.Meal.Price = newOrder.Meal.Foods.Sum(f => f.Price);
-            newOrder.Price = newOrder.Meal.Price;
-            var createdOrder = _orderService.CreateOrder(newOrder);
+            var createdOrder = _orderService.CreateOrder(_exebiteMapper.Map<Order>(model));
 
             return Ok(createdOrder.Id);
         }
@@ -143,35 +64,19 @@ namespace Exebite.API.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UpdateOrderModel model)
         {
-            // todo: check if we should support note update, because we should support whole object update on http put
-            if (model.FoodIds == null || model.FoodIds.Count() == 0)
+            if (model == null)
             {
                 return BadRequest();
             }
 
-            var currentCustomer = _customerService.GetCustomerByIdentityId(User.Identity.Name);
-            if (currentCustomer == null)
-            {
-                return NotFound();
-            }
-
-            Order currentOrder = _orderService.GetOrderByIdForCustomer(id, currentCustomer.Id);
+            Order currentOrder = _orderService.GetOrderById(id);
             if (currentOrder == null)
             {
                 return NotFound();
             }
 
-            currentOrder.Meal.Foods = new List<Food>();
-            foreach (var foodId in model.FoodIds)
-            {
-                currentOrder.Meal.Foods.Add(_foodService.GetFoodById(foodId));
-            }
-
-            currentOrder.Meal.Price = currentOrder.Meal.Foods.Sum(f => f.Price);
-            currentOrder.Price = currentOrder.Meal.Price;
-            currentOrder.Note = model.Note;
+            _exebiteMapper.Map(model, currentOrder);
             var updatedOrder = _orderService.UpdateOrder(currentOrder);
-
             return Ok(updatedOrder.Id);
         }
 

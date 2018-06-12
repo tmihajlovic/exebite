@@ -21,6 +21,13 @@ namespace Exebite.Business
         Order GetOrderByIdForCustomer(int orderId, int customerId);
 
         /// <summary>
+        /// Gets <see cref="Order"/> by Id 
+        /// </summary>
+        /// <param name="orderId">Id of order</param>
+        /// <returns>Order with given id, otherwise null</returns>
+        Order GetOrderById(int orderId);
+
+        /// <summary>
         /// Gets all orders placed by <see cref="Customer"/>
         /// </summary>
         /// <param name="customerId">Id of customer</param>

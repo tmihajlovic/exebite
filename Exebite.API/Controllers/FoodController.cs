@@ -24,7 +24,7 @@ namespace Exebite.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var foods = _exebiteMapper.Map<IEnumerable<FoodViewModel>>(_foodService.GetAllFoods());
+            var foods = _exebiteMapper.Map<IEnumerable<FoodModel>>(_foodService.GetAllFoods());
             return Ok(foods);
         }
 
@@ -37,7 +37,7 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            return Ok(_exebiteMapper.Map<FoodViewModel>(food));
+            return Ok(_exebiteMapper.Map<FoodModel>(food));
         }
 
         [HttpPost]

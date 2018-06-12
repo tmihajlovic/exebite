@@ -1,6 +1,6 @@
 ﻿namespace Exebite.API.Models
 {
-    public class LocationViewModel
+    public class LocationModel
     {
         public int Id { get; set; }
 

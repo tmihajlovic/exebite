@@ -7,8 +7,10 @@ namespace Exebite.DataAccess.Repositories
         /// <summary>
         /// Gets all entities from database
         /// </summary>
+        /// <param name="page">Page number to get</param>
+        /// <param name="size">Page size, number of elements.</param>
         /// <returns>IEnumerable of all entities</returns>
-        IList<T> GetAll();
+        IList<T> GetAll(int page = 0, int size = int.MaxValue);
 
         /// <summary>
         /// Get item by Id

@@ -10,19 +10,9 @@ namespace Exebite.DataAccess.Repositories
 {
     public class FoodRepository : DatabaseRepository<Food, FoodEntity>, IFoodRepository
     {
-
-
         public FoodRepository(IFoodOrderingContextFactory factory, IMapper mapper)
             : base(factory, mapper)
         {
-        }
-
-        public override IList<Food> GetAll()
-        {
-            using (var context = _factory.Create())
-            {
-                return context.Foods.Select(_mapper.Map<Food>).ToList();
-            }
         }
 
         public IEnumerable<Food> GetByRestaurant(Restaurant restaurant)

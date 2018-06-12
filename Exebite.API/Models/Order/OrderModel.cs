@@ -2,8 +2,10 @@
 
 namespace Exebite.API.Models
 {
-    public class CreateOrderModel
+    public class OrderModel
     {
+        public int Id { get; set; }
+
         public decimal Price { get; set; }
 
         public DateTime Date { get; set; }

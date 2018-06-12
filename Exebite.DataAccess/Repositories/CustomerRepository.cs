@@ -14,18 +14,6 @@ namespace Exebite.DataAccess.Repositories
         {
         }
 
-        public override IList<Customer> GetAll()
-        {
-            using (var context = _factory.Create())
-            {
-                var items = context.Customers
-                                .ToList();
-
-                // hack, ProjectTo not working
-                return items.Select(x => _mapper.Map<Customer>(x)).ToList();
-            }
-        }
-
         public Customer GetByName(string name)
         {
             if (name == string.Empty)

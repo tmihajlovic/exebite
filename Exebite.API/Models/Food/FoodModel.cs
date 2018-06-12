@@ -2,7 +2,7 @@
 
 namespace Exebite.API.Models
 {
-    public class FoodViewModel
+    public class FoodModel
     {
         public int Id { get; set; }
 

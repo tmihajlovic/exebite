@@ -36,6 +36,11 @@ namespace Exebite.Business
             return _orderRepository.GetOrderForCustomer(orderId, customerId);
         }
 
+        public Order GetOrderById(int orderId)
+        {
+            return _orderRepository.GetByID(orderId);
+        }
+
         public List<Order> GetOrdersForDate(DateTime date)
         {
             if (date > DateTime.Today)

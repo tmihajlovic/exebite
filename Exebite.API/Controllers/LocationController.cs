@@ -24,7 +24,7 @@ namespace Exebite.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var locations = _exebiteMapper.Map<IEnumerable<LocationViewModel>>(_locationService.GetAllLocations());
+            var locations = _exebiteMapper.Map<IEnumerable<LocationModel>>(_locationService.GetAllLocations());
             return Ok(locations);
         }
 
@@ -37,7 +37,7 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            return Ok(_exebiteMapper.Map<LocationViewModel>(location));
+            return Ok(_exebiteMapper.Map<LocationModel>(location));
         }
 
         [HttpPost]

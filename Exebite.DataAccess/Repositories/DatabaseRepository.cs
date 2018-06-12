@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
 
@@ -29,16 +30,15 @@ namespace Exebite.DataAccess.Repositories
 
         public abstract TModel Update(TModel entity);
 
-        public virtual IList<TModel> GetAll()
+        public virtual IList<TModel> GetAll(int page = 0, int size = int.MaxValue)
         {
+            // page and size should be changed not to be default values
             using (var dc = _factory.Create())
             {
-                var items = dc
-                    .Set<TEntity>()
-                    .ToList();
-                return items
-                    .Select(x => _mapper.Map<TModel>(x))
-                    .ToList();
+                return _mapper.Map<IList<TModel>>(dc.Set<TEntity>()
+                                                    .Skip(page * size)
+                                                    .Take(size)
+                                                    .ToList());
             }
         }
 

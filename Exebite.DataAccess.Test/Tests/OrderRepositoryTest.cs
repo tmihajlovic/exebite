@@ -32,7 +32,7 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void GetAllOrders()
         {
-            var result = _orderRepository.GetAll().ToList();
+            var result = _orderRepository.GetAll();
             Assert.AreNotEqual(result.Count, 0);
         }
 
@@ -140,13 +140,13 @@ namespace Exebite.DataAccess.Test.Tests
             {
                 var newFood = _mapper.Map<Food>(context.Foods.First());
                 var customer = _mapper.Map<Customer>(context.Customers.First());
-                var order = new Order();
-                order.Meal = new Meal();
-                order.Meal.Foods = new List<Food>();
-                order.Note = "New note";
-                order.Meal.Foods.Add(newFood);
-                order.Date = DateTime.Now;
-                order.Customer = customer;
+                var order = new Order
+                {
+                    Meal = new Meal { Foods = new List<Food> { newFood } },
+                    Note = "New note",
+                    Date = DateTime.Now,
+                    Customer = customer
+                };
                 var result = _orderRepository.Insert(order);
                 Assert.IsNotNull(result);
             }
