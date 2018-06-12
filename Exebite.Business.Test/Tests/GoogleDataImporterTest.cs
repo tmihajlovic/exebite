@@ -39,9 +39,9 @@ namespace Exebite.Business.Test.Tests
             _lipaConector = new LipaConectorMock(_factory, _mapper);
             _hedoneConector = new HedoneConectorMock(_factory, _mapper);
             _teglasConector = new TeglasConectorMock(_factory, _mapper);
-            _mapper = container.Resolve<IMapper>(); //new ExebiteMapper(ServiceProviderWrapper.GetContainer());
+            _mapper = container.Resolve<IMapper>();
             _restaurantService = container.Resolve<IRestaurantService>();
-            _foodService = container.Resolve<IFoodService>(); //new FoodService(new FoodRepository(_factory, _mapper));
+            _foodService = container.Resolve<IFoodService>();
             _googleDataImporter = new GoogleApiImport(_restaurantService, _foodService, _lipaConector, _teglasConector, _hedoneConector);
         }
 
@@ -50,8 +50,8 @@ namespace Exebite.Business.Test.Tests
         {
             var name = "Restoran pod Lipom";
             var restaurants = _restaurantService.GetAllRestaurants();
-            var lipaFoodCount = restaurants.Find(r => r.Name == name).Foods.Count;
-            var lipaDailyCount = restaurants.Find(r => r.Name == name).DailyMenu.Count;
+            var lipaFoodCount = restaurants.FirstOrDefault(r => r.Name == name).Foods.Count;
+            var lipaDailyCount = restaurants.FirstOrDefault(r => r.Name == name).DailyMenu.Count;
 
             _googleDataImporter.UpdateRestorauntsMenu();
             var lipa = _restaurantService.GetRestaurantByName(name);
