@@ -10,8 +10,6 @@ namespace Exebite.DataAccess.Repositories
 {
     public class RecipeRepository : DatabaseRepository<Recipe, RecipeEntity>, IRecipeRepository
     {
-
-
         public RecipeRepository(IFoodOrderingContextFactory factory, IMapper mapper)
             : base(factory, mapper)
         {

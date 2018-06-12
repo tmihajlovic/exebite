@@ -29,6 +29,9 @@ namespace Exebite.API
             CreateMap(typeof(Recipe), typeof(RecipeModel));
             CreateMap(typeof(CreateRecipeModel), typeof(Recipe));
             CreateMap(typeof(UpdateRecipeModel), typeof(Recipe));
+            CreateMap(typeof(CustomerAliases), typeof(CustomerAliasModel));
+            CreateMap(typeof(CreateCustomerAliasModel), typeof(CustomerAliases));
+            CreateMap(typeof(UpdateCustomerAliasModel), typeof(CustomerAliases));
         }
     }
 }
