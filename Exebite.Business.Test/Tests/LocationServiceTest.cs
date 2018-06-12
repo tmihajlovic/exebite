@@ -25,7 +25,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetAllLocations()
         {
-            var result = _locationService.GetAllLocations();
+            var result = _locationService.GetLocations(0, int.MaxValue);
             Assert.IsNotNull(result);
         }
 

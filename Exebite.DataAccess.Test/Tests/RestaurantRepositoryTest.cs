@@ -28,7 +28,7 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void GetAllRestaurants()
         {
-            var result = _restaurantRepository.GetAll().ToList();
+            var result = _restaurantRepository.Get(0, int.MaxValue);
             Assert.AreNotEqual(result.Count, 0);
         }
 

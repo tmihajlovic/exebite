@@ -10,7 +10,7 @@ namespace Exebite.Business
         /// Gets all orders from database
         /// </summary>
         /// <returns>List of all orders</returns>
-        List<Order> GetAllOrders();
+        IList<Order> GetAllOrders();
 
         /// <summary>
         /// Gets <see cref="Order"/> by Id and customer id

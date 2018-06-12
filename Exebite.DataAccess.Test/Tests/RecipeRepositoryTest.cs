@@ -33,7 +33,7 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void GetAllRecepies()
         {
-            var result = _recepieRepository.GetAll().ToList();
+            var result = _recepieRepository.Get(0, int.MaxValue);
             Assert.AreNotEqual(result.Count, 0);
         }
 

@@ -5,12 +5,12 @@ namespace Exebite.DataAccess.Repositories
     public interface IDatabaseRepository<T>
     {
         /// <summary>
-        /// Gets all entities from database
+        /// Gets entities from database
         /// </summary>
         /// <param name="page">Page number to get</param>
         /// <param name="size">Page size, number of elements.</param>
-        /// <returns>IEnumerable of all entities</returns>
-        IList<T> GetAll(int page = 0, int size = int.MaxValue);
+        /// <returns>IList of entities</returns>
+        IList<T> Get(int page, int size);
 
         /// <summary>
         /// Get item by Id

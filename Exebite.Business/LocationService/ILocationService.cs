@@ -8,8 +8,10 @@ namespace Exebite.Business
         /// <summary>
         /// Get all location
         /// </summary>
+        /// <param name="page"></param>
+        /// <param name="size"></param>
         /// <returns>List of locations</returns>
-        List<Location> GetAllLocations();
+        IList<Location> GetLocations(int page, int size);
 
         /// <summary>
         /// Get <see cref="Location"/> by Id

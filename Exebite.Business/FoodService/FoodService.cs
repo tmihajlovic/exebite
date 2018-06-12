@@ -14,9 +14,9 @@ namespace Exebite.Business
             _foodHandler = foodHandler;
         }
 
-        public List<Food> GetAllFoods()
+        public IList<Food> GetAllFoods()
         {
-            return _foodHandler.GetAll().ToList();
+            return _foodHandler.Get(0, int.MaxValue);
         }
 
         public Food GetFoodById(int id)

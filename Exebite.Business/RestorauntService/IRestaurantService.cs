@@ -9,7 +9,7 @@ namespace Exebite.Business
         /// Gets all restaurants in database
         /// </summary>
         /// <returns>List of all restaurants</returns>
-        List<Restaurant> GetAllRestaurants();
+        IList<Restaurant> GetAllRestaurants();
 
         /// <summary>
         /// Get <see cref="Restaurant"/> by id

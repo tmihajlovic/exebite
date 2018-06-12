@@ -14,9 +14,9 @@ namespace Exebite.Business
             _restaurantRepository = restaurantHandler;
         }
 
-        public List<Restaurant> GetAllRestaurants()
+        public IList<Restaurant> GetAllRestaurants()
         {
-            return _restaurantRepository.GetAll().ToList();
+            return _restaurantRepository.Get(0, int.MaxValue);
         }
 
         public Restaurant GetRestaurantById(int id)

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
 
 namespace Exebite.DataAccess.Repositories
@@ -15,7 +13,7 @@ namespace Exebite.DataAccess.Repositories
 
         private protected readonly IFoodOrderingContextFactory _factory;
 
-        protected DatabaseRepository(IFoodOrderingContextFactory factory, global::AutoMapper.IMapper mapper)
+        protected DatabaseRepository(IFoodOrderingContextFactory factory, IMapper mapper)
         {
             _factory = factory;
             _mapper = mapper;
@@ -30,9 +28,8 @@ namespace Exebite.DataAccess.Repositories
 
         public abstract TModel Update(TModel entity);
 
-        public virtual IList<TModel> GetAll(int page = 0, int size = int.MaxValue)
+        public virtual IList<TModel> Get(int page, int size)
         {
-            // page and size should be changed not to be default values
             using (var dc = _factory.Create())
             {
                 return _mapper.Map<IList<TModel>>(dc.Set<TEntity>()
@@ -55,8 +52,7 @@ namespace Exebite.DataAccess.Repositories
                 var itemEntity = itemSet.Find(id);
                 if (itemEntity != null)
                 {
-                    var item = _mapper.Map<TModel>(itemEntity);
-                    return item;
+                    return _mapper.Map<TModel>(itemEntity);
                 }
                 else
                 {

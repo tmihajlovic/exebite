@@ -10,7 +10,7 @@ namespace Exebite.Business
         /// Get all foods in database
         /// </summary>
         /// <returns>List of all <see cref="Food"/> </returns>
-        List<Food> GetAllFoods();
+        IList<Food> GetAllFoods();
 
         /// <summary>
         /// Gets <see cref="Food"/> with given Id

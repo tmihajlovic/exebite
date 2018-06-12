@@ -21,7 +21,7 @@ namespace Exebite.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var customers = _customerRepository.GetAll();
+            var customers = _customerRepository.Get(0, int.MaxValue);
 
             return Ok(customers.Select(x => new
             {

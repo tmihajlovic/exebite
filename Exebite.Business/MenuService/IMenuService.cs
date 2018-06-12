@@ -9,7 +9,7 @@ namespace Exebite.Business
         /// Get restaurants with daily menu
         /// </summary>
         /// <returns>List of restaurants</returns>
-        List<Restaurant> GetRestorantsWithMenus();
+        IList<Restaurant> GetRestorantsWithMenus();
 
         /// <summary>
         /// Checks for special offers or food bundels that affect price

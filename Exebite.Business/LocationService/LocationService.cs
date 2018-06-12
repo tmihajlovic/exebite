@@ -14,9 +14,9 @@ namespace Exebite.Business
             _locationHandler = locationHandler;
         }
 
-        public List<Location> GetAllLocations()
+        public IList<Location> GetLocations(int page, int size)
         {
-            return _locationHandler.GetAll().ToList();
+            return _locationHandler.Get(page, size);
         }
 
         public Location GetLocationById(int locationId)
@@ -31,7 +31,7 @@ namespace Exebite.Business
                 throw new System.ArgumentException("Name cant be empty string");
             }
 
-            return _locationHandler.GetAll().SingleOrDefault(l => l.Name == name);
+            return _locationHandler.Get(0, int.MaxValue).SingleOrDefault(l => l.Name == name);
         }
 
         public Location UpdateLocation(Location location)

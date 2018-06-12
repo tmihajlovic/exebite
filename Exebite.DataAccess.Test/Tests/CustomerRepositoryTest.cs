@@ -51,7 +51,7 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void GetAllCustomers()
         {
-            var result = _customerRepository.GetAll().ToList();
+            var result = _customerRepository.Get(0, int.MaxValue);
             Assert.AreNotEqual(result.Count, 0);
         }
 

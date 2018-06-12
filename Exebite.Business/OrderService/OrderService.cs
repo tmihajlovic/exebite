@@ -15,9 +15,9 @@ namespace Exebite.Business
             _orderRepository = orderRepository;
         }
 
-        public List<Order> GetAllOrders()
+        public IList<Order> GetAllOrders()
         {
-            return _orderRepository.GetAll().ToList();
+            return _orderRepository.Get(0, int.MaxValue);
         }
 
         public List<Order> GetAllOrdersForCustomer(int customerId)

@@ -21,13 +21,13 @@ namespace Exebite.Business
                 throw new System.ArgumentException("Id cant be empty string");
             }
 
-            var users = _customerRepository.GetAll();
+            var users = _customerRepository.Get(0, int.MaxValue);
             return users.FirstOrDefault(c => c.AppUserId == id);
         }
 
         public List<Customer> GetAllCustomers()
         {
-            return _customerRepository.GetAll().ToList();
+            return _customerRepository.Get(0, int.MaxValue).ToList();
         }
 
         public Customer GetCustomerById(int id)

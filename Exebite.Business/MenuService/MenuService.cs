@@ -19,9 +19,9 @@ namespace Exebite.Business
             _recipeHandler = recipeHandler;
         }
 
-        public List<Restaurant> GetRestorantsWithMenus()
+        public IList<Restaurant> GetRestorantsWithMenus()
         {
-            return _restaurantHandler.GetAll().ToList();
+            return _restaurantHandler.Get(0, int.MaxValue);
         }
 
         public decimal CheckPrice(Meal meal)
@@ -38,7 +38,7 @@ namespace Exebite.Business
                 throw new ArgumentException("Non existing food");
             }
 
-            var allRecipe = _recipeHandler.GetAll();
+            var allRecipe = _recipeHandler.Get(0, int.MaxValue);
             var foodRecipe = allRecipe.SingleOrDefault(r => r.MainCourse.Id == food.Id);
             if (foodRecipe != null)
             {

@@ -31,7 +31,7 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void GetAllLocations()
         {
-            var result = _locationRepository.GetAll().ToList();
+            var result = _locationRepository.Get(0, int.MaxValue).ToList();
             Assert.AreNotEqual(result.Count, 0);
         }
 

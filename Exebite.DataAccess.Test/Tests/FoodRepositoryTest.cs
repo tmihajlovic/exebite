@@ -31,7 +31,7 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void GetAllFood()
         {
-            var result = _foodRepository.GetAll().ToList();
+            var result = _foodRepository.Get(0, int.MaxValue);
             Assert.AreNotEqual(result.Count, 0);
         }
 

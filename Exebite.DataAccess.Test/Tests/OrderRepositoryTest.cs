@@ -32,7 +32,7 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void GetAllOrders()
         {
-            var result = _orderRepository.GetAll();
+            var result = _orderRepository.Get(0, int.MaxValue);
             Assert.AreNotEqual(result.Count, 0);
         }
 
