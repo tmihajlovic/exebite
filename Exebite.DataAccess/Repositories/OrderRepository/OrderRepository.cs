@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Migrations;
@@ -9,7 +10,7 @@ using Exebite.Model;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class OrderRepository : DatabaseRepository<Order, OrderEntity>, IOrderRepository
+    public class OrderRepository : DatabaseRepository<Order, OrderEntity, OrderQueryModel>, IOrderRepository
     {
 
         public OrderRepository(IFoodOrderingContextFactory factory, IMapper mapper)
@@ -87,12 +88,20 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var orderEntity = _mapper.Map<OrderEntity>(entity);
+                var orderEntity = new OrderEntity()
+                {
+                    CustomerId = entity.CustomerId,
+                    Date = entity.Date,
+                    MealId = entity.MealId,
+                    Note = entity.Note,
+                    Price = entity.Price,
 
-                var resultEntity = context.Add(orderEntity);
+                };
+
+                var resultEntity = context.Orders.Add(orderEntity);
                 context.SaveChanges();
 
-                return _mapper.Map<Order>(resultEntity);
+                return _mapper.Map<Order>((OrderEntity)resultEntity.Entity);
             }
         }
 
@@ -113,6 +122,27 @@ namespace Exebite.DataAccess.Repositories
 
                 var resultEntity = context.Orders.FirstOrDefault(o => o.Id == entity.Id);
                 return _mapper.Map<Order>(resultEntity);
+            }
+        }
+
+        public override IList<Order> Query(OrderQueryModel queryModel)
+        {
+            if (queryModel == null)
+            {
+                throw new System.ArgumentException("queryModel can't be null");
+            }
+
+            using (var context = _factory.Create())
+            {
+                var query = context.Orders.AsQueryable();
+
+                if (queryModel.Id != null)
+                {
+                    query = query.Where(x => x.Id == queryModel.Id.Value);
+                }
+
+                var results = query.ToList();
+                return _mapper.Map<IList<Order>>(results);
             }
         }
     }

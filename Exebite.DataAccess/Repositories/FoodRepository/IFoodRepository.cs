@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Exebite.Model;
 
-namespace Exebite.DataAccess
+namespace Exebite.DataAccess.Repositories
 {
-    public interface IFoodRepository : IDatabaseRepository<Food>
+    public interface IFoodRepository : IDatabaseRepository<Food, FoodQueryModel>
     {
         // Add functions specific for IOrderHandler
 

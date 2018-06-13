@@ -1,8 +1,8 @@
 ﻿using Exebite.Model;
 
-namespace Exebite.DataAccess
+namespace Exebite.DataAccess.Repositories
 {
-    public interface IRestaurantRepository : IDatabaseRepository<Restaurant>
+    public interface IRestaurantRepository : IDatabaseRepository<Restaurant, RestaurantQueryModel>
     {
         // Add functions specific for IRestaurantHandler
 

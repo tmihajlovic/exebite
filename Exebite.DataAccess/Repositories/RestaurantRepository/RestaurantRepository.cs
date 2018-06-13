@@ -7,7 +7,7 @@ using Exebite.Model;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class RestaurantRepository : DatabaseRepository<Restaurant, RestaurantEntity>, IRestaurantRepository
+    public class RestaurantRepository : DatabaseRepository<Restaurant, RestaurantEntity, RestaurantQueryModel>, IRestaurantRepository
     {
         public RestaurantRepository(IFoodOrderingContextFactory factory, IMapper mapper)
             : base(factory, mapper)
@@ -88,6 +88,27 @@ namespace Exebite.DataAccess.Repositories
 
                 var resultEntity = context.Restaurants.FirstOrDefault(r => r.Id == entity.Id);
                 return _mapper.Map<Restaurant>(resultEntity);
+            }
+        }
+
+        public override IList<Restaurant> Query(RestaurantQueryModel queryModel)
+        {
+            if (queryModel == null)
+            {
+                throw new System.ArgumentException("queryModel can't be null");
+            }
+
+            using (var context = _factory.Create())
+            {
+                var query = context.Restaurants.AsQueryable();
+
+                if (queryModel.Id != null)
+                {
+                    query = query.Where(x => x.Id == queryModel.Id.Value);
+                }
+
+                var results = query.ToList();
+                return _mapper.Map<IList<Restaurant>>(results);
             }
         }
     }

@@ -8,8 +8,10 @@ using Exebite.Model;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class RecipeRepository : DatabaseRepository<Recipe, RecipeEntity>, IRecipeRepository
+    public class RecipeRepository : DatabaseRepository<Recipe, RecipeEntity, RecipeQueryModel>, IRecipeRepository
     {
+
+
         public RecipeRepository(IFoodOrderingContextFactory factory, IMapper mapper)
             : base(factory, mapper)
         {
@@ -56,6 +58,27 @@ namespace Exebite.DataAccess.Repositories
                 var resultEntity = context.Attach(recipeEntity).Entity;
                 context.SaveChanges();
                 return _mapper.Map<Recipe>(resultEntity);
+            }
+        }
+
+        public override IList<Recipe> Query(RecipeQueryModel queryModel)
+        {
+            if (queryModel == null)
+            {
+                throw new System.ArgumentException("queryModel can't be null");
+            }
+
+            using (var context = _factory.Create())
+            {
+                var query = context.Recipes.AsQueryable();
+
+                if (queryModel.Id != null)
+                {
+                    query = query.Where(x => x.Id == queryModel.Id.Value);
+                }
+
+                var results = query.ToList();
+                return _mapper.Map<IList<Recipe>>(results);
             }
         }
 

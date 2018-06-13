@@ -5,7 +5,7 @@ using Exebite.DataAccess.Migrations;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public abstract class DatabaseRepository<TModel, TEntity> : IDatabaseRepository<TModel>
+    public abstract class DatabaseRepository<TModel, TEntity, QModel> : IDatabaseRepository<TModel, QModel>
         where TModel : class
         where TEntity : class
     {
@@ -27,6 +27,9 @@ namespace Exebite.DataAccess.Repositories
         public abstract TModel Insert(TModel entity);
 
         public abstract TModel Update(TModel entity);
+
+
+        public abstract IList<TModel> Query(QModel queryModel);
 
         public virtual IList<TModel> Get(int page, int size)
         {

@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Migrations;
 using Exebite.Model;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class FoodRepository : DatabaseRepository<Food, FoodEntity>, IFoodRepository
+    public class FoodRepository : DatabaseRepository<Food, FoodEntity, FoodQueryModel>, IFoodRepository
     {
         public FoodRepository(IFoodOrderingContextFactory factory, IMapper mapper)
             : base(factory, mapper)
@@ -66,6 +65,27 @@ namespace Exebite.DataAccess.Repositories
                 context.SaveChanges();
                 var resultEntity = context.Foods.FirstOrDefault(f => f.Id == foodEntity.Id);
                 return _mapper.Map<Food>(resultEntity);
+            }
+        }
+
+        public override IList<Food> Query(FoodQueryModel entity)
+        {
+            if (entity == null)
+            {
+                throw new System.ArgumentException("queryModel can't be null");
+            }
+
+            using (var context = _factory.Create())
+            {
+                var query = context.Foods.AsQueryable();
+
+                if (entity.Id != null)
+                {
+                    query = query.Where(x => x.Id == entity.Id.Value);
+                }
+
+                var results = query.ToList();
+                return _mapper.Map<IList<Food>>(results);
             }
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Exebite.DataAccess.Repositories
 {
-    public interface ICustomerRepository : IDatabaseRepository<Customer>
+    public interface ICustomerRepository : IDatabaseRepository<Customer, CustomerQueryModel>
     {
         /// <summary>
         /// Get <see cref="Customer"/> by name

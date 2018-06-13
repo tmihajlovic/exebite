@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Exebite.DataAccess.Entities;
@@ -7,7 +8,7 @@ using Exebite.Model;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class CustomerAliasRepository : DatabaseRepository<CustomerAliases, CustomerAliasesEntities>, ICustomerAliasRepository
+    public class CustomerAliasRepository : DatabaseRepository<CustomerAliases, CustomerAliasesEntities, CustomerAliasQueryModel>, ICustomerAliasRepository
     {
         public CustomerAliasRepository(IFoodOrderingContextFactory factory, IMapper mapper)
             : base(factory, mapper)
@@ -27,6 +28,27 @@ namespace Exebite.DataAccess.Repositories
                 var resultEntity = context.CustomerAliases.Update(aliasEntity).Entity;
                 context.SaveChanges();
                 return _mapper.Map<CustomerAliases>(resultEntity);
+            }
+        }
+
+        public override IList<CustomerAliases> Query(CustomerAliasQueryModel queryModel)
+        {
+            if (queryModel == null)
+            {
+                throw new System.ArgumentException("queryModel can't be null");
+            }
+
+            using (var context = _factory.Create())
+            {
+                var query = context.CustomerAliases.AsQueryable();
+
+                if (queryModel.Id != null)
+                {
+                    query = query.Where(x => x.Id == queryModel.Id.Value);
+                }
+
+                var results = query.ToList();
+                return _mapper.Map<IList<CustomerAliases>>(results);
             }
         }
 

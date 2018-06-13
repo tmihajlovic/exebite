@@ -16,7 +16,6 @@ namespace Exebite.DataAccess.Test.Tests
     {
         private static IFoodOrderingContextFactory _factory;
         private static IOrderRepository _orderRepository;
-
         private static IMapper _mapper;
 
         [ClassInitialize]
@@ -136,20 +135,21 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void AddOrder()
         {
+            Order order = null;
             using (var context = _factory.Create())
             {
                 var newFood = _mapper.Map<Food>(context.Foods.First());
                 var customer = _mapper.Map<Customer>(context.Customers.First());
-                var order = new Order
+                order = new Order
                 {
                     Meal = new Meal { Foods = new List<Food> { newFood } },
                     Note = "New note",
                     Date = DateTime.Now,
                     Customer = customer
                 };
-                var result = _orderRepository.Insert(order);
-                Assert.IsNotNull(result);
             }
+            var result = _orderRepository.Insert(order);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -157,6 +157,18 @@ namespace Exebite.DataAccess.Test.Tests
         public void AddOrder_IsNull()
         {
             _orderRepository.Insert(null);
+        }
+
+        [TestMethod]
+        public void QueryById()
+        {
+            var id = 1;
+            var res = _orderRepository.Query(new OrderQueryModel()
+            {
+                Id = id
+            });
+
+            Assert.AreEqual(res.FirstOrDefault().Id, id);
         }
     }
 }

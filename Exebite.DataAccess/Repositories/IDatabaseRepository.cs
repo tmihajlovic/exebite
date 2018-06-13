@@ -2,7 +2,7 @@
 
 namespace Exebite.DataAccess.Repositories
 {
-    public interface IDatabaseRepository<T>
+    public interface IDatabaseRepository<T, Q>
     {
         /// <summary>
         /// Gets entities from database
@@ -38,5 +38,7 @@ namespace Exebite.DataAccess.Repositories
         /// <param name="entity">Updated item</param>
         /// <returns>Updated item from database</returns>
         T Update(T entity);
+
+        IList<T> Query(Q queryModel);
     }
 }

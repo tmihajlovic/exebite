@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Exebite.Model;
 
-namespace Exebite.DataAccess
+namespace Exebite.DataAccess.Repositories
 {
-    public interface IRecipeRepository : IDatabaseRepository<Recipe>
+    public interface IRecipeRepository : IDatabaseRepository<Recipe,RecipeQueryModel>
     {
         // Add functions specific for IRecipeHandler
 

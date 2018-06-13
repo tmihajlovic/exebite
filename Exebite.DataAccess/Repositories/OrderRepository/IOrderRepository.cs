@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Exebite.Model;
 
-namespace Exebite.DataAccess
+namespace Exebite.DataAccess.Repositories
 {
-    public interface IOrderRepository : IDatabaseRepository<Order>
+    public interface IOrderRepository : IDatabaseRepository<Order, OrderQueryModel>
     {
         // Add functions specific for IOrderHandler
 

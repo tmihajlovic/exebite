@@ -10,13 +10,13 @@ namespace Exebite.Model
 
         public DateTime Date { get; set; }
 
-        public Meal Meal { get; set; }
-
         public int MealId { get; set; }
 
-        public Customer Customer { get; set; }
+        public Meal Meal { get; set; }
 
         public int CustomerId { get; set; }
+
+        public Customer Customer { get; set; }
 
         public string Note { get; set; }
     }

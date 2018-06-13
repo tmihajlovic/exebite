@@ -35,6 +35,8 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ExeBite.Database", "ExeBite
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Model", "Exebite.Model\Exebite.Model.csproj", "{660F29BA-078A-4C36-BEC4-2F8E5C88362B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.Common", "Exebite.Common\Exebite.Common.csproj", "{F8959F30-89F7-47A8-88AB-2B6910379EB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{660F29BA-078A-4C36-BEC4-2F8E5C88362B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{660F29BA-078A-4C36-BEC4-2F8E5C88362B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{660F29BA-078A-4C36-BEC4-2F8E5C88362B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8959F30-89F7-47A8-88AB-2B6910379EB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8959F30-89F7-47A8-88AB-2B6910379EB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8959F30-89F7-47A8-88AB-2B6910379EB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8959F30-89F7-47A8-88AB-2B6910379EB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +105,7 @@ Global
 		{77D501CE-FD2E-4DC4-AFDE-455D53A790D4} = {5E298C35-AE52-47B5-A6D8-4480730FD786}
 		{7477239A-E5F1-428E-98E5-265435C31420} = {67F104A6-6AAD-465B-B4DD-D70E4385D211}
 		{660F29BA-078A-4C36-BEC4-2F8E5C88362B} = {FF0A49B8-C378-49D8-956F-9CF17A12574A}
+		{F8959F30-89F7-47A8-88AB-2B6910379EB0} = {FF0A49B8-C378-49D8-956F-9CF17A12574A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9631173F-68BC-4A5E-A5AA-D641BFE32333}

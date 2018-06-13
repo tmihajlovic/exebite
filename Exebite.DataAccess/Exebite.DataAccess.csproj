@@ -13,18 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="RepositoryInterfaces\ICustomerRepository.cs" />
-    <Compile Remove="RepositoryInterfaces\IDatabaseRepository.cs" />
-    <Compile Remove="RepositoryInterfaces\IFoodRepository.cs" />
-    <Compile Remove="RepositoryInterfaces\ILocationRepository.cs" />
-    <Compile Remove="RepositoryInterfaces\IOrderRepository.cs" />
-    <Compile Remove="RepositoryInterfaces\IRecipeRepository.cs" />
-    <Compile Remove="RepositoryInterfaces\IRestaurantRepository.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="4.0.0" />
+    <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.8.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.1.0" />
@@ -33,10 +24,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.0" />
     <PackageReference Include="Roslyn.Analyzers" Version="1.0.3.4" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="RepositoryInterfaces\" />
   </ItemGroup>
 
   <ItemGroup>
