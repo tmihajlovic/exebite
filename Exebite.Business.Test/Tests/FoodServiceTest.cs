@@ -16,8 +16,8 @@ namespace Exebite.Business.Test.Tests
         private static IFoodOrderingContextFactory _factory;
         private static IMapper _mapper;
 
-        [ClassInitialize]
-        public static void Init(TestContext testContext)
+        [TestInitialize]
+        public void Init()
         {
             var container = ServiceProviderWrapper.GetContainer();
             _foodService = container.Resolve<IFoodService>();

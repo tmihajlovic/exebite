@@ -18,8 +18,8 @@ namespace Exebite.DataAccess.Test.Tests
         private static IOrderRepository _orderRepository;
         private static IMapper _mapper;
 
-        [ClassInitialize]
-        public static void Init(TestContext testContext)
+        [TestInitialize]
+        public void Init()
         {
             var cointeiner = ServiceProviderWrapper.GetContainer();
             _orderRepository = cointeiner.Resolve<IOrderRepository>();
@@ -148,6 +148,7 @@ namespace Exebite.DataAccess.Test.Tests
                     Customer = customer
                 };
             }
+
             var result = _orderRepository.Insert(order);
             Assert.IsNotNull(result);
         }

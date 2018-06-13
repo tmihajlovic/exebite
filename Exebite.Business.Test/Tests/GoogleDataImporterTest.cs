@@ -27,8 +27,8 @@ namespace Exebite.Business.Test.Tests
         private static ITeglasConector _teglasConector;
         private static IMapper _mapper;
 
-        [ClassInitialize]
-        public static void Init(TestContext testContext)
+        [TestInitialize]
+        public void Init()
         {
             var container = ServiceProviderWrapper.GetContainer();
 

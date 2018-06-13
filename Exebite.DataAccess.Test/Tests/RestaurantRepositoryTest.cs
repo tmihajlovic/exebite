@@ -15,8 +15,8 @@ namespace Exebite.DataAccess.Test.Tests
         private static IFoodOrderingContextFactory _factory;
         private static IRestaurantRepository _restaurantRepository;
 
-        [ClassInitialize]
-        public static void Init(TestContext testContext)
+        [TestInitialize]
+        public void Init()
         {
             var container = ServiceProviderWrapper.GetContainer();
             _factory = container.Resolve<IFoodOrderingContextFactory>();

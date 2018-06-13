@@ -12,8 +12,8 @@ namespace Exebite.Business.Test.Tests
         private static IMenuService _menuService;
         private static IFoodOrderingContextFactory _factory;
 
-        [ClassInitialize]
-        public static void Init(TestContext testContext)
+        [TestInitialize]
+        public void Init()
         {
             var container = ServiceProviderWrapper.GetContainer();
             _menuService = container.Resolve<IMenuService>();

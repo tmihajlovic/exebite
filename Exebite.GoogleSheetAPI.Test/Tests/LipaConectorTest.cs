@@ -21,8 +21,8 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         private static string restaurantName = "Restoran pod Lipom";
         private FakeDataFactory fakeDataFactory = new FakeDataFactory(restaurantName);
 
-        [ClassInitialize]
-        public static void Init(TestContext testContext)
+        [TestInitialize]
+        public void Init()
         {
             _googleSpreadsheetIdFactory = new GoogleSpreadsheetIdFactory();
             _googleSheetService = new GoogleSheetServiceFake();

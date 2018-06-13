@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Exebite.Business;
 using Exebite.DataAccess;
 using Exebite.DataAccess.Repositories;
@@ -7,19 +8,18 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Exebite.API
 {
     public class Startup
     {
-        private readonly IServiceProvider _provider;
+        private readonly IServiceProvider provider;
 
         public Startup(IConfiguration configuration, IHostingEnvironment env, IServiceProvider provider)
         {
             Configuration = configuration;
             HostingEnvironment = env;
-            _provider = provider;
+            this.provider = provider;
         }
 
         public static IConfiguration Configuration { get; private set; }
@@ -44,7 +44,7 @@ namespace Exebite.API
             services.AddAutoMapper(
                 cfg =>
                 {
-                    cfg.ConstructServicesUsing(x => _provider.GetService(x));
+                    cfg.ConstructServicesUsing(x => this.provider.GetService(x));
                     cfg.AddProfile<DataAccessMappingProfile>();
                     cfg.AddProfile<UIMappingProfile>();
                 });

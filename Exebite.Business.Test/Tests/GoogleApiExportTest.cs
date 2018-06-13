@@ -28,8 +28,8 @@ namespace Exebite.Business.Test.Tests
         // Database
         private static IFoodOrderingContextFactory _factory;
 
-        [ClassInitialize]
-        public static void Init(TestContext testContext)
+        [TestInitialize]
+        public void Init()
         {
             var continer = ServiceProviderWrapper.GetContainer();
             _factory = new InMemoryDBFactory();

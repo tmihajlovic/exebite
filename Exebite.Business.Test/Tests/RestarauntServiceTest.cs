@@ -12,8 +12,8 @@ namespace Exebite.Business.Test.Tests
     {
         private static IRestaurantService _restaurantService;
 
-        [ClassInitialize]
-        public static void Init(TestContext testContext)
+        [TestInitialize]
+        public void Init()
         {
             var cointeiner = ServiceProviderWrapper.GetContainer();
             _restaurantService = cointeiner.Resolve<IRestaurantService>();
