@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Exebite.Business;
 using Exebite.DataAccess;
+using Exebite.DataAccess.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -55,6 +56,9 @@ namespace Exebite.API
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IFoodService, FoodService>();
+            services.AddTransient<IMealRepository, MealRepository>();
+            services.AddTransient<IRecipeRepository, RecipeRepository>();
+            services.AddTransient<ICustomerAliasRepository, CustomerAliasRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
