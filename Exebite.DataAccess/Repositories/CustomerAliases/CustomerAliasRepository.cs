@@ -35,7 +35,7 @@ namespace Exebite.DataAccess.Repositories
         {
             if (queryModel == null)
             {
-                throw new System.ArgumentException("queryModel can't be null");
+                throw new ArgumentException("queryModel can't be null");
             }
 
             using (var context = _factory.Create())
@@ -61,7 +61,14 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var aliasEntity = _mapper.Map<CustomerAliasesEntities>(entity);
+                var aliasEntity = new CustomerAliasesEntities
+                {
+                    Id = entity.Id,
+                    Alias = entity.Alias,
+                    CustomerId = entity.Customer.Id,
+                    RestaurantId = entity.Restaurant.Id
+                };
+
                 context.Update(aliasEntity);
                 context.SaveChanges();
                 var resultEntity = context.CustomerAliases.FirstOrDefault(l => l.Id == entity.Id);

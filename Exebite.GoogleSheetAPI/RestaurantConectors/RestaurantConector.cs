@@ -345,7 +345,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
                     return FoodType.SOUP;
 
                 case "Dodatak":
-                    return FoodType.CONDIMENTS;                
+                    return FoodType.CONDIMENTS;
             }
 
             return FoodType.MAIN_COURSE;

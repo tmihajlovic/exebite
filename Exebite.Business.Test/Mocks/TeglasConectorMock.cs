@@ -28,7 +28,16 @@ namespace Exebite.Business.Test.Mocks
             {
                 var restaurant = context.Restaurants.Single(r => r.Name == restaurantName);
                 var foodEntity = context.Foods.Where(f => f.RestaurantId == restaurant.Id).ToList();
-                var foodList = foodEntity.Select(f => _mapper.Map<Food>(f)).ToList();
+                var foodList = foodEntity.Select(f => new Food
+                {
+                    Id = f.Id,
+                    Description = f.Description,
+                    IsInactive = f.IsInactive,
+                    Name = f.Name,
+                    Price = f.Price,
+                    RestaurantId = f.RestaurantId,
+                    Type = f.Type
+                }).ToList();
                 result.AddRange(foodList.Take(3)); // Take 3 food from all food list for daily menu
             }
 
@@ -42,19 +51,26 @@ namespace Exebite.Business.Test.Mocks
                 List<Food> result = new List<Food>();
                 var restaurant = context.Restaurants.Single(r => r.Name == restaurantName);
                 var foodEntity = context.Foods.Where(f => f.RestaurantId == restaurant.Id).ToList();
-                var foodList = foodEntity.Select(f => _mapper.Map<Food>(f)).ToList();
+                var foodList = foodEntity.Select(f => new Food
+                {
+                    Id = f.Id,
+                    Description = f.Description,
+                    IsInactive = f.IsInactive,
+                    Name = f.Name,
+                    Price = f.Price,
+                    RestaurantId = f.RestaurantId,
+                    Type = f.Type
+                }).ToList();
                 result.AddRange(foodList.Take(foodList.Count - 1)); // Add one food less to be marked inactive
-                var newFoodEntity = new DataAccess.Entities.FoodEntity
+                result.Add(new Food
                 {
                     Name = "Test food from conector for: " + restaurant.Name,
                     Description = "Test food from conector description",
                     IsInactive = false,
                     Price = 100,
                     Type = Model.FoodType.MAIN_COURSE,
-                    RestaurantId = restaurant.Id,
-                    Restaurant = restaurant
-                };
-                result.Add(_mapper.Map<Food>(newFoodEntity));
+                    RestaurantId = restaurant.Id
+                });
                 return result;
             }
         }

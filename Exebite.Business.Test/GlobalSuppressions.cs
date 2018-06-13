@@ -22,4 +22,3 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.Business.Test.Tests.OrderServiceTest")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "namespace", Target = "~T:Exebite.Business.Test.Tests.RestarauntServiceTest")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Redundancy", "RCS1163:Unused parameter.", Justification = "Required by test framework", Scope = "member", Target = "~T:Microsoft.VisualStudio.TestTools.UnitTesting.TestContext")]
-

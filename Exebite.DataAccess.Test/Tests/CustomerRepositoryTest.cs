@@ -99,13 +99,13 @@ namespace Exebite.DataAccess.Test.Tests
                 var restaurant = _mapper.Map<Restaurant>(context.Restaurants.FirstOrDefault());
                 var newAlisas = new CustomerAliases
                 {
-                    Alias = "Test Alisas",
+                    Alias = "Test Alias",
                     Customer = customer,
                     Restaurant = restaurant
                 };
                 customer.Aliases.Add(newAlisas);
                 var result = _customerRepository.Update(customer);
-                Assert.IsNotNull(result.Aliases.Where(a => a.Alias == "Test Alisas"));
+                Assert.IsNotNull(result.Aliases.Where(a => a.Alias == "Test Alias"));
             }
         }
 
@@ -115,10 +115,10 @@ namespace Exebite.DataAccess.Test.Tests
             using (var context = _factory.Create())
             {
                 var customer = _customerRepository.GetByID(1);
-                var newLocation = _mapper.Map<Location>(context.Locations.FirstOrDefault(l => l.Id == 2));
-                customer.Location = newLocation;
+                var newLocationId = 2;
+                customer.LocationId = newLocationId;
                 var result = _customerRepository.Update(customer);
-                Assert.AreEqual(result.Location.Name, "JD");
+                Assert.AreEqual(result.LocationId, newLocationId);
             }
         }
 

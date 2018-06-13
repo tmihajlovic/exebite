@@ -127,10 +127,10 @@ namespace Exebite.Business.Test.Tests
                 const int newLocationId = 2;
                 var customer = _customerService.GetAllCustomers().First();
                 customer.Name = newName;
-                customer.Location = _mapper.Map<Location>(context.Locations.Find(newLocationId));
+                customer.LocationId = newLocationId;
                 var result = _customerService.UpdateCustomer(customer);
                 Assert.AreEqual(result.Name, newName);
-                Assert.AreEqual(result.Location.Id, newLocationId);
+                Assert.AreEqual(result.LocationId, newLocationId);
             }
         }
 

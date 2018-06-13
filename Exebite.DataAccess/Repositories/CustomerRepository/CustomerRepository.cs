@@ -60,8 +60,15 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var customerEntity = _mapper.Map<CustomerEntity>(entity);
-                context.Attach(customerEntity);
+                var customerEntity = new CustomerEntity
+                {
+                    AppUserId = entity.AppUserId,
+                    Balance = entity.Balance,
+                    Id = entity.Id,
+                    LocationId = entity.LocationId,
+                    Name = entity.Name,
+                };
+                context.Update(customerEntity);
                 context.SaveChanges();
                 var resultEntity = context.Customers.FirstOrDefault(c => c.Id == entity.Id);
                 return _mapper.Map<Customer>(resultEntity);
