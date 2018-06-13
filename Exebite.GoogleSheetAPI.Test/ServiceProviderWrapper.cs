@@ -11,7 +11,6 @@ namespace Exebite.Test
     {
         public static IServiceProvider GetContainer()
         {
-
             var serviceProvider = new ServiceCollection()
                                         .AddTransient<IHedoneConector, HedoneConector>()
                                         .AddTransient<ILipaConector, LipaConector>()

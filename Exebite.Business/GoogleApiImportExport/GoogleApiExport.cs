@@ -7,14 +7,14 @@ namespace Exebite.Business.GoogleApiImportExport
     public class GoogleApiExport : IGoogleDataExporter
     {
         // Services
-        private IOrderService _orderService;
-        private ICustomerService _customerService;
-        private IRestaurantService _restaurantService;
+        private readonly IOrderService _orderService;
+        private readonly ICustomerService _customerService;
+        private readonly IRestaurantService _restaurantService;
 
         // Conectors
-        private ILipaConector _lipaConector;
-        private IHedoneConector _hedoneConector;
-        private ITeglasConector _teglasConector;
+        private readonly ILipaConector _lipaConector;
+        private readonly IHedoneConector _hedoneConector;
+        private readonly ITeglasConector _teglasConector;
 
         public GoogleApiExport(ITeglasConector teglasConector, IHedoneConector hedoneConector, ILipaConector lipaConector, IOrderService orderService, ICustomerService customerService, IRestaurantService restaurantService)
         {

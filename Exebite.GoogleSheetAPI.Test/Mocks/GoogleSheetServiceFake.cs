@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Google.Apis.Sheets.v4.Data;
 
 namespace Exebite.GoogleSheetAPI.Test.Mocks
 {
     public class GoogleSheetServiceFake : IGoogleSheetService
     {
-        private static string dailyMenuSheet = "Dnevni meni";
-        private static string alwaysAvailableSheet = "Uvek dostupno";
-        private static string menuSheet = "Meni";
-        private static string foodListSheet = "Cene i opis";
-        private static string kasaSheet = "Kasa";
-        private static string ordersSheet = "Narudzbine";
+        private const string DailyMenuSheet = "Dnevni meni";
+        private const string AlwaysAvailableSheet = "Uvek dostupno";
+        private const string MenuSheet = "Meni";
+        private const string FoodListSheet = "Cene i opis";
+        private const string KasaSheet = "Kasa";
+        private const string OrdersSheet = "Narudzbine";
 
         public void Clear(string sheetId, string range)
         {
@@ -23,19 +21,19 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
         {
             ValueRange result = new ValueRange();
 
-            if (range == dailyMenuSheet)
+            if (range == DailyMenuSheet)
             {
                 result = FakeSheetDataFactory.GetAllSheetDaily();
             }
-            else if (range.Contains(dailyMenuSheet))
+            else if (range.Contains(DailyMenuSheet))
             {
                 result = FakeSheetDataFactory.GetDailyMenu();
             }
-            else if (range.Contains(alwaysAvailableSheet))
+            else if (range.Contains(AlwaysAvailableSheet))
             {
                 result = FakeSheetDataFactory.GetAlwaysAvailableMenu();
             }
-            else if (range.Contains(menuSheet))
+            else if (range.Contains(MenuSheet))
             {
                 result = FakeSheetDataFactory.GetAlwaysAvailableMenu();
             }
@@ -56,7 +54,7 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
 
         public void Update(ValueRange body, string sheetId, string range)
         {
-            if (range == dailyMenuSheet)
+            if (range == DailyMenuSheet)
             {
                 var dateToday = body.Values[1][0].ToString();
                 if (dateToday != DateTime.Today.Date.ToString("dd-MM-yyyy"))
@@ -72,7 +70,7 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
                     throw new Exception("Tomorow date wrong!");
                 }
             }
-            else if (range == foodListSheet)
+            else if (range == FoodListSheet)
             {
                 if (body.Values[0][0].ToString() != "Naziv jela")
                 {
@@ -89,7 +87,7 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
                     throw new Exception("Bad data formating");
                 }
             }
-            else if (range == kasaSheet)
+            else if (range == KasaSheet)
             {
                 if (body.Values[0][1].ToString() != "Ime i prezime")
                 {
@@ -106,7 +104,7 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
                     throw new Exception("Bad data formating");
                 }
             }
-            else if (range == ordersSheet)
+            else if (range == OrdersSheet)
             {
                 if (body.Values[0][0].ToString() != "Jelo")
                 {
@@ -125,7 +123,7 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
             }
         }
 
-        private int CheckDate(string dateToday)
+        private static int CheckDate(string dateToday)
         {
             var checkDate = DateTime.Parse(dateToday);
             int addDays = 1;

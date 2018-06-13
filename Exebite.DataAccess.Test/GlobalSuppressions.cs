@@ -16,3 +16,4 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.DataAccess.Test.Tests.OrderRepositoryTest")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.DataAccess.Test.Tests.RecipeRepositoryTest")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "<Pending>", Scope = "type", Target = "~T:Exebite.DataAccess.Test.Tests.RestaurantRepositoryTest")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Redundancy", "RCS1163:Unused parameter.", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.TestTools.UnitTesting.TestContext")]

@@ -6,7 +6,7 @@ namespace Exebite.JobScheduler.Jobs
 {
     public class WriteOrders : IJob
     {
-        private IGoogleDataExporter _googleDataExporter;
+        private readonly IGoogleDataExporter _googleDataExporter;
 
         public WriteOrders(IGoogleDataExporter googleDataExporter)
         {

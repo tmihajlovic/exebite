@@ -36,8 +36,8 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetOrderById_IdValid_ObjectReturned()
         {
-            var id = 1;
-            var customerId = 1;
+            const int id = 1;
+            const int customerId = 1;
             var result = _orderService.GetOrderByIdForCustomer(id, customerId);
             Assert.AreEqual(result.Id, id);
         }
@@ -45,8 +45,8 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetOrderById_IdNonExisting_NullIsReturned()
         {
-            var id = 0;
-            var customerId = 1;
+            const int id = 0;
+            const int customerId = 1;
             var result = _orderService.GetOrderByIdForCustomer(id, customerId);
             Assert.IsNull(result);
         }
@@ -54,7 +54,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetAllOrdersForCustomer_ExistingCustomer_ConutOfOrdersAreNotZero()
         {
-            var customerId = 1;
+            const int customerId = 1;
             var orders = _orderService.GetAllOrdersForCustomer(customerId);
             Assert.AreNotSame(orders.Count, 0);
         }
@@ -69,7 +69,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetAllOrdersForRestoraunt_RestorauntExists_OrdersCountIsNotZero()
         {
-            var restaurantId = 1;
+            const int restaurantId = 1;
             var orders = _orderService.GetAllOrdersForRestoraunt(restaurantId);
             Assert.AreNotEqual(orders.Count, 0);
         }
@@ -77,7 +77,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetAllOrdersForRestoraunt_NonExistingRestaurant_OrdersIsEmpty()
         {
-            var restaurantId = 0;
+            const int restaurantId = 0;
             var orders = _orderService.GetAllOrdersForRestoraunt(restaurantId);
             Assert.AreEqual(orders.Count, 0);
         }
@@ -141,8 +141,8 @@ namespace Exebite.Business.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var customerId = 1;
-                var id = 1;
+                const int customerId = 1;
+                const int id = 1;
                 var foodToAdd = _mapper.Map<Food>(context.Foods.Where(f => f.Type == FoodType.SIDE_DISH).First());
                 var order = _orderService.GetOrderByIdForCustomer(id, customerId);
                 order.Meal.Foods.Add(foodToAdd);
@@ -154,8 +154,8 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void DeleteOrder_ExistingOrderPassed_OrderDeleted()
         {
-            var customerId = 1;
-            var orderNote = "For delete";
+            const int customerId = 1;
+            const string orderNote = "For delete";
             var order = _orderService.GetAllOrders().FirstOrDefault(o => o.Note == orderNote);
             _orderService.DeleteOrder(order.Id);
             var result = _orderService.GetOrderByIdForCustomer(order.Id, customerId);

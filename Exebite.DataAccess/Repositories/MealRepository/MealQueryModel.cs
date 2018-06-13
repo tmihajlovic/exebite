@@ -3,6 +3,5 @@
     public class MealQueryModel
     {
         public int? Id { get; set; }
-
     }
 }

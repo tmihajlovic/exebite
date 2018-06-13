@@ -17,10 +17,7 @@ namespace Exebite.DataAccess.Migrations
                     Name = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Location", x => x.Id);
-                });
+                constraints: table => table.PrimaryKey("PK_Location", x => x.Id));
 
             migrationBuilder.CreateTable(
                 name: "Meal",
@@ -30,10 +27,7 @@ namespace Exebite.DataAccess.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Price = table.Column<decimal>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Meal", x => x.Id);
-                });
+                constraints: table => table.PrimaryKey("PK_Meal", x => x.Id));
 
             migrationBuilder.CreateTable(
                 name: "Restaurant",
@@ -43,10 +37,7 @@ namespace Exebite.DataAccess.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Restaurant", x => x.Id);
-                });
+                constraints: table => table.PrimaryKey("PK_Restaurant", x => x.Id));
 
             migrationBuilder.CreateTable(
                 name: "Customer",

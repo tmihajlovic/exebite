@@ -32,7 +32,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetLocationById()
         {
-            var id = 1;
+            const int id = 1;
             var result = _locationService.GetLocationById(id);
             Assert.IsNotNull(result);
         }
@@ -47,7 +47,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetLocationByName()
         {
-            var name = "Bulevar";
+            const string name = "Bulevar";
             var result = _locationService.GetLocationByName(name);
             Assert.AreEqual(result.Name, name);
         }
@@ -62,7 +62,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetLocationByName_NonExisting()
         {
-            var name = "NonExistingLocaiotn";
+            const string name = "NonExistingLocaiotn";
             var result = _locationService.GetLocationByName(name);
             Assert.IsNull(result);
         }
@@ -89,9 +89,9 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void UpdateLocation()
         {
-            var id = 1;
-            var newName = "New name";
-            var newAdress = "New adress";
+            const int id = 1;
+            const string newName = "New name";
+            const string newAdress = "New adress";
             var location = _locationService.GetLocationById(id);
             location.Name = newName;
             location.Address = newAdress;
@@ -104,7 +104,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void DeleteLocation()
         {
-            var name = "For delete";
+            const string name = "For delete";
             var location = _locationService.GetLocationByName(name);
             _locationService.DeleteLocation(location.Id);
             var result = _locationService.GetLocationById(location.Id);

@@ -2,7 +2,6 @@
 using System.Linq;
 using AutoMapper;
 using Exebite.Business.Test.Mocks;
-using Exebite.DataAccess;
 using Exebite.DataAccess.Migrations;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,7 +16,9 @@ namespace Exebite.Business.Test.Tests
         private static IMapper _mapper;
 
         [ClassInitialize]
+#pragma warning disable RCS1163 // Unused parameter.
         public static void Init(TestContext testContext)
+#pragma warning restore RCS1163 // Unused parameter.
         {
             var container = ServiceProviderWrapper.GetContainer();
             _foodService = container.Resolve<IFoodService>();
@@ -36,7 +37,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetFoodById()
         {
-            var foodId = 1;
+            const int foodId = 1;
             var result = _foodService.GetFoodById(foodId);
             Assert.IsNotNull(result);
         }
@@ -79,10 +80,10 @@ namespace Exebite.Business.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var foodId = 1;
-                var newName = "New name";
-                var newDescription = "new description";
-                var newPrice = 300;
+                const int foodId = 1;
+                const string newName = "New name";
+                const string newDescription = "new description";
+                const int newPrice = 300;
                 var foodToUpdate = _foodService.GetFoodById(foodId);
                 foodToUpdate.Description = newDescription;
                 foodToUpdate.Price = newPrice;
@@ -105,7 +106,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void DeleteFood()
         {
-            var foodName = "Test food for delete";
+            const string foodName = "Test food for delete";
             var foodForDelete = _foodService.GetAllFoods().Single(f => f.Name == foodName);
             _foodService.Delete(foodForDelete.Id);
             var result = _foodService.GetFoodById(foodForDelete.Id);

@@ -49,7 +49,6 @@ namespace Exebite.DataAccess.AutoMapper
                         destination.FoodEntityRecipeEntities.Add(fre);
                     }
                 }
-
             }
 
             return destination;

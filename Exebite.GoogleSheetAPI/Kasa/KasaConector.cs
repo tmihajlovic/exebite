@@ -11,7 +11,7 @@ namespace Exebite.GoogleSheetAPI.Kasa
     {
         private readonly string _sheetId;
         private readonly string _range = "Kasa";
-        private SheetsService _googleSS;
+        private readonly SheetsService _googleSS;
 
         public KasaConector(IGoogleSheetServiceFactory googleSheetServiceFactory, IGoogleSpreadsheetIdFactory googleSpreadsheetIdFactory)
         {

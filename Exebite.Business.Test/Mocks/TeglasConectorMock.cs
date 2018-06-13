@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Exebite.DataAccess;
 using Exebite.DataAccess.Migrations;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
@@ -12,9 +11,9 @@ namespace Exebite.Business.Test.Mocks
     public class TeglasConectorMock : ITeglasConector
     {
         private readonly IMapper _mapper;
-        private IFoodOrderingContextFactory _factory;
+        private readonly IFoodOrderingContextFactory _factory;
 
-        private string restaurantName = "Teglas";
+        private readonly string restaurantName = "Teglas";
 
         public TeglasConectorMock(IFoodOrderingContextFactory factory, IMapper mapper)
         {

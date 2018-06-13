@@ -10,6 +10,7 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
     [TestClass]
     public class TeglasConectorTest
     {
+        private const string RestaurantName = "Hedone";
         private static ITeglasConector _teglasConector;
         private static ITeglasConector _teglasConector_NullCheck;
         private static ITeglasConector _teglasConector_EmptyCheck;
@@ -17,12 +18,12 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         private static IGoogleSheetService _googleSheetService;
         private static IGoogleSheetService _googleSheetService_returnNull;
         private static IGoogleSheetService _googleSheetService_returnEmpty;
-        private static string restaurantName = "Hedone";
-        private FakeDataFactory fakeDataFactory = new FakeDataFactory(restaurantName);
+        private static FakeDataFactory _fakeDataFactory;
 
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
+            _fakeDataFactory = new FakeDataFactory(RestaurantName);
             _googleSpreadsheetIdFactory = new GoogleSpreadsheetIdFactory();
             _googleSheetService = new GoogleSheetServiceFake();
             _googleSheetService_returnNull = new GoogleSheetServiceFake_ReturnNull();
@@ -56,19 +57,19 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         [TestMethod]
         public void PlaceOrders()
         {
-            _teglasConector.PlaceOrders(fakeDataFactory.GetOrders());
+            _teglasConector.PlaceOrders(_fakeDataFactory.GetOrders());
         }
 
         [TestMethod]
         public void WriteMenu()
         {
-            _teglasConector.WriteMenu(fakeDataFactory.GetFoods());
+            _teglasConector.WriteMenu(_fakeDataFactory.GetFoods());
         }
 
         [TestMethod]
         public void WriteKasaTab()
         {
-            _teglasConector.WriteKasaTab(fakeDataFactory.GetCustomers());
+            _teglasConector.WriteKasaTab(_fakeDataFactory.GetCustomers());
         }
 
         [TestMethod]

@@ -7,7 +7,7 @@ namespace Exebite.Business
 {
     public class CustomerService : ICustomerService
     {
-        private ICustomerRepository _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
 
         public CustomerService(ICustomerRepository customerRepository)
         {
@@ -16,7 +16,7 @@ namespace Exebite.Business
 
         public Customer GetCustomerByIdentityId(string id)
         {
-            if (id == string.Empty)
+            if (string.IsNullOrEmpty(id))
             {
                 throw new System.ArgumentException("Id cant be empty string");
             }
@@ -37,7 +37,7 @@ namespace Exebite.Business
 
         public Customer GetCustomerByName(string name)
         {
-            if (name == string.Empty)
+            if (string.IsNullOrEmpty(name))
             {
                 throw new System.ArgumentException("Name cant be empty string");
             }

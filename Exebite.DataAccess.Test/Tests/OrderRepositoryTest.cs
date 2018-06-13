@@ -72,7 +72,7 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                int existingOrderId = 1;
+                const int existingOrderId = 1;
                 var customer = _mapper.Map<Customer>(context.Customers.Find(1));
                 var result = _orderRepository.GetOrderForCustomer(existingOrderId, customer.Id);
                 Assert.IsNotNull(result);
@@ -85,8 +85,8 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                int existingOrderId = 1;
-                int nonExistingCustomerId = 999;
+                const int existingOrderId = 1;
+                const int nonExistingCustomerId = 999;
                 var result = _orderRepository.GetOrderForCustomer(existingOrderId, nonExistingCustomerId);
             }
         }
@@ -96,7 +96,7 @@ namespace Exebite.DataAccess.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                int nonExistingOrderId = 999;
+                const int nonExistingOrderId = 999;
                 var customer = _mapper.Map<Customer>(context.Customers.Find(1));
                 var result = _orderRepository.GetOrderForCustomer(nonExistingOrderId, customer.Id);
                 Assert.IsNull(result);
@@ -148,6 +148,7 @@ namespace Exebite.DataAccess.Test.Tests
                     Customer = customer
                 };
             }
+
             var result = _orderRepository.Insert(order);
             Assert.IsNotNull(result);
         }
@@ -162,7 +163,7 @@ namespace Exebite.DataAccess.Test.Tests
         [TestMethod]
         public void QueryById()
         {
-            var id = 1;
+            const int id = 1;
             var res = _orderRepository.Query(new OrderQueryModel()
             {
                 Id = id

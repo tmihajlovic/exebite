@@ -22,9 +22,11 @@ namespace Exebite.DataAccess.AutoMapper
         {
             using (var dbContext = _factory.Create())
             {
-                destination = new MealEntity();
-                destination.Id = source.Id;
-                destination.Price = source.Price;
+                destination = new MealEntity
+                {
+                    Id = source.Id,
+                    Price = source.Price
+                };
                 destination.Id = source.Id;
                 destination.FoodEntityMealEntities = new List<FoodEntityMealEntities>();
                 foreach (var food in source.Foods)

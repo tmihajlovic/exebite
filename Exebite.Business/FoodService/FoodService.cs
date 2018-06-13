@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Exebite.DataAccess.Repositories;
 using Exebite.Model;
 
@@ -7,7 +6,7 @@ namespace Exebite.Business
 {
     public class FoodService : IFoodService
     {
-        private IFoodRepository _foodHandler;
+        private readonly IFoodRepository _foodHandler;
 
         public FoodService(IFoodRepository foodHandler)
         {

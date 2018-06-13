@@ -9,13 +9,13 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 {
     public class HedoneConector : RestaurantConector, IHedoneConector
     {
-        private static string dailyMenuSheet = "Dnevni meni";
-        private static string alwaysAvailableSheet = "Uvek dostupno";
-        private static string foodListSheet = "Cene i opis";
-        private static string ordersSheet = "Narudzbine";
+        private new const string DailyMenuSheet = "Dnevni meni";
+        private const string AlwaysAvailableSheet = "Uvek dostupno";
+        private new const string FoodListSheet = "Cene i opis";
+        private new const string OrdersSheet = "Narudzbine";
 
-        private Restaurant _restaurant;
-        private string _sheetId;
+        private readonly Restaurant _restaurant;
+        private readonly string _sheetId;
 
         public HedoneConector(IGoogleSheetService googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
             : base(googleSheetService)
@@ -23,9 +23,9 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
             _sheetId = googleSSIdFactory.GetHedone();
             _restaurant = new Restaurant { Name = "Hedone" };
             SheetId = _sheetId;
-            OrdersSheet = ordersSheet;
-            DailyMenuSheet = dailyMenuSheet;
-            FoodListSheet = foodListSheet;
+            base.OrdersSheet = OrdersSheet;
+            base.DailyMenuSheet = DailyMenuSheet;
+            base.FoodListSheet = FoodListSheet;
             Restaurant = _restaurant;
         }
 
@@ -46,8 +46,8 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
             }
 
             // Clear sheet and write new data
-            GoogleSheetService.Clear(_sheetId, foodListSheet);
-            GoogleSheetService.Update(foodRange, _sheetId, foodListSheet);
+            GoogleSheetService.Clear(_sheetId, FoodListSheet);
+            GoogleSheetService.Update(foodRange, _sheetId, FoodListSheet);
         }
 
         public override List<Food> GetDailyMenu()
@@ -62,11 +62,11 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 
         private IEnumerable<Food> DailyMenu()
         {
-            var range = dailyMenuSheet + "!A3:A1000";
+            const string range = DailyMenuSheet + "!A3:A1000";
             ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
 
             // Null and empty check
-            if (!(sheetData != null && sheetData.Values != null && sheetData.Values.Any()))
+            if (!(sheetData?.Values?.Any() == true))
             {
                 return new List<Food>();
             }
@@ -76,11 +76,11 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 
         private IEnumerable<Food> AaMenu()
         {
-            var range = alwaysAvailableSheet + "!A2:A1000";
+            const string range = AlwaysAvailableSheet + "!A2:A1000";
             ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
 
             // Null and empty check
-            if (!(sheetData != null && sheetData.Values != null && sheetData.Values.Any()))
+            if (!(sheetData?.Values?.Any() == true))
             {
                 return new List<Food>();
             }

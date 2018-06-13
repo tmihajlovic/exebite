@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using Exebite.API.Models;
 using Exebite.Business;
@@ -19,21 +17,22 @@ namespace Exebite.API.Controllers
         private readonly IMenuService _menuService;
         private readonly IOrderService _orderService;
         private readonly IFoodService _foodService;
-        private readonly IMapper _exebiteMapper;
+        private readonly IMapper _mapper;
 
-        public OrdersController(ICustomerService customerService, IMenuService menuService, IOrderService orderService, IFoodService foodService, IMapper exebiteMapper)
+        public OrdersController(ICustomerService customerService, IMenuService menuService, IOrderService orderService, IFoodService foodService, IMapper mapper)
         {
             _customerService = customerService;
             _menuService = menuService;
             _orderService = orderService;
             _foodService = foodService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
             var listOfOrders = _orderService.GetAllOrders();
-            return Ok(_exebiteMapper.Map<IEnumerable<OrderModel>>(listOfOrders));
+            return Ok(_mapper.Map<IEnumerable<OrderModel>>(listOfOrders));
         }
 
         [HttpGet("{id}")]
@@ -45,7 +44,7 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            return Ok(_exebiteMapper.Map<OrderModel>(order));
+            return Ok(_mapper.Map<OrderModel>(order));
         }
 
         [HttpPost]
@@ -56,7 +55,7 @@ namespace Exebite.API.Controllers
                 return BadRequest();
             }
 
-            var createdOrder = _orderService.CreateOrder(_exebiteMapper.Map<Order>(model));
+            var createdOrder = _orderService.CreateOrder(_mapper.Map<Order>(model));
 
             return Ok(createdOrder.Id);
         }
@@ -75,7 +74,7 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            _exebiteMapper.Map(model, currentOrder);
+            _mapper.Map(model, currentOrder);
             var updatedOrder = _orderService.UpdateOrder(currentOrder);
             return Ok(updatedOrder.Id);
         }

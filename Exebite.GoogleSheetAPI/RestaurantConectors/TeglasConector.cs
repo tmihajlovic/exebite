@@ -9,12 +9,12 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 {
     public class TeglasConector : RestaurantConector, ITeglasConector
     {
-        private static string _ordersSheet = "Narudzbine";
-        private static string _foodListSheet = "Cene i opis";
-        private static string _menuSheet = "Meni";
+        private const string _ordersSheet = "Narudzbine";
+        private const string _foodListSheet = "Cene i opis";
+        private const string _menuSheet = "Meni";
 
-        private Restaurant _restaurant;
-        private string _sheetId;
+        private readonly Restaurant _restaurant;
+        private readonly string _sheetId;
 
         public TeglasConector(IGoogleSheetService googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
             : base(googleSheetService)
@@ -57,11 +57,11 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 
         private IEnumerable<Food> AaMenu()
         {
-            var range = _menuSheet + "!A2:A1000";
+            const string range = _menuSheet + "!A2:A1000";
             ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
 
             // Null and empty check
-            if (!(sheetData != null && sheetData.Values != null && sheetData.Values.Any()))
+            if (!(sheetData?.Values?.Any() == true))
             {
                 return new List<Food>();
             }

@@ -6,8 +6,8 @@ namespace Exebite.GoogleSheetAPI
 {
     public class GoogleSheetService : IGoogleSheetService
     {
-        private SheetsService _sheetService;
-        private IGoogleSheetServiceFactory _googleSSFactory;
+        private readonly SheetsService _sheetService;
+        private readonly IGoogleSheetServiceFactory _googleSSFactory;
 
         public GoogleSheetService(IGoogleSheetServiceFactory googleSheetServiceFactory)
         {

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.Model;
 

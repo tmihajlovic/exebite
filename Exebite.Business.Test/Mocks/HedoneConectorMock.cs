@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Exebite.DataAccess;
 using Exebite.DataAccess.Migrations;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.Model;
@@ -11,10 +10,10 @@ namespace Exebite.Business.Test.Mocks
 {
     public class HedoneConectorMock : IHedoneConector
     {
-        private IFoodOrderingContextFactory _factory;
-        private IMapper _mapper;
+        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMapper _mapper;
 
-        private string restaurantName = "Hedone";
+        private readonly string restaurantName = "Hedone";
 
         public HedoneConectorMock(IFoodOrderingContextFactory factory, IMapper mapper)
         {

@@ -62,7 +62,7 @@ namespace Exebite.Business.Test.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void PlaceOrders_NonExistingRestaurant()
         {
-            var restaurantName = "Non Existing Restaurant";
+            const string restaurantName = "Non Existing Restaurant";
             _googleDataExporter.PlaceOrdersForRestaurant(restaurantName);
         }
 

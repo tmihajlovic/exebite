@@ -2,9 +2,7 @@
 using AutoMapper;
 using Exebite.Business.GoogleApiImportExport;
 using Exebite.Business.Test.Mocks;
-using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Migrations;
-using Exebite.DataAccess.Repositories;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -47,14 +45,14 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void UpdateRestorauntsMenu()
         {
-            var name = "Restoran pod Lipom";
+            const string name = "Restoran pod Lipom";
             var restaurants = _restaurantService.GetAllRestaurants();
             var lipaFoodCount = restaurants.FirstOrDefault(r => r.Name == name).Foods.Count;
             var lipaDailyCount = restaurants.FirstOrDefault(r => r.Name == name).DailyMenu.Count;
 
             _googleDataImporter.UpdateRestorauntsMenu();
             var lipa = _restaurantService.GetRestaurantByName(name);
-            var inactiveFood = lipa.Foods.FirstOrDefault(f => f.IsInactive == true);
+            var inactiveFood = lipa.Foods.FirstOrDefault(f => f.IsInactive);
 
             // Check if new food is added
             Assert.AreNotEqual(lipa.Foods.Count, lipaFoodCount);

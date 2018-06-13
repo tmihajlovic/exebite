@@ -16,7 +16,7 @@ namespace Exebite.DataAccess.Repositories
 
         public Customer GetByName(string name)
         {
-            if (name == string.Empty)
+            if (string.IsNullOrEmpty(name))
             {
                 throw new System.ArgumentException("Name can't be empty string");
             }

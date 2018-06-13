@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Exebite.DataAccess.Repositories;
 using Exebite.Model;
 
@@ -7,7 +6,7 @@ namespace Exebite.Business
 {
     public class RestaurantService : IRestaurantService
     {
-        private IRestaurantRepository _restaurantRepository;
+        private readonly IRestaurantRepository _restaurantRepository;
 
         public RestaurantService(IRestaurantRepository restaurantHandler)
         {
@@ -26,7 +25,7 @@ namespace Exebite.Business
 
         public Restaurant GetRestaurantByName(string name)
         {
-            if (name == string.Empty)
+            if (string.IsNullOrEmpty(name))
             {
                 throw new System.ArgumentException("Name can't be empty string");
             }

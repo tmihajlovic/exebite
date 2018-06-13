@@ -18,6 +18,7 @@ namespace Exebite.API.Controllers
             _exebiteMapper = exebiteMapper;
             _customerAliasRepository = customerAliasesRepository;
         }
+
         [HttpGet]
         public IActionResult Get()
         {
