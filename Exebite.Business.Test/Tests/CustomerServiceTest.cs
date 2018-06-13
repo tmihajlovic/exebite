@@ -17,7 +17,6 @@ namespace Exebite.Business.Test.Tests
 
         private static IMapper _mapper;
 
-
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {

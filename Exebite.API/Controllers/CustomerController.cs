@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using Exebite.DataAccess.Repositories;
 using Exebite.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exebite.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/Customer")]
-    //    [Authorize]
+    [Authorize]
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository _customerRepository;

@@ -15,7 +15,7 @@ namespace Exebite.JobScheduler.Jobs
 
         public Task Execute(IJobExecutionContext context)
         {
-           return Task.Run(() => _googleDataImporter.UpdateRestorauntsMenu());
+            return Task.Run(() => _googleDataImporter.UpdateRestorauntsMenu());
         }
     }
 }

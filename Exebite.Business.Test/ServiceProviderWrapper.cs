@@ -8,7 +8,6 @@ using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
-
 namespace Exebite.Business.Test
 {
     public static class ServiceProviderWrapper

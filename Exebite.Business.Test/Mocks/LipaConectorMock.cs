@@ -14,13 +14,10 @@ namespace Exebite.Business.Test.Mocks
         private IMapper _mapper;
         private string restaurantName = "Restoran pod Lipom";
 
-
-
         public LipaConectorMock(IFoodOrderingContextFactory factory, IMapper mapper)
         {
             _factory = factory;
             _mapper = mapper;
-
         }
 
         public void DnevniMenuSheetSetup()

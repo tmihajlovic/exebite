@@ -17,7 +17,6 @@ namespace Exebite.DataAccess.Test.Tests
         private static IFoodRepository _foodRepository;
         private static IMapper _mapper;
 
-
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {

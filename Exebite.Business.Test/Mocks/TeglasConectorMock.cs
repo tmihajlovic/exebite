@@ -11,8 +11,8 @@ namespace Exebite.Business.Test.Mocks
 {
     public class TeglasConectorMock : ITeglasConector
     {
-        private IFoodOrderingContextFactory _factory;
         private readonly IMapper _mapper;
+        private IFoodOrderingContextFactory _factory;
 
         private string restaurantName = "Teglas";
 

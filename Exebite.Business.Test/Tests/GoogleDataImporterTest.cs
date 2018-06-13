@@ -21,7 +21,7 @@ namespace Exebite.Business.Test.Tests
         private static IFoodService _foodService;
         private static IGoogleDataImporter _googleDataImporter;
 
-        // Conectors
+        // Connectors
         private static IHedoneConector _hedoneConector;
         private static ILipaConector _lipaConector;
         private static ITeglasConector _teglasConector;
@@ -30,7 +30,6 @@ namespace Exebite.Business.Test.Tests
         [ClassInitialize]
         public static void Init(TestContext testContext)
         {
-
             var container = ServiceProviderWrapper.GetContainer();
 
             _factory = container.Resolve<IFoodOrderingContextFactory>();
@@ -57,13 +56,13 @@ namespace Exebite.Business.Test.Tests
             var lipa = _restaurantService.GetRestaurantByName(name);
             var inactiveFood = lipa.Foods.FirstOrDefault(f => f.IsInactive == true);
 
-            // Chek if new food is added
+            // Check if new food is added
             Assert.AreNotEqual(lipa.Foods.Count, lipaFoodCount);
 
-            // Chek if daily manu is changed
+            // Check if daily menu is changed
             Assert.AreNotEqual(lipa.DailyMenu.Count, lipaDailyCount);
 
-            // Chek if food deleted from sheet is marked inactive
+            // Check if food deleted from sheet is marked inactive
             Assert.IsNotNull(inactiveFood);
         }
     }

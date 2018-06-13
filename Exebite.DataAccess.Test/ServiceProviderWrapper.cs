@@ -30,7 +30,7 @@ namespace Exebite.Test
                                         .AddTransient<IFoodToFoodEntityConverter, FoodToFoodEntityConverter>()
                                         .AddTransient<IMealToMealEntityConverter, MealToMealEntityConverter>()
                                         .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
-                                        .AddAutoMapper(cfg => 
+                                        .AddAutoMapper(cfg =>
                                         cfg.AddProfile<DataAccessMappingProfile>())
                                         .BuildServiceProvider();
             return serviceProvider;
