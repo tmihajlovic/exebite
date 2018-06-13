@@ -31,7 +31,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetRestaurantById()
         {
-            var id = 1;
+            const int id = 1;
             var result = _restaurantService.GetRestaurantById(id);
             Assert.AreEqual(result.Id, id);
         }
@@ -39,7 +39,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetRestaurantById_NonExisting()
         {
-            var id = 0;
+            const int id = 0;
             var result = _restaurantService.GetRestaurantById(id);
             Assert.IsNull(result);
         }
@@ -47,7 +47,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetRestaurantByName()
         {
-            var name = "Restoran pod Lipom";
+            const string name = "Restoran pod Lipom";
             var result = _restaurantService.GetRestaurantByName(name);
             Assert.AreEqual(result.Name, name);
         }
@@ -55,7 +55,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetRestaurantByName_NonExisting()
         {
-            var name = "NonExistingRestaurant";
+            const string name = "NonExistingRestaurant";
             var result = _restaurantService.GetRestaurantByName(name);
             Assert.IsNull(result);
         }
@@ -88,8 +88,8 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void UpdateRestourant()
         {
-            var id = 1;
-            var foodCount = 3;
+            const int id = 1;
+            const int foodCount = 3;
             var restaurant = _restaurantService.GetRestaurantById(id);
             var foods = restaurant.Foods;
             restaurant.DailyMenu.Clear();
@@ -101,7 +101,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void DeleteRestourant()
         {
-            var name = "For delete";
+            const string name = "For delete";
             var restaurant = _restaurantService.GetRestaurantByName(name);
             _restaurantService.DeleteRestaurant(restaurant.Id);
             var result = _restaurantService.GetRestaurantById(restaurant.Id);

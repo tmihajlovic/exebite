@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;

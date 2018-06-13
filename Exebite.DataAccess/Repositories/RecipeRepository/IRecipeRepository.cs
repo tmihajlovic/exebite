@@ -3,10 +3,8 @@ using Exebite.Model;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public interface IRecipeRepository : IDatabaseRepository<Recipe,RecipeQueryModel>
+    public interface IRecipeRepository : IDatabaseRepository<Recipe, RecipeQueryModel>
     {
-        // Add functions specific for IRecipeHandler
-
         /// <summary>
         /// Get recipes where given food is main course
         /// </summary>

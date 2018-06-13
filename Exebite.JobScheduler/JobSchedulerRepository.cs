@@ -6,8 +6,8 @@ namespace Exebite.JobScheduler
 {
     public class JobSchedulerRepository : IJobSchedulerRepository
     {
-        private IScheduler scheduler;
-        private ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+        private readonly IScheduler scheduler;
+        private readonly ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
         public JobSchedulerRepository()
         {

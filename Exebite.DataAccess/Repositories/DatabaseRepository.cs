@@ -9,9 +9,10 @@ namespace Exebite.DataAccess.Repositories
         where TModel : class
         where TEntity : class
     {
-        private protected readonly IMapper _mapper;
-
-        private protected readonly IFoodOrderingContextFactory _factory;
+#pragma warning disable SA1401 // Fields must be private
+        protected readonly IMapper _mapper;
+        protected readonly IFoodOrderingContextFactory _factory;
+#pragma warning restore SA1401 // Fields must be private
 
         protected DatabaseRepository(IFoodOrderingContextFactory factory, IMapper mapper)
         {
@@ -27,7 +28,6 @@ namespace Exebite.DataAccess.Repositories
         public abstract TModel Insert(TModel entity);
 
         public abstract TModel Update(TModel entity);
-
 
         public abstract IList<TModel> Query(QModel queryModel);
 

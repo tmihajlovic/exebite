@@ -10,6 +10,8 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
     [TestClass]
     public class HedoneConectorTest
     {
+        private const string RestaurantName = "Hedone";
+
         private static IHedoneConector _hedoneConector;
         private static IHedoneConector _hedoneConector_NullCheck;
         private static IHedoneConector _hedoneConector_EmptyCheck;
@@ -17,8 +19,7 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         private static IGoogleSheetService _googleSheetService;
         private static IGoogleSheetService _googleSheetService_returnNull;
         private static IGoogleSheetService _googleSheetService_returnEmpty;
-        private static string restaurantName = "Hedone";
-        private FakeDataFactory fakeDataFactory = new FakeDataFactory(restaurantName);
+        private readonly FakeDataFactory fakeDataFactory = new FakeDataFactory(RestaurantName);
 
         [TestInitialize]
         public void Init()

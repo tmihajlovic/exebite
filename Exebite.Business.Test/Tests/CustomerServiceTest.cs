@@ -2,7 +2,6 @@
 using System.Linq;
 using AutoMapper;
 using Exebite.Business.Test.Mocks;
-using Exebite.DataAccess;
 using Exebite.DataAccess.Migrations;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -51,7 +50,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetCustomerByIdentityId()
         {
-            var appId = "TestAppUserId";
+            const string appId = "TestAppUserId";
             var result = _customerService.GetCustomerByIdentityId(appId);
             Assert.AreEqual(result.AppUserId, appId);
         }
@@ -67,7 +66,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetCustomerByIdentityId_NonExisting()
         {
-            var appId = "NonExistingId";
+            const string appId = "NonExistingId";
             var result = _customerService.GetCustomerByIdentityId(appId);
             Assert.IsNull(result);
         }
@@ -75,7 +74,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetCustomerByName()
         {
-            var name = "Test Customer";
+            const string name = "Test Customer";
             var result = _customerService.GetCustomerByName(name);
             Assert.AreEqual(result.Name, name);
         }
@@ -83,7 +82,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetCustomerByName_NonExisting()
         {
-            var name = "Non existing customer";
+            const string name = "Non existing customer";
             var result = _customerService.GetCustomerByName(name);
             Assert.IsNull(result);
         }
@@ -124,8 +123,8 @@ namespace Exebite.Business.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var newName = "New name";
-                var newLocationId = 2;
+                const string newName = "New name";
+                const int newLocationId = 2;
                 var customer = _customerService.GetAllCustomers().First();
                 customer.Name = newName;
                 customer.Location = _mapper.Map<Location>(context.Locations.Find(newLocationId));
@@ -138,7 +137,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void DeleteCustomer()
         {
-            var customerName = "Test Customer for delete";
+            const string customerName = "Test Customer for delete";
             var customer = _customerService.GetCustomerByName(customerName);
             _customerService.DeleteCustomer(customer.Id);
             var result = _customerService.GetCustomerByName(customerName);

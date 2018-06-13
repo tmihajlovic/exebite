@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Exebite.Model;
-
-namespace Exebite.Business.GoogleApiImportExport
+﻿namespace Exebite.Business.GoogleApiImportExport
 {
     public interface IGoogleDataExporter
     {

@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Exebite.Model;
 
 namespace Exebite.GoogleSheetAPI.Test.Mocks
 {
     public class FakeDataFactory
     {
-        private Restaurant _restaurant;
+        private readonly Restaurant _restaurant;
 
-        private List<Location> locations = new List<Location>()
+        private readonly List<Location> locations = new List<Location>()
         {
             new Location
             {
@@ -26,7 +25,7 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
             }
         };
 
-        private List<Restaurant> restaurants = new List<Restaurant>()
+        private readonly List<Restaurant> restaurants = new List<Restaurant>()
         {
             new Restaurant
             {
@@ -45,11 +44,11 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
             }
         };
 
-        private List<Customer> customers = new List<Customer>();
+        private readonly List<Customer> customers = new List<Customer>();
 
-        private List<Food> foods = new List<Food>();
+        private readonly List<Food> foods = new List<Food>();
 
-        private List<Order> orders = new List<Order>();
+        private readonly List<Order> orders = new List<Order>();
 
         public FakeDataFactory(string restaurantName)
         {

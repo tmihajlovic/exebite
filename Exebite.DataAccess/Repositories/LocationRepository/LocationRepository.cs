@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Migrations;
 using Exebite.Model;

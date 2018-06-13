@@ -15,7 +15,7 @@ namespace Exebite.JobScheduler.Unity
     /// </summary>
     public static class UnityConfig
     {
-        private static Lazy<IUnityContainer> container =
+        private static readonly Lazy<IUnityContainer> ContainerValue =
           new Lazy<IUnityContainer>(() =>
           {
               var container = new UnityContainer();
@@ -26,7 +26,7 @@ namespace Exebite.JobScheduler.Unity
         /// <summary>
         /// Gets configured Unity Container.
         /// </summary>
-        public static IUnityContainer Container => container.Value;
+        public static IUnityContainer Container => ContainerValue.Value;
 
         public static void RegisterTypes(IUnityContainer container)
         {

@@ -11,6 +11,8 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
     [TestClass]
     public class LipaConectorTest
     {
+        private const string RestaurantName = "Restoran pod Lipom";
+
         private static ILipaConector _lipaConector;
         private static ILipaConector _lipaConector_NullCheck;
         private static ILipaConector _lipaConector_EmptyCheck;
@@ -18,12 +20,12 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         private static IGoogleSheetService _googleSheetService;
         private static IGoogleSheetService _googleSheetService_returnNull;
         private static IGoogleSheetService _googleSheetService_returnEmpty;
-        private static string restaurantName = "Restoran pod Lipom";
-        private FakeDataFactory fakeDataFactory = new FakeDataFactory(restaurantName);
+        private static FakeDataFactory _fakeDataFactory;
 
         [TestInitialize]
         public void Init()
         {
+            _fakeDataFactory = new FakeDataFactory(RestaurantName);
             _googleSpreadsheetIdFactory = new GoogleSpreadsheetIdFactory();
             _googleSheetService = new GoogleSheetServiceFake();
             _googleSheetService_returnNull = new GoogleSheetServiceFake_ReturnNull();
@@ -57,19 +59,19 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         [TestMethod]
         public void PlaceOrders()
         {
-            _lipaConector.PlaceOrders(fakeDataFactory.GetOrders());
+            _lipaConector.PlaceOrders(_fakeDataFactory.GetOrders());
         }
 
         [TestMethod]
         public void WriteMenu()
         {
-            _lipaConector.WriteMenu(fakeDataFactory.GetFoods());
+            _lipaConector.WriteMenu(_fakeDataFactory.GetFoods());
         }
 
         [TestMethod]
         public void WriteKasaTab()
         {
-            _lipaConector.WriteKasaTab(fakeDataFactory.GetCustomers());
+            _lipaConector.WriteKasaTab(_fakeDataFactory.GetCustomers());
         }
 
         [TestMethod]

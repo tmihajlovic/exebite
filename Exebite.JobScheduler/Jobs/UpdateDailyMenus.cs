@@ -6,7 +6,7 @@ namespace Exebite.JobScheduler.Jobs
 {
     public class UpdateDailyMenus : IJob
     {
-        private IGoogleDataImporter _googleDataImporter;
+        private readonly IGoogleDataImporter _googleDataImporter;
 
         public UpdateDailyMenus(IGoogleDataImporter googleDataImporter)
         {

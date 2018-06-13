@@ -11,7 +11,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
     {
         private readonly string _kasaSheet = "Kasa";
 
-        public RestaurantConector(IGoogleSheetService googleSheetService)
+        protected RestaurantConector(IGoogleSheetService googleSheetService)
         {
             GoogleSheetService = googleSheetService;
         }
@@ -66,7 +66,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
                 {
                     if (order.Meal.Foods.FirstOrDefault(f => f.Name == food.Name) != null)
                     {
-                        if (order.Note != null && order.Note != string.Empty)
+                        if (!string.IsNullOrEmpty(order.Note))
                         {
                             customerList.Add(order.Customer.Name + "(" + order.Note + ")");
                         }
@@ -80,7 +80,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
                 formatedData.Add(food.Name);
                 formatedData.Add(customerList.Count);
                 formatedData.Add(food.Price);
-                formatedData.Add("=" + "B" + rowCounter + "*" + "C" + rowCounter); // Add formula to sum
+                formatedData.Add($"=B{rowCounter}*C{rowCounter}"); // Add formula to sum
                 rowCounter++;
                 formatedData.AddRange(customerList);
                 orderRange.Values.Add(formatedData);
@@ -101,7 +101,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
             DateTime dateCounter = DateTime.Today;
 
             var sheetValues = sheetData.Values;
-            var dayOfWeek = this.GetLocalDayName(dateCounter.DayOfWeek);
+            var dayOfWeek = GetLocalDayName(dateCounter.DayOfWeek);
             int today = 0;
             for (int i = 0; i < sheetValues.Count; i++)
             {
@@ -112,7 +112,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
             }
 
             ValueRange updatedRange = new ValueRange { Values = new List<IList<object>>() };
-            int daysToAdd = 0;
+            const int daysToAdd = 0;
 
             // Insert today and after
             for (int i = today; i < sheetValues.Count; i++)
@@ -188,7 +188,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
             IEnumerable<Food> foods = new List<Food>();
 
             // Null and empty check
-            if (!(sheetData != null && sheetData.Values != null && sheetData.Values.Any()))
+            if (!(sheetData?.Values?.Any() == true))
             {
                 return foods.ToList();
             }
@@ -241,7 +241,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         /// </summary>
         /// <param name="day">Day of week</param>
         /// <returns>Translated day of week</returns>
-        internal string GetLocalDayName(DayOfWeek day)
+        internal static string GetLocalDayName(DayOfWeek day)
         {
             var dayString = string.Empty;
             switch (day)
@@ -279,7 +279,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         /// </summary>
         /// <param name="foodType">Value of food enum</param>
         /// <returns>Name</returns>
-        internal string GetLocalFoodType(FoodType foodType)
+        internal static string GetLocalFoodType(FoodType foodType)
         {
             string typeLocal = "Glavno jelo";
 
@@ -320,43 +320,35 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         /// </summary>
         /// <param name="type">Type of food</param>
         /// <returns>Enum value</returns>
-        internal FoodType GetFoodType(string type)
+        internal static FoodType GetFoodType(string type)
         {
             if (type == null)
             {
                 type = "Glavno jelo";
             }
 
-            FoodType result = FoodType.MAIN_COURSE;
-
             switch (type)
             {
                 case "Glavno jelo":
-                    result = FoodType.MAIN_COURSE;
-                    break;
+                    return FoodType.MAIN_COURSE;
 
                 case "Prilog":
-                    result = FoodType.SIDE_DISH;
-                    break;
+                    return FoodType.SIDE_DISH;
 
                 case "Salata":
-                    result = FoodType.SALAD;
-                    break;
+                    return FoodType.SALAD;
 
                 case "Desert":
-                    result = FoodType.DESERT;
-                    break;
+                    return FoodType.DESERT;
 
                 case "Supa":
-                    result = FoodType.SOUP;
-                    break;
+                    return FoodType.SOUP;
 
                 case "Dodatak":
-                    result = FoodType.CONDIMENTS;
-                    break;
+                    return FoodType.CONDIMENTS;                
             }
 
-            return result;
+            return FoodType.MAIN_COURSE;
         }
     }
 }

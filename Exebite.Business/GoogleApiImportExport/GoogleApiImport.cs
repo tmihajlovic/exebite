@@ -7,13 +7,13 @@ namespace Exebite.Business.GoogleApiImportExport
 {
     public class GoogleApiImport : IGoogleDataImporter
     {
-        private IRestaurantService _restaurantService;
-        private IFoodService _foodService;
+        private readonly IRestaurantService _restaurantService;
+        private readonly IFoodService _foodService;
 
         // connectors
-        private ILipaConector _lipaConector;
-        private IHedoneConector _hedoneConector;
-        private ITeglasConector _teglasConector;
+        private readonly ILipaConector _lipaConector;
+        private readonly IHedoneConector _hedoneConector;
+        private readonly ITeglasConector _teglasConector;
 
         public GoogleApiImport(IRestaurantService restaurantService, IFoodService foodService, ILipaConector lipaConector, ITeglasConector teglasConector, IHedoneConector hedoneConector)
         {

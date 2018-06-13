@@ -2,7 +2,7 @@
 
 namespace Exebite.DataAccess.Repositories
 {
-    public interface ICustomerAliasRepository : IDatabaseRepository<CustomerAliases,CustomerAliasQueryModel>
+    public interface ICustomerAliasRepository : IDatabaseRepository<CustomerAliases, CustomerAliasQueryModel>
     {
     }
 }

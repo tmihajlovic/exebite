@@ -68,9 +68,9 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public override IList<Food> Query(FoodQueryModel entity)
+        public override IList<Food> Query(FoodQueryModel queryModel)
         {
-            if (entity == null)
+            if (queryModel == null)
             {
                 throw new System.ArgumentException("queryModel can't be null");
             }
@@ -79,9 +79,9 @@ namespace Exebite.DataAccess.Repositories
             {
                 var query = context.Foods.AsQueryable();
 
-                if (entity.Id != null)
+                if (queryModel.Id != null)
                 {
-                    query = query.Where(x => x.Id == entity.Id.Value);
+                    query = query.Where(x => x.Id == queryModel.Id.Value);
                 }
 
                 var results = query.ToList();

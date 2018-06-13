@@ -7,7 +7,7 @@ namespace Exebite.Business
 {
     public class LocationService : ILocationService
     {
-        private ILocationRepository _locationHandler;
+        private readonly ILocationRepository _locationHandler;
 
         public LocationService(ILocationRepository locationHandler)
         {
@@ -26,7 +26,7 @@ namespace Exebite.Business
 
         public Location GetLocationByName(string name)
         {
-            if (name == string.Empty)
+            if (string.IsNullOrEmpty(name))
             {
                 throw new System.ArgumentException("Name cant be empty string");
             }

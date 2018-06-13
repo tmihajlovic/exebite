@@ -10,9 +10,9 @@ namespace Exebite.Business.Test.Mocks
 {
     public class LipaConectorMock : ILipaConector
     {
-        private IFoodOrderingContextFactory _factory;
-        private IMapper _mapper;
-        private string restaurantName = "Restoran pod Lipom";
+        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMapper _mapper;
+        private readonly string restaurantName = "Restoran pod Lipom";
 
         public LipaConectorMock(IFoodOrderingContextFactory factory, IMapper mapper)
         {

@@ -6,6 +6,5 @@ namespace Exebite.DataAccess.AutoMapper
 {
     public interface IFoodToFoodEntityConverter : ITypeConverter<Food, FoodEntity>
     {
-
     }
 }

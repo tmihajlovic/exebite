@@ -12,7 +12,7 @@ namespace Exebite.Business.Test.Mocks
             var context = contextFactory.Create();
 
             var isSeeded = context.Restaurants.Any();
-            if (isSeeded == true)
+            if (isSeeded)
             {
                 return;
             }

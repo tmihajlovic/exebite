@@ -4,9 +4,8 @@ namespace Exebite.Common
 {
     public interface IGetDateTime
     {
-         DateTime Now();
+        DateTime Now();
 
-         DateTime UtcNow();
-        
+        DateTime UtcNow();
     }
 }

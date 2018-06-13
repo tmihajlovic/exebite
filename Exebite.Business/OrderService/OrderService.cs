@@ -8,7 +8,7 @@ namespace Exebite.Business
 {
     public class OrderService : IOrderService
     {
-        private IOrderRepository _orderRepository;
+        private readonly IOrderRepository _orderRepository;
 
         public OrderService(IOrderRepository orderRepository)
         {

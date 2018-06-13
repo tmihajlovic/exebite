@@ -1,14 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.Model;
-using System.Linq;
 
 namespace Exebite.DataAccess
 {
     public class DataAccessMappingProfile : Profile
     {
-
         public DataAccessMappingProfile()
         {
             CreateMap(typeof(CustomerEntity), typeof(Customer));
@@ -33,7 +32,5 @@ namespace Exebite.DataAccess
         }
 
         public override string ProfileName => "DataAccessMappingProfile";
-
-
     }
 }

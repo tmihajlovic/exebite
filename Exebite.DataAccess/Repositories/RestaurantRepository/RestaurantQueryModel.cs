@@ -3,6 +3,5 @@
     public class RestaurantQueryModel
     {
         public int? Id { get; set; }
-
     }
 }
