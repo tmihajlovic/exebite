@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Google.Apis.Sheets.v4.Data;
 
 namespace Exebite.GoogleSheetAPI.Test.Mocks
@@ -125,13 +126,12 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
 
         private static int CheckDate(string dateToday)
         {
-            var checkDate = DateTime.Parse(dateToday);
+            var checkDate = DateTime.ParseExact(dateToday, "dd-MM-yyyy", CultureInfo.InvariantCulture);
             int addDays = 1;
             if (checkDate.DayOfWeek == DayOfWeek.Friday)
             {
                 addDays = 3;
             }
-
             return addDays;
         }
     }
