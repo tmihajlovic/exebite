@@ -16,8 +16,8 @@ namespace Exebite.Business.Test.Tests
 
         // Services
         private static IOrderService _orderService;
-        private static ICustomerService _customerService;
-        private static IRestaurantService _restaurantService;
+        private static ICustomerRepository _customerRepository;
+        private static IRestaurantRepository _restaurantRepository;
 
         // Conectors
         private static ILipaConector _lipaConector;
@@ -35,26 +35,26 @@ namespace Exebite.Business.Test.Tests
             _factory = new InMemoryDBFactory();
             _mapper = continer.Resolve<IMapper>();
             _orderService = new OrderService(new OrderRepository(_factory, _mapper));
-            _customerService = new CustomerService(new CustomerRepository(_factory, _mapper));
-            _restaurantService = new RestaurantService(new RestaurantRepository(_factory, _mapper));
+            _customerRepository = new CustomerRepository(_factory, _mapper);
+            _restaurantRepository = new RestaurantRepository(_factory, _mapper);
             _lipaConector = new LipaConectorMock(_factory, _mapper);
             _hedoneConector = new HedoneConectorMock(_factory, _mapper);
             _teglasConector = new TeglasConectorMock(_factory, _mapper);
-            _googleDataExporter = new GoogleApiExport(_teglasConector, _hedoneConector, _lipaConector, _orderService, _customerService, _restaurantService);
+            _googleDataExporter = new GoogleApiExport(_teglasConector, _hedoneConector, _lipaConector, _orderService, _customerRepository, _restaurantRepository);
             InMemoryDBSeed.Seed(_factory);
         }
 
         [TestMethod]
         public void PlaceOrders()
         {
-            var restaurant = _restaurantService.GetRestaurantById(1);
+            var restaurant = _restaurantRepository.GetByID(1);
             _googleDataExporter.PlaceOrdersForRestaurant(restaurant.Name);
         }
 
         [TestMethod]
         public void PlaceOrders_NoOrders()
         {
-            var restaurant = _restaurantService.GetRestaurantById(2);
+            var restaurant = _restaurantRepository.GetByID(2);
             _googleDataExporter.PlaceOrdersForRestaurant(restaurant.Name);
         }
 

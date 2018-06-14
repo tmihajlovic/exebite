@@ -50,12 +50,12 @@ namespace Exebite.API
                 });
 
             services.AddDataAccessServices();
-            services.AddTransient<ICustomerService, CustomerService>();
-            services.AddTransient<ILocationService, LocationService>();
-            services.AddTransient<IRestaurantService, RestaurantService>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<ILocationRepository, LocationRepository>();
+            services.AddTransient<IRestaurantRepository, RestaurantRepository>();
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<IOrderService, OrderService>();
-            services.AddTransient<IFoodService, FoodService>();
+            services.AddTransient<IFoodRepository, FoodRepository>();
             services.AddTransient<IMealRepository, MealRepository>();
             services.AddTransient<IRecipeRepository, RecipeRepository>();
             services.AddTransient<ICustomerAliasRepository, CustomerAliasRepository>();

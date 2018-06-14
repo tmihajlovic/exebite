@@ -107,6 +107,11 @@ namespace Exebite.DataAccess.Repositories
                     query = query.Where(x => x.Id == queryModel.Id.Value);
                 }
 
+                if (!string.IsNullOrWhiteSpace(queryModel.Name))
+                {
+                    query = query.Where(x => x.Name == queryModel.Name);
+                }
+
                 var results = query.ToList();
                 return _mapper.Map<IList<Restaurant>>(results);
             }

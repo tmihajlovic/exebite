@@ -2,6 +2,7 @@
 using System.Linq;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess.Context;
+using Exebite.DataAccess.Repositories;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,13 +11,13 @@ namespace Exebite.Business.Test.Tests
     [TestClass]
     public class RestarauntServiceTest
     {
-        private static IRestaurantService _restaurantService;
+        private static IRestaurantRepository _restaurantRepository;
 
         [TestInitialize]
         public void Init()
         {
             var cointeiner = ServiceProviderWrapper.GetContainer();
-            _restaurantService = cointeiner.Resolve<IRestaurantService>();
+            _restaurantRepository = cointeiner.Resolve<IRestaurantRepository>();
             var factory = cointeiner.Resolve<IFoodOrderingContextFactory>();
             InMemoryDBSeed.Seed(factory);
         }
@@ -24,7 +25,7 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void GetAllRestaurants()
         {
-            var result = _restaurantService.GetAllRestaurants();
+            var result = _restaurantRepository.Get(0, int.MaxValue);
             Assert.AreNotEqual(result.Count, 0);
         }
 
@@ -32,7 +33,7 @@ namespace Exebite.Business.Test.Tests
         public void GetRestaurantById()
         {
             const int id = 1;
-            var result = _restaurantService.GetRestaurantById(id);
+            var result = _restaurantRepository.GetByID(id);
             Assert.AreEqual(result.Id, id);
         }
 
@@ -40,7 +41,7 @@ namespace Exebite.Business.Test.Tests
         public void GetRestaurantById_NonExisting()
         {
             const int id = 0;
-            var result = _restaurantService.GetRestaurantById(id);
+            var result = _restaurantRepository.GetByID(id);
             Assert.IsNull(result);
         }
 
@@ -48,7 +49,7 @@ namespace Exebite.Business.Test.Tests
         public void GetRestaurantByName()
         {
             const string name = "Restoran pod Lipom";
-            var result = _restaurantService.GetRestaurantByName(name);
+            var result = _restaurantRepository.GetByName(name);
             Assert.AreEqual(result.Name, name);
         }
 
@@ -56,7 +57,7 @@ namespace Exebite.Business.Test.Tests
         public void GetRestaurantByName_NonExisting()
         {
             const string name = "NonExistingRestaurant";
-            var result = _restaurantService.GetRestaurantByName(name);
+            var result = _restaurantRepository.GetByName(name);
             Assert.IsNull(result);
         }
 
@@ -64,7 +65,7 @@ namespace Exebite.Business.Test.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void GetRestaurantByName_StringEmpty()
         {
-            _restaurantService.GetRestaurantByName(string.Empty);
+            _restaurantRepository.GetByName(string.Empty);
         }
 
         [TestMethod]
@@ -74,7 +75,7 @@ namespace Exebite.Business.Test.Tests
             {
                 Name = "New restaurant"
             };
-            var result = _restaurantService.CreateNewRestaurant(newRestaurant);
+            var result = _restaurantRepository.Insert(newRestaurant);
             Assert.IsNotNull(result);
         }
 
@@ -82,7 +83,7 @@ namespace Exebite.Business.Test.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateNewRestaurant_IsNull()
         {
-            _restaurantService.CreateNewRestaurant(null);
+            _restaurantRepository.Insert(null);
         }
 
         [TestMethod]
@@ -90,11 +91,11 @@ namespace Exebite.Business.Test.Tests
         {
             const int id = 1;
             const int foodCount = 3;
-            var restaurant = _restaurantService.GetRestaurantById(id);
+            var restaurant = _restaurantRepository.GetByID(id);
             var foods = restaurant.Foods;
             restaurant.DailyMenu.Clear();
             restaurant.DailyMenu.AddRange(foods.Take(foodCount));
-            var result = _restaurantService.UpdateRestaurant(restaurant);
+            var result = _restaurantRepository.Update(restaurant);
             Assert.AreEqual(result.DailyMenu.Count, foodCount);
         }
 
@@ -102,16 +103,16 @@ namespace Exebite.Business.Test.Tests
         public void DeleteRestourant()
         {
             const string name = "For delete";
-            var restaurant = _restaurantService.GetRestaurantByName(name);
-            _restaurantService.DeleteRestaurant(restaurant.Id);
-            var result = _restaurantService.GetRestaurantById(restaurant.Id);
+            var restaurant = _restaurantRepository.GetByName(name);
+            _restaurantRepository.Delete(restaurant.Id);
+            var result = _restaurantRepository.GetByID(restaurant.Id);
             Assert.IsNull(result);
         }
 
         [TestMethod]
         public void DeleteRestourant_NonExisting()
         {
-            _restaurantService.DeleteRestaurant(0);
+            _restaurantRepository.Delete(0);
         }
     }
 }

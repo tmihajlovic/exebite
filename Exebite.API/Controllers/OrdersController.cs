@@ -2,6 +2,7 @@
 using AutoMapper;
 using Exebite.API.Models;
 using Exebite.Business;
+using Exebite.DataAccess.Repositories;
 using Exebite.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,18 +14,18 @@ namespace Exebite.API.Controllers
     [Authorize]
     public class OrdersController : Controller
     {
-        private readonly ICustomerService _customerService;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IMenuService _menuService;
         private readonly IOrderService _orderService;
-        private readonly IFoodService _foodService;
+        private readonly IFoodRepository _foodRepository;
         private readonly IMapper _mapper;
 
-        public OrdersController(ICustomerService customerService, IMenuService menuService, IOrderService orderService, IFoodService foodService, IMapper mapper)
+        public OrdersController(ICustomerRepository customerRepository, IMenuService menuService, IOrderService orderService, IFoodRepository foodRepository, IMapper mapper)
         {
-            _customerService = customerService;
+            _customerRepository = customerRepository;
             _menuService = menuService;
             _orderService = orderService;
-            _foodService = foodService;
+            _foodRepository = foodRepository;
             _mapper = mapper;
         }
 

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess.Context;
+using Exebite.DataAccess.Repositories;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -9,7 +11,7 @@ namespace Exebite.Business.Test.Tests
     [TestClass]
     public class LocationServiceTest
     {
-        private static ILocationService _locationService;
+        private static ILocationRepository _locationRepository;
         private static IFoodOrderingContextFactory _factory;
 
         [TestInitialize]
@@ -19,13 +21,13 @@ namespace Exebite.Business.Test.Tests
             _factory = container.Resolve<IFoodOrderingContextFactory>();
             InMemoryDBSeed.Seed(_factory);
 
-            _locationService = container.Resolve<ILocationService>();
+            _locationRepository = container.Resolve<ILocationRepository>();
         }
 
         [TestMethod]
         public void GetAllLocations()
         {
-            var result = _locationService.GetLocations(0, int.MaxValue);
+            var result = _locationRepository.Get(0, int.MaxValue);
             Assert.IsNotNull(result);
         }
 
@@ -33,37 +35,14 @@ namespace Exebite.Business.Test.Tests
         public void GetLocationById()
         {
             const int id = 1;
-            var result = _locationService.GetLocationById(id);
+            var result = _locationRepository.GetByID(id);
             Assert.IsNotNull(result);
         }
 
         [TestMethod]
         public void GetLocationById_NonExisting()
         {
-            var result = _locationService.GetLocationById(0);
-            Assert.IsNull(result);
-        }
-
-        [TestMethod]
-        public void GetLocationByName()
-        {
-            const string name = "Bulevar";
-            var result = _locationService.GetLocationByName(name);
-            Assert.AreEqual(result.Name, name);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void GetLocationByName_StringEmpty()
-        {
-            _locationService.GetLocationByName(string.Empty);
-        }
-
-        [TestMethod]
-        public void GetLocationByName_NonExisting()
-        {
-            const string name = "NonExistingLocaiotn";
-            var result = _locationService.GetLocationByName(name);
+            var result = _locationRepository.GetByID(0);
             Assert.IsNull(result);
         }
 
@@ -73,9 +52,9 @@ namespace Exebite.Business.Test.Tests
             Location newLocation = new Location
             {
                 Name = "New location",
-                Address = "New location adress"
+                Address = "New location address"
             };
-            var result = _locationService.CreateNewLocation(newLocation);
+            var result = _locationRepository.Insert(newLocation);
             Assert.IsNotNull(result);
         }
 
@@ -83,7 +62,7 @@ namespace Exebite.Business.Test.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateNewLocaiotn_IsNull()
         {
-            _locationService.CreateNewLocation(null);
+            _locationRepository.Insert(null);
         }
 
         [TestMethod]
@@ -91,11 +70,11 @@ namespace Exebite.Business.Test.Tests
         {
             const int id = 1;
             const string newName = "New name";
-            const string newAdress = "New adress";
-            var location = _locationService.GetLocationById(id);
+            const string newAdress = "New address";
+            var location = _locationRepository.GetByID(id);
             location.Name = newName;
             location.Address = newAdress;
-            var result = _locationService.UpdateLocation(location);
+            var result = _locationRepository.Update(location);
             Assert.AreEqual(result.Id, id);
             Assert.AreEqual(result.Name, newName);
             Assert.AreEqual(result.Address, newAdress);
@@ -105,16 +84,16 @@ namespace Exebite.Business.Test.Tests
         public void DeleteLocation()
         {
             const string name = "For delete";
-            var location = _locationService.GetLocationByName(name);
-            _locationService.DeleteLocation(location.Id);
-            var result = _locationService.GetLocationById(location.Id);
+            var location = _locationRepository.Get(0, int.MaxValue).FirstOrDefault(x => x.Name == name);
+            _locationRepository.Delete(location.Id);
+            var result = _locationRepository.GetByID(location.Id);
             Assert.IsNull(result);
         }
 
         [TestMethod]
         public void DeleteLocation_NonExisting()
         {
-            _locationService.DeleteLocation(0);
+            _locationRepository.Delete(0);
         }
     }
 }

@@ -26,11 +26,11 @@ namespace Exebite.Business.Test
                                         .AddTransient<ILocationRepository, LocationRepository>()
                                         .AddTransient<IOrderRepository, OrderRepository>()
 
-                                        .AddTransient<IFoodService, FoodService>()
+                                        .AddTransient<IFoodRepository, FoodRepository>()
                                         .AddTransient<IMenuService, MenuService>()
-                                        .AddTransient<IRestaurantService, RestaurantService>()
-                                        .AddTransient<ICustomerService, CustomerService>()
-                                        .AddTransient<ILocationService, LocationService>()
+                                        .AddTransient<IRestaurantRepository, RestaurantRepository>()
+                                        .AddTransient<ICustomerRepository, CustomerRepository>()
+                                        .AddTransient<ILocationRepository, LocationRepository>()
                                         .AddTransient<IOrderService, OrderService>()
 
                                         .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()

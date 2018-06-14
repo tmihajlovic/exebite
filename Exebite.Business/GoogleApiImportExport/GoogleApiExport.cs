@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Exebite.DataAccess.Repositories;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 
 namespace Exebite.Business.GoogleApiImportExport
@@ -8,15 +9,15 @@ namespace Exebite.Business.GoogleApiImportExport
     {
         // Services
         private readonly IOrderService _orderService;
-        private readonly ICustomerService _customerService;
-        private readonly IRestaurantService _restaurantService;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IRestaurantRepository _restaurantRepository;
 
         // Conectors
         private readonly ILipaConector _lipaConector;
         private readonly IHedoneConector _hedoneConector;
         private readonly ITeglasConector _teglasConector;
 
-        public GoogleApiExport(ITeglasConector teglasConector, IHedoneConector hedoneConector, ILipaConector lipaConector, IOrderService orderService, ICustomerService customerService, IRestaurantService restaurantService)
+        public GoogleApiExport(ITeglasConector teglasConector, IHedoneConector hedoneConector, ILipaConector lipaConector, IOrderService orderService, ICustomerRepository customerRepository, IRestaurantRepository restaurantRepository)
         {
             // Conectors
             _lipaConector = lipaConector;
@@ -25,9 +26,11 @@ namespace Exebite.Business.GoogleApiImportExport
 
             // Services
             _orderService = orderService;
-            _customerService = customerService;
-            _restaurantService = restaurantService;
+            _customerRepository = customerRepository;
+            _restaurantRepository = restaurantRepository;
         }
+
+        public IRestaurantRepository RestaurantRepository => _restaurantRepository;
 
         /// <summary>
         /// Place orders for restaurant
@@ -38,21 +41,33 @@ namespace Exebite.Business.GoogleApiImportExport
             switch (restaurantName)
             {
                 case "Restoran pod Lipom":
-                    var lipa = _restaurantService.GetRestaurantByName(restaurantName);
-                    var lipaOrders = _orderService.GetAllOrdersForRestoraunt(lipa.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
-                    _lipaConector.PlaceOrders(lipaOrders);
+                    var lipa = RestaurantRepository.Query(new RestaurantQueryModel { Name = restaurantName }).FirstOrDefault();
+                    if (lipa != null)
+                    {
+                        var lipaOrders = _orderService.GetAllOrdersForRestoraunt(lipa.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
+                        _lipaConector.PlaceOrders(lipaOrders);
+                    }
+
                     break;
 
                 case "Hedone":
-                    var hedone = _restaurantService.GetRestaurantByName(restaurantName);
-                    var hedoneOrders = _orderService.GetAllOrdersForRestoraunt(hedone.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
-                    _hedoneConector.PlaceOrders(hedoneOrders);
+                    var hedone = RestaurantRepository.Query(new RestaurantQueryModel { Name = restaurantName }).FirstOrDefault();
+                    if (hedone != null)
+                    {
+                        var hedoneOrders = _orderService.GetAllOrdersForRestoraunt(hedone.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
+                        _hedoneConector.PlaceOrders(hedoneOrders);
+                    }
+
                     break;
 
                 case "Teglas":
-                    var teglas = _restaurantService.GetRestaurantByName(restaurantName);
-                    var teglasOrders = _orderService.GetAllOrdersForRestoraunt(teglas.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
-                    _teglasConector.PlaceOrders(teglasOrders);
+                    var teglas = RestaurantRepository.Query(new RestaurantQueryModel { Name = restaurantName }).FirstOrDefault();
+                    if (teglas != null)
+                    {
+                        var teglasOrders = _orderService.GetAllOrdersForRestoraunt(teglas.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
+                        _teglasConector.PlaceOrders(teglasOrders);
+                    }
+
                     break;
 
                 default:
@@ -74,7 +89,7 @@ namespace Exebite.Business.GoogleApiImportExport
         /// </summary>
         public void UpdateKasaTab()
         {
-            var customerList = _customerService.GetAllCustomers();
+            var customerList = _customerRepository.Get(0, int.MaxValue).ToList();
             _teglasConector.WriteKasaTab(customerList);
 
             _lipaConector.WriteKasaTab(customerList);

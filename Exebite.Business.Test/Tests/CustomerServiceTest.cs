@@ -3,6 +3,7 @@ using System.Linq;
 using AutoMapper;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess.Context;
+using Exebite.DataAccess.Repositories;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,7 +12,7 @@ namespace Exebite.Business.Test.Tests
     [TestClass]
     public class CustomerServiceTest
     {
-        private static ICustomerService _customerService;
+        private static ICustomerRepository _customerRepository;
         private static IFoodOrderingContextFactory _factory;
 
         private static IMapper _mapper;
@@ -23,51 +24,27 @@ namespace Exebite.Business.Test.Tests
             _factory = container.Resolve<IFoodOrderingContextFactory>();
             _mapper = container.Resolve<IMapper>();
             InMemoryDBSeed.Seed(_factory);
-            _customerService = container.Resolve<ICustomerService>();
+            _customerRepository = container.Resolve<ICustomerRepository>();
         }
 
         [TestMethod]
         public void GetAllCustomer()
         {
-            var result = _customerService.GetAllCustomers();
+            var result = _customerRepository.Get(0, int.MaxValue);
             Assert.AreNotEqual(result.Count, 0);
         }
 
         [TestMethod]
         public void GetCustomerById()
         {
-            var result = _customerService.GetCustomerById(1);
+            var result = _customerRepository.GetByID(1);
             Assert.AreEqual(result.Id, 1);
         }
 
         [TestMethod]
         public void GetCustomerById_NonExisting()
         {
-            var result = _customerService.GetCustomerById(0);
-            Assert.IsNull(result);
-        }
-
-        [TestMethod]
-        public void GetCustomerByIdentityId()
-        {
-            const string appId = "TestAppUserId";
-            var result = _customerService.GetCustomerByIdentityId(appId);
-            Assert.AreEqual(result.AppUserId, appId);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void GetCustomerByIdentityId_StringEmpity()
-        {
-            var appId = string.Empty;
-            var result = _customerService.GetCustomerByIdentityId(appId);
-        }
-
-        [TestMethod]
-        public void GetCustomerByIdentityId_NonExisting()
-        {
-            const string appId = "NonExistingId";
-            var result = _customerService.GetCustomerByIdentityId(appId);
+            var result = _customerRepository.GetByID(0);
             Assert.IsNull(result);
         }
 
@@ -75,7 +52,7 @@ namespace Exebite.Business.Test.Tests
         public void GetCustomerByName()
         {
             const string name = "Test Customer";
-            var result = _customerService.GetCustomerByName(name);
+            var result = _customerRepository.GetByName(name);
             Assert.AreEqual(result.Name, name);
         }
 
@@ -83,7 +60,7 @@ namespace Exebite.Business.Test.Tests
         public void GetCustomerByName_NonExisting()
         {
             const string name = "Non existing customer";
-            var result = _customerService.GetCustomerByName(name);
+            var result = _customerRepository.GetByName(name);
             Assert.IsNull(result);
         }
 
@@ -91,7 +68,7 @@ namespace Exebite.Business.Test.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void GetCustomerByName_EmptyString()
         {
-            _customerService.GetCustomerByName(string.Empty);
+            _customerRepository.GetByName(string.Empty);
         }
 
         [TestMethod]
@@ -106,7 +83,7 @@ namespace Exebite.Business.Test.Tests
                     Name = "New Customer",
                     Location = _mapper.Map<Location>(context.Locations.First())
                 };
-                var result = _customerService.CreateCustomer(newCustomer);
+                var result = _customerRepository.Insert(newCustomer);
                 Assert.IsNotNull(result);
             }
         }
@@ -115,7 +92,7 @@ namespace Exebite.Business.Test.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateCustomer_Null()
         {
-            _customerService.CreateCustomer(null);
+            _customerRepository.Insert(null);
         }
 
         [TestMethod]
@@ -125,10 +102,10 @@ namespace Exebite.Business.Test.Tests
             {
                 const string newName = "New name";
                 const int newLocationId = 2;
-                var customer = _customerService.GetAllCustomers().First();
+                var customer = _customerRepository.Get(0, int.MaxValue).First();
                 customer.Name = newName;
                 customer.LocationId = newLocationId;
-                var result = _customerService.UpdateCustomer(customer);
+                var result = _customerRepository.Update(customer);
                 Assert.AreEqual(result.Name, newName);
                 Assert.AreEqual(result.LocationId, newLocationId);
             }
@@ -138,16 +115,16 @@ namespace Exebite.Business.Test.Tests
         public void DeleteCustomer()
         {
             const string customerName = "Test Customer for delete";
-            var customer = _customerService.GetCustomerByName(customerName);
-            _customerService.DeleteCustomer(customer.Id);
-            var result = _customerService.GetCustomerByName(customerName);
+            var customer = _customerRepository.GetByName(customerName);
+            _customerRepository.Delete(customer.Id);
+            var result = _customerRepository.GetByName(customerName);
             Assert.IsNull(result);
         }
 
         [TestMethod]
         public void DeleteCustomer_NonExisting()
         {
-            _customerService.DeleteCustomer(0);
+            _customerRepository.Delete(0);
         }
     }
 }
