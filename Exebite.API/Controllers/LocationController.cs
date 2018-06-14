@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
 using Exebite.API.Models;
-using Exebite.Business;
+using Exebite.DataAccess.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,32 +12,32 @@ namespace Exebite.API.Controllers
     [Authorize]
     public class LocationController : Controller
     {
-        private readonly ILocationService _locationService;
-        private readonly IMapper _exebiteMapper;
+        private readonly ILocationRepository _locationRepository;
+        private readonly IMapper _mapper;
 
-        public LocationController(ILocationService locationService, IMapper exebiteMapper)
+        public LocationController(ILocationRepository locationRepository, IMapper mapper)
         {
-            _locationService = locationService;
-            _exebiteMapper = exebiteMapper;
+            _locationRepository = locationRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var locations = _exebiteMapper.Map<IEnumerable<LocationModel>>(_locationService.GetLocations(0, int.MaxValue));
+            var locations = _mapper.Map<IEnumerable<LocationModel>>(_locationRepository.Get(0, int.MaxValue));
             return Ok(locations);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var location = _locationService.GetLocationById(id);
+            var location = _locationRepository.GetByID(id);
             if (location == null)
             {
                 return NotFound();
             }
 
-            return Ok(_exebiteMapper.Map<LocationModel>(location));
+            return Ok(_mapper.Map<LocationModel>(location));
         }
 
         [HttpPost]
@@ -48,7 +48,7 @@ namespace Exebite.API.Controllers
                 return BadRequest();
             }
 
-            var createdLocation = _locationService.CreateNewLocation(_exebiteMapper.Map<Model.Location>(model));
+            var createdLocation = _locationRepository.Insert(_mapper.Map<Model.Location>(model));
 
             return Ok(new { createdLocation.Id });
         }
@@ -61,23 +61,30 @@ namespace Exebite.API.Controllers
                 return BadRequest();
             }
 
-            var currentLocation = _locationService.GetLocationById(id);
+            var currentLocation = _locationRepository.GetByID(id);
             if (currentLocation == null)
             {
                 return NotFound();
             }
 
-            _exebiteMapper.Map(model, currentLocation);
+            _mapper.Map(model, currentLocation);
 
-            var updatedLocation = _locationService.UpdateLocation(currentLocation);
+            var updatedLocation = _locationRepository.Update(currentLocation);
             return Ok(new { updatedLocation.Id });
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _locationService.DeleteLocation(id);
+            _locationRepository.Delete(id);
             return NoContent();
+        }
+
+        [HttpGet("Query")]
+        public IActionResult Query(LocationQueryModel query)
+        {
+            var locations = _locationRepository.Query(query);
+            return Ok(_mapper.Map<IEnumerable<LocationModel>>(locations));
         }
     }
 }

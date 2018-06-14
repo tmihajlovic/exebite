@@ -45,7 +45,7 @@ namespace Exebite.API
             CreateMap(typeof(UpdateRecipeModel), typeof(Recipe));
             #endregion RecipeModel
             #region ResaurantModel
-            CreateMap(typeof(Restaurant), typeof(RestaurantViewModel));
+            CreateMap(typeof(Restaurant), typeof(RestaurantModel));
             #endregion  ResaurantModel
         }
     }

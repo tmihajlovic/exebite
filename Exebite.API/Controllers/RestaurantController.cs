@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
 using Exebite.API.Models;
-using Exebite.Business;
+using Exebite.DataAccess.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,69 +12,62 @@ namespace Exebite.API.Controllers
     [Authorize]
     public class RestaurantController : Controller
     {
-        private readonly IRestaurantService _restaurantService;
-        private readonly IMapper _exebiteMapper;
+        private readonly IRestaurantRepository _restaurantRepository;
+        private readonly IMapper _mapper;
 
-        public RestaurantController(IRestaurantService restaurantService, IMapper exebiteMapper)
+        public RestaurantController(IRestaurantRepository restaurantRepository, IMapper mapper)
         {
-            _restaurantService = restaurantService;
-            _exebiteMapper = exebiteMapper;
+            _restaurantRepository = restaurantRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var restaurants = _exebiteMapper.Map<IEnumerable<RestaurantViewModel>>(_restaurantService.GetAllRestaurants());
+            var restaurants = _mapper.Map<IEnumerable<RestaurantModel>>(_restaurantRepository.Get(0, int.MaxValue));
             return Ok(restaurants);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var restaurant = _restaurantService.GetRestaurantById(id);
+            var restaurant = _restaurantRepository.GetByID(id);
             if (restaurant == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            return Ok(_exebiteMapper.Map<RestaurantViewModel>(restaurant));
+            return Ok(_mapper.Map<RestaurantModel>(restaurant));
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]string value)
+        public IActionResult Post([FromBody]string name)
         {
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(name))
             {
                 return BadRequest();
             }
 
-            var createdRestaurant = _restaurantService.CreateNewRestaurant(
-                    new Model.Restaurant
-                    {
-                        Name = value,
-                        DailyMenu = new List<Model.Food>(),
-                        Foods = new List<Model.Food>()
-                    });
-
+            var createdRestaurant = _restaurantRepository.Insert(new Model.Restaurant { Name = name });
             return Ok(createdRestaurant.Id);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody]string name)
         {
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(name))
             {
                 return BadRequest();
             }
 
-            var currentRestaurant = _restaurantService.GetRestaurantById(id);
+            var currentRestaurant = _restaurantRepository.GetByID(id);
             if (currentRestaurant == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            currentRestaurant.Name = value;
-            var updatedRestaurant = _restaurantService.UpdateRestaurant(currentRestaurant);
+            currentRestaurant.Name = name;
+            var updatedRestaurant = _restaurantRepository.Update(currentRestaurant);
 
             return Ok(updatedRestaurant.Id);
         }
@@ -82,8 +75,15 @@ namespace Exebite.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _restaurantService.DeleteRestaurant(id);
+            _restaurantRepository.Delete(id);
             return NoContent();
+        }
+
+        [HttpGet("Query")]
+        public IActionResult Query(RestaurantQueryModel query)
+        {
+            var locations = _restaurantRepository.Query(query);
+            return Ok(_mapper.Map<IEnumerable<RestaurantModel>>(locations));
         }
     }
 }

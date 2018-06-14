@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
 using Exebite.API.Models;
-using Exebite.Business;
+using Exebite.DataAccess.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,32 +12,32 @@ namespace Exebite.API.Controllers
     [Authorize]
     public class FoodController : Controller
     {
-        private readonly IFoodService _foodService;
-        private readonly IMapper _exebiteMapper;
+        private readonly IFoodRepository _foodRepository;
+        private readonly IMapper _mapper;
 
-        public FoodController(IFoodService foodService, IMapper exebiteMapper)
+        public FoodController(IFoodRepository foodRepository, IMapper mapper)
         {
-            _foodService = foodService;
-            _exebiteMapper = exebiteMapper;
+            _foodRepository = foodRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var foods = _exebiteMapper.Map<IEnumerable<FoodModel>>(_foodService.GetAllFoods());
+            var foods = _mapper.Map<IEnumerable<FoodModel>>(_foodRepository.Get(0, int.MaxValue));
             return Ok(foods);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var food = _foodService.GetFoodById(id);
+            var food = _foodRepository.GetByID(id);
             if (food == null)
             {
                 return NotFound();
             }
 
-            return Ok(_exebiteMapper.Map<FoodModel>(food));
+            return Ok(_mapper.Map<FoodModel>(food));
         }
 
         [HttpPost]
@@ -48,7 +48,7 @@ namespace Exebite.API.Controllers
                 return BadRequest();
             }
 
-            var createdFood = _foodService.CreateNewFood(_exebiteMapper.Map<Model.Food>(model));
+            var createdFood = _foodRepository.Insert(_mapper.Map<Model.Food>(model));
 
             return Ok(new { createdFood.Id });
         }
@@ -61,23 +61,29 @@ namespace Exebite.API.Controllers
                 return BadRequest();
             }
 
-            var currentFood = _foodService.GetFoodById(id);
+            var currentFood = _foodRepository.GetByID(id);
             if (currentFood == null)
             {
                 return NotFound();
             }
 
-            _exebiteMapper.Map(model, currentFood);
-
-            var updatedFood = _foodService.UpdateFood(currentFood);
+            _mapper.Map(model, currentFood);
+            var updatedFood = _foodRepository.Update(currentFood);
             return Ok(new { updatedFood.Id });
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _foodService.Delete(id);
+            _foodRepository.Delete(id);
             return NoContent();
+        }
+
+        [HttpGet("Query")]
+        public IActionResult Query(FoodQueryModel query)
+        {
+            var foods = _foodRepository.Query(query);
+            return Ok(_mapper.Map<IEnumerable<FoodModel>>(foods));
         }
     }
 }

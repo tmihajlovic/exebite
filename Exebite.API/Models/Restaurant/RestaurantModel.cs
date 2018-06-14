@@ -1,6 +1,6 @@
 ﻿namespace Exebite.API.Models
 {
-    public class RestaurantViewModel
+    public class RestaurantModel
     {
         public int Id { get; set; }
 

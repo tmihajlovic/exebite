@@ -22,7 +22,6 @@ namespace Exebite.API.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Customer
         [HttpGet]
         public IActionResult Get()
         {
@@ -30,7 +29,6 @@ namespace Exebite.API.Controllers
             return Ok(_mapper.Map<IEnumerable<CustomerModel>>(customers));
         }
 
-        // GET: api/Customer/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -45,7 +43,6 @@ namespace Exebite.API.Controllers
             return Ok(_mapper.Map<IEnumerable<CustomerModel>>(customers));
         }
 
-        // POST: api/Customer
         [HttpPost]
         public IActionResult Post([FromBody]CreateCustomerModel createModel)
         {
@@ -54,7 +51,6 @@ namespace Exebite.API.Controllers
             return Ok(new { id });
         }
 
-        // PUT: api/Customer/5
         [HttpPut("{id}")]
         public IActionResult Put(UpdateCustomerModel customerViewModel)
         {
@@ -63,7 +59,6 @@ namespace Exebite.API.Controllers
             return NoContent();
         }
 
-        // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

@@ -11,18 +11,18 @@ namespace Exebite.API.Controllers
     public class CustomerAliasesController : Controller
     {
         private readonly ICustomerAliasRepository _customerAliasRepository;
-        private readonly IMapper _exebiteMapper;
+        private readonly IMapper _mapper;
 
-        public CustomerAliasesController(ICustomerAliasRepository customerAliasesRepository, IMapper exebiteMapper)
+        public CustomerAliasesController(ICustomerAliasRepository customerAliasesRepository, IMapper mapper)
         {
-            _exebiteMapper = exebiteMapper;
+            _mapper = mapper;
             _customerAliasRepository = customerAliasesRepository;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var customerAliases = _exebiteMapper.Map<IEnumerable<MealModel>>(_customerAliasRepository.Get(0, int.MaxValue));
+            var customerAliases = _mapper.Map<IEnumerable<MealModel>>(_customerAliasRepository.Get(0, int.MaxValue));
             return Ok(customerAliases);
         }
 
@@ -35,7 +35,7 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            return Ok(_exebiteMapper.Map<CustomerAliasModel>(customerAlias));
+            return Ok(_mapper.Map<CustomerAliasModel>(customerAlias));
         }
 
         [HttpPost]
@@ -46,7 +46,7 @@ namespace Exebite.API.Controllers
                 return BadRequest();
             }
 
-            var createdCustomerAlias = _customerAliasRepository.Insert(_exebiteMapper.Map<Model.CustomerAliases>(model));
+            var createdCustomerAlias = _customerAliasRepository.Insert(_mapper.Map<Model.CustomerAliases>(model));
             return Ok(new { createdCustomerAlias.Id });
         }
 
@@ -64,7 +64,7 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            _exebiteMapper.Map(model, currentCustomerAlias);
+            _mapper.Map(model, currentCustomerAlias);
 
             var updatedMeal = _customerAliasRepository.Update(currentCustomerAlias);
             return Ok(new { updatedMeal.Id });
@@ -75,6 +75,13 @@ namespace Exebite.API.Controllers
         {
             _customerAliasRepository.Delete(id);
             return NoContent();
+        }
+
+        [HttpGet("Query")]
+        public IActionResult Query(CustomerAliasQueryModel query)
+        {
+            var locations = _customerAliasRepository.Query(query);
+            return Ok(_mapper.Map<IEnumerable<CustomerAliasModel>>(locations));
         }
     }
 }
