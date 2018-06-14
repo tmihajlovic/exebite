@@ -1,4 +1,4 @@
-﻿using Exebite.DataAccess.Migrations;
+﻿using Exebite.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Exebite.DataAccess.Test.InMemoryDB

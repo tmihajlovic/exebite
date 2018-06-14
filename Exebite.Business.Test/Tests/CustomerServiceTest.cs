@@ -2,7 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using Exebite.Business.Test.Mocks;
-using Exebite.DataAccess.Migrations;
+using Exebite.DataAccess.Context;
 using Exebite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -1,4 +1,4 @@
-﻿namespace Exebite.DataAccess.Migrations
+﻿namespace Exebite.DataAccess.Context
 {
     public interface IFoodOrderingContextFactory
     {

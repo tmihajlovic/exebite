@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Exebite.Business.Test.Mocks;
-using Exebite.DataAccess.Migrations;
+using Exebite.DataAccess.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Exebite.Business.Test.Tests

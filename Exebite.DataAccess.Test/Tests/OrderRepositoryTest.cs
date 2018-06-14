@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Exebite.DataAccess.Migrations;
+using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
 using Exebite.Model;

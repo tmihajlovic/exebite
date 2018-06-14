@@ -1,12 +1,7 @@
-﻿using Exebite.DataAccess.Context;
-
-namespace Exebite.DataAccess.Migrations
+﻿namespace Exebite.DataAccess.Context
 {
-    public class FoodOrderingContextFactory : IFoodOrderingContextFactory // , IDesignTimeDbContextFactory<FoodOrderingContext>
+    public class FoodOrderingContextFactory : IFoodOrderingContextFactory
     {
-        // private static string connString = @"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=Exebite;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
-        // private readonly DbContextOptions<FoodOrderingContext> options = new DbContextOptionsBuilder<FoodOrderingContext>().UseSqlServer(Configuration["ConnectionStrings"]).UseLazyLoadingProxies().Options;
         private readonly IExebiteDbContextOptionsFactory _optionsFactory;
 
         public FoodOrderingContextFactory(IExebiteDbContextOptionsFactory optionsFactory)
@@ -20,10 +15,5 @@ namespace Exebite.DataAccess.Migrations
 
             return new FoodOrderingContext(options);
         }
-
-        // public FoodOrderingContext CreateDbContext(string[] args)
-        // {
-        //    return new FoodOrderingContext(options);
-        // }
     }
 }

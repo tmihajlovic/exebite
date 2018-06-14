@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Exebite.DataAccess.Migrations;
+using Exebite.DataAccess.Context;
 
 namespace Exebite.DataAccess.Test.InMemoryDB
 {

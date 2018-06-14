@@ -132,6 +132,7 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
             {
                 addDays = 3;
             }
+
             return addDays;
         }
     }

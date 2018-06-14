@@ -1,5 +1,4 @@
-﻿using Exebite.DataAccess.Migrations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Exebite.DataAccess.Context
 {

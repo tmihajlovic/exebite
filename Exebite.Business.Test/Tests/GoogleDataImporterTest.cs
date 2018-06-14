@@ -2,7 +2,7 @@
 using AutoMapper;
 using Exebite.Business.GoogleApiImportExport;
 using Exebite.Business.Test.Mocks;
-using Exebite.DataAccess.Migrations;
+using Exebite.DataAccess.Context;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

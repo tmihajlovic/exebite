@@ -1,7 +1,7 @@
 ﻿using Exebite.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Exebite.DataAccess.Migrations
+namespace Exebite.DataAccess.Context
 {
     public interface IFoodOrderingContext
     {
