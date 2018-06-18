@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Exebite.Model\Exebite.Model.csproj" />
+    <ProjectReference Include="..\Exebite.DomainModel\Exebite.DomainModel.csproj" />
   </ItemGroup>
 
 </Project>

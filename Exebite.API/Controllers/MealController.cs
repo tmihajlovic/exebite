@@ -48,7 +48,7 @@ namespace Exebite.API.Controllers
                 return BadRequest();
             }
 
-            var createdMeal = _mealRepository.Insert(_exebiteMapper.Map<Model.Meal>(model));
+            var createdMeal = _mealRepository.Insert(_exebiteMapper.Map<DomainModel.Meal>(model));
 
             return Ok(new { createdMeal.Id });
         }

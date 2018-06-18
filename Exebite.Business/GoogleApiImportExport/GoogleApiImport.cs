@@ -2,7 +2,7 @@
 using System.Linq;
 using Exebite.DataAccess.Repositories;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
-using Exebite.Model;
+using Exebite.DomainModel;
 
 namespace Exebite.Business.GoogleApiImportExport
 {

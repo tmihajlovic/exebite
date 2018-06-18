@@ -3,7 +3,7 @@ using System.Linq;
 using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
-using Exebite.Model;
+using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Repositories
 {

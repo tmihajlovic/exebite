@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Exebite.Model
+namespace Exebite.DomainModel
 {
     public class Customer
     {

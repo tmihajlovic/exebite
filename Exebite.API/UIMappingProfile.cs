@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Exebite.API.Models;
-using Exebite.Model;
+using Exebite.DomainModel;
 
 #pragma warning disable SA1123 // Do not place regions within elements
 namespace Exebite.API

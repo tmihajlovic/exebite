@@ -46,7 +46,7 @@ namespace Exebite.API.Controllers
                 return BadRequest();
             }
 
-            var createdCustomerAlias = _customerAliasRepository.Insert(_mapper.Map<Model.CustomerAliases>(model));
+            var createdCustomerAlias = _customerAliasRepository.Insert(_mapper.Map<DomainModel.CustomerAliases>(model));
             return Ok(new { createdCustomerAlias.Id });
         }
 

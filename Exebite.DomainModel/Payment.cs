@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Exebite.Model
+namespace Exebite.DomainModel
 {
     public class Payment
     {

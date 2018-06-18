@@ -48,7 +48,7 @@ namespace Exebite.API.Controllers
                 return BadRequest();
             }
 
-            var createdLocation = _locationRepository.Insert(_mapper.Map<Model.Location>(model));
+            var createdLocation = _locationRepository.Insert(_mapper.Map<DomainModel.Location>(model));
 
             return Ok(new { createdLocation.Id });
         }

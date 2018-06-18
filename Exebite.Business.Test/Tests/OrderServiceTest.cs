@@ -4,7 +4,8 @@ using System.Linq;
 using AutoMapper;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess.Context;
-using Exebite.Model;
+using Exebite.DataAccess.Entities;
+using Exebite.DomainModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Exebite.Business.Test.Tests
@@ -105,7 +106,8 @@ namespace Exebite.Business.Test.Tests
         {
             using (var context = _factory.Create())
             {
-                var food1 = _mapper.Map<Food>(context.Foods.First());
+                var f = (FoodEntity)context.Foods.FirstOrDefault();
+                var food1 = _mapper.Map<Food>(f);
                 var customer = _mapper.Map<Customer>(context.Customers.First());
                 var order = new Order
                 {

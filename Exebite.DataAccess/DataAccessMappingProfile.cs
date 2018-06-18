@@ -2,7 +2,7 @@
 using AutoMapper;
 using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Entities;
-using Exebite.Model;
+using Exebite.DomainModel;
 
 namespace Exebite.DataAccess
 {
@@ -12,7 +12,7 @@ namespace Exebite.DataAccess
         {
             CreateMap(typeof(CustomerEntity), typeof(Customer));
             CreateMap(typeof(OrderEntity), typeof(Order));
-            CreateMap(typeof(FoodEntity), typeof(Food));
+            CreateMap(typeof(FoodEntity), typeof(Food)).ReverseMap();
             CreateMap(typeof(RestaurantEntity), typeof(Restaurant));
             CreateMap(typeof(LocationEntity), typeof(Location));
             CreateMap(typeof(RecipeEntity), typeof(Recipe));
@@ -23,7 +23,7 @@ namespace Exebite.DataAccess
             CreateMap(typeof(Customer), typeof(CustomerEntity));
             CreateMap<Customer, CustomerEntity>().ForMember(i => i.LocationId, option => option.MapFrom(c => c.Location.Id));
             CreateMap(typeof(Order), typeof(OrderEntity));
-            CreateMap(typeof(Food), typeof(FoodEntity));//.ConvertUsing<IFoodToFoodEntityConverter>();
+            // CreateMap(typeof(Food), typeof(FoodEntity));//.ConvertUsing<IFoodToFoodEntityConverter>();
             CreateMap(typeof(Restaurant), typeof(RestaurantEntity));
             CreateMap(typeof(Location), typeof(LocationEntity));
             CreateMap(typeof(Recipe), typeof(RecipeEntity)).ConvertUsing<IRecipeToRecipeEntityConverter>();

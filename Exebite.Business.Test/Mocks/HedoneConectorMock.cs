@@ -4,7 +4,7 @@ using System.Linq;
 using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
-using Exebite.Model;
+using Exebite.DomainModel;
 
 namespace Exebite.Business.Test.Mocks
 {

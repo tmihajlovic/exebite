@@ -4,7 +4,7 @@ using System.Linq;
 using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
-using Exebite.Model;
+using Exebite.DomainModel;
 
 namespace Exebite.Business.Test.Mocks
 {
@@ -72,7 +72,7 @@ namespace Exebite.Business.Test.Mocks
                     Description = "Test food from conector description",
                     IsInactive = false,
                     Price = 100,
-                    Type = Model.FoodType.MAIN_COURSE,
+                    Type = DomainModel.FoodType.MAIN_COURSE,
                     RestaurantId = restaurant.Id
                 });
             }

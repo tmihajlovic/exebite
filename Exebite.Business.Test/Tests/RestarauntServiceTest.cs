@@ -3,7 +3,7 @@ using System.Linq;
 using Exebite.Business.Test.Mocks;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Repositories;
-using Exebite.Model;
+using Exebite.DomainModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Exebite.Business.Test.Tests

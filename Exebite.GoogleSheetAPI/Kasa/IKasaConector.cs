@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Exebite.Model;
+using Exebite.DomainModel;
 
 namespace Exebite.GoogleSheetAPI.Kasa
 {

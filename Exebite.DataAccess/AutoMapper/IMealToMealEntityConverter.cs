@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Exebite.DataAccess.Entities;
-using Exebite.Model;
+using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.AutoMapper
 {

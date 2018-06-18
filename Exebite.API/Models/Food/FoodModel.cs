@@ -1,4 +1,4 @@
-﻿using Exebite.Model;
+﻿using Exebite.DomainModel;
 
 namespace Exebite.API.Models
 {

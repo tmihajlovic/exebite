@@ -48,7 +48,7 @@ namespace Exebite.API.Controllers
                 return BadRequest();
             }
 
-            var createdRestaurant = _restaurantRepository.Insert(new Model.Restaurant { Name = name });
+            var createdRestaurant = _restaurantRepository.Insert(new DomainModel.Restaurant { Name = name });
             return Ok(createdRestaurant.Id);
         }
 

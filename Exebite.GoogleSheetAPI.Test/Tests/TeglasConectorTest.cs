@@ -51,7 +51,7 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
             Assert.AreEqual(food.Name, "Test food 1");
             Assert.AreEqual(food.Description, "Description 1");
             Assert.AreEqual(food.Price, 100);
-            Assert.AreEqual(food.Type, Model.FoodType.MAIN_COURSE);
+            Assert.AreEqual(food.Type, DomainModel.FoodType.MAIN_COURSE);
         }
 
         [TestMethod]

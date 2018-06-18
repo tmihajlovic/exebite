@@ -1,4 +1,4 @@
-﻿using Exebite.Model;
+﻿using Exebite.DomainModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 

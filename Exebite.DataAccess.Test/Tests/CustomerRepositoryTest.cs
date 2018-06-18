@@ -4,7 +4,7 @@ using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.InMemoryDB;
-using Exebite.Model;
+using Exebite.DomainModel;
 using Exebite.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

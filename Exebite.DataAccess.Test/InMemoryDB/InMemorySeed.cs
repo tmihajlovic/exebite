@@ -69,7 +69,7 @@ namespace Exebite.DataAccess.Test.InMemoryDB
                 Description = "Test food description",
                 IsInactive = false,
                 Price = 100,
-                Type = Model.FoodType.MAIN_COURSE,
+                Type = DomainModel.FoodType.MAIN_COURSE,
                 RestaurantId = 1,
                 Restaurant = context.Restaurants.Find(1)
             });
@@ -80,7 +80,7 @@ namespace Exebite.DataAccess.Test.InMemoryDB
                 Description = "Food for delete",
                 IsInactive = false,
                 Price = 100,
-                Type = Model.FoodType.MAIN_COURSE,
+                Type = DomainModel.FoodType.MAIN_COURSE,
                 RestaurantId = 1,
                 Restaurant = context.Restaurants.Find(1)
             });
@@ -91,7 +91,7 @@ namespace Exebite.DataAccess.Test.InMemoryDB
                 Description = "Side dish",
                 IsInactive = false,
                 Price = 100,
-                Type = Model.FoodType.SIDE_DISH,
+                Type = DomainModel.FoodType.SIDE_DISH,
                 RestaurantId = 1,
                 Restaurant = context.Restaurants.Find(1)
             });
@@ -102,7 +102,7 @@ namespace Exebite.DataAccess.Test.InMemoryDB
                 Description = "Condament",
                 IsInactive = false,
                 Price = 100,
-                Type = Model.FoodType.CONDIMENTS,
+                Type = DomainModel.FoodType.CONDIMENTS,
                 RestaurantId = 1,
                 Restaurant = context.Restaurants.Find(1)
             });
@@ -113,7 +113,7 @@ namespace Exebite.DataAccess.Test.InMemoryDB
                 Description = "Salad",
                 IsInactive = false,
                 Price = 100,
-                Type = Model.FoodType.SALAD,
+                Type = DomainModel.FoodType.SALAD,
                 RestaurantId = 1,
                 Restaurant = context.Restaurants.Find(1)
             });
@@ -179,8 +179,8 @@ namespace Exebite.DataAccess.Test.InMemoryDB
             {
                 new Entities.FoodEntityRecipeEntity
                 {
-                     FoodEntity = context.Foods.FirstOrDefault(f => f.Type == Model.FoodType.CONDIMENTS),
-                     FoodEntityId = context.Foods.FirstOrDefault(f => f.Type == Model.FoodType.CONDIMENTS).Id,
+                     FoodEntity = context.Foods.FirstOrDefault(f => f.Type == DomainModel.FoodType.CONDIMENTS),
+                     FoodEntityId = context.Foods.FirstOrDefault(f => f.Type == DomainModel.FoodType.CONDIMENTS).Id,
                      RecipeEntity = recipe1.Entity,
                      RecepieEntityId = recipe1.Entity.Id
                 }
@@ -197,8 +197,8 @@ namespace Exebite.DataAccess.Test.InMemoryDB
             {
                 new Entities.FoodEntityRecipeEntity
                 {
-                     FoodEntity = context.Foods.FirstOrDefault(f => f.Type == Model.FoodType.SIDE_DISH),
-                     FoodEntityId = context.Foods.FirstOrDefault(f => f.Type == Model.FoodType.SIDE_DISH).Id,
+                     FoodEntity = context.Foods.FirstOrDefault(f => f.Type == DomainModel.FoodType.SIDE_DISH),
+                     FoodEntityId = context.Foods.FirstOrDefault(f => f.Type == DomainModel.FoodType.SIDE_DISH).Id,
                      RecipeEntity = recipe2.Entity,
                      RecepieEntityId = recipe2.Entity.Id
                 }

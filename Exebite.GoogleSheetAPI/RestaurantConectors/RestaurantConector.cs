@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
-using Exebite.Model;
+using Exebite.DomainModel;
 using Google.Apis.Sheets.v4.Data;
 
 namespace Exebite.GoogleSheetAPI.RestaurantConectors

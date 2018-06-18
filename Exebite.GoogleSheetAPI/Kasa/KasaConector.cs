@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Exebite.GoogleSheetAPI.GoogleSSFactory;
-using Exebite.Model;
+using Exebite.DomainModel;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 
