@@ -31,7 +31,8 @@ namespace Exebite.Business.Test.Tests
         [TestMethod]
         public void CheckAvailableSideDishes()
         {
-            var food = _menuService.GetRestorantsWithMenus().First().Foods.First();
+            var list = _menuService.GetRestorantsWithMenus();
+            var food = list.First().Foods.First();
             var result = _menuService.CheckAvailableSideDishes(food.Id);
             Assert.IsNotNull(result);
         }

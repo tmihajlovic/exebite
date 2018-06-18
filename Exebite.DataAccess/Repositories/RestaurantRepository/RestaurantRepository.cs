@@ -4,6 +4,7 @@ using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DomainModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace Exebite.DataAccess.Repositories
 {
@@ -67,20 +68,20 @@ namespace Exebite.DataAccess.Repositories
                 List<FoodEntity> foodList = context.Foods.Where(f => f.Restaurant.Id == dbRestaurant.Id).ToList();
 
                 // clear old menu
-                dbRestaurant.DailyMenu.Clear();
+                dbRestaurant.DailyMenu.Menu.Clear();
 
                 // bind daily food entities
-                for (int i = 0; i < restaurantEntity.DailyMenu.Count; i++)
+                for (int i = 0; i < restaurantEntity.DailyMenu.Menu.Count; i++)
                 {
-                    var tmpfood = foodList.FirstOrDefault(f => f.Name == restaurantEntity.DailyMenu[i].FoodEntity.Name);
+                    var tmpfood = foodList.FirstOrDefault(f => f.Name == restaurantEntity.DailyMenu.Menu[i].Name);
                     if (tmpfood != null)
                     {
-                        dbRestaurant.DailyMenu.Add(new DailyMenuEntity { FoodEntityId = tmpfood.Id });
+                        dbRestaurant.DailyMenu.Menu.Add(tmpfood);
                     }
                     else
                     {
-                        restaurantEntity.DailyMenu[i].Restaurant = dbRestaurant;
-                        dbRestaurant.DailyMenu.Add(restaurantEntity.DailyMenu[i]);
+                        restaurantEntity.DailyMenu.Menu[i].Restaurant = dbRestaurant;
+                        dbRestaurant.DailyMenu.Menu.Add(restaurantEntity.DailyMenu.Menu[i]);
                     }
                 }
 

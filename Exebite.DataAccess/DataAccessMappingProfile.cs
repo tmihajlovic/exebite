@@ -12,7 +12,7 @@ namespace Exebite.DataAccess
         {
             CreateMap(typeof(CustomerEntity), typeof(Customer));
             CreateMap(typeof(OrderEntity), typeof(Order));
-            CreateMap(typeof(FoodEntity), typeof(Food)).ReverseMap();
+            CreateMap(typeof(FoodEntity), typeof(Food));
             CreateMap(typeof(RestaurantEntity), typeof(Restaurant));
             CreateMap(typeof(LocationEntity), typeof(Location));
             CreateMap(typeof(RecipeEntity), typeof(Recipe));
@@ -23,12 +23,14 @@ namespace Exebite.DataAccess
             CreateMap(typeof(Customer), typeof(CustomerEntity));
             CreateMap<Customer, CustomerEntity>().ForMember(i => i.LocationId, option => option.MapFrom(c => c.Location.Id));
             CreateMap(typeof(Order), typeof(OrderEntity));
-            // CreateMap(typeof(Food), typeof(FoodEntity));//.ConvertUsing<IFoodToFoodEntityConverter>();
+            CreateMap(typeof(Food), typeof(FoodEntity));
             CreateMap(typeof(Restaurant), typeof(RestaurantEntity));
             CreateMap(typeof(Location), typeof(LocationEntity));
             CreateMap(typeof(Recipe), typeof(RecipeEntity)).ConvertUsing<IRecipeToRecipeEntityConverter>();
             CreateMap(typeof(Meal), typeof(MealEntity)).ConvertUsing<IMealToMealEntityConverter>();
             CreateMap(typeof(CustomerAliases), typeof(CustomerAliasesEntities));
+            CreateMap(typeof(DailyMenu), typeof(DailyMenuEntity));
+            CreateMap(typeof(DailyMenu), typeof(DailyMenuEntity)).ReverseMap();
         }
 
         public override string ProfileName => "DataAccessMappingProfile";

@@ -8,20 +8,20 @@ namespace Exebite.Business
 {
     public class MenuService : IMenuService
     {
-        private readonly IRestaurantRepository _restaurantHandler;
-        private readonly IFoodRepository _foodHandler;
-        private readonly IRecipeRepository _recipeHandler;
+        private readonly IRestaurantRepository _restaurantRepository;
+        private readonly IFoodRepository _foodRepository;
+        private readonly IRecipeRepository _recipeRepository;
 
-        public MenuService(IRestaurantRepository restaurantHandler, IFoodRepository foodHandler, IRecipeRepository recipeHandler)
+        public MenuService(IRestaurantRepository restaurantRepository, IFoodRepository foodRepository, IRecipeRepository recipeRepository)
         {
-            _restaurantHandler = restaurantHandler;
-            _foodHandler = foodHandler;
-            _recipeHandler = recipeHandler;
+            _restaurantRepository = restaurantRepository;
+            _foodRepository = foodRepository;
+            _recipeRepository = recipeRepository;
         }
 
         public IList<Restaurant> GetRestorantsWithMenus()
         {
-            return _restaurantHandler.Get(0, int.MaxValue);
+            return _restaurantRepository.Get(0, int.MaxValue);
         }
 
         public decimal CheckPrice(Meal meal)
@@ -32,13 +32,13 @@ namespace Exebite.Business
 
         public List<Food> CheckAvailableSideDishes(int foodId)
         {
-            var food = _foodHandler.GetByID(foodId);
+            var food = _foodRepository.GetByID(foodId);
             if (food == null)
             {
                 throw new ArgumentException("Non existing food");
             }
 
-            var allRecipe = _recipeHandler.Get(0, int.MaxValue);
+            var allRecipe = _recipeRepository.Get(0, int.MaxValue);
             var foodRecipe = allRecipe.SingleOrDefault(r => r.MainCourse.Id == food.Id);
             if (foodRecipe != null)
             {

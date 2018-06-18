@@ -49,7 +49,7 @@ namespace Exebite.Business.Test.Tests
             const string name = "Restoran pod Lipom";
             var restaurants = _restaurantRepository.Get(0, int.MaxValue);
             var lipaFoodCount = restaurants.FirstOrDefault(r => r.Name == name).Foods.Count;
-            var lipaDailyCount = restaurants.FirstOrDefault(r => r.Name == name).DailyMenu.Count;
+            var lipaDailyCount = restaurants.FirstOrDefault(r => r.Name == name).DailyMenu.Foods.Count;
 
             _googleDataImporter.UpdateRestorauntsMenu();
             var lipa = _restaurantRepository.Query(new RestaurantQueryModel { Name = name }).FirstOrDefault();
@@ -59,7 +59,7 @@ namespace Exebite.Business.Test.Tests
             Assert.AreNotEqual(lipa.Foods.Count, lipaFoodCount);
 
             // Check if daily menu is changed
-            Assert.AreNotEqual(lipa.DailyMenu.Count, lipaDailyCount);
+            Assert.AreNotEqual(lipa.DailyMenu.Foods.Count, lipaDailyCount);
 
             // Check if food deleted from sheet is marked inactive
             Assert.IsNotNull(inactiveFood);

@@ -90,9 +90,9 @@ namespace Exebite.DataAccess.Test.Tests
         {
             var restaurant = _restaurantRepository.GetByID(1);
             var foodToAdd = restaurant.Foods;
-            restaurant.DailyMenu.AddRange(foodToAdd);
+            restaurant.DailyMenu.Foods.AddRange(foodToAdd);
             var result = _restaurantRepository.Update(restaurant);
-            Assert.AreEqual(result.DailyMenu.Count, foodToAdd.Count);
+            Assert.AreEqual(result.DailyMenu.Foods.Count, foodToAdd.Count);
         }
 
         [TestMethod]

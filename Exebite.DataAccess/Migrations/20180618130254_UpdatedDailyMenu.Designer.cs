@@ -4,14 +4,16 @@ using Exebite.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Exebite.DataAccess.Migrations
 {
     [DbContext(typeof(FoodOrderingContext))]
-    partial class FoodOrderingContextModelSnapshot : ModelSnapshot
+    [Migration("20180618130254_UpdatedDailyMenu")]
+    partial class UpdatedDailyMenu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,7 +85,7 @@ namespace Exebite.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("DailyMenuEntityId");
+                    b.Property<int>("DailyMenuId");
 
                     b.Property<string>("Description");
 
@@ -99,7 +101,7 @@ namespace Exebite.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DailyMenuEntityId");
+                    b.HasIndex("DailyMenuId");
 
                     b.HasIndex("RestaurantId");
 
@@ -252,9 +254,10 @@ namespace Exebite.DataAccess.Migrations
 
             modelBuilder.Entity("Exebite.DataAccess.Entities.FoodEntity", b =>
                 {
-                    b.HasOne("Exebite.DataAccess.Entities.DailyMenuEntity")
+                    b.HasOne("Exebite.DataAccess.Entities.DailyMenuEntity", "DailyMenu")
                         .WithMany("Menu")
-                        .HasForeignKey("DailyMenuEntityId");
+                        .HasForeignKey("DailyMenuId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Exebite.DataAccess.Entities.RestaurantEntity", "Restaurant")
                         .WithMany("Foods")

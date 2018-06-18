@@ -10,9 +10,9 @@ namespace Exebite.DomainModel
 
         public List<Food> Foods { get; set; } = new List<Food>();
 
-        public List<Food> DailyMenu { get; set; } = new List<Food>();
+        public DailyMenu DailyMenu { get; set; }
 
-        public virtual List<Recipe> Recipes { get; set; } = new List<Recipe>();
+        public List<Recipe> Recipes { get; set; } = new List<Recipe>();
 
     }
 }

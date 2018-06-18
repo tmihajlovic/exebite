@@ -60,7 +60,7 @@ namespace Exebite.Business.Test.Tests
                     IsInactive = false,
                     Price = 200,
                     Type = FoodType.MAIN_COURSE,
-                    Restaurant = _mapper.Map<Restaurant>(context.Restaurants.First())
+                    RestaurantId = _mapper.Map<Restaurant>(context.Restaurants.First()).Id
                 };
                 var result = _foodRepository.Insert(newFood);
                 Assert.IsNotNull(result);

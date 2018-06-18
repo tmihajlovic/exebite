@@ -13,10 +13,13 @@ namespace Exebite.DataAccess.Entities
 
         public string Name { get; set; }
 
+        [ForeignKey(nameof(DailyMenuEntity))]
+        public int DailyMenuId { get; set; }
+
+        public virtual DailyMenuEntity DailyMenu { get; set; }
+
         public virtual List<FoodEntity> Foods { get; set; } = new List<FoodEntity>();
 
         public virtual List<RecipeEntity> Recipes { get; set; } = new List<RecipeEntity>();
-
-        public virtual List<DailyMenuEntity> DailyMenu { get; set; } = new List<DailyMenuEntity>();
     }
 }

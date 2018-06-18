@@ -93,10 +93,10 @@ namespace Exebite.Business.Test.Tests
             const int foodCount = 3;
             var restaurant = _restaurantRepository.GetByID(id);
             var foods = restaurant.Foods;
-            restaurant.DailyMenu.Clear();
-            restaurant.DailyMenu.AddRange(foods.Take(foodCount));
+            restaurant.DailyMenu.Foods.Clear();
+            restaurant.DailyMenu.Foods.AddRange(foods.Take(foodCount));
             var result = _restaurantRepository.Update(restaurant);
-            Assert.AreEqual(result.DailyMenu.Count, foodCount);
+            Assert.AreEqual(result.DailyMenu.Foods.Count, foodCount);
         }
 
         [TestMethod]
