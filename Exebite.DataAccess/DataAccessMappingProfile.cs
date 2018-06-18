@@ -23,7 +23,7 @@ namespace Exebite.DataAccess
             CreateMap(typeof(Customer), typeof(CustomerEntity));
             CreateMap<Customer, CustomerEntity>().ForMember(i => i.LocationId, option => option.MapFrom(c => c.Location.Id));
             CreateMap(typeof(Order), typeof(OrderEntity));
-            CreateMap(typeof(Food), typeof(FoodEntity)).ConvertUsing<IFoodToFoodEntityConverter>();
+            CreateMap(typeof(Food), typeof(FoodEntity));//.ConvertUsing<IFoodToFoodEntityConverter>();
             CreateMap(typeof(Restaurant), typeof(RestaurantEntity));
             CreateMap(typeof(Location), typeof(LocationEntity));
             CreateMap(typeof(Recipe), typeof(RecipeEntity)).ConvertUsing<IRecipeToRecipeEntityConverter>();

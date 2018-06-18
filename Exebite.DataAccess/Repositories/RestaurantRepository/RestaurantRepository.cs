@@ -72,10 +72,10 @@ namespace Exebite.DataAccess.Repositories
                 // bind daily food entities
                 for (int i = 0; i < restaurantEntity.DailyMenu.Count; i++)
                 {
-                    var tmpfood = foodList.FirstOrDefault(f => f.Name == restaurantEntity.DailyMenu[i].Name);
+                    var tmpfood = foodList.FirstOrDefault(f => f.Name == restaurantEntity.DailyMenu[i].FoodEntity.Name);
                     if (tmpfood != null)
                     {
-                        dbRestaurant.DailyMenu.Add(tmpfood);
+                        dbRestaurant.DailyMenu.Add(new DailyMenuEntity { FoodEntityId = tmpfood.Id });
                     }
                     else
                     {
