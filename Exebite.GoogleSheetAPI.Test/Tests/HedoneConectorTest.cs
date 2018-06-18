@@ -3,11 +3,10 @@ using Exebite.GoogleSheetAPI.GoogleSSFactory;
 using Exebite.GoogleSheetAPI.RestaurantConectors;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.GoogleSheetAPI.Test.Mocks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Exebite.GoogleSheetAPI.Test.Tests
 {
-    [TestClass]
     public class HedoneConectorTest
     {
         private const string RestaurantName = "Hedone";
@@ -21,8 +20,7 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         private static IGoogleSheetService _googleSheetService_returnEmpty;
         private readonly FakeDataFactory fakeDataFactory = new FakeDataFactory(RestaurantName);
 
-        [TestInitialize]
-        public void Init()
+        public HedoneConectorTest()
         {
             _googleSpreadsheetIdFactory = new GoogleSpreadsheetIdFactory();
             _googleSheetService = new GoogleSheetServiceFake();
@@ -33,77 +31,77 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
             _hedoneConector_EmptyCheck = new HedoneConector(_googleSheetService_returnEmpty, _googleSpreadsheetIdFactory);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetDailyMenu()
         {
             var result = _hedoneConector.GetDailyMenu();
             var food = result.First();
-            Assert.AreNotEqual(result.Count, 0);
-            Assert.AreEqual(food.Name, "Test food 1");
+            Assert.NotEqual(0, result.Count);
+            Assert.Equal("Test food 1", food.Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void LoadAllFoods()
         {
             var result = _hedoneConector.LoadAllFoods();
             var food = result.First();
-            Assert.AreNotEqual(result.Count, 0);
-            Assert.AreEqual(food.Name, "Test food 1");
-            Assert.AreEqual(food.Description, "Description 1");
-            Assert.AreEqual(food.Price, 100);
-            Assert.AreEqual(food.Type, DomainModel.FoodType.MAIN_COURSE);
+            Assert.NotEqual(0, result.Count);
+            Assert.Equal("Test food 1", food.Name);
+            Assert.Equal("Description 1", food.Description);
+            Assert.Equal(100, food.Price);
+            Assert.Equal(DomainModel.FoodType.MAIN_COURSE, food.Type);
         }
 
-        [TestMethod]
+        [Fact]
         public void PlaceOrders()
         {
             _hedoneConector.PlaceOrders(fakeDataFactory.GetOrders());
         }
 
-        [TestMethod]
+        [Fact]
         public void WriteMenu()
         {
             _hedoneConector.WriteMenu(fakeDataFactory.GetFoods());
         }
 
-        [TestMethod]
+        [Fact]
         public void WriteKasaTab()
         {
             _hedoneConector.WriteKasaTab(fakeDataFactory.GetCustomers());
         }
 
-        [TestMethod]
+        [Fact]
         public void DnevniMenuSheetSetup()
         {
             _hedoneConector.DnevniMenuSheetSetup();
         }
 
-        [TestMethod]
+        [Fact]
         public void GetDailyMenu_NullResponce()
         {
             var result = _hedoneConector_NullCheck.GetDailyMenu();
-            Assert.AreEqual(result.Count, 0);
+            Assert.Equal(0, result.Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void LoadAllFoods_NullResponce()
         {
             var result = _hedoneConector_NullCheck.LoadAllFoods();
-            Assert.AreEqual(result.Count, 0);
+            Assert.Equal(0, result.Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetDailyMenu_EmptyResponce()
         {
             var result = _hedoneConector_EmptyCheck.GetDailyMenu();
-            Assert.AreEqual(result.Count, 0);
+            Assert.Equal(0, result.Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void LoadAllFoods_EmptyResponce()
         {
             var result = _hedoneConector_EmptyCheck.LoadAllFoods();
-            Assert.AreEqual(result.Count, 0);
+            Assert.Equal(0, result.Count);
         }
     }
 }
