@@ -13,6 +13,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180615102605_test.cs" />
+    <Compile Remove="Migrations\20180615102927_EntityCleanUp.cs" />
+    <Compile Remove="Migrations\20180615103413_EntityCleanUp.cs" />
+    <Compile Remove="Migrations\20180615103723_EntityCleanUp.cs" />
+    <Compile Remove="Migrations\20180615104856_EntityCleanUp.cs" />
+    <Compile Remove="Migrations\20180615112526_EntityCleanUp1.cs" />
+    <Compile Remove="Migrations\20180615133107_AddedRestaurantNavFromRecipe.cs" />
+    <Compile Remove="Migrations\20180615133331_AddedRestaurantNavFromRecipe.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="4.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.8.2" />

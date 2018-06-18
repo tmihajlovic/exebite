@@ -29,19 +29,16 @@ namespace Exebite.DataAccess.Context
 
         public DbSet<CustomerAliasesEntities> CustomerAliases { get; set; }
 
-        public DbSet<FoodEntityMealEntities> FoodEntityMealEntities { get; set; }
-
-        public DbSet<FoodEntityRecipeEntity> FoodEntityRecipeEntity { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<FoodEntity>()
                 .HasOne(r => r.Restaurant)
                 .WithMany(f => f.Foods)
-                .HasForeignKey(k => k.RestaurantId);
+                .HasForeignKey(k => k.RestaurantId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<FoodEntityMealEntities>()
-                .HasKey(t => t.Id);
+                .HasKey(k => new { k.FoodEntityId, k.MealEntityId });
 
             modelBuilder.Entity<CustomerAliasesEntities>()
                 .HasOne(c => c.Customer)
@@ -54,13 +51,22 @@ namespace Exebite.DataAccess.Context
                 .HasOne(r => r.RecipeEntity)
                 .WithMany(fr => fr.FoodEntityRecipeEntities)
                 .HasForeignKey(k => k.RecepieEntityId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<RestaurantEntity>()
-                .HasMany(f => f.DailyMenu);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<FoodEntityRecipeEntity>()
-                .HasKey(k => new { k.FoodEntityId, k.RecepieEntityId });
+                .HasOne(r => r.FoodEntity)
+                .WithMany(fr => fr.FoodEntityRecipeEntities)
+                .HasForeignKey(k => k.FoodEntityId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<DailyMenuEntity>()
+              .HasKey(x => new { x.FoodEntityId, x.RestaurantId });
+
+            modelBuilder.Entity<DailyMenuEntity>()
+                .HasOne(x => x.Restaurant)
+                .WithMany(fr => fr.DailyMenu)
+                .HasForeignKey(f => f.RestaurantId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

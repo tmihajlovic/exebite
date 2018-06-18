@@ -21,6 +21,6 @@ namespace Exebite.DataAccess.Entities
 
         public virtual FoodEntity MainCourse { get; set; }
 
-        public virtual List<FoodEntityRecipeEntity> FoodEntityRecipeEntities { get; set; }
+        public virtual List<FoodEntityRecipeEntity> FoodEntityRecipeEntities { get; set; } = new List<FoodEntityRecipeEntity>();
     }
 }

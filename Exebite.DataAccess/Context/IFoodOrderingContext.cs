@@ -9,10 +9,6 @@ namespace Exebite.DataAccess.Context
 
         DbSet<CustomerEntity> Customers { get; set; }
 
-        DbSet<FoodEntityMealEntities> FoodEntityMealEntities { get; set; }
-
-        DbSet<FoodEntityRecipeEntity> FoodEntityRecipeEntity { get; set; }
-
         DbSet<FoodEntity> Foods { get; set; }
 
         DbSet<LocationEntity> Locations { get; set; }

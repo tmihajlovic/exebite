@@ -80,10 +80,17 @@ namespace Exebite.DataAccess.Test.Tests
                     IsInactive = false,
                     Price = 100,
                     Type = FoodType.MAIN_COURSE,
-                    Restaurant = restaurant
+                    RestaurantId = restaurant.Id
                 };
                 var result = _foodRepository.Insert(newFood);
                 Assert.IsNotNull(result);
+                Assert.AreEqual(newFood.Name, result.Name);
+                Assert.AreEqual(newFood.Description, result.Description);
+                Assert.AreEqual(newFood.Price, result.Price);
+                Assert.AreEqual(newFood.Type, result.Type);
+                Assert.AreEqual(newFood.IsInactive, result.IsInactive);
+                Assert.AreEqual(newFood.RestaurantId, result.RestaurantId);
+                Assert.AreEqual(newFood.RestaurantId, result.Restaurant.Id);
             }
         }
 
@@ -104,11 +111,13 @@ namespace Exebite.DataAccess.Test.Tests
                 food.Description = "NewDesc";
                 food.Price = 200;
                 food.Type = FoodType.DESERT;
+                food.RestaurantId = 2;
                 var result = _foodRepository.Update(food);
-                Assert.AreEqual(result.Name, food.Name);
-                Assert.AreEqual(result.Description, food.Description);
-                Assert.AreEqual(result.Price, food.Price);
-                Assert.AreEqual(result.Type, food.Type);
+                Assert.AreEqual(food.Name, result.Name);
+                Assert.AreEqual(food.Description, result.Description);
+                Assert.AreEqual(food.Price, result.Price);
+                Assert.AreEqual(food.Type, result.Type);
+                Assert.AreEqual(food.RestaurantId, result.Restaurant.Id);
             }
         }
 

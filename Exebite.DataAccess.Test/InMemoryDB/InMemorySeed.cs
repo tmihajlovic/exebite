@@ -173,7 +173,6 @@ namespace Exebite.DataAccess.Test.InMemoryDB
             {
                 MainCourse = context.Foods.Find(1),
                 MainCourseId = 1,
-                Restaurant = context.Restaurants.Find(1),
                 RestaurantId = 1
             });
             recipe1.Entity.FoodEntityRecipeEntities = new List<Entities.FoodEntityRecipeEntity>
@@ -192,7 +191,6 @@ namespace Exebite.DataAccess.Test.InMemoryDB
             {
                 MainCourse = context.Foods.Find(1),
                 MainCourseId = 1,
-                Restaurant = context.Restaurants.Find(1),
                 RestaurantId = 1
             });
             recipe2.Entity.FoodEntityRecipeEntities = new List<Entities.FoodEntityRecipeEntity>

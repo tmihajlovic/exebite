@@ -25,7 +25,6 @@ namespace Exebite.DataAccess.AutoMapper
                 Id = source.Id,
                 MainCourse = _mapper.Map<FoodEntity>(source.MainCourse),
                 MainCourseId = source.MainCourse.Id,
-                Restaurant = _mapper.Map<RestaurantEntity>(source.Restaurant),
                 RestaurantId = source.Restaurant.Id,
                 FoodEntityRecipeEntities = new List<FoodEntityRecipeEntity>()
             };
@@ -33,7 +32,7 @@ namespace Exebite.DataAccess.AutoMapper
             {
                 using (var dbcontext = _factory.Create())
                 {
-                    var fre = dbcontext.FoodEntityRecipeEntity.SingleOrDefault(i => i.FoodEntityId == food.Id && i.RecepieEntityId == source.Id);
+                    var fre = dbcontext.Recipes.FirstOrDefault(r => r.Id == source.Id).FoodEntityRecipeEntities.SingleOrDefault(i => i.FoodEntityId == food.Id);
                     if (fre == null)
                     {
                         destination.FoodEntityRecipeEntities.Add(new FoodEntityRecipeEntity

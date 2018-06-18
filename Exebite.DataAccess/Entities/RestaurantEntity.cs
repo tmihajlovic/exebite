@@ -13,8 +13,10 @@ namespace Exebite.DataAccess.Entities
 
         public string Name { get; set; }
 
-        public virtual List<FoodEntity> Foods { get; set; }
+        public virtual List<FoodEntity> Foods { get; set; } = new List<FoodEntity>();
 
-        public virtual List<FoodEntity> DailyMenu { get; set; }
+        public virtual List<RecipeEntity> Recipes { get; set; } = new List<RecipeEntity>();
+
+        public virtual List<DailyMenuEntity> DailyMenu { get; set; } = new List<DailyMenuEntity>();
     }
 }

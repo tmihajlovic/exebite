@@ -5,7 +5,10 @@ namespace Exebite.DataAccess.Test.InMemoryDB
 {
     public class InMemoryDBFactory : IFoodOrderingContextFactory
     {
-        private readonly DbContextOptions<FoodOrderingContext> options = new DbContextOptionsBuilder<FoodOrderingContext>().UseInMemoryDatabase("TestDB").UseLazyLoadingProxies(true).Options;
+        private readonly DbContextOptions<FoodOrderingContext> options = new DbContextOptionsBuilder<FoodOrderingContext>()
+            .UseSqlServer("Server=(Local);Database=Exebite;Trusted_Connection=True;")
+            .UseLazyLoadingProxies(true)
+            .Options;
 
         public FoodOrderingContext Create()
         {

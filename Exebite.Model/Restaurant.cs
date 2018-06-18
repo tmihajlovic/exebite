@@ -8,8 +8,11 @@ namespace Exebite.Model
 
         public string Name { get; set; }
 
-        public List<Food> Foods { get; set; }
+        public List<Food> Foods { get; set; } = new List<Food>();
 
-        public List<Food> DailyMenu { get; set; }
+        public List<Food> DailyMenu { get; set; } = new List<Food>();
+
+        public virtual List<Recipe> Recipes { get; set; } = new List<Recipe>();
+
     }
 }

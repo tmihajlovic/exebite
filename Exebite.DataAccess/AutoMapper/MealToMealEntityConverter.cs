@@ -31,7 +31,7 @@ namespace Exebite.DataAccess.AutoMapper
                 destination.FoodEntityMealEntities = new List<FoodEntityMealEntities>();
                 foreach (var food in source.Foods)
                 {
-                    var dbFoodMealEntity = dbContext.FoodEntityMealEntities.SingleOrDefault(fm => fm.FoodEntityId == food.Id && fm.MealEntityId == source.Id);
+                    var dbFoodMealEntity = dbContext.Meals.FirstOrDefault(m => m.Id == source.Id).FoodEntityMealEntities.SingleOrDefault(fm => fm.FoodEntityId == food.Id);
                     if (dbFoodMealEntity == null)
                     {
                         destination.FoodEntityMealEntities.Add(new FoodEntityMealEntities

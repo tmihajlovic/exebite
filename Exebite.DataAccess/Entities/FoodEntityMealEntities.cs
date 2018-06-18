@@ -6,9 +6,6 @@ namespace Exebite.DataAccess.Entities
     [Table(nameof(FoodEntityMealEntities))]
     public class FoodEntityMealEntities
     {
-        [Key]
-        public int Id { get; set; }
-
         public int FoodEntityId { get; set; }
 
         [ForeignKey("FoodEntityId")]

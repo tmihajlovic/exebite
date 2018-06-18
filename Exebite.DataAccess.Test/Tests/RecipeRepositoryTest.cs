@@ -34,7 +34,7 @@ namespace Exebite.DataAccess.Test.Tests
         public void GetAllRecepies()
         {
             var result = _recepieRepository.Get(0, int.MaxValue);
-            Assert.AreNotEqual(result.Count, 0);
+            Assert.AreNotEqual(0, result.Count);
         }
 
         [TestMethod]
@@ -152,11 +152,19 @@ namespace Exebite.DataAccess.Test.Tests
             {
                 var recipieEntity = context.Recipes.Find(1);
                 var recipie = _mapper.Map<Recipe>(recipieEntity);
-                var newFoodEntity = context.Foods.FirstOrDefault(f => f.Type == FoodType.SALAD);
+                var newFoodEntity = context.Foods.FirstOrDefault(f => f.Type == FoodType.DESERT);
                 var newFood = _mapper.Map<Food>(newFoodEntity);
                 recipie.SideDish.Add(newFood);
+                var newRestoraunt = context.Restaurants.Find(2);
+                recipie.Restaurant = _mapper.Map<Restaurant>(newRestoraunt);
+                var newMainCourse = context.Foods.Find(2);
+                recipie.MainCourse = _mapper.Map<Food>(newMainCourse);
+
                 var result = _recepieRepository.Update(recipie);
+
                 Assert.AreEqual(result.SideDish.Count, 2);
+                Assert.AreEqual(result.Restaurant.Id, 2);
+                Assert.AreEqual(result.MainCourse.Id, 2);
             }
         }
 

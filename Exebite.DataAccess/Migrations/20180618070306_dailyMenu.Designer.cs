@@ -4,14 +4,16 @@ using Exebite.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Exebite.DataAccess.Migrations
 {
     [DbContext(typeof(FoodOrderingContext))]
-    partial class FoodOrderingContextModelSnapshot : ModelSnapshot
+    [Migration("20180618070306_dailyMenu")]
+    partial class dailyMenu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,19 +63,6 @@ namespace Exebite.DataAccess.Migrations
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("Exebite.DataAccess.Entities.DailyMenuEntity", b =>
-                {
-                    b.Property<int>("FoodEntityId");
-
-                    b.Property<int>("RestaurantId");
-
-                    b.HasKey("FoodEntityId", "RestaurantId");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.ToTable("DailyMenuEntity");
-                });
-
             modelBuilder.Entity("Exebite.DataAccess.Entities.FoodEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -82,17 +71,25 @@ namespace Exebite.DataAccess.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int?>("FoodEntityId");
+
                     b.Property<bool>("IsInactive");
 
                     b.Property<string>("Name");
 
                     b.Property<decimal>("Price");
 
+                    b.Property<int?>("RestaurantEntityId");
+
                     b.Property<int>("RestaurantId");
 
                     b.Property<int>("Type");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FoodEntityId");
+
+                    b.HasIndex("RestaurantEntityId");
 
                     b.HasIndex("RestaurantId");
 
@@ -231,21 +228,16 @@ namespace Exebite.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Exebite.DataAccess.Entities.DailyMenuEntity", b =>
-                {
-                    b.HasOne("Exebite.DataAccess.Entities.FoodEntity", "FoodEntity")
-                        .WithMany()
-                        .HasForeignKey("FoodEntityId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Exebite.DataAccess.Entities.RestaurantEntity", "Restaurant")
-                        .WithMany("DailyMenu")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("Exebite.DataAccess.Entities.FoodEntity", b =>
                 {
+                    b.HasOne("Exebite.DataAccess.Entities.FoodEntity")
+                        .WithMany("DailyMenu")
+                        .HasForeignKey("FoodEntityId");
+
+                    b.HasOne("Exebite.DataAccess.Entities.RestaurantEntity")
+                        .WithMany("DailyMenu")
+                        .HasForeignKey("RestaurantEntityId");
+
                     b.HasOne("Exebite.DataAccess.Entities.RestaurantEntity", "Restaurant")
                         .WithMany("Foods")
                         .HasForeignKey("RestaurantId")

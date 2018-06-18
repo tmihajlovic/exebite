@@ -4,6 +4,7 @@ using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Exebite.DataAccess.Repositories
 {
@@ -44,10 +45,22 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var foodEntity = _mapper.Map<FoodEntity>(entity);
-                var resultEntity = context.Foods.Update(foodEntity).Entity;
+
+                var foodEntity = new FoodEntity
+                {
+                    Description = entity.Description,
+                    IsInactive = entity.IsInactive,
+                    Name = entity.Name,
+                    Price = entity.Price,
+                    Type = entity.Type,
+                    RestaurantId = entity.RestaurantId
+                };
+
+                var createdEntry = context.Foods.Add(foodEntity).Entity;
                 context.SaveChanges();
-                return _mapper.Map<Food>(resultEntity);
+                createdEntry = context.Foods.Include(a => a.Restaurant)
+                                            .FirstOrDefault(a => a.Id == createdEntry.Id);
+                return _mapper.Map<Food>(createdEntry);
             }
         }
 
@@ -60,11 +73,16 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var foodEntity = _mapper.Map<FoodEntity>(entity);
-                context.Update(foodEntity);
+                var currentEntity = context.Foods.Find(entity.Id);
+                currentEntity.Description = entity.Description;
+                currentEntity.RestaurantId = entity.RestaurantId;
+                currentEntity.IsInactive = entity.IsInactive;
+                currentEntity.Name = entity.Name;
+                currentEntity.Price = entity.Price;
+                currentEntity.Type = entity.Type;
+
                 context.SaveChanges();
-                var resultEntity = context.Foods.FirstOrDefault(f => f.Id == foodEntity.Id);
-                return _mapper.Map<Food>(resultEntity);
+                return _mapper.Map<Food>(currentEntity);
             }
         }
 

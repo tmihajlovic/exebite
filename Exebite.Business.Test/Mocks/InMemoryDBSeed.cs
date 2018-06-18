@@ -209,8 +209,12 @@ namespace Exebite.Business.Test.Mocks
 
             // Add foods to daily menu
             var restaurant = context.Restaurants.Find(1);
-            restaurant.DailyMenu = new List<DataAccess.Entities.FoodEntity>();
-            restaurant.DailyMenu.AddRange(restaurant.Foods);
+            restaurant.DailyMenu = new List<DataAccess.Entities.DailyMenuEntity>();
+            foreach (var food in restaurant.Foods)
+            {
+                restaurant.DailyMenu.Add(new DataAccess.Entities.DailyMenuEntity { FoodEntityId = food.Id });
+            }
+
             context.SaveChanges();
         }
     }

@@ -4,14 +4,16 @@ using Exebite.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Exebite.DataAccess.Migrations
 {
     [DbContext(typeof(FoodOrderingContext))]
-    partial class FoodOrderingContextModelSnapshot : ModelSnapshot
+    [Migration("20180615125057_RemovedRestaurantNavFromRecipe")]
+    partial class RemovedRestaurantNavFromRecipe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,19 +63,6 @@ namespace Exebite.DataAccess.Migrations
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("Exebite.DataAccess.Entities.DailyMenuEntity", b =>
-                {
-                    b.Property<int>("FoodEntityId");
-
-                    b.Property<int>("RestaurantId");
-
-                    b.HasKey("FoodEntityId", "RestaurantId");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.ToTable("DailyMenuEntity");
-                });
-
             modelBuilder.Entity("Exebite.DataAccess.Entities.FoodEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -88,11 +77,15 @@ namespace Exebite.DataAccess.Migrations
 
                     b.Property<decimal>("Price");
 
+                    b.Property<int?>("RestaurantEntityId");
+
                     b.Property<int>("RestaurantId");
 
                     b.Property<int>("Type");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RestaurantEntityId");
 
                     b.HasIndex("RestaurantId");
 
@@ -186,13 +179,15 @@ namespace Exebite.DataAccess.Migrations
 
                     b.Property<int>("MainCourseId");
 
+                    b.Property<int?>("RestaurantEntityId");
+
                     b.Property<int>("RestaurantId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MainCourseId");
 
-                    b.HasIndex("RestaurantId");
+                    b.HasIndex("RestaurantEntityId");
 
                     b.ToTable("Recipe");
                 });
@@ -231,21 +226,12 @@ namespace Exebite.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Exebite.DataAccess.Entities.DailyMenuEntity", b =>
-                {
-                    b.HasOne("Exebite.DataAccess.Entities.FoodEntity", "FoodEntity")
-                        .WithMany()
-                        .HasForeignKey("FoodEntityId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Exebite.DataAccess.Entities.RestaurantEntity", "Restaurant")
-                        .WithMany("DailyMenu")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("Exebite.DataAccess.Entities.FoodEntity", b =>
                 {
+                    b.HasOne("Exebite.DataAccess.Entities.RestaurantEntity")
+                        .WithMany("DailyMenu")
+                        .HasForeignKey("RestaurantEntityId");
+
                     b.HasOne("Exebite.DataAccess.Entities.RestaurantEntity", "Restaurant")
                         .WithMany("Foods")
                         .HasForeignKey("RestaurantId")
@@ -298,10 +284,9 @@ namespace Exebite.DataAccess.Migrations
                         .HasForeignKey("MainCourseId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Exebite.DataAccess.Entities.RestaurantEntity", "Restaurant")
+                    b.HasOne("Exebite.DataAccess.Entities.RestaurantEntity")
                         .WithMany("Recipes")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("RestaurantEntityId");
                 });
 #pragma warning restore 612, 618
         }

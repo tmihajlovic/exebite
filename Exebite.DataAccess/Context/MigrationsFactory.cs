@@ -11,7 +11,7 @@ namespace Exebite.DataAccess.Context
         public FoodOrderingContext CreateDbContext(string[] args)
         {
             var dbContextOptions = new DbContextOptionsBuilder<FoodOrderingContext>()
-                .UseSqlServer("Server=(LocalDb)\\MSSQLLocalDB;Database=Exebite;Trusted_Connection=True;")
+                .UseSqlServer("Server=(Local);Database=Exebite;Trusted_Connection=True;")
                 .UseLazyLoadingProxies().Options;
 
             return new FoodOrderingContext(dbContextOptions);

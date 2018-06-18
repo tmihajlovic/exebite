@@ -4,6 +4,7 @@ using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Exebite.DataAccess.Repositories
 {
@@ -23,7 +24,7 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var entities = context.FoodEntityRecipeEntity.Where(fe => fe.FoodEntityId == food.Id).Select(r => r.RecipeEntity).ToList();
+                var entities = context.Foods.Where(fe => fe.Id == food.Id).SelectMany(r => r.FoodEntityRecipeEntities.Select(x => x.RecipeEntity)).ToList();
                 return entities.Select(r => _mapper.Map<Recipe>(r)).ToList();
             }
         }
@@ -51,10 +52,31 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var recipeEntity = _mapper.Map<RecipeEntity>(entity);
-                var resultEntity = context.Attach(recipeEntity).Entity;
+                var sideDishes = Enumerable.Range(0, entity.SideDish.Count).Select(a =>
+                     {
+                         return new FoodEntityRecipeEntity { FoodEntityId = entity.SideDish[a].Id };
+                     }).ToList();
+
+                var recipeEntity = new RecipeEntity
+                {
+                    Id = entity.Id,
+                    MainCourseId = entity.MainCourse.Id,
+                    FoodEntityRecipeEntities = sideDishes
+                };
+                var createEntity = context.Attach(recipeEntity).Entity;
                 context.SaveChanges();
-                return _mapper.Map<Recipe>(resultEntity);
+
+                createEntity = context.Recipes.Include(r => r.FoodEntityRecipeEntities)
+                                    .Include(r => r.MainCourse)
+                                    .First(r => r.Id == createEntity.Id);
+                return _mapper.Map<Recipe>(createEntity);
+                //return new Recipe
+                //{
+                //    Id = createEntity.Id,
+                //    MainCourse = _mapper.Map<Food>(createEntity.MainCourse),
+                //    Restaurant = _mapper.Map<Restaurant>(createEntity.Restaurant),
+                //    SideDish = _mapper.Map<List<Food>>(createEntity.FoodEntityRecipeEntities.Select(a => a.FoodEntity).ToList())
+                //};
             }
         }
 
@@ -88,17 +110,26 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var recipeEntity = _mapper.Map<RecipeEntity>(entity);
-                foreach (var fre in recipeEntity.FoodEntityRecipeEntities)
-                {
-                    context.Attach(fre);
-                }
+                // todo: must be like this. Do not use mapper - Remove comment when all repositories are finished
+                var currentEntity = context.Recipes.Find(entity.Id);
+                currentEntity.MainCourseId = entity.MainCourse.Id;
 
-                var old = context.Recipes.Find(entity.Id);
-                context.Entry(old).CurrentValues.SetValues(recipeEntity);
+                // this will remove old references, and after that new ones will be added
+                var addedEntities = Enumerable.Range(0, entity.SideDish.Count).Select(a =>
+                {
+                    return new FoodEntityRecipeEntity { FoodEntityId = entity.SideDish[a].Id, RecepieEntityId = entity.Id };
+                }).ToList();
+
+                var deletedEntities = currentEntity.FoodEntityRecipeEntities.Except(addedEntities).ToList();
+
+                deletedEntities.ForEach(d => currentEntity.FoodEntityRecipeEntities.Remove(d));
+
+                addedEntities.ForEach(a => currentEntity.FoodEntityRecipeEntities.Add(a));
+
                 context.SaveChanges();
 
                 var resultEntity = context.Recipes.FirstOrDefault(r => r.Id == entity.Id);
+
                 return _mapper.Map<Recipe>(resultEntity);
             }
         }
