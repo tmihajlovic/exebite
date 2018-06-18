@@ -67,6 +67,9 @@ namespace Exebite.DataAccess.Context
                 .WithMany(fr => fr.DailyMenu)
                 .HasForeignKey(f => f.RestaurantId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<RestaurantEntity>()
+                .HasIndex(x => x.Name);
         }
     }
 }
