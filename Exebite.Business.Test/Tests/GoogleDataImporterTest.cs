@@ -44,6 +44,7 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
+        [Ignore("This should be changed when we start updating complexed types")]
         public void UpdateRestorauntsMenu()
         {
             const string name = "Restoran pod Lipom";

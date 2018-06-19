@@ -87,19 +87,6 @@ namespace Exebite.Business.Test.Tests
         }
 
         [TestMethod]
-        public void UpdateRestourant()
-        {
-            const int id = 1;
-            const int foodCount = 3;
-            var restaurant = _restaurantRepository.GetByID(id);
-            var foods = restaurant.Foods;
-            restaurant.DailyMenu.Foods.Clear();
-            restaurant.DailyMenu.Foods.AddRange(foods.Take(foodCount));
-            var result = _restaurantRepository.Update(restaurant);
-            Assert.AreEqual(result.DailyMenu.Foods.Count, foodCount);
-        }
-
-        [TestMethod]
         public void DeleteRestourant()
         {
             const string name = "For delete";

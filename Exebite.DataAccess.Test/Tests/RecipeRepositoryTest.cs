@@ -157,14 +157,14 @@ namespace Exebite.DataAccess.Test.Tests
                 recipie.SideDish.Add(newFood);
                 var newRestoraunt = context.Restaurants.Find(2);
                 recipie.Restaurant = _mapper.Map<Restaurant>(newRestoraunt);
-                var newMainCourse = context.Foods.Find(2);
+                var newMainCourse = context.Foods.Find(3);
                 recipie.MainCourse = _mapper.Map<Food>(newMainCourse);
 
                 var result = _recepieRepository.Update(recipie);
 
                 Assert.AreEqual(2, result.SideDish.Count);
                 Assert.AreEqual(2, result.Restaurant.Id);
-                Assert.AreEqual(2, result.MainCourse.Id);
+                Assert.AreEqual(3, result.MainCourse.Id);
             }
         }
 
