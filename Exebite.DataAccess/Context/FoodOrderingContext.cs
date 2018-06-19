@@ -68,7 +68,7 @@ namespace Exebite.DataAccess.Context
                 .HasOne(x => x.Restaurant);
 
             modelBuilder.Entity<DailyMenuEntity>()
-                .HasMany(x => x.Menu);
+                .HasMany(x => x.Foods);
         }
     }
 }

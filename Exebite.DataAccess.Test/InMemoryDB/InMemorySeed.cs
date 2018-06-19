@@ -218,7 +218,7 @@ namespace Exebite.DataAccess.Test.InMemoryDB
             context.DailyMenues.Add(new Entities.DailyMenuEntity
             {
                 RestaurantId = 1,
-                Menu = new List<Entities.FoodEntity>
+                Foods = new List<Entities.FoodEntity>
                 {
                     context.Foods.Find(1)
                 }
@@ -227,7 +227,7 @@ namespace Exebite.DataAccess.Test.InMemoryDB
             context.DailyMenues.Add(new Entities.DailyMenuEntity
             {
                 RestaurantId = 1,
-                Menu = new List<Entities.FoodEntity>
+                Foods = new List<Entities.FoodEntity>
                 {
                     context.Foods.Find(1), context.Foods.Find(2)
                 }
