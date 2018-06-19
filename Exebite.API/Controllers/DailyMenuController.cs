@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Exebite.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/DailyMenu")]
+    [Route("api/dailymenu")]
     [Authorize]
     public class DailyMenuController : Controller
     {
