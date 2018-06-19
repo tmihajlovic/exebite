@@ -101,9 +101,9 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                // todo: must be like this. Do not use mapper - Remove comment when all repositories are finished
                 var currentEntity = context.Recipes.Find(entity.Id);
                 currentEntity.MainCourseId = entity.MainCourse.Id;
+                currentEntity.RestaurantId = entity.Restaurant.Id;
 
                 // this will remove old references, and after that new ones will be added
                 var addedEntities = Enumerable.Range(0, entity.SideDish.Count).Select(a =>

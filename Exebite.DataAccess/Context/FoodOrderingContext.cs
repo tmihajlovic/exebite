@@ -29,6 +29,8 @@ namespace Exebite.DataAccess.Context
 
         public DbSet<CustomerAliasesEntities> CustomerAliases { get; set; }
 
+        public DbSet<DailyMenuEntity> DailyMenues { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<FoodEntity>()

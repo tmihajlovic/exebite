@@ -162,9 +162,9 @@ namespace Exebite.DataAccess.Test.Tests
 
                 var result = _recepieRepository.Update(recipie);
 
-                Assert.AreEqual(result.SideDish.Count, 2);
-                Assert.AreEqual(result.Restaurant.Id, 2);
-                Assert.AreEqual(result.MainCourse.Id, 2);
+                Assert.AreEqual(2, result.SideDish.Count);
+                Assert.AreEqual(2, result.Restaurant.Id);
+                Assert.AreEqual(2, result.MainCourse.Id);
             }
         }
 

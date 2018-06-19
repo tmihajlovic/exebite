@@ -89,10 +89,9 @@ namespace Exebite.DataAccess.Test.Tests
         public void UpdateRestaurantDailyMenu()
         {
             var restaurant = _restaurantRepository.GetByID(1);
-            var foodToAdd = restaurant.Foods;
-            restaurant.DailyMenu.Foods.AddRange(foodToAdd);
+            restaurant.DailyMenu = new DailyMenu { Id = 2 };
             var result = _restaurantRepository.Update(restaurant);
-            Assert.AreEqual(result.DailyMenu.Foods.Count, foodToAdd.Count);
+            Assert.AreEqual(2, result.DailyMenu.Id);
         }
 
         [TestMethod]

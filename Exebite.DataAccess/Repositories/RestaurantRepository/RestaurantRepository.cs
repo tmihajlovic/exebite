@@ -60,34 +60,14 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var restaurantEntity = _mapper.Map<RestaurantEntity>(entity);
-
-                var dbRestaurant = context.Restaurants.FirstOrDefault(r => r.Id == entity.Id);
-                context.Entry(dbRestaurant).CurrentValues.SetValues(restaurantEntity);
-
-                List<FoodEntity> foodList = context.Foods.Where(f => f.Restaurant.Id == dbRestaurant.Id).ToList();
-
-                // clear old menu
-                dbRestaurant.DailyMenu.Menu.Clear();
-
-                // bind daily food entities
-                for (int i = 0; i < restaurantEntity.DailyMenu.Menu.Count; i++)
-                {
-                    var tmpfood = foodList.FirstOrDefault(f => f.Name == restaurantEntity.DailyMenu.Menu[i].Name);
-                    if (tmpfood != null)
-                    {
-                        dbRestaurant.DailyMenu.Menu.Add(tmpfood);
-                    }
-                    else
-                    {
-                        restaurantEntity.DailyMenu.Menu[i].Restaurant = dbRestaurant;
-                        dbRestaurant.DailyMenu.Menu.Add(restaurantEntity.DailyMenu.Menu[i]);
-                    }
-                }
+                var currentEntity = context.Restaurants.Find(entity.Id);
+                currentEntity.DailyMenuId = entity.DailyMenu.Id;
+                currentEntity.Name = entity.Name;
 
                 context.SaveChanges();
 
-                var resultEntity = context.Restaurants.FirstOrDefault(r => r.Id == entity.Id);
+                var resultEntity = context.Restaurants.Include(x => x.DailyMenu)
+                                                      .FirstOrDefault(r => r.Id == entity.Id);
                 return _mapper.Map<Restaurant>(resultEntity);
             }
         }

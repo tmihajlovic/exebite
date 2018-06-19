@@ -31,7 +31,7 @@ namespace Exebite.DataAccess.Test.Tests
         public void GetAllFood()
         {
             var result = _foodRepository.Get(0, int.MaxValue);
-            Assert.AreNotEqual(result.Count, 0);
+            Assert.AreNotEqual(0, result.Count);
         }
 
         [TestMethod]
@@ -55,7 +55,7 @@ namespace Exebite.DataAccess.Test.Tests
             {
                 var restaurant = _mapper.Map<Restaurant>(context.Restaurants.Find(1));
                 var result = _foodRepository.GetByRestaurant(restaurant).ToList();
-                Assert.AreNotEqual(result.Count, 0);
+                Assert.AreNotEqual(0, result.Count);
             }
         }
 
@@ -117,6 +117,7 @@ namespace Exebite.DataAccess.Test.Tests
                 Assert.AreEqual(food.Description, result.Description);
                 Assert.AreEqual(food.Price, result.Price);
                 Assert.AreEqual(food.Type, result.Type);
+                Assert.AreEqual(food.RestaurantId, result.RestaurantId);
                 Assert.AreEqual(food.RestaurantId, result.Restaurant.Id);
             }
         }

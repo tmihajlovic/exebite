@@ -118,6 +118,16 @@ namespace Exebite.DataAccess.Test.InMemoryDB
                 Restaurant = context.Restaurants.Find(1)
             });
 
+            context.Foods.Add(new Entities.FoodEntity
+            {
+                Name = "Test desert",
+                Description = "Desert",
+                IsInactive = false,
+                Price = 123,
+                Type = DomainModel.FoodType.DESERT,
+                RestaurantId = 1,
+                Restaurant = context.Restaurants.Find(1)
+            });
             context.SaveChanges();
 
             // Seed orders
@@ -203,6 +213,25 @@ namespace Exebite.DataAccess.Test.InMemoryDB
                      RecepieEntityId = recipe2.Entity.Id
                 }
             };
+            context.SaveChanges();
+
+            context.DailyMenues.Add(new Entities.DailyMenuEntity
+            {
+                RestaurantId = 1,
+                Menu = new List<Entities.FoodEntity>
+                {
+                    context.Foods.Find(1)
+                }
+            });
+
+            context.DailyMenues.Add(new Entities.DailyMenuEntity
+            {
+                RestaurantId = 1,
+                Menu = new List<Entities.FoodEntity>
+                {
+                    context.Foods.Find(1), context.Foods.Find(2)
+                }
+            });
             context.SaveChanges();
         }
     }
