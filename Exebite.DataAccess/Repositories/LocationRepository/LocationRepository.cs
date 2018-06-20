@@ -4,28 +4,35 @@ using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DomainModel;
+using Microsoft.Extensions.Logging;
 
 namespace Exebite.DataAccess.Repositories
 {
     public class LocationRepository : DatabaseRepository<Location, LocationEntity, LocationQueryModel>, ILocationRepository
     {
-        public LocationRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        private readonly ILogger<LocationRepository> _logger;
+
+        public LocationRepository(IFoodOrderingContextFactory factory, IMapper mapper, ILogger<LocationRepository> logger)
             : base(factory, mapper)
         {
+            _logger = logger;
         }
 
-        public override Location Insert(Location entity)
+        public override Location Insert(Location location)
         {
-            if (entity == null)
+            _logger.LogDebug("Insert started.");
+            if (location == null)
             {
-                throw new System.ArgumentNullException(nameof(entity));
+                _logger.LogError($"Argument {location} is null");
+                throw new System.ArgumentNullException(nameof(location));
             }
 
             using (var context = _factory.Create())
             {
-                var locEntity = _mapper.Map<LocationEntity>(entity);
+                var locEntity = _mapper.Map<LocationEntity>(location);
                 var resultEntity = context.Locations.Update(locEntity).Entity;
                 context.SaveChanges();
+                _logger.LogDebug("Insert finished.");
                 return _mapper.Map<Location>(resultEntity);
             }
         }
