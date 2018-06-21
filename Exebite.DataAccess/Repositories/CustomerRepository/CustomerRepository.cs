@@ -77,10 +77,8 @@ namespace Exebite.DataAccess.Repositories
 
         public override IList<Customer> Query(CustomerQueryModel queryModel)
         {
-            if (queryModel == null)
-            {
-                throw new System.ArgumentException("queryModel can't be null");
-            }
+
+            queryModel = queryModel ?? new CustomerQueryModel();
 
             using (var context = _factory.Create())
             {

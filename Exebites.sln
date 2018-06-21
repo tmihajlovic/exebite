@@ -9,10 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Business", "Exebite
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.DataAccess", "Exebite.DataAccess\Exebite.DataAccess.csproj", "{8910E895-A3A5-43BE-9B24-5EA4E5D1962C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.DataAccess.Test", "Exebite.DataAccess.Test\Exebite.DataAccess.Test.csproj", "{262ACF12-8548-4A64-87E7-C5AD08935C0E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Business.Test", "Exebite.Business.Test\Exebite.Business.Test.csproj", "{F39E79FF-8D37-4707-95D1-DBF5B9E3FDD0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.GoogleSheetAPI", "Exebite.GoogleSheetAPI\Exebite.GoogleSheetAPI.csproj", "{8ABB8947-1606-4C1F-81C9-1DE94F80129A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.GoogleSheetAPI.Test", "Exebite.GoogleSheetAPI.Test\Exebite.GoogleSheetAPI.Test.csproj", "{77D501CE-FD2E-4DC4-AFDE-455D53A790D4}"
@@ -22,6 +18,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Common", "Exebite.Common\Exebite.Common.csproj", "{F8959F30-89F7-47A8-88AB-2B6910379EB0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.DomainModel", "Exebite.DomainModel\Exebite.DomainModel.csproj", "{2BCCE591-A7B4-4806-9A05-E1188388EADF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.DataAccess.Test", "Exebite.DataAccess.Test\Exebite.DataAccess.Test.csproj", "{9EF38246-3DF8-4E74-94BA-4ED8F60DDC4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,14 +39,6 @@ Global
 		{8910E895-A3A5-43BE-9B24-5EA4E5D1962C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8910E895-A3A5-43BE-9B24-5EA4E5D1962C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8910E895-A3A5-43BE-9B24-5EA4E5D1962C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{262ACF12-8548-4A64-87E7-C5AD08935C0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{262ACF12-8548-4A64-87E7-C5AD08935C0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{262ACF12-8548-4A64-87E7-C5AD08935C0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{262ACF12-8548-4A64-87E7-C5AD08935C0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F39E79FF-8D37-4707-95D1-DBF5B9E3FDD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F39E79FF-8D37-4707-95D1-DBF5B9E3FDD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F39E79FF-8D37-4707-95D1-DBF5B9E3FDD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F39E79FF-8D37-4707-95D1-DBF5B9E3FDD0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8ABB8947-1606-4C1F-81C9-1DE94F80129A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8ABB8947-1606-4C1F-81C9-1DE94F80129A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8ABB8947-1606-4C1F-81C9-1DE94F80129A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,6 +59,10 @@ Global
 		{2BCCE591-A7B4-4806-9A05-E1188388EADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BCCE591-A7B4-4806-9A05-E1188388EADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BCCE591-A7B4-4806-9A05-E1188388EADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EF38246-3DF8-4E74-94BA-4ED8F60DDC4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EF38246-3DF8-4E74-94BA-4ED8F60DDC4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EF38246-3DF8-4E74-94BA-4ED8F60DDC4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EF38246-3DF8-4E74-94BA-4ED8F60DDC4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

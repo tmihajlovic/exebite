@@ -1,14 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using Exebite.DataAccess;
-using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Context;
-using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
-using Exebite.DataAccess.Test.InMemoryDB;
+using Exebite.DataAccess.Test.Mocks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Exebite.Test
+namespace Exebite.DataAccess.Test
 {
     public static class ServiceProviderWrapper
     {
@@ -18,22 +17,24 @@ namespace Exebite.Test
             var serviceProvider = new ServiceCollection()
                                         .AddLogging()
                                         .AddTransient<IFoodOrderingContextFactory, InMemoryDBFactory>()
-
                                         .AddTransient<IRestaurantRepository, RestaurantRepository>()
                                         .AddTransient<IFoodRepository, FoodRepository>()
                                         .AddTransient<IRecipeRepository, RecipeRepository>()
                                         .AddTransient<ICustomerRepository, CustomerRepository>()
                                         .AddTransient<ILocationRepository, LocationRepository>()
                                         .AddTransient<IOrderRepository, OrderRepository>()
-
-                                        .AddTransient<IRecipeToRecipeEntityConverter, RecipeToRecipeEntityConverter>()
-                                        .AddTransient<IFoodToFoodEntityConverter, FoodToFoodEntityConverter>()
-                                        .AddTransient<IMealToMealEntityConverter, MealToMealEntityConverter>()
                                         .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
                                         .AddAutoMapper(cfg =>
                                                     cfg.AddProfile<DataAccessMappingProfile>())
-                                        .BuildServiceProvider();
-            return serviceProvider;
+                                        ;
+
+
+            //foreach (var item in outerCollection)
+            //{
+            //    serviceProvider.AddTransient(item.ImplementationInstance, item.Value);
+            //}
+
+            return serviceProvider.BuildServiceProvider();
         }
 
         public static T Resolve<T>(this IServiceProvider provider)
