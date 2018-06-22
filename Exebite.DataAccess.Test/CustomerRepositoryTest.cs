@@ -1,7 +1,7 @@
 using Exebite.Common.Reflecsion;
 using Exebite.DataAccess.Repositories;
 using Xunit;
-using static Exebite.DataAccess.Test.CustomerRepositoryTestHelpers;
+using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
 namespace Exebite.DataAccess.Test
 {

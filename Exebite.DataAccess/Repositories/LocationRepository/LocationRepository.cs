@@ -27,11 +27,17 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var locEntity = _mapper.Map<LocationEntity>(location);
-                var resultEntity = context.Locations.Update(locEntity).Entity;
+                var locEntity = new LocationEntity
+                {
+                    Id = location.Id,
+                    Name = location.Name,
+                    Address = location.Address
+                };
+
+                var createdEntity = context.Locations.Add(locEntity).Entity;
                 context.SaveChanges();
                 _logger.LogDebug("Insert finished.");
-                return _mapper.Map<Location>(resultEntity);
+                return _mapper.Map<Location>(createdEntity);
             }
         }
 
@@ -47,11 +53,10 @@ namespace Exebite.DataAccess.Repositories
             using (var context = _factory.Create())
             {
                 var locationEntity = _mapper.Map<LocationEntity>(location);
-                context.Update(locationEntity);
+                var updatedLocation = context.Update(locationEntity).Entity;
                 context.SaveChanges();
                 _logger.LogDebug("Update finished.");
-                var resultEntity = context.Locations.FirstOrDefault(l => l.Id == location.Id);
-                return _mapper.Map<Location>(resultEntity);
+                return _mapper.Map<Location>(updatedLocation);
             }
         }
 
@@ -61,7 +66,7 @@ namespace Exebite.DataAccess.Repositories
             if (queryModel == null)
             {
                 _logger.LogError($"Argument {queryModel} is null");
-                throw new ArgumentException("queryModel can't be null");
+                throw new ArgumentNullException("queryModel can't be null");
             }
 
             using (var context = _factory.Create())
@@ -73,7 +78,9 @@ namespace Exebite.DataAccess.Repositories
                     query = query.Where(x => x.Id == queryModel.Id.Value);
                 }
 
+                _logger.LogDebug("Querying by ", queryModel.ToString());
                 var results = query.ToList();
+
                 _logger.LogDebug("Querying finished.");
                 return _mapper.Map<IList<Location>>(results);
             }

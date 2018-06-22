@@ -8,11 +8,11 @@ using Moq;
 
 namespace Exebite.DataAccess.Test
 {
-    internal static class CustomerRepositoryTestHelpers
+    internal static class RepositoryTestHelpers
     {
         private static readonly IMapper _mapper;
 
-        static CustomerRepositoryTestHelpers()
+        static RepositoryTestHelpers()
         {
             ServiceCollectionExtensions.UseStaticRegistration = false;
             Mapper.Initialize(cfg => cfg.AddProfile<DataAccessMappingProfile>());
@@ -40,6 +40,31 @@ namespace Exebite.DataAccess.Test
             }
 
             return new CustomerRepository(factory, _mapper, new Mock<ILogger<CustomerRepository>>().Object);
+        }
+
+        internal static LocationRepository LocationDataForTesing(string name, int numberOfLocations)
+        {
+            var factory = new InMemoryDBFactory(name);
+
+            using (var context = factory.Create())
+            {
+                var locations = Enumerable.Range(1, numberOfLocations).Select(x => new LocationEntity()
+                {
+                    Id = x,
+                    Address = $"Address {x}",
+                    Name = $"Name {x}"
+                });
+
+                context.Locations.AddRange(locations);
+                context.SaveChanges();
+            }
+
+            return new LocationRepository(factory, _mapper, new Mock<ILogger<LocationRepository>>().Object);
+        }
+
+        internal static LocationRepository CreateOnlyLocationRepositoryInstanceNoData(string name)
+        {
+            return new LocationRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<LocationRepository>>().Object);
         }
     }
 }
