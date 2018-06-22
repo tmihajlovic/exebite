@@ -91,7 +91,7 @@ namespace Exebite.DataAccess.Repositories
         {
             if (queryModel == null)
             {
-                throw new System.ArgumentException("queryModel can't be null");
+                throw new System.ArgumentNullException("queryModel can't be null");
             }
 
             using (var context = _factory.Create())

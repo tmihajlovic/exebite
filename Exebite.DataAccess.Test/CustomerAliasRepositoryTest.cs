@@ -13,7 +13,7 @@ namespace Exebite.DataAccess.Test
         public void Query_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(Methods.GetCurrentMethod());
+            var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(Guid.NewGuid().ToString());
 
             // Act and Assert
             Exception res = Assert.Throws<ArgumentNullException>(() => sut.Query(null));
@@ -24,7 +24,7 @@ namespace Exebite.DataAccess.Test
         public void Query_MultipleElements(int count)
         {
             // Arrange
-            var sut = CustomerAliasesDataForTesing(Methods.GetCurrentMethod() + count, count);
+            var sut = CustomerAliasesDataForTesing(Guid.NewGuid().ToString(), count);
 
             // Act
             var res = sut.Query(new CustomerAliasQueryModel());
@@ -37,7 +37,7 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_ValidId()
         {
             // Arrange
-            var sut = CustomerAliasesDataForTesing(Methods.GetCurrentMethod(), 1);
+            var sut = CustomerAliasesDataForTesing(Guid.NewGuid().ToString(), 1);
 
             // Act
             var res = sut.Query(new CustomerAliasQueryModel() { Id = 1 });
@@ -51,7 +51,7 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_NonExistingID(int id)
         {
             // Arrange
-            var sut = CustomerAliasesDataForTesing(Methods.GetCurrentMethod() + id, 1);
+            var sut = CustomerAliasesDataForTesing(Guid.NewGuid().ToString(), 1);
 
             // Act
             var res = sut.Query(new CustomerAliasQueryModel() { Id = id });
@@ -64,7 +64,7 @@ namespace Exebite.DataAccess.Test
         public void Insert_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(Methods.GetCurrentMethod());
+            var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(Guid.NewGuid().ToString());
 
             // Act and Assert
             Exception res = Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
@@ -74,7 +74,7 @@ namespace Exebite.DataAccess.Test
         public void Insert_ValidObjectPassed_ObjectSavedInDatabase()
         {
             // Arrange
-            var sut = CustomerAliasesDataForTesing(Methods.GetCurrentMethod(), 1);
+            var sut = CustomerAliasesDataForTesing(Guid.NewGuid().ToString(), 1);
 
             var customerAlias = new CustomerAliases
             {
@@ -98,7 +98,7 @@ namespace Exebite.DataAccess.Test
         public void Update_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(Methods.GetCurrentMethod());
+            var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(Guid.NewGuid().ToString());
 
             // Act and Assert
             Exception res = Assert.Throws<ArgumentNullException>(() => sut.Update(null));
@@ -108,7 +108,7 @@ namespace Exebite.DataAccess.Test
         public void Update_ValidObjectPassed_ObjectUpdatedInDatabase()
         {
             // Arrange
-            var sut = CustomerAliasesDataForTesing(Methods.GetCurrentMethod(), 2);
+            var sut = CustomerAliasesDataForTesing(Guid.NewGuid().ToString(), 2);
 
             var updatedLocation = new CustomerAliases
             {

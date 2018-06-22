@@ -11,14 +11,14 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
     {
         private const string RestaurantName = "Restoran pod Lipom";
 
-        private static ILipaConector _lipaConector;
-        private static ILipaConector _lipaConector_NullCheck;
-        private static ILipaConector _lipaConector_EmptyCheck;
-        private static IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
-        private static IGoogleSheetService _googleSheetService;
-        private static IGoogleSheetService _googleSheetService_returnNull;
-        private static IGoogleSheetService _googleSheetService_returnEmpty;
-        private static FakeDataFactory _fakeDataFactory;
+        private readonly ILipaConector _lipaConector;
+        private readonly ILipaConector _lipaConector_NullCheck;
+        private readonly ILipaConector _lipaConector_EmptyCheck;
+        private readonly IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
+        private readonly IGoogleSheetService _googleSheetService;
+        private readonly IGoogleSheetService _googleSheetService_returnNull;
+        private readonly IGoogleSheetService _googleSheetService_returnEmpty;
+        private readonly FakeDataFactory _fakeDataFactory;
 
         public LipaConectorTest()
         {

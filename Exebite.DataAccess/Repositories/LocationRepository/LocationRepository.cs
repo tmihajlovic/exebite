@@ -16,22 +16,22 @@ namespace Exebite.DataAccess.Repositories
         {
         }
 
-        public override Location Insert(Location location)
+        public override Location Insert(Location entity)
         {
             _logger.LogDebug("Insert started.");
-            if (location == null)
+            if (entity == null)
             {
-                _logger.LogError($"Argument {location} is null");
-                throw new ArgumentNullException(nameof(location));
+                _logger.LogError($"Argument {entity} is null");
+                throw new ArgumentNullException(nameof(entity));
             }
 
             using (var context = _factory.Create())
             {
                 var locEntity = new LocationEntity
                 {
-                    Id = location.Id,
-                    Name = location.Name,
-                    Address = location.Address
+                    Id = entity.Id,
+                    Name = entity.Name,
+                    Address = entity.Address
                 };
 
                 var createdEntity = context.Locations.Add(locEntity).Entity;
@@ -41,18 +41,18 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public override Location Update(Location location)
+        public override Location Update(Location entity)
         {
             _logger.LogDebug("Update started.");
-            if (location == null)
+            if (entity == null)
             {
-                _logger.LogError($"Argument {location} is null");
-                throw new ArgumentNullException(nameof(location));
+                _logger.LogError($"Argument {entity} is null");
+                throw new ArgumentNullException(nameof(entity));
             }
 
             using (var context = _factory.Create())
             {
-                var locationEntity = _mapper.Map<LocationEntity>(location);
+                var locationEntity = _mapper.Map<LocationEntity>(entity);
                 var updatedLocation = context.Update(locationEntity).Entity;
                 context.SaveChanges();
                 _logger.LogDebug("Update finished.");

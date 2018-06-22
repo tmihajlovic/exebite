@@ -9,13 +9,14 @@ namespace Exebite.DataAccess.Test
 {
     public sealed class CustomerRepositoryTest
     {
+        [Theory]
         [InlineData(1, 1)]
         [InlineData(2, 2)]
         [InlineData(3, 2)]
         [InlineData(50, 2)]
         public void GetById_ValidId_ValidResult(int count, int id)
         {
-            var customerRepository = FillCustomerDataForTesing(Guid.NewGuid().ToString(), CreateCustomerEntities(count));
+            var customerRepository = FillCustomerDataForTesting(Guid.NewGuid().ToString(), CreateCustomerEntities(count));
 
             var res = customerRepository.GetByID(id);
 
@@ -30,7 +31,7 @@ namespace Exebite.DataAccess.Test
         [InlineData(5, 4)]
         public void GetById_InValidId_ValidResult(int startId, int count)
         {
-            var customerRepository = FillCustomerDataForTesing(Methods.GetCurrentMethod() + startId.ToString() + count.ToString(), CreateCustomerEntities( count));
+            var customerRepository = FillCustomerDataForTesting(Guid.NewGuid().ToString(), CreateCustomerEntities(count));
 
             var res = customerRepository.GetByID(count + 1);
 
@@ -44,7 +45,7 @@ namespace Exebite.DataAccess.Test
         [InlineData(100)]
         public void Query_MultipleElements(int count)
         {
-            CustomerRepository customerRepository = FillCustomerDataForTesing(Methods.GetCurrentMethod() + count, CreateCustomerEntities( count));
+            CustomerRepository customerRepository = FillCustomerDataForTesting(Guid.NewGuid().ToString(), CreateCustomerEntities(count));
 
             var res = customerRepository.Query(new CustomerQueryModel());
 
@@ -54,7 +55,7 @@ namespace Exebite.DataAccess.Test
         [Fact]
         public void Query_QueryByIDId_ValidId()
         {
-            CustomerRepository customerRepository = FillCustomerDataForTesing(Methods.GetCurrentMethod(), CreateCustomerEntities(2));
+            CustomerRepository customerRepository = FillCustomerDataForTesting(Guid.NewGuid().ToString(), CreateCustomerEntities(2));
 
             var res = customerRepository.Query(new CustomerQueryModel() { Id = 1 });
 
@@ -67,24 +68,22 @@ namespace Exebite.DataAccess.Test
         [InlineData(int.MaxValue)]
         public void Query_QueryByIDId_NonExistingID(int id)
         {
-            CustomerRepository customerRepository = FillCustomerDataForTesing(Methods.GetCurrentMethod() + id, CreateCustomerEntities(1));
+            CustomerRepository customerRepository = FillCustomerDataForTesting(Guid.NewGuid().ToString(), CreateCustomerEntities(1));
 
             var res = customerRepository.Query(new CustomerQueryModel() { Id = id + 1 });
 
             Assert.Equal(0, res.Count);
         }
 
-
         [Theory]
-        [InlineData(1, 1)]
-        [InlineData(1, 2)]
-        [InlineData(1, 5)]
-        [InlineData(2, 5)]
-        public void Insert_InsertValid_CheckInsert(int idToSearchFor, int number)
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(5)]
+        public void Insert_InsertValid_CheckInsert(int number)
         {
             var customers = CreateCustomerEntities(0);
 
-            var customerRepsitory = FillCustomerDataForTesing(Guid.NewGuid().ToString(), customers);
+            var customerRepsitory = FillCustomerDataForTesting(Guid.NewGuid().ToString(), customers);
 
             var customer = CreateCustomers(number + 1, 1).FirstOrDefault();
 
