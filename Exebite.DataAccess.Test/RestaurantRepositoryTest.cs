@@ -1,12 +1,12 @@
-﻿using System;
-using Exebite.DataAccess.Repositories;
+﻿using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
+using System;
 using Xunit;
 using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
 namespace Exebite.DataAccess.Test
 {
-    public sealed class LocationRepositoryTest
+    public class RestaurantRepositoryTest
     {
         [Theory]
         [InlineData(1, 1)]
@@ -16,7 +16,7 @@ namespace Exebite.DataAccess.Test
         public void GetById_ValidId_ValidResult(int count, int id)
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), count);
+            var sut = RestaurantDataForTesting(Guid.NewGuid().ToString(), count);
 
             // Act
             var res = sut.GetByID(id);
@@ -31,7 +31,7 @@ namespace Exebite.DataAccess.Test
         public void GetById_InValidId_ValidResult(int count)
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), count);
+            var sut = RestaurantDataForTesting(Guid.NewGuid().ToString(), count);
 
             // Act
             var res = sut.GetByID(count - 1);
@@ -44,7 +44,7 @@ namespace Exebite.DataAccess.Test
         public void Query_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyLocationRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var sut = CreateOnlyFoodRepositoryInstanceNoData(Guid.NewGuid().ToString());
 
             // Act and Assert
             Exception res = Assert.Throws<ArgumentNullException>(() => sut.Query(null));
@@ -58,10 +58,10 @@ namespace Exebite.DataAccess.Test
         public void Query_MultipleElements(int count)
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), count);
+            var sut = RestaurantDataForTesting(Guid.NewGuid().ToString(), count);
 
             // Act
-            var res = sut.Query(new LocationQueryModel());
+            var res = sut.Query(new RestaurantQueryModel());
 
             // Assert
             Assert.Equal(count, res.Count);
@@ -71,10 +71,10 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_ValidId()
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), 1);
+            var sut = RestaurantDataForTesting(Guid.NewGuid().ToString(), 1);
 
             // Act
-            var res = sut.Query(new LocationQueryModel() { Id = 1 });
+            var res = sut.Query(new RestaurantQueryModel() { Id = 1 });
 
             Assert.Equal(1, res.Count);
         }
@@ -86,10 +86,10 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_NonExistingID(int id)
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), 1);
+            var sut = RestaurantDataForTesting(Guid.NewGuid().ToString(), 1);
 
             // Act
-            var res = sut.Query(new LocationQueryModel() { Id = id });
+            var res = sut.Query(new RestaurantQueryModel() { Id = id });
 
             // Assert
             Assert.Equal(0, res.Count);
@@ -99,7 +99,7 @@ namespace Exebite.DataAccess.Test
         public void Insert_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyLocationRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var sut = CreateOnlyRestaurantRepositoryInstanceNoData(Guid.NewGuid().ToString());
 
             // Act and Assert
             Exception res = Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
@@ -109,29 +109,28 @@ namespace Exebite.DataAccess.Test
         public void Insert_ValidObjectPassed_ObjectSavedInDatabase()
         {
             // Arrange
-            var sut = CreateOnlyLocationRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var sut = RestaurantDataForTesting(Guid.NewGuid().ToString(), 0);
 
-            var location = new Location
+            var Restaurant = new Restaurant
             {
                 Id = 1,
-                Name = "Location name",
-                Address = "Location address"
+                Name = "Restaurant name",
+                DailyMenuId = 1
             };
 
             // Act
-            var res = sut.Insert(location);
+            var res = sut.Insert(Restaurant);
 
             // Assert
-            Assert.Equal(location.Id, res.Id);
-            Assert.Equal(location.Name, res.Name);
-            Assert.Equal(location.Address, res.Address);
+            Assert.Equal(Restaurant.Id, res.Id);
+            Assert.Equal(Restaurant.Name, res.Name);
         }
 
         [Fact]
         public void Update_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyLocationRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var sut = CreateOnlyFoodRepositoryInstanceNoData(Guid.NewGuid().ToString());
 
             // Act and Assert
             Exception res = Assert.Throws<ArgumentNullException>(() => sut.Update(null));
@@ -141,29 +140,29 @@ namespace Exebite.DataAccess.Test
         public void Update_ValidObjectPassed_ObjectUpdatedInDatabase()
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), 1);
+            var sut = RestaurantDataForTesting(Guid.NewGuid().ToString(), 1);
 
-            var updatedLocation = new Location
+            var updatedRestaurant = new Restaurant
             {
                 Id = 1,
-                Name = "Location name updated",
-                Address = "Location address updated"
+                Name = "Restaurant name updated",
+                DailyMenuId = 1
             };
 
             // Act
-            var res = sut.Update(updatedLocation);
+            var res = sut.Update(updatedRestaurant);
 
             // Assert
-            Assert.Equal(updatedLocation.Id, res.Id);
-            Assert.Equal(updatedLocation.Name, res.Name);
-            Assert.Equal(updatedLocation.Address, res.Address);
+            Assert.Equal(updatedRestaurant.Id, res.Id);
+            Assert.Equal(updatedRestaurant.Name, res.Name);
+            Assert.Equal(updatedRestaurant.DailyMenuId, res.DailyMenu.Id);
         }
 
         [Fact]
         public void Delete_ExistingRecordIdPassed_ObjectDeletedFromDatabase()
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), 1);
+            var sut = RestaurantDataForTesting(Guid.NewGuid().ToString(), 1);
             var existingId = 1;
 
             Assert.NotNull(sut.GetByID(existingId));
@@ -183,7 +182,7 @@ namespace Exebite.DataAccess.Test
         public void Get_ValidId_ValidResult(int count, int id)
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), count);
+            var sut = RestaurantDataForTesting(Guid.NewGuid().ToString(), count);
 
             // Act
             var res = sut.Get(0, int.MaxValue);

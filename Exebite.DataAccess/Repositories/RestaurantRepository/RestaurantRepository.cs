@@ -62,7 +62,7 @@ namespace Exebite.DataAccess.Repositories
             using (var context = _factory.Create())
             {
                 var currentEntity = context.Restaurants.Find(entity.Id);
-                currentEntity.DailyMenuId = entity.DailyMenu.Id;
+                currentEntity.DailyMenuId = entity.DailyMenuId;
                 currentEntity.Name = entity.Name;
 
                 context.SaveChanges();
