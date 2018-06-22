@@ -41,13 +41,13 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public override Location Update(Location entity)
+        public override Location Update(Location location)
         {
             _logger.LogDebug("Update started.");
-            if (entity == null)
+            if (location == null)
             {
-                _logger.LogError($"Argument {entity} is null");
-                throw new ArgumentNullException(nameof(entity));
+                _logger.LogError($"Argument {location} is null");
+                throw new ArgumentNullException(nameof(location));
             }
 
             using (var context = _factory.Create())
