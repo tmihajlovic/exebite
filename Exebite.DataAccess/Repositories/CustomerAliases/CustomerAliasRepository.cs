@@ -5,6 +5,7 @@ using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DomainModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Exebite.DataAccess.Repositories
@@ -18,25 +19,40 @@ namespace Exebite.DataAccess.Repositories
 
         public override CustomerAliases Insert(CustomerAliases entity)
         {
+            _logger.LogDebug("Insert started.");
             if (entity == null)
             {
+                _logger.LogError($"Argument {entity} is null");
                 throw new ArgumentNullException(nameof(entity));
             }
 
             using (var context = _factory.Create())
             {
-                var aliasEntity = _mapper.Map<CustomerAliasesEntities>(entity);
-                var resultEntity = context.CustomerAliases.Update(aliasEntity).Entity;
+                var aliasEntity = new CustomerAliasesEntities
+                {
+                    Id = entity.Id,
+                    Alias = entity.Alias,
+                    CustomerId = entity.Customer.Id,
+                    RestaurantId = entity.Restaurant.Id
+                };
+
+                var createdEntity = context.CustomerAliases.Add(aliasEntity).Entity;
                 context.SaveChanges();
-                return _mapper.Map<CustomerAliases>(resultEntity);
+                _logger.LogDebug("Insert finished.");
+                createdEntity = context.CustomerAliases.Include(a => a.Restaurant)
+                                                       .Include(a => a.Customer)
+                                                       .FirstOrDefault(a => a.Id == createdEntity.Id);
+                return _mapper.Map<CustomerAliases>(createdEntity);
             }
         }
 
         public override IList<CustomerAliases> Query(CustomerAliasQueryModel queryModel)
         {
+            _logger.LogDebug("Querying started.");
             if (queryModel == null)
             {
-                throw new ArgumentException("queryModel can't be null");
+                _logger.LogError($"Argument {queryModel} is null");
+                throw new ArgumentNullException("queryModel can't be null");
             }
 
             using (var context = _factory.Create())
@@ -48,15 +64,19 @@ namespace Exebite.DataAccess.Repositories
                     query = query.Where(x => x.Id == queryModel.Id.Value);
                 }
 
+                _logger.LogDebug("Querying by ", queryModel.ToString());
                 var results = query.ToList();
+                _logger.LogDebug("Querying finished.");
                 return _mapper.Map<IList<CustomerAliases>>(results);
             }
         }
 
         public override CustomerAliases Update(CustomerAliases entity)
         {
+            _logger.LogDebug("Update started.");
             if (entity == null)
             {
+                _logger.LogError($"Argument {entity} is null");
                 throw new ArgumentNullException(nameof(entity));
             }
 
@@ -72,7 +92,10 @@ namespace Exebite.DataAccess.Repositories
 
                 context.Update(aliasEntity);
                 context.SaveChanges();
-                var resultEntity = context.CustomerAliases.FirstOrDefault(l => l.Id == entity.Id);
+                _logger.LogDebug("Update finished.");
+                var resultEntity = context.CustomerAliases.Include(a => a.Customer)
+                                                          .Include(a => a.Restaurant)
+                                                          .FirstOrDefault(a => a.Id == entity.Id);
                 return _mapper.Map<CustomerAliases>(resultEntity);
             }
         }

@@ -85,5 +85,44 @@ namespace Exebite.DataAccess.Test
         {
             return new LocationRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<LocationRepository>>().Object);
         }
+
+        internal static CustomerAliasRepository CustomerAliasesDataForTesing(string name, int numberOfLocations)
+        {
+            var factory = new InMemoryDBFactory(name);
+
+            using (var context = factory.Create())
+            {
+                var customerAlias = Enumerable.Range(1, numberOfLocations).Select(x => new CustomerAliasesEntities
+                {
+                    Id = x,
+                    Alias = $"Alias {x}",
+                    CustomerId = x,
+                    RestaurantId = x
+                });
+                context.CustomerAliases.AddRange(customerAlias);
+
+                var restaurant = Enumerable.Range(1, numberOfLocations).Select(x => new RestaurantEntity
+                {
+                    Id = x,
+                    Name = $"Name {x}"
+                });
+                context.Restaurants.AddRange(restaurant);
+
+                var customers = Enumerable.Range(1, numberOfLocations).Select(x => new CustomerEntity
+                {
+                    Id = x,
+                    Name = $"Name {x}"
+                });
+                context.Customers.AddRange(customers);
+                context.SaveChanges();
+            }
+
+            return new CustomerAliasRepository(factory, _mapper, new Mock<ILogger<CustomerAliasRepository>>().Object);
+        }
+
+        internal static CustomerAliasRepository CreateOnlyCustomerAliasRepositoryInstanceNoData(string name)
+        {
+            return new CustomerAliasRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<CustomerAliasRepository>>().Object);
+        }
     }
 }
