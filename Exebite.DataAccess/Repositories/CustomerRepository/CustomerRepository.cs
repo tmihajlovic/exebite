@@ -4,13 +4,14 @@ using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DomainModel;
+using Microsoft.Extensions.Logging;
 
 namespace Exebite.DataAccess.Repositories
 {
     public class CustomerRepository : DatabaseRepository<Customer, CustomerEntity, CustomerQueryModel>, ICustomerRepository
     {
-        public CustomerRepository(IFoodOrderingContextFactory factory, IMapper mapper)
-            : base(factory, mapper)
+        public CustomerRepository(IFoodOrderingContextFactory factory, IMapper mapper, ILogger<CustomerRepository> logger)
+            : base(factory, mapper, logger)
         {
         }
 

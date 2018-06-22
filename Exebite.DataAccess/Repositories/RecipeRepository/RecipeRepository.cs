@@ -5,13 +5,14 @@ using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DomainModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Exebite.DataAccess.Repositories
 {
     public class RecipeRepository : DatabaseRepository<Recipe, RecipeEntity, RecipeQueryModel>, IRecipeRepository
     {
-        public RecipeRepository(IFoodOrderingContextFactory factory, IMapper mapper)
-            : base(factory, mapper)
+        public RecipeRepository(IFoodOrderingContextFactory factory, IMapper mapper, ILogger<RecipeRepository> logger)
+            : base(factory, mapper, logger)
         {
         }
 

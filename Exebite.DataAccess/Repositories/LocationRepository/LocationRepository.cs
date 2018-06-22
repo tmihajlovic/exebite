@@ -10,12 +10,9 @@ namespace Exebite.DataAccess.Repositories
 {
     public class LocationRepository : DatabaseRepository<Location, LocationEntity, LocationQueryModel>, ILocationRepository
     {
-        private readonly ILogger<LocationRepository> _logger;
-
         public LocationRepository(IFoodOrderingContextFactory factory, IMapper mapper, ILogger<LocationRepository> logger)
-            : base(factory, mapper)
+            : base(factory, mapper, logger)
         {
-            _logger = logger;
         }
 
         public override Location Insert(Location location)

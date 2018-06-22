@@ -2,22 +2,26 @@
 using System.Linq;
 using AutoMapper;
 using Exebite.DataAccess.Context;
+using Microsoft.Extensions.Logging;
 
 namespace Exebite.DataAccess.Repositories
 {
     public abstract class DatabaseRepository<TModel, TEntity, QModel> : IDatabaseRepository<TModel, QModel>
         where TModel : class
         where TEntity : class
+        where QModel : class
     {
 #pragma warning disable SA1401 // Fields must be private
         protected readonly IMapper _mapper;
         protected readonly IFoodOrderingContextFactory _factory;
+        protected readonly ILogger<IDatabaseRepository<TModel, QModel>> _logger;
 #pragma warning restore SA1401 // Fields must be private
 
-        protected DatabaseRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        protected DatabaseRepository(IFoodOrderingContextFactory factory, IMapper mapper, ILogger<IDatabaseRepository<TModel, QModel>> logger)
         {
             _factory = factory;
             _mapper = mapper;
+            _logger = logger;
         }
 
         /// <summary>

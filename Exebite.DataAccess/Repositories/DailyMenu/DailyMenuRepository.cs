@@ -5,13 +5,14 @@ using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DomainModel;
+using Microsoft.Extensions.Logging;
 
 namespace Exebite.DataAccess.Repositories
 {
     public class DailyMenuRepository : DatabaseRepository<DailyMenu, DailyMenuEntity, DailyMenuQueryModel>, IDailyMenuRepository
     {
-        public DailyMenuRepository(IFoodOrderingContextFactory factory, IMapper mapper)
-           : base(factory, mapper)
+        public DailyMenuRepository(IFoodOrderingContextFactory factory, IMapper mapper, ILogger<DailyMenuRepository> logger)
+            : base(factory, mapper, logger)
         {
         }
 

@@ -5,13 +5,14 @@ using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DomainModel;
+using Microsoft.Extensions.Logging;
 
 namespace Exebite.DataAccess.Repositories
 {
     public class CustomerAliasRepository : DatabaseRepository<CustomerAliases, CustomerAliasesEntities, CustomerAliasQueryModel>, ICustomerAliasRepository
     {
-        public CustomerAliasRepository(IFoodOrderingContextFactory factory, IMapper mapper)
-            : base(factory, mapper)
+        public CustomerAliasRepository(IFoodOrderingContextFactory factory, IMapper mapper, ILogger<CustomerAliasRepository> logger)
+            : base(factory, mapper, logger)
         {
         }
 
