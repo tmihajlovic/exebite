@@ -35,12 +35,12 @@ namespace Exebite.DataAccess.Test
             return new CustomerRepository(factory, _mapper, new Mock<ILogger<CustomerRepository>>().Object);
         }
 
-        internal static IEnumerable<CustomerEntity> CreateCustomerEntities(int startId, int numberOfCustomers)
+        internal static IEnumerable<CustomerEntity> CreateCustomerEntities(int numberOfCustomers)
         {
-            return Enumerable.Range(startId, numberOfCustomers)
+            return Enumerable.Range(1, numberOfCustomers)
                 .Select(x => new CustomerEntity()
                 {
-                    //Id = x,
+                    Id = x,
                     Balance = x,
                     AppUserId = (1000 + x).ToString(),
                     LocationId = x,
