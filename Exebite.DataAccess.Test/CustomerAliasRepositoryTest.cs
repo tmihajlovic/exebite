@@ -20,9 +20,6 @@ namespace Exebite.DataAccess.Test
         }
 
         [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        [InlineData(50)]
         [InlineData(100)]
         public void Query_MultipleElements(int count)
         {
@@ -49,7 +46,6 @@ namespace Exebite.DataAccess.Test
         }
 
         [Theory]
-        [InlineData(0)]
         [InlineData(2)]
         [InlineData(int.MaxValue)]
         public void Query_QueryByIDId_NonExistingID(int id)
