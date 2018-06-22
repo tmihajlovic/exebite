@@ -10,15 +10,14 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
     public class TeglasConectorTest
     {
         private const string RestaurantName = "Hedone";
-        private static ITeglasConector _teglasConector;
-        private static ITeglasConector _teglasConector_NullCheck;
-        private static ITeglasConector _teglasConector_EmptyCheck;
-        private static IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
-        private static IGoogleSheetService _googleSheetService;
-        private static IGoogleSheetService _googleSheetService_returnNull;
-        private static IGoogleSheetService _googleSheetService_returnEmpty;
-        private static FakeDataFactory _fakeDataFactory;
-
+        private readonly ITeglasConector _teglasConector;
+        private readonly ITeglasConector _teglasConector_NullCheck;
+        private readonly ITeglasConector _teglasConector_EmptyCheck;
+        private readonly IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
+        private readonly IGoogleSheetService _googleSheetService;
+        private readonly IGoogleSheetService _googleSheetService_returnNull;
+        private readonly IGoogleSheetService _googleSheetService_returnEmpty;
+        private readonly FakeDataFactory _fakeDataFactory;
 
         public TeglasConectorTest()
         {

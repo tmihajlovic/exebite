@@ -11,13 +11,13 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
     {
         private const string RestaurantName = "Hedone";
 
-        private static IHedoneConector _hedoneConector;
-        private static IHedoneConector _hedoneConector_NullCheck;
-        private static IHedoneConector _hedoneConector_EmptyCheck;
+        private readonly IHedoneConector _hedoneConector;
+        private readonly IHedoneConector _hedoneConector_NullCheck;
+        private readonly IHedoneConector _hedoneConector_EmptyCheck;
         private static IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
-        private static IGoogleSheetService _googleSheetService;
-        private static IGoogleSheetService _googleSheetService_returnNull;
-        private static IGoogleSheetService _googleSheetService_returnEmpty;
+        private readonly IGoogleSheetService _googleSheetService;
+        private readonly IGoogleSheetService _googleSheetService_returnNull;
+        private readonly IGoogleSheetService _googleSheetService_returnEmpty;
         private readonly FakeDataFactory fakeDataFactory = new FakeDataFactory(RestaurantName);
 
         public HedoneConectorTest()

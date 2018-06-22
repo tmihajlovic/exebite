@@ -1,4 +1,5 @@
-﻿using System;
+﻿#pragma warning disable SA1124 // Do not use regions
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
@@ -23,7 +24,8 @@ namespace Exebite.DataAccess.Test
             _mapper = Mapper.Instance;
         }
 
-        internal static CustomerRepository FillCustomerDataForTesing(string name, IEnumerable<CustomerEntity> customers)
+        #region Customer
+        internal static CustomerRepository FillCustomerDataForTesting(string name, IEnumerable<CustomerEntity> customers)
         {
             var factory = new InMemoryDBFactory(name);
 
@@ -62,6 +64,9 @@ namespace Exebite.DataAccess.Test
                             });
         }
 
+        #endregion
+
+        #region Location
         internal static LocationRepository LocationDataForTesing(string name, int numberOfLocations)
         {
             var factory = new InMemoryDBFactory(name);
@@ -87,6 +92,7 @@ namespace Exebite.DataAccess.Test
             return new LocationRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<LocationRepository>>().Object);
         }
 
+        #endregion Location
         internal static CustomerAliasRepository CustomerAliasesDataForTesing(string name, int numberOfCustomerAliases)
         {
             var factory = new InMemoryDBFactory(name);
@@ -126,6 +132,49 @@ namespace Exebite.DataAccess.Test
             return new CustomerAliasRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<CustomerAliasRepository>>().Object);
         }
 
+        #region Food
+        internal static FoodRepository CreateOnlyFoodRepositoryInstanceNoData(string name)
+        {
+            return new FoodRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<FoodRepository>>().Object);
+        }
+
+        internal static FoodRepository FoodDataForTesting(string name, int numberOfFoods)
+        {
+            var factory = new InMemoryDBFactory(name);
+
+            using (var context = factory.Create())
+            {
+                context.Restaurants.Add(new RestaurantEntity()
+                {
+                    Id = 1,
+                    Name = "Test restaurant"
+                });
+
+                context.DailyMenues.Add(new DailyMenuEntity()
+                {
+                    Id = 1,
+                    RestaurantId = 1
+                });
+
+                var foods = Enumerable.Range(1, numberOfFoods).Select(x => new FoodEntity()
+                {
+                    Id = x,
+                    Name = $"Name {x}",
+                    Description = $"Description {x}",
+                    Price = x,
+                    Type = FoodType.MAIN_COURSE,
+                    RestaurantId = 1
+                });
+
+                context.Foods.AddRange(foods);
+                context.SaveChanges();
+            }
+
+            return new FoodRepository(factory, _mapper, new Mock<ILogger<FoodRepository>>().Object);
+        }
+        #endregion Food
+
+        #region DailyMenu
         internal static DailyMenuRepository DailyMenuDataForTesing(Guid name, int numberOfDailyMenus)
         {
             var factory = new InMemoryDBFactory(name.ToString());
@@ -164,5 +213,8 @@ namespace Exebite.DataAccess.Test
         {
             return new DailyMenuRepository(new InMemoryDBFactory(name.ToString()), _mapper, new Mock<ILogger<DailyMenuRepository>>().Object);
         }
+        #endregion DailyMenu
+
     }
 }
+#pragma warning restore SA1124 // Do not use regions
