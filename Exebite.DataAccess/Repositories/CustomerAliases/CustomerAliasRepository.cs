@@ -65,7 +65,8 @@ namespace Exebite.DataAccess.Repositories
                 }
 
                 _logger.LogDebug("Querying by ", queryModel.ToString());
-                var results = query.ToList();
+                var results = query.Include(a => a.Customer)
+                                   .Include(a => a.Restaurant).ToList();
                 _logger.LogDebug("Querying finished.");
                 return _mapper.Map<IList<CustomerAliases>>(results);
             }
@@ -82,15 +83,11 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var aliasEntity = new CustomerAliasesEntities
-                {
-                    Id = entity.Id,
-                    Alias = entity.Alias,
-                    CustomerId = entity.Customer.Id,
-                    RestaurantId = entity.Restaurant.Id
-                };
+                var aliasEntity = context.CustomerAliases.Find(entity.Id);
+                aliasEntity.Alias = entity.Alias;
+                aliasEntity.CustomerId = entity.Customer.Id;
+                aliasEntity.RestaurantId = entity.Restaurant.Id;
 
-                context.Update(aliasEntity);
                 context.SaveChanges();
                 _logger.LogDebug("Update finished.");
                 var resultEntity = context.CustomerAliases.Include(a => a.Customer)

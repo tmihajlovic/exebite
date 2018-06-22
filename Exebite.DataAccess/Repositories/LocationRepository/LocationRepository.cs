@@ -52,11 +52,13 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var locationEntity = _mapper.Map<LocationEntity>(location);
-                var updatedLocation = context.Update(locationEntity).Entity;
+                var locationEntity = context.Locations.Find(location.Id);
+                locationEntity.Name = location.Name;
+                locationEntity.Address = location.Address;
+
                 context.SaveChanges();
                 _logger.LogDebug("Update finished.");
-                return _mapper.Map<Location>(updatedLocation);
+                return _mapper.Map<Location>(locationEntity);
             }
         }
 

@@ -91,7 +91,7 @@ namespace Exebite.DataAccess.Test
             Assert.Equal(customerAlias.Id, res.Id);
             Assert.Equal(customerAlias.Alias, res.Alias);
             Assert.Equal(customerAlias.Customer.Id, res.Customer.Id);
-            Assert.Equal(customerAlias.Restaurant.Id, res.Customer.Id);
+            Assert.Equal(customerAlias.Restaurant.Id, res.Restaurant.Id);
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace Exebite.DataAccess.Test
             // Arrange
             var sut = CustomerAliasesDataForTesing(Methods.GetCurrentMethod(), 2);
 
-            var updatedLocation = new CustomerAliases
+            var updatedCustomerAlias = new CustomerAliases
             {
                 Id = 1,
                 Alias = "Alias updated",
@@ -119,13 +119,13 @@ namespace Exebite.DataAccess.Test
             };
 
             // Act
-            var res = sut.Update(updatedLocation);
+            var res = sut.Update(updatedCustomerAlias);
 
             // Assert
-            Assert.Equal(updatedLocation.Id, res.Id);
-            Assert.Equal(updatedLocation.Alias, res.Alias);
-            Assert.Equal(updatedLocation.Customer.Id, res.Customer.Id);
-            Assert.Equal(updatedLocation.Restaurant.Id, res.Restaurant.Id);
+            Assert.Equal(updatedCustomerAlias.Id, res.Id);
+            Assert.Equal(updatedCustomerAlias.Alias, res.Alias);
+            Assert.Equal(updatedCustomerAlias.Customer.Id, res.Customer.Id);
+            Assert.Equal(updatedCustomerAlias.Restaurant.Id, res.Restaurant.Id);
         }
     }
 }

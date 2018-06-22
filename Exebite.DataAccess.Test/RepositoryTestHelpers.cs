@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Exebite.DataAccess.Entities;
@@ -86,13 +87,13 @@ namespace Exebite.DataAccess.Test
             return new LocationRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<LocationRepository>>().Object);
         }
 
-        internal static CustomerAliasRepository CustomerAliasesDataForTesing(string name, int numberOfLocations)
+        internal static CustomerAliasRepository CustomerAliasesDataForTesing(string name, int numberOfCustomerAliases)
         {
             var factory = new InMemoryDBFactory(name);
 
             using (var context = factory.Create())
             {
-                var customerAlias = Enumerable.Range(1, numberOfLocations).Select(x => new CustomerAliasesEntities
+                var customerAlias = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new CustomerAliasesEntities
                 {
                     Id = x,
                     Alias = $"Alias {x}",
@@ -101,14 +102,14 @@ namespace Exebite.DataAccess.Test
                 });
                 context.CustomerAliases.AddRange(customerAlias);
 
-                var restaurant = Enumerable.Range(1, numberOfLocations).Select(x => new RestaurantEntity
+                var restaurant = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new RestaurantEntity
                 {
                     Id = x,
                     Name = $"Name {x}"
                 });
                 context.Restaurants.AddRange(restaurant);
 
-                var customers = Enumerable.Range(1, numberOfLocations).Select(x => new CustomerEntity
+                var customers = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new CustomerEntity
                 {
                     Id = x,
                     Name = $"Name {x}"
@@ -123,6 +124,45 @@ namespace Exebite.DataAccess.Test
         internal static CustomerAliasRepository CreateOnlyCustomerAliasRepositoryInstanceNoData(string name)
         {
             return new CustomerAliasRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<CustomerAliasRepository>>().Object);
+        }
+
+        internal static DailyMenuRepository DailyMenuDataForTesing(Guid name, int numberOfDailyMenus)
+        {
+            var factory = new InMemoryDBFactory(name.ToString());
+
+            using (var context = factory.Create())
+            {
+                var dailyMenus = Enumerable.Range(1, numberOfDailyMenus).Select(x => new DailyMenuEntity
+                {
+                    Id = x,
+                    RestaurantId = x
+                });
+                context.DailyMenues.AddRange(dailyMenus);
+
+                var restaurant = Enumerable.Range(1, numberOfDailyMenus).Select(x => new RestaurantEntity
+                {
+                    Id = x,
+                    Name = $"Name {x}"
+                });
+                context.Restaurants.AddRange(restaurant);
+
+                var food = Enumerable.Range(1, numberOfDailyMenus).Select(x => new FoodEntity
+                {
+                    Id = x,
+                    Name = $"Name {x}",
+                    Price = x,
+                    Description = $"Description {x}"
+                });
+                context.Foods.AddRange(food);
+                context.SaveChanges();
+            }
+
+            return new DailyMenuRepository(factory, _mapper, new Mock<ILogger<DailyMenuRepository>>().Object);
+        }
+
+        internal static DailyMenuRepository CreateOnlyDailyMenuRepositoryInstanceNoData(Guid name)
+        {
+            return new DailyMenuRepository(new InMemoryDBFactory(name.ToString()), _mapper, new Mock<ILogger<DailyMenuRepository>>().Object);
         }
     }
 }

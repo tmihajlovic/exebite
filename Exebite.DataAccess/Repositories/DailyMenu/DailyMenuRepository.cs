@@ -5,6 +5,7 @@ using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DomainModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Exebite.DataAccess.Repositories
@@ -25,8 +26,9 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var locEntity = _mapper.Map<DailyMenuEntity>(entity);
-                var resultEntity = context.DailyMenues.Update(locEntity).Entity;
+                var dailyMenuEntity = _mapper.Map<DailyMenuEntity>(entity);
+
+                var resultEntity = context.DailyMenues.Add(dailyMenuEntity).Entity;
                 context.SaveChanges();
                 return _mapper.Map<DailyMenu>(resultEntity);
             }
@@ -36,7 +38,7 @@ namespace Exebite.DataAccess.Repositories
         {
             if (queryModel == null)
             {
-                throw new ArgumentException("queryModel can't be null");
+                throw new ArgumentNullException("queryModel can't be null");
             }
 
             using (var context = _factory.Create())
@@ -62,10 +64,23 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var locationEntity = _mapper.Map<DailyMenuEntity>(entity);
-                context.Update(locationEntity);
+                var currentEntity = context.DailyMenues.Find(entity.Id);
+                currentEntity.RestaurantId = entity.RestaurantId;
+
+                // this will remove old references, and after that new ones will be added
+                var addedEntities = Enumerable.Range(0, entity.Foods.Count).Select(a =>
+                {
+                    return context.Foods.Find(entity.Foods[a].Id);
+                }).ToList();
+
+                currentEntity.Foods.Clear();
+
+                addedEntities.ForEach(a => currentEntity.Foods.Add(a));
+
                 context.SaveChanges();
-                var resultEntity = context.DailyMenues.FirstOrDefault(l => l.Id == entity.Id);
+                var resultEntity = context.DailyMenues.Include(a => a.Restaurant)
+                                                      .Include(a => a.Foods)
+                                                      .FirstOrDefault(l => l.Id == entity.Id);
                 return _mapper.Map<DailyMenu>(resultEntity);
             }
         }
