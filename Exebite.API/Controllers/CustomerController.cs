@@ -52,11 +52,23 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(UpdateCustomerModel customerViewModel)
+        public IActionResult Put(int id, [FromBody] UpdateCustomerModel customerViewModel)
         {
-            var customer = _mapper.Map<Customer>(customerViewModel);
-            _customerRepository.Update(customer);
-            return NoContent();
+            if (customerViewModel == null)
+            {
+                return BadRequest();
+            }
+
+            var currentCustomer = _customerRepository.GetByID(id);
+            if (currentCustomer == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(customerViewModel, currentCustomer);
+            var updatedCustomer = _customerRepository.Update(currentCustomer);
+
+            return Ok(new { updatedCustomer.Id });
         }
 
         [HttpDelete("{id}")]

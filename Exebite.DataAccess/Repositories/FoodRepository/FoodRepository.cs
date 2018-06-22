@@ -45,7 +45,6 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-
                 var foodEntity = new FoodEntity
                 {
                     Description = entity.Description,

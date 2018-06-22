@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Exebite.DataAccess.Repositories;
-using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 using Exebite.DomainModel;
+using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 
 namespace Exebite.Business.GoogleApiImportExport
 {

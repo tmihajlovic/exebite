@@ -5,7 +5,6 @@ namespace Exebite.DataAccess.Test.Mocks
 {
     public sealed class InMemoryDBFactory : IFoodOrderingContextFactory
     {
-
         private readonly string _name;
 
         public InMemoryDBFactory(string name)

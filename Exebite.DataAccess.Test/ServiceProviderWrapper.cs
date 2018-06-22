@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using AutoMapper;
-using Exebite.DataAccess;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.Mocks;
@@ -25,14 +23,7 @@ namespace Exebite.DataAccess.Test
                                         .AddTransient<IOrderRepository, OrderRepository>()
                                         .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
                                         .AddAutoMapper(cfg =>
-                                                    cfg.AddProfile<DataAccessMappingProfile>())
-                                        ;
-
-
-            //foreach (var item in outerCollection)
-            //{
-            //    serviceProvider.AddTransient(item.ImplementationInstance, item.Value);
-            //}
+                                                    cfg.AddProfile<DataAccessMappingProfile>());
 
             return serviceProvider.BuildServiceProvider();
         }

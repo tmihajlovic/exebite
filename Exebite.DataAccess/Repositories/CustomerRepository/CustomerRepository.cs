@@ -77,7 +77,6 @@ namespace Exebite.DataAccess.Repositories
 
         public override IList<Customer> Query(CustomerQueryModel queryModel)
         {
-
             queryModel = queryModel ?? new CustomerQueryModel();
 
             using (var context = _factory.Create())

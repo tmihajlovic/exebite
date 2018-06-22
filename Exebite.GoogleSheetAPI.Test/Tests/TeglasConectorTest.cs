@@ -37,7 +37,7 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         {
             var result = _teglasConector.GetDailyMenu();
             var food = result.First();
-            Assert.NotEqual(0, result.Count);
+            Assert.NotEmpty(result);
             Assert.Equal("Test aa food 1", food.Name);
         }
 
@@ -46,7 +46,7 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         {
             var result = _teglasConector.LoadAllFoods();
             var food = result.First();
-            Assert.NotEqual(0, result.Count);
+            Assert.NotEmpty(result);
             Assert.Equal("Test food 1", food.Name);
             Assert.Equal("Description 1", food.Description);
             Assert.Equal(100, food.Price);
@@ -75,28 +75,28 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         public void GetDailyMenu_NullResponce()
         {
             var result = _teglasConector_NullCheck.GetDailyMenu();
-            Assert.Equal(0, result.Count);
+            Assert.Empty(result);
         }
 
         [Fact]
         public void LoadAllFoods_NullResponce()
         {
             var result = _teglasConector_NullCheck.LoadAllFoods();
-            Assert.Equal(0, result.Count);
+            Assert.Empty(result);
         }
 
         [Fact]
         public void GetDailyMenu_EmptyResponce()
         {
             var result = _teglasConector_EmptyCheck.GetDailyMenu();
-            Assert.Equal(0, result.Count);
+            Assert.Empty(result);
         }
 
         [Fact]
         public void LoadAllFoods_EmptyResponce()
         {
             var result = _teglasConector_EmptyCheck.LoadAllFoods();
-            Assert.Equal(0, result.Count);
+            Assert.Empty(result);
         }
     }
 }
