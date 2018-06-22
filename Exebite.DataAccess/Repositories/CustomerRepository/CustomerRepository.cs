@@ -45,10 +45,19 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var customerEntity = _mapper.Map<CustomerEntity>(entity);
-                var resultEntity = context.Customers.Update(customerEntity).Entity;
+                // do not use automaper to add entites to DB
+
+                var customerEntity = new CustomerEntity()
+                {
+                    AppUserId = entity.AppUserId,
+                    Balance = entity.Balance,
+                    LocationId = entity.LocationId,
+                    Name = entity.Name
+                };
+
+                var resultEntity = context.Customers.Add(customerEntity);
                 context.SaveChanges();
-                return _mapper.Map<Customer>(resultEntity);
+                return _mapper.Map<Customer>(resultEntity.Entity);
             }
         }
 

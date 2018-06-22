@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.Mocks;
+using Exebite.DomainModel;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -20,26 +22,43 @@ namespace Exebite.DataAccess.Test
             _mapper = Mapper.Instance;
         }
 
-        internal static CustomerRepository CustomerDataForTesing(string name, int numberOfCustomers)
+        internal static CustomerRepository FillCustomerDataForTesing(string name, IEnumerable<CustomerEntity> customers)
         {
             var factory = new InMemoryDBFactory(name);
 
             using (var context = factory.Create())
             {
-                var customers = Enumerable.Range(1, numberOfCustomers).Select(x => new CustomerEntity()
-                {
-                    Id = x,
-                    Balance = x,
-                    AppUserId = (1000 + x).ToString(),
-                    LocationId = x,
-                    Name = $"Name {x}"
-                });
-
                 context.Customers.AddRange(customers);
                 context.SaveChanges();
             }
 
             return new CustomerRepository(factory, _mapper, new Mock<ILogger<CustomerRepository>>().Object);
+        }
+
+        internal static IEnumerable<CustomerEntity> CreateCustomerEntities(int startId, int numberOfCustomers)
+        {
+            return Enumerable.Range(startId, numberOfCustomers)
+                .Select(x => new CustomerEntity()
+                {
+                    //Id = x,
+                    Balance = x,
+                    AppUserId = (1000 + x).ToString(),
+                    LocationId = x,
+                    Name = $"Name {x}"
+                });
+        }
+
+        internal static IEnumerable<Customer> CreateCustomers(int startId, int numberOfCustomers)
+        {
+            return Enumerable.Range(startId, numberOfCustomers)
+                            .Select(x => new Customer()
+                            {
+                                Id = x,
+                                Balance = x,
+                                AppUserId = (1000 + x).ToString(),
+                                LocationId = x,
+                                Name = $"Name {x}"
+                            });
         }
 
         internal static LocationRepository LocationDataForTesing(string name, int numberOfLocations)
