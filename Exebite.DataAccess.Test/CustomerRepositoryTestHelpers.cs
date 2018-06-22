@@ -3,6 +3,8 @@ using AutoMapper;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.Mocks;
+using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace Exebite.DataAccess.Test
 {
@@ -37,7 +39,7 @@ namespace Exebite.DataAccess.Test
                 context.SaveChanges();
             }
 
-            return new CustomerRepository(factory, _mapper);
+            return new CustomerRepository(factory, _mapper, new Mock<ILogger<CustomerRepository>>().Object);
         }
     }
 }

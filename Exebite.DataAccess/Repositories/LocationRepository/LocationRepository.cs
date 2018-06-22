@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Exebite.DataAccess.Context;
@@ -21,7 +22,7 @@ namespace Exebite.DataAccess.Repositories
             if (location == null)
             {
                 _logger.LogError($"Argument {location} is null");
-                throw new System.ArgumentNullException(nameof(location));
+                throw new ArgumentNullException(nameof(location));
             }
 
             using (var context = _factory.Create())
@@ -34,28 +35,33 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public override Location Update(Location entity)
+        public override Location Update(Location location)
         {
-            if (entity == null)
+            _logger.LogDebug("Update started.");
+            if (location == null)
             {
-                throw new System.ArgumentNullException(nameof(entity));
+                _logger.LogError($"Argument {location} is null");
+                throw new ArgumentNullException(nameof(location));
             }
 
             using (var context = _factory.Create())
             {
-                var locationEntity = _mapper.Map<LocationEntity>(entity);
+                var locationEntity = _mapper.Map<LocationEntity>(location);
                 context.Update(locationEntity);
                 context.SaveChanges();
-                var resultEntity = context.Locations.FirstOrDefault(l => l.Id == entity.Id);
+                _logger.LogDebug("Update finished.");
+                var resultEntity = context.Locations.FirstOrDefault(l => l.Id == location.Id);
                 return _mapper.Map<Location>(resultEntity);
             }
         }
 
         public override IList<Location> Query(LocationQueryModel queryModel)
         {
+            _logger.LogDebug("Querying started.");
             if (queryModel == null)
             {
-                throw new System.ArgumentException("queryModel can't be null");
+                _logger.LogError($"Argument {queryModel} is null");
+                throw new ArgumentException("queryModel can't be null");
             }
 
             using (var context = _factory.Create())
@@ -68,6 +74,7 @@ namespace Exebite.DataAccess.Repositories
                 }
 
                 var results = query.ToList();
+                _logger.LogDebug("Querying finished.");
                 return _mapper.Map<IList<Location>>(results);
             }
         }
