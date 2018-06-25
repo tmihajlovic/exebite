@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.DomainModel", "Exeb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.DataAccess.Test", "Exebite.DataAccess.Test\Exebite.DataAccess.Test.csproj", "{9EF38246-3DF8-4E74-94BA-4ED8F60DDC4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Option", "Option\Option.csproj", "{9F2F112C-0D22-4438-9B4B-84CA6D955D4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Either", "Either\Either.csproj", "{2D6CAC34-D030-4774-BECA-6BB80B0E8165}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureTestingConsole", "FeatureTestingConsole\FeatureTestingConsole.csproj", "{DB0F2887-CD3D-4AF9-83C2-23791D7BA8B7}"
 EndProject
 Global
@@ -69,6 +73,14 @@ Global
 		{DB0F2887-CD3D-4AF9-83C2-23791D7BA8B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB0F2887-CD3D-4AF9-83C2-23791D7BA8B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB0F2887-CD3D-4AF9-83C2-23791D7BA8B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F2F112C-0D22-4438-9B4B-84CA6D955D4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F2F112C-0D22-4438-9B4B-84CA6D955D4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F2F112C-0D22-4438-9B4B-84CA6D955D4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F2F112C-0D22-4438-9B4B-84CA6D955D4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D6CAC34-D030-4774-BECA-6BB80B0E8165}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D6CAC34-D030-4774-BECA-6BB80B0E8165}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D6CAC34-D030-4774-BECA-6BB80B0E8165}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D6CAC34-D030-4774-BECA-6BB80B0E8165}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
