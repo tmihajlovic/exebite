@@ -109,7 +109,6 @@ namespace Exebite.DataAccess.Test
             Assert.Equal(meal.CustomerId, res.CustomerId);
             Assert.Equal(meal.Date, res.Date);
             Assert.Equal(meal.Note, res.Note);
-
         }
 
         [Fact]

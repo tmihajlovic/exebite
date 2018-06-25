@@ -30,8 +30,6 @@ namespace Exebite.Business.GoogleApiImportExport
             _restaurantRepository = restaurantRepository;
         }
 
-        //IRestaurantRepository RestaurantRepository => _restaurantRepository;
-
         /// <summary>
         /// Place orders for restaurant
         /// </summary>

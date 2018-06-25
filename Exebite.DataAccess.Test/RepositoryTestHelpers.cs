@@ -355,8 +355,8 @@ namespace Exebite.DataAccess.Test
                     Id = 1,
                     Name = "location name ",
                     Address = "Address"
-
                 };
+
                 context.Locations.Add(location);
 
                 var customer = new CustomerEntity

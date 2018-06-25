@@ -31,13 +31,11 @@ namespace FeatureTestingConsole
                 Name = "Test restaurant"
             });
 
-
             _locationRepo.Insert(new Location()
             {
                 Name = "Execom",
                 Address = "Vojvode stepe 50"
             });
-
 
             _customerRepo.Insert(new Customer()
             {
@@ -65,7 +63,6 @@ namespace FeatureTestingConsole
             {
                 Foods = new List<Food>() { new Food() { Id = 1 }, new Food() { Id = 2 } }
             });
-
 
             var order = new Order()
             {
