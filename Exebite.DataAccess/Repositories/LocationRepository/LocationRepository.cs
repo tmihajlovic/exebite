@@ -41,20 +41,20 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public override Location Update(Location location)
+        public override Location Update(Location entity)
         {
             _logger.LogDebug("Update started.");
-            if (location == null)
+            if (entity == null)
             {
-                _logger.LogError($"Argument {location} is null");
-                throw new ArgumentNullException(nameof(location));
+                _logger.LogError($"Argument {entity} is null");
+                throw new ArgumentNullException(nameof(entity));
             }
 
             using (var context = _factory.Create())
             {
-                var locationEntity = context.Locations.Find(location.Id);
-                locationEntity.Name = location.Name;
-                locationEntity.Address = location.Address;
+                var locationEntity = context.Locations.Find(entity.Id);
+                locationEntity.Name = entity.Name;
+                locationEntity.Address = entity.Address;
 
                 context.SaveChanges();
                 _logger.LogDebug("Update finished.");

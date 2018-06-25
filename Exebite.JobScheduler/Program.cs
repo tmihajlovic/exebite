@@ -6,7 +6,7 @@ namespace Exebite.JobScheduler
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             using (var container = new UnityContainer())
             {
@@ -15,7 +15,7 @@ namespace Exebite.JobScheduler
                     {
                         x.Service<JobSchedulerService>(s =>
                         {
-                            s.ConstructUsing(name => new JobSchedulerService());
+                            s.ConstructUsing(() => new JobSchedulerService());
                             s.WhenStarted(tc => tc.Start());
                             s.WhenStopped(tc => tc.Stop());
                         });

@@ -2,7 +2,7 @@
 
 namespace Exebite.DataAccess.Migrations
 {
-    public partial class indexONRestaurantName : Migration
+    public partial class IndexONRestaurantName : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

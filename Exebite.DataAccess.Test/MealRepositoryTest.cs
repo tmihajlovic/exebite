@@ -128,6 +128,5 @@ namespace Exebite.DataAccess.Test
             Assert.Equal(updatedMeal.Price, res.Price);
             Assert.Equal(updatedMeal.Foods.Count, res.Foods.Count);
         }
-
     }
 }

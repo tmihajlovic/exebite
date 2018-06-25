@@ -2,7 +2,7 @@
 
 namespace Exebite.DataAccess.Migrations
 {
-    public partial class dailyMenu : Migration
+    public partial class DailyMenu : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

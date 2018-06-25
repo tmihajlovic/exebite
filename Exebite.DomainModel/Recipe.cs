@@ -6,7 +6,6 @@ namespace Exebite.DomainModel
     {
         public int Id { get; set; }
 
-
         public int RestaurantId { get; set; }
 
         public Restaurant Restaurant { get; set; }

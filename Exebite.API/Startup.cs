@@ -64,9 +64,6 @@ namespace Exebite.API
             services.AddTransient<IRecipeRepository, RecipeRepository>();
             services.AddTransient<ICustomerAliasRepository, CustomerAliasRepository>();
             services.AddTransient<IDailyMenuRepository, DailyMenuRepository>();
-
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

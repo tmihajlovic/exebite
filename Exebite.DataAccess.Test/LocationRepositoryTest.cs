@@ -164,7 +164,7 @@ namespace Exebite.DataAccess.Test
         {
             // Arrange
             var sut = LocationDataForTesing(Guid.NewGuid().ToString(), 1);
-            var existingId = 1;
+            const int existingId = 1;
 
             Assert.NotNull(sut.GetByID(existingId));
 
@@ -176,11 +176,11 @@ namespace Exebite.DataAccess.Test
         }
 
         [Theory]
-        [InlineData(1, 1)]
-        [InlineData(2, 2)]
-        [InlineData(3, 2)]
-        [InlineData(50, 2)]
-        public void Get_ValidId_ValidResult(int count, int id)
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(50)]
+        public void Get_ValidId_ValidResult(int count)
         {
             // Arrange
             var sut = LocationDataForTesing(Guid.NewGuid().ToString(), count);

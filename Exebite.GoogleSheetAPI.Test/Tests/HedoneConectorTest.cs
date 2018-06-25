@@ -14,7 +14,7 @@ namespace Exebite.GoogleSheetAPI.Test.Tests
         private readonly IHedoneConector _hedoneConector;
         private readonly IHedoneConector _hedoneConector_NullCheck;
         private readonly IHedoneConector _hedoneConector_EmptyCheck;
-        private static IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
+        private readonly IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
         private readonly IGoogleSheetService _googleSheetService;
         private readonly IGoogleSheetService _googleSheetService_returnNull;
         private readonly IGoogleSheetService _googleSheetService_returnEmpty;

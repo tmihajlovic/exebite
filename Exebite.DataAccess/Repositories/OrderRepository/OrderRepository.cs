@@ -20,22 +20,10 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var customer = context.Customers.Find(customerId);
-                if (customer == null)
-                {
-                    throw new ArgumentException("Non existing customer!");
-                }
-
-                var orderEntityList = context.Orders.Where(o => o.CustomerId == customerId);
-
-                var orderList = new List<Order>();
-
-                foreach (var orderEntity in orderEntityList)
-                {
-                    var order = _mapper.Map<Order>(orderEntity);
-                    orderList.Add(order);
-                }
-
+                var orderList = context.Orders
+                    .Where(o => o.CustomerId == customerId)
+                    .Select(x => _mapper.Map<Order>(x))
+                    .ToList();
                 return orderList;
             }
         }
@@ -44,35 +32,17 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var context = _factory.Create())
             {
-                var customer = context.Customers.Find(customerId);
-                if (customer == null)
                 {
-                    throw new ArgumentException("Non existing customer!");
+                    var order = context.Orders.FirstOrDefault(o => o.CustomerId == customerId && o.Id == orderId);
+                    if (order == null)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return _mapper.Map<Order>(order);
+                    }
                 }
-
-                var order = context.Orders.FirstOrDefault(o => o.CustomerId == customerId && o.Id == orderId);
-                if (order == null)
-                {
-                    return null;
-                }
-
-                return _mapper.Map<Order>(order);
-            }
-        }
-
-        public IEnumerable<Order> GetOrdersForDate(DateTime date)
-        {
-            using (var context = _factory.Create())
-            {
-                var orderEntityList = context.Orders.Where(o => o.Date == date);
-                var orderList = new List<Order>();
-                foreach (var orderEntity in orderEntityList)
-                {
-                    var order = _mapper.Map<Order>(orderEntity);
-                    orderList.Add(order);
-                }
-
-                return orderList;
             }
         }
 
@@ -97,7 +67,7 @@ namespace Exebite.DataAccess.Repositories
                 var resultEntity = context.Orders.Add(orderEntity);
                 context.SaveChanges();
 
-                return _mapper.Map<Order>((OrderEntity)resultEntity.Entity);
+                return _mapper.Map<Order>(resultEntity.Entity);
             }
         }
 
@@ -110,23 +80,27 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var orderEntity = _mapper.Map<OrderEntity>(entity);
-                context.Update(orderEntity.Meal);
-                var oldEntity = context.Orders.FirstOrDefault(o => o.Id == entity.Id);
-                context.Entry(oldEntity).CurrentValues.SetValues(orderEntity);
+                var orderEntity = new OrderEntity()
+                {
+                    Id = entity.Id,
+                    CustomerId = entity.CustomerId,
+                    Date = entity.Date,
+                    MealId = entity.MealId,
+                    Note = entity.Note,
+                    Price = entity.Price
+                };
+
+                var res = context.Update(orderEntity.Meal);
+
                 context.SaveChanges();
 
-                var resultEntity = context.Orders.FirstOrDefault(o => o.Id == entity.Id);
-                return _mapper.Map<Order>(resultEntity);
+                return _mapper.Map<Order>(res.Entity);
             }
         }
 
         public override IList<Order> Query(OrderQueryModel queryModel)
         {
-            if (queryModel == null)
-            {
-                throw new System.ArgumentException("queryModel can't be null");
-            }
+            queryModel = queryModel ?? new OrderQueryModel();
 
             using (var context = _factory.Create())
             {
@@ -139,6 +113,19 @@ namespace Exebite.DataAccess.Repositories
 
                 var results = query.ToList();
                 return _mapper.Map<IList<Order>>(results);
+            }
+        }
+
+        public IEnumerable<Order> GetOrdersForDate(DateTime date)
+        {
+            using (var context = _factory.Create())
+            {
+                var orderList = context.Orders
+                                       .Where(o => o.Date == date)
+                                       .Select(x => _mapper.Map<Order>(x))
+                                       .ToList();
+
+                return orderList;
             }
         }
     }

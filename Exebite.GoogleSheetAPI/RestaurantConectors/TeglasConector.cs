@@ -61,7 +61,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
             ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
 
             // Null and empty check
-            if (!(sheetData?.Values?.Any() == true))
+            if (sheetData?.Values?.Any() != true)
             {
                 return new List<Food>();
             }

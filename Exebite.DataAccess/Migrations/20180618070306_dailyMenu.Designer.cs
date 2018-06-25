@@ -11,7 +11,7 @@ namespace Exebite.DataAccess.Migrations
 {
     [DbContext(typeof(FoodOrderingContext))]
     [Migration("20180618070306_dailyMenu")]
-    partial class dailyMenu
+    partial class DailyMenu
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -15,6 +15,5 @@ namespace Exebite.DomainModel
         public DailyMenu DailyMenu { get; set; }
 
         public List<Recipe> Recipes { get; set; } = new List<Recipe>();
-
     }
 }

@@ -28,7 +28,12 @@ namespace Exebite.Business
         public List<Order> GetAllOrdersForRestoraunt(int restorauntId)
         {
             var allOrders = this.GetAllOrders();
-            return allOrders.Where(o => o.Meal.Foods.First().Restaurant.Id == restorauntId).ToList();
+            return allOrders.Where(o => o
+                .Meal
+                .Foods
+                .First()
+                .Restaurant
+                .Id == restorauntId).ToList();
         }
 
         public Order GetOrderByIdForCustomer(int orderId, int customerId)

@@ -30,7 +30,7 @@ namespace Exebite.Business.GoogleApiImportExport
             _restaurantRepository = restaurantRepository;
         }
 
-        public IRestaurantRepository RestaurantRepository => _restaurantRepository;
+        //IRestaurantRepository RestaurantRepository => _restaurantRepository;
 
         /// <summary>
         /// Place orders for restaurant
@@ -41,7 +41,7 @@ namespace Exebite.Business.GoogleApiImportExport
             switch (restaurantName)
             {
                 case "Restoran pod Lipom":
-                    var lipa = RestaurantRepository.Query(new RestaurantQueryModel { Name = restaurantName }).FirstOrDefault();
+                    var lipa = _restaurantRepository.Query(new RestaurantQueryModel { Name = restaurantName }).FirstOrDefault();
                     if (lipa != null)
                     {
                         var lipaOrders = _orderService.GetAllOrdersForRestoraunt(lipa.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
@@ -51,7 +51,7 @@ namespace Exebite.Business.GoogleApiImportExport
                     break;
 
                 case "Hedone":
-                    var hedone = RestaurantRepository.Query(new RestaurantQueryModel { Name = restaurantName }).FirstOrDefault();
+                    var hedone = _restaurantRepository.Query(new RestaurantQueryModel { Name = restaurantName }).FirstOrDefault();
                     if (hedone != null)
                     {
                         var hedoneOrders = _orderService.GetAllOrdersForRestoraunt(hedone.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
@@ -61,7 +61,7 @@ namespace Exebite.Business.GoogleApiImportExport
                     break;
 
                 case "Teglas":
-                    var teglas = RestaurantRepository.Query(new RestaurantQueryModel { Name = restaurantName }).FirstOrDefault();
+                    var teglas = _restaurantRepository.Query(new RestaurantQueryModel { Name = restaurantName }).FirstOrDefault();
                     if (teglas != null)
                     {
                         var teglasOrders = _orderService.GetAllOrdersForRestoraunt(teglas.Id).Where(o => o.Date == DateTime.Today.Date).ToList();

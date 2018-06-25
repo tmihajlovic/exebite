@@ -11,7 +11,7 @@ namespace Exebite.DataAccess.Migrations
 {
     [DbContext(typeof(FoodOrderingContext))]
     [Migration("20180618085733_indexONRestaurantName")]
-    partial class indexONRestaurantName
+    partial class IndexONRestaurantName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

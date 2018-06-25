@@ -13,9 +13,12 @@ namespace Exebite.JobScheduler.Jobs
             _googleDataExporter = googleDataExporter;
         }
 
+#pragma warning disable ASYNC0001 // Asynchronous method names should end with Async This is from library implementation
+
         public Task Execute(IJobExecutionContext context)
         {
             return Task.Run(() => _googleDataExporter.PlaceOrdersForRestaurant("Restoran pod Lipom"));
         }
+#pragma warning restore ASYNC0001 // Asynchronous method names should end with Async
     }
 }

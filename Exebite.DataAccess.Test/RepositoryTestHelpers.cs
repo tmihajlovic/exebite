@@ -317,7 +317,6 @@ namespace Exebite.DataAccess.Test
                     Id = x,
                     Name = "Test restaurant " + x,
                     DailyMenuId = x,
-
                 });
                 context.Restaurants.AddRange(restaurant);
 

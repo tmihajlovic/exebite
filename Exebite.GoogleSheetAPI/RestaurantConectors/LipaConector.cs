@@ -74,18 +74,19 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         /// <returns>List of today available food</returns>
         private IEnumerable<Food> DailyMenu()
         {
-            IEnumerable<Food> dailyFood = new List<Food>();
             const string range = DailyMenuSheet + "!A3:A100";
             ValueRange sheetData = GoogleSheetService.GetColumns(_sheetId, range);
 
             // Null and empty check
             if (!(sheetData?.Values?.Any() == true))
             {
-                return dailyFood;
+                return new List<Food>();
             }
-
-            dailyFood = sheetData.Values.First().Select(f => new Food { Name = f.ToString(), Restaurant = _restaurant }).ToList();
-            return dailyFood;
+            else
+            {
+                var result = sheetData.Values.First().Select(f => new Food { Name = f.ToString(), Restaurant = _restaurant }).ToList();
+                return result;
+            }
         }
     }
 }

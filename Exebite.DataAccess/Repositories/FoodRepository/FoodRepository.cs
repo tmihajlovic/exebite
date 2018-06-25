@@ -58,9 +58,10 @@ namespace Exebite.DataAccess.Repositories
 
                 var createdEntry = context.Foods.Add(foodEntity).Entity;
                 context.SaveChanges();
-                createdEntry = context.Foods.Include(a => a.Restaurant)
-                                                .ThenInclude(a => a.DailyMenu)
-                                            .FirstOrDefault(a => a.Id == createdEntry.Id);
+                createdEntry = context.Foods
+                                      .Include(a => a.Restaurant)
+                                        .ThenInclude(a => a.DailyMenu)
+                                      .FirstOrDefault(a => a.Id == createdEntry.Id);
                 return _mapper.Map<Food>(createdEntry);
             }
         }

@@ -24,11 +24,11 @@ namespace Exebite.DataAccess.Test
         }
 
         [Theory]
-        [InlineData(2, 1)]
-        [InlineData(3, 2)]
-        [InlineData(4, 3)]
-        [InlineData(5, 4)]
-        public void GetById_InValidId_ValidResult(int startId, int count)
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        public void GetById_InValidId_ValidResult(int count)
         {
             var customerRepository = FillCustomerDataForTesting(Guid.NewGuid().ToString(), CreateCustomerEntities(count));
 
