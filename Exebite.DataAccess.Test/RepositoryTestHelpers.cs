@@ -93,6 +93,8 @@ namespace Exebite.DataAccess.Test
         }
 
         #endregion Location
+
+        #region CustomerAlias
         internal static CustomerAliasRepository CustomerAliasesDataForTesing(string name, int numberOfCustomerAliases)
         {
             var factory = new InMemoryDBFactory(name);
@@ -131,6 +133,7 @@ namespace Exebite.DataAccess.Test
         {
             return new CustomerAliasRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<CustomerAliasRepository>>().Object);
         }
+        #endregion
 
         #region Food
         internal static FoodRepository CreateOnlyFoodRepositoryInstanceNoData(string name)
@@ -205,7 +208,6 @@ namespace Exebite.DataAccess.Test
 
         #endregion
 
-
         #region DailyMenu
         internal static DailyMenuRepository DailyMenuDataForTesing(Guid name, int numberOfDailyMenus)
         {
@@ -246,6 +248,54 @@ namespace Exebite.DataAccess.Test
             return new DailyMenuRepository(new InMemoryDBFactory(name.ToString()), _mapper, new Mock<ILogger<DailyMenuRepository>>().Object);
         }
         #endregion DailyMenu
+
+        #region Meal
+        internal static MealRepository MealDataForTesing(string name, int numberOfMeals)
+        {
+            var factory = new InMemoryDBFactory(name);
+
+            using (var context = factory.Create())
+            {
+                context.Restaurants.Add(new RestaurantEntity()
+                {
+                    Id = 1,
+                    Name = "Test restaurant"
+                });
+
+                var foods = Enumerable.Range(1, numberOfMeals).Select(x => new FoodEntity()
+                {
+                    Id = x,
+                    Name = $"Name {x}",
+                    Description = $"Description {x}",
+                    Price = x,
+                    Type = FoodType.MAIN_COURSE,
+                    RestaurantId = 1
+                });
+
+                context.Foods.AddRange(foods);
+
+                var meals = Enumerable.Range(1, numberOfMeals).Select(x => new MealEntity
+                {
+                    Id = x,
+                    Price = x,
+                    FoodEntityMealEntities = new List<FoodEntityMealEntities>
+                    {
+                        new FoodEntityMealEntities { FoodEntityId = x }
+                    }
+                });
+
+                context.Meals.AddRange(meals);
+                context.SaveChanges();
+            }
+
+            return new MealRepository(factory, _mapper, new Mock<ILogger<MealRepository>>().Object);
+        }
+
+        internal static MealRepository CreateOnlyMealRepositoryInstanceNoData(string name)
+        {
+            return new MealRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<MealRepository>>().Object);
+        }
+        #endregion
     }
 }
 #pragma warning restore SA1124 // Do not use regions
