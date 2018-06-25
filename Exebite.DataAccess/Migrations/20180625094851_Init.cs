@@ -17,7 +17,10 @@ namespace Exebite.DataAccess.Migrations
                     Name = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true)
                 },
-                constraints: table => table.PrimaryKey("PK_Location", x => x.Id));
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Location", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Meal",
@@ -27,7 +30,10 @@ namespace Exebite.DataAccess.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Price = table.Column<decimal>(nullable: false)
                 },
-                constraints: table => table.PrimaryKey("PK_Meal", x => x.Id));
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Meal", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Restaurant",
@@ -35,9 +41,13 @@ namespace Exebite.DataAccess.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    DailyMenuId = table.Column<int>(nullable: false)
                 },
-                constraints: table => table.PrimaryKey("PK_Restaurant", x => x.Id));
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Restaurant", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Customer",
@@ -62,30 +72,18 @@ namespace Exebite.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Food",
+                name: "DailyMenuEntity",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Type = table.Column<int>(nullable: false),
-                    Price = table.Column<decimal>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    IsInactive = table.Column<bool>(nullable: false),
-                    RestaurantId = table.Column<int>(nullable: false),
-                    RestaurantEntityId = table.Column<int>(nullable: true)
+                    RestaurantId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Food", x => x.Id);
+                    table.PrimaryKey("PK_DailyMenuEntity", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Food_Restaurant_RestaurantEntityId",
-                        column: x => x.RestaurantEntityId,
-                        principalTable: "Restaurant",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Food_Restaurant_RestaurantId",
+                        name: "FK_DailyMenuEntity_Restaurant_RestaurantId",
                         column: x => x.RestaurantId,
                         principalTable: "Restaurant",
                         principalColumn: "Id",
@@ -149,6 +147,37 @@ namespace Exebite.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Food",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Type = table.Column<int>(nullable: false),
+                    Price = table.Column<decimal>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    IsInactive = table.Column<bool>(nullable: false),
+                    RestaurantId = table.Column<int>(nullable: false),
+                    DailyMenuEntityId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Food", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Food_DailyMenuEntity_DailyMenuEntityId",
+                        column: x => x.DailyMenuEntityId,
+                        principalTable: "DailyMenuEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Food_Restaurant_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FoodEntityMealEntities",
                 columns: table => new
                 {
@@ -178,6 +207,7 @@ namespace Exebite.DataAccess.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    RestaurantId = table.Column<int>(nullable: false),
                     MainCourseId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -187,6 +217,12 @@ namespace Exebite.DataAccess.Migrations
                         name: "FK_Recipe_Food_MainCourseId",
                         column: x => x.MainCourseId,
                         principalTable: "Food",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Recipe_Restaurant_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurant",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -206,7 +242,7 @@ namespace Exebite.DataAccess.Migrations
                         column: x => x.FoodEntityId,
                         principalTable: "Food",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_FoodEntityRecipeEntity_Recipe_RecepieEntityId",
                         column: x => x.RecepieEntityId,
@@ -231,9 +267,15 @@ namespace Exebite.DataAccess.Migrations
                 column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Food_RestaurantEntityId",
+                name: "IX_DailyMenuEntity_RestaurantId",
+                table: "DailyMenuEntity",
+                column: "RestaurantId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Food_DailyMenuEntityId",
                 table: "Food",
-                column: "RestaurantEntityId");
+                column: "DailyMenuEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Food_RestaurantId",
@@ -258,13 +300,22 @@ namespace Exebite.DataAccess.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Order_MealId",
                 table: "Order",
-                column: "MealId",
-                unique: true);
+                column: "MealId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recipe_MainCourseId",
                 table: "Recipe",
                 column: "MainCourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipe_RestaurantId",
+                table: "Recipe",
+                column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Restaurant_Name",
+                table: "Restaurant",
+                column: "Name");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -295,6 +346,9 @@ namespace Exebite.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Location");
+
+            migrationBuilder.DropTable(
+                name: "DailyMenuEntity");
 
             migrationBuilder.DropTable(
                 name: "Restaurant");

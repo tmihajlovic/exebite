@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Exebite.DataAccess.Migrations
 {
     [DbContext(typeof(FoodOrderingContext))]
-    [Migration("20180618072313_dailyMenuUpdate")]
-    partial class DailyMenuUpdate
+    [Migration("20180625094851_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,13 +65,16 @@ namespace Exebite.DataAccess.Migrations
 
             modelBuilder.Entity("Exebite.DataAccess.Entities.DailyMenuEntity", b =>
                 {
-                    b.Property<int>("FoodEntityId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("RestaurantId");
 
-                    b.HasKey("FoodEntityId", "RestaurantId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("RestaurantId");
+                    b.HasIndex("RestaurantId")
+                        .IsUnique();
 
                     b.ToTable("DailyMenuEntity");
                 });
@@ -81,6 +84,8 @@ namespace Exebite.DataAccess.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("DailyMenuEntityId");
 
                     b.Property<string>("Description");
 
@@ -95,6 +100,8 @@ namespace Exebite.DataAccess.Migrations
                     b.Property<int>("Type");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DailyMenuEntityId");
 
                     b.HasIndex("RestaurantId");
 
@@ -205,9 +212,13 @@ namespace Exebite.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("DailyMenuId");
+
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("Restaurant");
                 });
@@ -235,19 +246,18 @@ namespace Exebite.DataAccess.Migrations
 
             modelBuilder.Entity("Exebite.DataAccess.Entities.DailyMenuEntity", b =>
                 {
-                    b.HasOne("Exebite.DataAccess.Entities.FoodEntity", "FoodEntity")
-                        .WithMany()
-                        .HasForeignKey("FoodEntityId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Exebite.DataAccess.Entities.RestaurantEntity", "Restaurant")
-                        .WithMany("DailyMenu")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithOne("DailyMenu")
+                        .HasForeignKey("Exebite.DataAccess.Entities.DailyMenuEntity", "RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Exebite.DataAccess.Entities.FoodEntity", b =>
                 {
+                    b.HasOne("Exebite.DataAccess.Entities.DailyMenuEntity")
+                        .WithMany("Foods")
+                        .HasForeignKey("DailyMenuEntityId");
+
                     b.HasOne("Exebite.DataAccess.Entities.RestaurantEntity", "Restaurant")
                         .WithMany("Foods")
                         .HasForeignKey("RestaurantId")

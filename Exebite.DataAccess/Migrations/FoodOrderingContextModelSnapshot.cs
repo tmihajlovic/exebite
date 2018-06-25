@@ -253,7 +253,7 @@ namespace Exebite.DataAccess.Migrations
             modelBuilder.Entity("Exebite.DataAccess.Entities.FoodEntity", b =>
                 {
                     b.HasOne("Exebite.DataAccess.Entities.DailyMenuEntity")
-                        .WithMany("Menu")
+                        .WithMany("Foods")
                         .HasForeignKey("DailyMenuEntityId");
 
                     b.HasOne("Exebite.DataAccess.Entities.RestaurantEntity", "Restaurant")
