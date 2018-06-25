@@ -41,4 +41,9 @@ namespace Exebite.DataAccess.Repositories
 
         IList<T> Query(Q queryModel);
     }
+
+    public interface IDatabaseRepository
+    {
+
+    }
 }

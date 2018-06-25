@@ -90,7 +90,7 @@ namespace Exebite.DataAccess.Repositories
                     Price = entity.Price
                 };
 
-                var res = context.Update(orderEntity.Meal);
+                var res = context.Update(orderEntity);
 
                 context.SaveChanges();
 
