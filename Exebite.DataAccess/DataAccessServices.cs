@@ -1,6 +1,5 @@
 ﻿using Exebite.DataAccess.AutoMapper;
 using Exebite.DataAccess.Context;
-using Exebite.DataAccess.Migrations;
 using Exebite.DataAccess.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +17,7 @@ namespace Exebite.DataAccess
             collection.AddTransient<IFoodRepository, FoodRepository>();
             collection.AddTransient<IRecipeRepository, RecipeRepository>();
             collection.AddTransient<IOrderRepository, OrderRepository>();
+            collection.AddTransient<IMealRepository, MealRepository>();
             collection.AddTransient<IRecipeToRecipeEntityConverter, RecipeToRecipeEntityConverter>();
             collection.AddTransient<IFoodToFoodEntityConverter, FoodToFoodEntityConverter>();
             return collection;

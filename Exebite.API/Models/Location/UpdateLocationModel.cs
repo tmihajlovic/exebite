@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Exebite.API.Models
+﻿namespace Exebite.API.Models
 {
     public class UpdateLocationModel
     {

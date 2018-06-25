@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Exebite.DataAccess;
 
 namespace Exebite.API
 {
@@ -51,19 +52,9 @@ namespace Exebite.API
                     {
                         Mapper.Configuration.AssertConfigurationIsValid();
                     }
-                });
+                })
+            .AddDataAccessServices();
 
-            services.AddDataAccessServices();
-            services.AddTransient<ICustomerRepository, CustomerRepository>();
-            services.AddTransient<ILocationRepository, LocationRepository>();
-            services.AddTransient<IRestaurantRepository, RestaurantRepository>();
-            services.AddTransient<IMenuService, MenuService>();
-            services.AddTransient<IOrderService, OrderService>();
-            services.AddTransient<IFoodRepository, FoodRepository>();
-            services.AddTransient<IMealRepository, MealRepository>();
-            services.AddTransient<IRecipeRepository, RecipeRepository>();
-            services.AddTransient<ICustomerAliasRepository, CustomerAliasRepository>();
-            services.AddTransient<IDailyMenuRepository, DailyMenuRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
