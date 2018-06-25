@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Exebite.Common;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.Mocks;
@@ -15,12 +16,14 @@ namespace Exebite.DataAccess.Test
     internal static class RepositoryTestHelpers
     {
         private static readonly IMapper _mapper;
+        private static readonly IGetDateTime _dateTime;
 
         static RepositoryTestHelpers()
         {
             ServiceCollectionExtensions.UseStaticRegistration = false;
             Mapper.Initialize(cfg => cfg.AddProfile<DataAccessMappingProfile>());
 
+            _dateTime = new GetDateTimeStub();
             _mapper = Mapper.Instance;
         }
 
@@ -337,6 +340,56 @@ namespace Exebite.DataAccess.Test
         internal static RecipeRepository CreateOnlyRecipeRepositoryInstanceNoData(Guid name)
         {
             return new RecipeRepository(new InMemoryDBFactory(name.ToString()), _mapper, new Mock<ILogger<RecipeRepository>>().Object);
+        }
+        #endregion Recipe
+
+        #region Order
+        internal static OrderRepository OrderDataForTesting(Guid name, int numberOfOrders)
+        {
+            var factory = new InMemoryDBFactory(name.ToString());
+
+            using (var context = factory.Create())
+            {
+                var location = new LocationEntity
+                {
+                    Id = 1,
+                    Name = "location name ",
+                    Address = "Address"
+
+                };
+                context.Locations.Add(location);
+
+                var customer = new CustomerEntity
+                {
+                    Id = 1,
+                    Name = "Customer name ",
+                    AppUserId = "AppUserId",
+                    Balance = 99.99m,
+                    LocationId = 1,
+                };
+                context.Customers.Add(customer);
+
+                var orders = Enumerable.Range(1, numberOfOrders).Select(x => new OrderEntity
+                {
+                    Id = x,
+                    CustomerId = x,
+                    Date = _dateTime.Now().AddHours(x),
+                    MealId = x,
+                    Note = "note ",
+                    Price = 10.5m * x
+                });
+
+                context.Orders.AddRange(orders);
+
+                context.SaveChanges();
+            }
+
+            return new OrderRepository(factory, _mapper, new Mock<ILogger<OrderRepository>>().Object);
+        }
+
+        internal static OrderRepository CreateOnlyOrderRepositoryInstanceNoData(Guid name)
+        {
+            return new OrderRepository(new InMemoryDBFactory(name.ToString()), _mapper, new Mock<ILogger<OrderRepository>>().Object);
         }
         #endregion Recipe
     }
