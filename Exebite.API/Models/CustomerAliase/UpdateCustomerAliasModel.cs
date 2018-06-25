@@ -1,11 +1,16 @@
-﻿namespace Exebite.API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Exebite.API.Models
 {
     public class UpdateCustomerAliasModel
     {
+        [Required]
         public string Alias { get; set; }
 
+        [Required]
         public int CustomerId { get; set; }
 
+        [Required]
         public int RestaurantId { get; set; }
     }
 }
