@@ -56,18 +56,19 @@ namespace Exebite.DataAccess.Repositories
                 var recipeEntity = new RecipeEntity
                 {
                     Id = entity.Id,
-                    MainCourseId = entity.MainCourse.Id,
-                    FoodEntityRecipeEntities = Enumerable.Range(0, entity.SideDish.Count).Select(a =>
-                    {
-                        return new FoodEntityRecipeEntity { FoodEntityId = entity.SideDish[a].Id };
-                    }).ToList()
+                    RestaurantId = entity.RestaurantId,
+                    MainCourseId = entity.MainCourseId,
+                    FoodEntityRecipeEntities = entity.SideDish
+                                                     .Select(a => new FoodEntityRecipeEntity { FoodEntityId = a.Id })
+                                                     .ToList()
                 };
-                var createEntity = context.Attach(recipeEntity).Entity;
+                var createEntity = context.Add(recipeEntity).Entity;
                 context.SaveChanges();
 
-                createEntity = context.Recipes.Include(r => r.FoodEntityRecipeEntities)
+                var result = context.Recipes
+                                    .Include(r => r.FoodEntityRecipeEntities)
                                     .Include(r => r.MainCourse)
-                                    .First(r => r.Id == createEntity.Id);
+                                    .FirstOrDefault(r => r.Id == createEntity.Id);
                 return _mapper.Map<Recipe>(createEntity);
             }
         }

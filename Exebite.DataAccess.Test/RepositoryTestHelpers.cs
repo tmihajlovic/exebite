@@ -296,6 +296,50 @@ namespace Exebite.DataAccess.Test
             return new MealRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<MealRepository>>().Object);
         }
         #endregion
+
+        #region Recipe
+
+        internal static RecipeRepository RecipeDataForTesting(Guid name, int numberOfDailyRecipes)
+        {
+            var factory = new InMemoryDBFactory(name.ToString());
+
+            using (var context = factory.Create())
+            {
+                var dailyMenus = Enumerable.Range(1, numberOfDailyRecipes).Select(x => new RecipeEntity
+                {
+                    Id = x,
+                    RestaurantId = x
+                });
+                context.Recipes.AddRange(dailyMenus);
+
+                var restaurant = Enumerable.Range(1, numberOfDailyRecipes).Select(x => new RestaurantEntity
+                {
+                    Id = x,
+                    Name = "Test restaurant " + x,
+                    DailyMenuId = x,
+
+                });
+                context.Restaurants.AddRange(restaurant);
+
+                var food = Enumerable.Range(1, numberOfDailyRecipes).Select(x => new FoodEntity
+                {
+                    Id = x,
+                    Name = $"Name {x}",
+                    Price = x,
+                    Description = $"Description {x}"
+                });
+                context.Foods.AddRange(food);
+                context.SaveChanges();
+            }
+
+            return new RecipeRepository(factory, _mapper, new Mock<ILogger<RecipeRepository>>().Object);
+        }
+
+        internal static RecipeRepository CreateOnlyRecipeRepositoryInstanceNoData(Guid name)
+        {
+            return new RecipeRepository(new InMemoryDBFactory(name.ToString()), _mapper, new Mock<ILogger<RecipeRepository>>().Object);
+        }
+        #endregion Recipe
     }
 }
 #pragma warning restore SA1124 // Do not use regions
