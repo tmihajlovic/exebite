@@ -47,6 +47,10 @@ namespace Exebite.API
                     cfg.ConstructServicesUsing(x => this.provider.GetService(x));
                     cfg.AddProfile<DataAccessMappingProfile>();
                     cfg.AddProfile<UIMappingProfile>();
+                    if (HostingEnvironment.IsDevelopment())
+                    {
+                        Mapper.Configuration.AssertConfigurationIsValid();
+                    }
                 });
 
             services.AddDataAccessServices();
@@ -60,6 +64,9 @@ namespace Exebite.API
             services.AddTransient<IRecipeRepository, RecipeRepository>();
             services.AddTransient<ICustomerAliasRepository, CustomerAliasRepository>();
             services.AddTransient<IDailyMenuRepository, DailyMenuRepository>();
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
