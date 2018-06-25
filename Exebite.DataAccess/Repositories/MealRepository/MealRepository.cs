@@ -32,10 +32,7 @@ namespace Exebite.DataAccess.Repositories
                 {
                     Id = entity.Id,
                     Price = entity.Price,
-                    FoodEntityMealEntities = Enumerable.Range(0, entity.Foods.Count).Select(a =>
-                    {
-                        return new FoodEntityMealEntities { FoodEntityId = entity.Foods[a].Id };
-                    }).ToList()
+                    FoodEntityMealEntities = entity.Foods.Select(x => new FoodEntityMealEntities { FoodEntityId = x.Id }).ToList()
                 };
                 var createEntity = context.Add(mealEntity).Entity;
                 context.SaveChanges();
