@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace FeatureTestingConsole
 {
-    public class App : IApp
+    public sealed class App : IApp
     {
         private readonly IOrderRepository _orderRepo;
         private readonly IRestaurantRepository _restaurantRepo;

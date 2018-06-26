@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Exebite.API.Models
 {
@@ -6,5 +7,8 @@ namespace Exebite.API.Models
     {
         [Required]
         public int RestaurantId { get; set; }
+
+        [Required]
+        public List<FoodModel> Foods { get; set; }
     }
 }

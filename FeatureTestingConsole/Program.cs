@@ -3,7 +3,6 @@ using Exebite.DataAccess;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-
 namespace FeatureTestingConsole
 {
     class Program
