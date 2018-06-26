@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
-using System.Linq;
 
 namespace FeatureTestingConsole
 {
@@ -59,7 +58,6 @@ namespace FeatureTestingConsole
                 Price = 100,
                 RestaurantId = 1
             });
-
 
             var foods = _foodRepository.Query(new FoodQueryModel() { });
 
