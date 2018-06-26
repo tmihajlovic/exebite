@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
+using System.Linq;
 
 namespace FeatureTestingConsole
 {
@@ -59,9 +60,12 @@ namespace FeatureTestingConsole
                 RestaurantId = 1
             });
 
+
+            var foods = _foodRepository.Query(new FoodQueryModel() { });
+
             _mealRepo.Insert(new Meal()
             {
-                Foods = new List<Food>() { new Food() { Id = 1 }, new Food() { Id = 2 } }
+                Foods = foods.Select(x => new Food() { Id = x.Id }).ToList()
             });
 
             var order = new Order()

@@ -11,7 +11,7 @@ namespace Exebite.DataAccess.Repositories
 {
     public class RestaurantRepository : DatabaseRepository<Restaurant, RestaurantEntity, RestaurantQueryModel>, IRestaurantRepository
     {
-        public RestaurantRepository(IFoodOrderingContextFactory factory, IMapper mapper, ILogger<RestaurantRepository> logger)
+        public RestaurantRepository(IFoodOrderingContextFactory factory, IMapper mapper, ILogger<IRestaurantRepository> logger)
             : base(factory, mapper, logger)
         {
         }
