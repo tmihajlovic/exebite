@@ -1,14 +1,11 @@
 ﻿using System;
 using AutoMapper;
-using Exebite.Business;
 using Exebite.DataAccess;
-using Exebite.DataAccess.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Exebite.DataAccess;
 
 namespace Exebite.API
 {

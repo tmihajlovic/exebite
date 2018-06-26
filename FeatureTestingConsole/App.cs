@@ -1,6 +1,6 @@
-﻿using Exebite.DataAccess.Repositories;
+﻿using System.Collections.Generic;
+using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
-using System.Collections.Generic;
 
 namespace FeatureTestingConsole
 {
