@@ -139,7 +139,7 @@ namespace Exebite.DataAccess.Test
             var sut = CreateOnlyFoodRepositoryInstanceNoData(Guid.NewGuid().ToString());
 
             // Act and Assert
-            Exception res = Assert.Throws<ArgumentNullException>(() => sut.Update(null));
+            Assert.Throws<ArgumentNullException>(() => sut.Update(null));
         }
 
         [Fact]

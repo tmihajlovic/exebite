@@ -15,7 +15,7 @@ namespace Exebite.DataAccess.Test
             var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(Guid.NewGuid().ToString());
 
             // Act and Assert
-            Exception res = Assert.Throws<ArgumentNullException>(() => sut.Query(null));
+            Assert.Throws<ArgumentNullException>(() => sut.Query(null));
         }
 
         [Theory]
@@ -66,7 +66,7 @@ namespace Exebite.DataAccess.Test
             var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(Guid.NewGuid().ToString());
 
             // Act and Assert
-            Exception res = Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
+            Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace Exebite.DataAccess.Test
             var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(Guid.NewGuid().ToString());
 
             // Act and Assert
-            Exception res = Assert.Throws<ArgumentNullException>(() => sut.Update(null));
+            Assert.Throws<ArgumentNullException>(() => sut.Update(null));
         }
 
         [Fact]

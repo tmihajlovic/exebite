@@ -81,7 +81,7 @@ namespace Exebite.DataAccess.Test
             var sut = CreateOnlyOrderRepositoryInstanceNoData(Guid.NewGuid());
 
             // Act and Assert
-            Exception res = Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
+            Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
         }
 
         [Fact]
@@ -118,7 +118,7 @@ namespace Exebite.DataAccess.Test
             var sut = CreateOnlyOrderRepositoryInstanceNoData(Guid.NewGuid());
 
             // Act and Assert
-            Exception res = Assert.Throws<ArgumentNullException>(() => sut.Update(null));
+            Assert.Throws<ArgumentNullException>(() => sut.Update(null));
         }
 
         [Fact]
