@@ -5,12 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FeatureTestingConsole
 {
-    class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
             ServiceProvider provider = null;
-            //setup our DI
             var serviceCollection = new ServiceCollection()
                 .AddLogging()
                 .AddAutoMapper(

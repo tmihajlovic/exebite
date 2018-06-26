@@ -8,7 +8,7 @@ using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
 namespace Exebite.DataAccess.Test
 {
-    public class OrderRepositoryTest
+    public sealed class OrderRepositoryTest
     {
         private readonly IGetDateTime _dateTime;
 
@@ -24,7 +24,7 @@ namespace Exebite.DataAccess.Test
             var sut = CreateOnlyOrderRepositoryInstanceNoData(Guid.NewGuid());
 
             // Act and Assert
-           var result = sut.Query(null);
+            var result = sut.Query(null);
 
             Assert.Equal(0, result.Count);
         }
@@ -148,6 +148,5 @@ namespace Exebite.DataAccess.Test
             Assert.Equal(updatedMeal.Date, res.Date);
             Assert.Equal(updatedMeal.Note, res.Note);
         }
-
     }
 }

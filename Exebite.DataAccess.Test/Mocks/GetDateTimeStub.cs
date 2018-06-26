@@ -3,7 +3,7 @@ using Exebite.Common;
 
 namespace Exebite.DataAccess.Test.Mocks
 {
-    internal class GetDateTimeStub : IGetDateTime
+    internal sealed class GetDateTimeStub : IGetDateTime
     {
         private readonly DateTime _now;
 
