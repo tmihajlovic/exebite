@@ -12,7 +12,7 @@ namespace Exebite.DataAccess.Repositories
         private readonly IMapper _mapper;
         private readonly IFoodOrderingContextFactory _factory;
 
-        public RestaurantCommandRepository(IMapper mapper, IFoodOrderingContextFactory factory)
+        public RestaurantCommandRepository(IFoodOrderingContextFactory factory, IMapper mapper)
         {
             _mapper = mapper;
             _factory = factory;

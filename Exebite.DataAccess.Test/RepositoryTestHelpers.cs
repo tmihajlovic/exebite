@@ -204,10 +204,69 @@ namespace Exebite.DataAccess.Test
             return new RestaurantRepository(factory, _mapper, new Mock<ILogger<RestaurantRepository>>().Object);
         }
 
-        internal static CustomerAliasRepository CreateOnlyRestaurantRepositoryInstanceNoData(string name)
+        internal static RestaurantRepository CreateOnlyRestaurantRepositoryInstanceNoData(string name)
         {
-            return new CustomerAliasRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<CustomerAliasRepository>>().Object);
+            return new RestaurantRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<RestaurantRepository>>().Object);
         }
+
+
+        internal static RestaurantQueryRepository RestaurantQueryDataForTesting(string name, int count)
+        {
+            var factory = new InMemoryDBFactory(name);
+
+            using (var context = factory.Create())
+            {
+                var locations = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
+                {
+                    Id = x,
+                    Name = $"Name {x}",
+                    DailyMenu = new DailyMenuEntity()
+                    {
+                        Id = x
+                    }
+                });
+
+                context.Restaurants.AddRange(locations);
+                context.SaveChanges();
+            }
+
+            return new RestaurantQueryRepository(factory, _mapper);
+        }
+
+        internal static RestaurantQueryRepository CreateOnlyRestaurantQueryRepositoryInstanceNoData(string name)
+        {
+            return new RestaurantQueryRepository(new InMemoryDBFactory(name), _mapper);
+        }
+
+
+        internal static RestaurantCommandRepository RestaurantCommandDataForTesting(string name, int count)
+        {
+            var factory = new InMemoryDBFactory(name);
+
+            using (var context = factory.Create())
+            {
+                var locations = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
+                {
+                    Id = x,
+                    Name = $"Name {x}",
+                    DailyMenu = new DailyMenuEntity()
+                    {
+                        Id = x
+                    }
+                });
+
+                context.Restaurants.AddRange(locations);
+                context.SaveChanges();
+            }
+
+            return new RestaurantCommandRepository(factory, _mapper);
+        }
+
+        internal static RestaurantCommandRepository CreateOnlyRestaurantCommandRepositoryInstanceNoData(string name)
+        {
+            return new RestaurantCommandRepository(new InMemoryDBFactory(name), _mapper);
+        }
+
 
         #endregion
 

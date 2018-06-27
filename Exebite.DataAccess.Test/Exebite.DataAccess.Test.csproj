@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Exebite.Common\Exebite.Common.csproj" />
     <ProjectReference Include="..\Exebite.DataAccess\Exebite.DataAccess.csproj" />
+    <ProjectReference Include="..\TestExtension\TestExtension.csproj" />
   </ItemGroup>
 
 </Project>

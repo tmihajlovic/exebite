@@ -19,11 +19,13 @@ namespace Exebite.DataAccess.Repositories
             _mapper = mapper;
         }
 
-        public Either<Exception, (List<Restaurant>, int)> Query(RestaurantQueryModel queryModel)
+
+        public Either<Exception,(List<Restaurant> Items, int Count)> Query(RestaurantQueryModel queryModel)
         {
             try
             {
-                queryModel = queryModel ?? new RestaurantQueryModel(1, 100);
+
+                queryModel = queryModel ?? new RestaurantQueryModel(1, QueryConstants.MaxElements);
 
                 using (var context = _factory.Create())
                 {
@@ -42,7 +44,7 @@ namespace Exebite.DataAccess.Repositories
                     var total = query.Count();
 
                     query = query
-                        .Skip(queryModel.Page * queryModel.Size)
+                        .Skip((queryModel.Page - 1 ) * queryModel.Size)
                         .Take(queryModel.Size);
 
                     var results = query.ToList();

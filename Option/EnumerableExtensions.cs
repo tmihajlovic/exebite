@@ -18,5 +18,11 @@ namespace Option
                 .Select<T, Option<T>>(x => x)
                 .DefaultIfEmpty(None.Value)
                 .First();
+
+        public static Option<T> FirstOrNone<T>(
+            this IEnumerable<T> sequence) =>
+            sequence.Select<T, Option<T>>(x => x)
+                .DefaultIfEmpty(None.Value)
+                .First();
     }
 }

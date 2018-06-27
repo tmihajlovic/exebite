@@ -2,12 +2,15 @@
 
 namespace Exebite.DataAccess.Repositories
 {
+
+
+
     public abstract class QueryBase
     {
         public QueryBase()
         {
             Page = 0;
-            Size = 100;
+            Size = QueryConstants.MaxElements;
         }
 
         public QueryBase(int page, int size)
@@ -18,7 +21,7 @@ namespace Exebite.DataAccess.Repositories
             }
 
             Page = page;
-            Size = size;
+            Size = QueryConstants.MaxElements;
         }
 
         public int Size { get; }

@@ -6,6 +6,6 @@ namespace Exebite.DataAccess.Repositories
 {
     public interface IDatabaseQueryRepository<TResult, TQuery>
     {
-        Either<Exception, (List<TResult>, int)> Query(TQuery queryModel);
+        Either<Exception, (List<TResult> Items, int Count)> Query(TQuery queryModel);
     }
 }
