@@ -18,7 +18,7 @@ namespace Exebite.DataAccess.Repositories
             _factory = factory;
         }
 
-        public Either<Exception, int> Insert(RestourantInsertModel entity)
+        public Either<Error, int> Insert(RestourantInsertModel entity)
         {
             try
             {
@@ -27,21 +27,21 @@ namespace Exebite.DataAccess.Repositories
                     var restaurantEntity = new RestaurantEntity()
                     {
                         Name = entity.Name,
-                        DailyMenuId = entity.DailyMenuId,
+                        DailyMenuId = entity.DailyMenuId
                     };
 
                     var addedEntity = context.Restaurants.Add(restaurantEntity).Entity;
                     context.SaveChanges();
-                    return new Right<Exception, int>(addedEntity.Id);
+                    return new Right<Error, int>(addedEntity.Id);
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Exception, int>(ex);
+                return new Left<Error, int>(new UnknownError(ex.ToString()));
             }
         }
 
-        public Either<Exception, bool> Update(int id, RestourantUpdateModel entity)
+        public Either<Error, bool> Update(int id, RestourantUpdateModel entity)
         {
             try
             {
@@ -59,15 +59,15 @@ namespace Exebite.DataAccess.Repositories
                     context.SaveChanges();
                 }
 
-                return new Right<Exception, bool>(true);
+                return new Right<Error, bool>(true);
             }
             catch (Exception ex)
             {
-                return new Left<Exception, bool>(ex);
+                return new Left<Error, bool>(new UnknownError(ex.ToString()));
             }
         }
 
-        public Either<Exception, bool> Delete(int id)
+        public Either<Error, bool> Delete(int id)
         {
             try
             {
@@ -79,17 +79,17 @@ namespace Exebite.DataAccess.Repositories
                     {
                         itemSet.Remove(item);
                         context.SaveChanges();
-                        return new Right<Exception, bool>(true);
+                        return new Right<Error, bool>(true);
                     }
                     else
                     {
-                        return new Right<Exception, bool>(false);
+                        return new Right<Error, bool>(false);
                     }
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Exception, bool>(ex);
+                return new Left<Error, bool>(new UnknownError(ex.ToString()));
             }
         }
     }

@@ -5,10 +5,10 @@ namespace Exebite.DataAccess.Repositories
 {
     public interface IDatabaseCommandRepository<TId, TInsert, TUpdate>
     {
-        Either<Exception, TId> Insert(TInsert entity);
+        Either<Error, TId> Insert(TInsert entity);
 
-        Either<Exception, bool> Delete(TId id);
+        Either<Error, bool> Delete(TId id);
 
-        Either<Exception, bool> Update(TId id, TUpdate entity);
+        Either<Error, bool> Update(TId id, TUpdate entity);
     }
 }
