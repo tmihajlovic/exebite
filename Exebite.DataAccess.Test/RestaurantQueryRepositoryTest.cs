@@ -37,7 +37,7 @@ namespace Exebite.DataAccess.Test
             var sut = RestaurantQueryDataForTesting(Guid.NewGuid().ToString(), count);
 
             // Act
-            var res = sut.Query(new RestaurantQueryModel() { Id = 999});
+            var res = sut.Query(new RestaurantQueryModel() { Id = 999 });
 
             // Assert
             EAssert.IsRight(res);
@@ -73,7 +73,7 @@ namespace Exebite.DataAccess.Test
 
             EAssert.IsRight(res);
             var result = res.RightContent();
-            Assert.Equal(count, result.Items.Count);
+            Assert.Equal(count, result.Items.Count());
         }
 
         [Fact]
@@ -90,7 +90,6 @@ namespace Exebite.DataAccess.Test
 
             var result = res.RightContent();
 
-            Assert.Equal(1, result.Count);
             Assert.Single(result.Items);
 
             var item = result.Items.FirstOrDefault();
@@ -112,7 +111,7 @@ namespace Exebite.DataAccess.Test
 
             // Assert
             EAssert.IsRight(res);
-            (List<Restaurant> Items, int Count) result = res as Right<Exception, (List<Restaurant>, int)>;
+            var result = res.RightContent();
             Assert.Empty(result.Items);
         }
 
@@ -154,12 +153,12 @@ namespace Exebite.DataAccess.Test
 
             var result = res.RightContent();
 
-            Assert.Equal(count, result.Count);
-            Assert.Equal(count, result.Items.Count);
+            Assert.Equal(count, result.Total);
+            Assert.Equal(count, result.Items.Count());
         }
 
         [Theory]
-        // QueryConstants.MaxElements + n
+
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
@@ -167,18 +166,32 @@ namespace Exebite.DataAccess.Test
         public void Query_ValidId_ValidResultLimited(int count)
         {
             // Arrange
-            var sut = RestaurantQueryDataForTesting(Guid.NewGuid().ToString(), QueryConstants.MaxElements + count);
+            var sut = RestaurantQueryDataForTesting(Guid.NewGuid().ToString(), count);
 
             // Act
-            var res = sut.Query(new RestaurantQueryModel(1, QueryConstants.MaxElements));
+            var res = sut.Query(new RestaurantQueryModel(1, QueryConstants.MaxElements + count));
 
             // Assert
             EAssert.IsRight(res);
 
             var result = res.RightContent();
 
-            Assert.Equal(QueryConstants.MaxElements + count, result.Count);
-            Assert.Equal(QueryConstants.MaxElements, result.Items.Count);
+            Assert.Equal(QueryConstants.MaxElements + count, result.Total);
+            Assert.Equal(QueryConstants.MaxElements, result.Items.Count());
+        }
+
+
+        [Fact]
+        public void Query_ErrorReturned()
+        {
+            // Arrange
+            var sut = RestaurantQueryDataForTesting(Guid.NewGuid().ToString(), 20);
+
+            // Act
+            var res = sut.Query(null);
+
+            // Assert
+            EAssert.IsLeft(res);
         }
 
     }

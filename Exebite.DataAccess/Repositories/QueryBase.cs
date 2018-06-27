@@ -15,7 +15,7 @@ namespace Exebite.DataAccess.Repositories
 
         public QueryBase(int page, int size)
         {
-            if (size > 10000)
+            if (size > QueryConstants.MaxElements)
             {
                 throw new ArgumentOutOfRangeException("Size is too big");
             }

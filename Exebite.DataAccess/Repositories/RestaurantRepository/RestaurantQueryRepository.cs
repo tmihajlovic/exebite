@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using AutoMapper;
 using Either;
@@ -20,12 +21,14 @@ namespace Exebite.DataAccess.Repositories
         }
 
 
-        public Either<Exception,(List<Restaurant> Items, int Count)> Query(RestaurantQueryModel queryModel)
+        public Either<Error, PagingResult<Restaurant>> Query(RestaurantQueryModel queryModel)
         {
             try
             {
-
-                queryModel = queryModel ?? new RestaurantQueryModel(1, QueryConstants.MaxElements);
+                if (queryModel == null)
+                {
+                    throw new ArgumentNullException(nameof(queryModel));
+                }
 
                 using (var context = _factory.Create())
                 {
@@ -41,20 +44,23 @@ namespace Exebite.DataAccess.Repositories
                         query = query.Where(x => x.Name == queryModel.Name);
                     }
 
-                    var total = query.Count();
-
                     query = query
-                        .Skip((queryModel.Page - 1 ) * queryModel.Size)
+                        .Skip((queryModel.Page - 1) * queryModel.Size)
                         .Take(queryModel.Size);
 
                     var results = query.ToList();
                     var mapped = _mapper.Map<IList<Restaurant>>(results).ToList();
-                    return new Right<Exception, (List<Restaurant>, int)>((mapped.ToList(), total));
+                    return new Right<Error, PagingResult<Restaurant>>(new PagingResult<Restaurant>(mapped, query.Count()));
                 }
+            }
+            catch (ArgumentNullException ex)
+            {
+                return new Left<Error, PagingResult<Restaurant>>(new ArgumentNotSet(ex.ToString()));
             }
             catch (Exception ex)
             {
-                return new Left<Exception, (List<Restaurant>, int)>(ex);
+
+                return new Left<Error, PagingResult<Restaurant>>(new UnknownError(ex.ToString()));
             }
         }
     }
