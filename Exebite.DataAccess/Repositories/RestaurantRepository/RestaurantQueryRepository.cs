@@ -44,13 +44,16 @@ namespace Exebite.DataAccess.Repositories
                         query = query.Where(x => x.Name == queryModel.Name);
                     }
 
+                    var size = queryModel.Size <= QueryConstants.MaxElements ? queryModel.Size : QueryConstants.MaxElements;
+
+                    var total = query.Count();
                     query = query
-                        .Skip((queryModel.Page - 1) * queryModel.Size)
-                        .Take(queryModel.Size);
+                        .Skip((queryModel.Page - 1) * size)
+                        .Take(size);
 
                     var results = query.ToList();
                     var mapped = _mapper.Map<IList<Restaurant>>(results).ToList();
-                    return new Right<Error, PagingResult<Restaurant>>(new PagingResult<Restaurant>(mapped, query.Count()));
+                    return new Right<Error, PagingResult<Restaurant>>(new PagingResult<Restaurant>(mapped, total));
                 }
             }
             catch (ArgumentNullException ex)

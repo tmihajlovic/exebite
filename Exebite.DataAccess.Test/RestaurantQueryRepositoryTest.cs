@@ -55,7 +55,7 @@ namespace Exebite.DataAccess.Test
             // Act and Assert
             var res = sut.Query(null);
 
-            EAssert.IsRight(res);
+            EAssert.IsLeft(res);
         }
 
         [Theory]
@@ -166,7 +166,7 @@ namespace Exebite.DataAccess.Test
         public void Query_ValidId_ValidResultLimited(int count)
         {
             // Arrange
-            var sut = RestaurantQueryDataForTesting(Guid.NewGuid().ToString(), count);
+            var sut = RestaurantQueryDataForTesting(Guid.NewGuid().ToString(), QueryConstants.MaxElements + count);
 
             // Act
             var res = sut.Query(new RestaurantQueryModel(1, QueryConstants.MaxElements + count));

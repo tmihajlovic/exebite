@@ -18,7 +18,7 @@ namespace Exebite.DataAccess.Repositories
             _factory = factory;
         }
 
-        public Either<Error, int> Insert(RestourantInsertModel entity)
+        public Either<Error, int> Insert(RestaurantInsertModel entity)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, bool> Update(int id, RestourantUpdateModel entity)
+        public Either<Error, bool> Update(int id, RestaurantUpdateModel entity)
         {
             try
             {
