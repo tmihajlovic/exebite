@@ -45,7 +45,7 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                // do not use automaper to add entites to DB
+                // do not use automaper to add entities to DB
                 var customerEntity = new CustomerEntity()
                 {
                     AppUserId = entity.AppUserId,

@@ -4,7 +4,6 @@ namespace Exebite.DataAccess.Repositories
 {
     public abstract class QueryBase
     {
-
         public QueryBase()
         {
             Page = 0;

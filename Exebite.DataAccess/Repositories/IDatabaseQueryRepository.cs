@@ -1,11 +1,11 @@
-﻿using Either;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Either;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public interface IDatabaseQueryRepository<T, Q>
+    public interface IDatabaseQueryRepository<TResult, TQuery>
     {
-        Either<Exception,(List<T>, int) > Query(Q queryModel);
+        Either<Exception, (List<TResult>, int)> Query(TQuery queryModel);
     }
 }

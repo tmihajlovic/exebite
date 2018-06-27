@@ -19,7 +19,7 @@ namespace Exebite.DataAccess.Repositories
             _mapper = mapper;
         }
 
-        public Either<Exception,(List<Restaurant>, int)> Query(RestaurantQueryModel queryModel)
+        public Either<Exception, (List<Restaurant>, int)> Query(RestaurantQueryModel queryModel)
         {
             try
             {

@@ -1,14 +1,14 @@
-﻿using Either;
-using System;
+﻿using System;
+using Either;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public interface IDatabaseCommandRepository<TID, IT, UT>
+    public interface IDatabaseCommandRepository<TId, TInsert, TUpdate>
     {
-        Either<Exception, TID> Insert(IT entity);
+        Either<Exception, TId> Insert(TInsert entity);
 
-        Either<Exception, bool> Delete(TID id);
+        Either<Exception, bool> Delete(TId id);
 
-        Either<Exception, bool> Update(TID id, UT entity);
+        Either<Exception, bool> Update(TId id, TUpdate entity);
     }
 }
