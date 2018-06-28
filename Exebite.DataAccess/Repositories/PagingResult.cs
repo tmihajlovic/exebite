@@ -6,7 +6,6 @@ namespace Exebite.DataAccess.Repositories
 {
     public class PagingResult<T>
     {
-
         public PagingResult(IEnumerable<T> items, int total)
         {
             Total = total;

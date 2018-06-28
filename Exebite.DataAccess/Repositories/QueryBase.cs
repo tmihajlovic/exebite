@@ -1,19 +1,14 @@
-﻿using System;
-
-namespace Exebite.DataAccess.Repositories
+﻿namespace Exebite.DataAccess.Repositories
 {
-
-
-
     public abstract class QueryBase
     {
-        public QueryBase()
+        protected QueryBase()
         {
             Page = 0;
             Size = int.MaxValue;
         }
 
-        public QueryBase(int page, int size)
+        protected QueryBase(int page, int size)
         {
             Size = size;
             Page = page;

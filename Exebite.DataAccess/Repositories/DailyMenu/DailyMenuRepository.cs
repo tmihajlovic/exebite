@@ -72,10 +72,7 @@ namespace Exebite.DataAccess.Repositories
                 var currentEntity = context.DailyMenues.Find(entity.Id);
                 currentEntity.RestaurantId = entity.RestaurantId;
 
-                var addedEntities = Enumerable.Range(0, entity.Foods.Count).Select(a =>
-                {
-                    return context.Foods.Find(entity.Foods[a].Id);
-                }).ToList();
+                var addedEntities = entity.Foods.Select(food => context.Foods.Find(food.Id)).ToList();
 
                 // this will remove old references, and after that new ones will be added
                 currentEntity.Foods.Clear();

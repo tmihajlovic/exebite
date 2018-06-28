@@ -1,6 +1,6 @@
-﻿using Exebite.DataAccess.Entities;
+﻿using System.Collections.Generic;
+using Exebite.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace Exebite.DataAccess.Context
 {
@@ -72,11 +72,8 @@ namespace Exebite.DataAccess.Context
                 .HasMany(x => x.Foods);
         }
 
-
         private static void Seed(ModelBuilder modelBuilder)
         {
-
-
             modelBuilder.Entity<RestaurantEntity>()
                 .HasData(new RestaurantEntity
                 {
@@ -106,8 +103,7 @@ namespace Exebite.DataAccess.Context
                             }
                         }
                     }
-                }
-                );
+                });
         }
     }
 }
