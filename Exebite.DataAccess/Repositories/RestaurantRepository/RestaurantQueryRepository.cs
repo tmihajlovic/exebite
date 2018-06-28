@@ -20,7 +20,6 @@ namespace Exebite.DataAccess.Repositories
             _mapper = mapper;
         }
 
-
         public Either<Error, PagingResult<Restaurant>> Query(RestaurantQueryModel queryModel)
         {
             try

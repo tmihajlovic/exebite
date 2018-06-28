@@ -1,225 +1,89 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Repositories;
+using Exebite.DataAccess.Test.Mocks;
+using Exebite.DomainModel;
 using Microsoft.Data.Sqlite;
-using Optional.Xunit;
-using Xunit;
 using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
 namespace Exebite.DataAccess.Test
 {
-    public sealed class RestaurantQueryRepositoryTest
+    public sealed class RestaurantQueryRepositoryTest : QueryRepositoryTests<RestaurantQueryRepositoryTest.Data, Restaurant, RestaurantQueryModel>
     {
-        [Theory]
-        [InlineData(1, 1)]
-        [InlineData(2, 2)]
-        [InlineData(3, 2)]
-        [InlineData(50, 2)]
-        public void GetById_ValidId_ValidResult(int count, int id)
+        protected override IEnumerable<Data> SampleData =>
+            Enumerable.Range(1, int.MaxValue).Select(content => new Data
+            {
+                Id = content,
+                Name = $"Name {content}"
+            });
+
+        protected override RestaurantQueryModel ConvertEmptyToQuery()
         {
-            // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            var sut = RestaurantQueryDataForTesting(connection, count);
-
-            // Act
-            var res = sut.Query(new RestaurantQueryModel { Id = id });
-            connection.Close();
-
-            // Assert
-            EAssert.IsRight(res);
+            return new RestaurantQueryModel();
         }
 
-        [Theory]
-        [InlineData(1)]
-        public void GetById_InValidId_ValidResult(int count)
+        protected override RestaurantQueryModel ConvertNullToQuery()
         {
-            // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            var sut = RestaurantQueryDataForTesting(connection, count);
-
-            // Act
-            var res = sut.Query(new RestaurantQueryModel() { Id = 999 });
-            connection.Close();
-
-            // Assert
-            EAssert.IsRight(res);
-            var result = res.RightContent();
-            Assert.Empty(result.Items);
+#pragma warning disable RETURN0001 // Do not return null
+            return null;
+#pragma warning restore RETURN0001 // Do not return null
         }
 
-        [Fact]
-        public void Query_NullPassed_ArgumentNullExceptionThrown()
+        protected override RestaurantQueryModel ConvertToQuery(Data data)
         {
-            // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            var sut = CreateOnlyRestaurantQueryRepositoryInstanceNoData(connection);
-
-            // Act and Assert
-            var res = sut.Query(null);
-            connection.Close();
-
-            EAssert.IsLeft(res);
+            return new RestaurantQueryModel
+            {
+                Id = data.Id,
+                Name = data.Name
+            };
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        [InlineData(50)]
-        [InlineData(100)]
-        public void Query_MultipleElements(int count)
+        protected override RestaurantQueryModel ConvertToQuery(int id)
         {
-            // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            var sut = RestaurantQueryDataForTesting(connection, count);
-
-            // Act
-            var res = sut.Query(new RestaurantQueryModel());
-            connection.Close();
-
-            EAssert.IsRight(res);
-            var result = res.RightContent();
-            Assert.Equal(count, result.Items.Count());
+            return new RestaurantQueryModel { Id = id };
         }
 
-        [Fact]
-        public void Query_QueryByIDId_ValidId()
+        protected override RestaurantQueryModel ConvertWithPageAndSize(int page, int size)
         {
-            // Arrange
-            const int validId = 1;
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            var sut = RestaurantQueryDataForTesting(connection, 1);
-
-            // Act
-            var res = sut.Query(new RestaurantQueryModel() { Id = validId });
-            connection.Close();
-
-            EAssert.IsRight(res);
-
-            var result = res.RightContent();
-
-            Assert.Single(result.Items);
-
-            var item = result.Items.FirstOrDefault();
-
-            Assert.Equal(validId, item.Id);
+            return new RestaurantQueryModel(page, size);
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(2)]
-        [InlineData(int.MaxValue)]
-        public void Query_QueryByIDId_NonExistingID(int id)
+        protected override IDatabaseQueryRepository<Restaurant, RestaurantQueryModel> CreateSut(SqliteConnection connection)
         {
-            // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            var sut = RestaurantQueryDataForTesting(connection, 1);
-
-            // Act
-            var res = sut.Query(new RestaurantQueryModel() { Id = id });
-            connection.Close();
-
-            // Assert
-            EAssert.IsRight(res);
-            var result = res.RightContent();
-            Assert.Empty(result.Items);
+            return CreateOnlyRestaurantQueryRepositoryInstanceNoData(connection);
         }
 
-        [Fact]
-        public void Insert_NullPassed_ArgumentNullExceptionThrown()
+        protected override int GetId(Restaurant result)
         {
-            // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            var sut = CreateOnlyRestaurantRepositoryInstanceNoData(connection);
-
-            // Act and Assert
-            Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
-            connection.Close();
+            return result.Id;
         }
 
-        [Fact]
-        public void Update_NullPassed_ArgumentNullExceptionThrown()
+        protected override void InitializeStorage(SqliteConnection connection, int count)
         {
-            // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            var sut = CreateOnlyFoodRepositoryInstanceNoData(connection);
+            using (var context = new InMemoryDBFactory(connection).Create())
+            {
+                var locations = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
+                {
+                    Id = x,
+                    Name = $"Name {x}",
+                    DailyMenu = new DailyMenuEntity()
+                    {
+                        Id = x
+                    }
+                });
 
-            // Act and Assert
-            Assert.Throws<ArgumentNullException>(() => sut.Update(null));
-            connection.Close();
+                context.Restaurants.AddRange(locations);
+                context.SaveChanges();
+            }
         }
 
-        [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData(3)]
-        [InlineData(50)]
-        public void Query_ValidId_ValidResult(int count)
+        public sealed class Data
         {
-            // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            var sut = RestaurantQueryDataForTesting(connection, count);
+            public int? Id { get; set; }
 
-            // Act
-            var res = sut.Query(new RestaurantQueryModel(1, QueryConstants.MaxElements));
-            connection.Close();
-
-            // Assert
-            EAssert.IsRight(res);
-
-            var result = res.RightContent();
-
-            Assert.Equal(count, result.Total);
-            Assert.Equal(count, result.Items.Count());
-        }
-
-        [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData(3)]
-        [InlineData(99)]
-        public void Query_ValidId_ValidResultLimited(int count)
-        {
-            // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            var sut = RestaurantQueryDataForTesting(connection, QueryConstants.MaxElements + count);
-
-            // Act
-            var res = sut.Query(new RestaurantQueryModel(1, QueryConstants.MaxElements + count));
-            connection.Close();
-
-            // Assert
-            EAssert.IsRight(res);
-
-            var result = res.RightContent();
-
-            Assert.Equal(QueryConstants.MaxElements + count, result.Total);
-            Assert.Equal(QueryConstants.MaxElements, result.Items.Count());
-        }
-
-        [Fact]
-        public void Query_ErrorReturned()
-        {
-            // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            var sut = RestaurantQueryDataForTesting(connection, 20);
-
-            // Act
-            var res = sut.Query(null);
-            connection.Close();
-
-            // Assert
-            EAssert.IsLeft(res);
+            public string Name { get; set; }
         }
     }
 }
