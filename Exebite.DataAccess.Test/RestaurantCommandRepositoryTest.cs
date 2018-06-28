@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Either;
+using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Repositories;
-using Exebite.DataAccess.Test.Mocks;
-using Microsoft.Data.Sqlite;
 using Optional.Xunit;
 using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
@@ -19,9 +18,9 @@ namespace Exebite.DataAccess.Test
                           DailyMenuId = content
                       });
 
-        protected override IDatabaseCommandRepository<int, RestaurantInsertModel, RestaurantUpdateModel> CreateSut(SqliteConnection connection)
+        protected override IDatabaseCommandRepository<int, RestaurantInsertModel, RestaurantUpdateModel> CreateSut(IFoodOrderingContextFactory factory)
         {
-            return CreateOnlyRestaurantCommandRepositoryInstanceNoData(connection);
+            return CreateOnlyRestaurantCommandRepositoryInstanceNoData(factory);
         }
 
         protected override int GetId(Either<Error, int> newObj)
@@ -29,9 +28,9 @@ namespace Exebite.DataAccess.Test
             return newObj.RightContent();
         }
 
-        protected override void InitializeStorage(SqliteConnection connection, int count)
+        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
         {
-            using (var context = new InMemoryDBFactory(connection).Create())
+            using (var context = factory.Create())
             {
                 var locations = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
                 {

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Repositories;
+using Exebite.DataAccess.Test.Mocks;
 using Microsoft.Data.Sqlite;
 using Optional.Xunit;
 using Xunit;
@@ -9,6 +11,16 @@ namespace Exebite.DataAccess.Test
 {
     public abstract class QueryRepositoryTests<TModel, TResult, TQuery>
     {
+        private readonly SqliteConnection _connection;
+        private readonly IFoodOrderingContextFactory _factory;
+
+        protected QueryRepositoryTests()
+        {
+            _connection = new SqliteConnection("DataSource=:memory:");
+            _connection.Open();
+            _factory = new InMemoryDBFactory(_connection);
+        }
+
         protected abstract IEnumerable<TModel> SampleData { get; }
 
         [Theory]
@@ -19,17 +31,14 @@ namespace Exebite.DataAccess.Test
         public void GetById_ValidId_ValidResult(int count, int id)
         {
             // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
             IEnumerable<TModel> data = this.SampleData.Take(count + 1).ToList();
-            this.InitializeStorage(connection, count);
+            this.InitializeStorage(_factory, count);
             TModel queryData = data.ElementAt(id);
 
-            var sut = this.CreateSut(connection);
+            var sut = this.CreateSut(_factory);
 
             // Act
             var res = sut.Query(this.ConvertToQuery(queryData));
-            connection.Close();
 
             // Assert
             EAssert.IsRight(res);
@@ -40,17 +49,14 @@ namespace Exebite.DataAccess.Test
         public void GetById_InValidId_ValidResult(int count)
         {
             // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
             IEnumerable<TModel> data = this.SampleData.Take(count + 2).ToList();
-            this.InitializeStorage(connection, count);
+            this.InitializeStorage(_factory, count);
             TModel queryData = data.ElementAt(count + 1);
 
-            var sut = this.CreateSut(connection);
+            var sut = this.CreateSut(_factory);
 
             // Act
             var res = sut.Query(this.ConvertToQuery(queryData));
-            connection.Close();
 
             // Assert
             EAssert.IsRight(res);
@@ -62,14 +68,12 @@ namespace Exebite.DataAccess.Test
         public void Query_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            var sut = this.CreateSut(connection);
+            var sut = this.CreateSut(_factory);
 
-            // Act and Assert
+            // Act
             var res = sut.Query(this.ConvertNullToQuery());
-            connection.Close();
 
+            // Assert
             EAssert.IsLeft(res);
         }
 
@@ -81,16 +85,14 @@ namespace Exebite.DataAccess.Test
         public void Query_MultipleElements(int count)
         {
             // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            this.InitializeStorage(connection, count);
+            this.InitializeStorage(_factory, count);
 
-            var sut = this.CreateSut(connection);
+            var sut = this.CreateSut(_factory);
 
             // Act
             var res = sut.Query(this.ConvertEmptyToQuery());
-            connection.Close();
 
+            // Assert
             EAssert.IsRight(res);
             var result = res.RightContent();
             Assert.Equal(count, result.Items.Count());
@@ -101,17 +103,14 @@ namespace Exebite.DataAccess.Test
         {
             // Arrange
             const int validId = 1;
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
             IEnumerable<TModel> data = this.SampleData.Take(1).ToList();
-            this.InitializeStorage(connection, 1);
+            this.InitializeStorage(_factory, 1);
             TModel queryData = data.ElementAt(0);
 
-            var sut = this.CreateSut(connection);
+            var sut = this.CreateSut(_factory);
 
             // Act
             var res = sut.Query(this.ConvertToQuery(queryData));
-            connection.Close();
 
             // Assert
             EAssert.IsRight(res);
@@ -128,15 +127,12 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_NonExistingID(int id)
         {
             // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            this.InitializeStorage(connection, 1);
+            this.InitializeStorage(_factory, 1);
 
-            var sut = this.CreateSut(connection);
+            var sut = this.CreateSut(_factory);
 
             // Act
             var res = sut.Query(this.ConvertToQuery(id));
-            connection.Close();
 
             // Assert
             EAssert.IsRight(res);
@@ -152,23 +148,18 @@ namespace Exebite.DataAccess.Test
         public void Query_ValidId_ValidResult(int count)
         {
             // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
             IEnumerable<TModel> data = this.SampleData.Take(count + 1).ToList();
-            this.InitializeStorage(connection, count);
+            this.InitializeStorage(_factory, count);
             TModel queryData = data.ElementAt(count);
 
-            var sut = this.CreateSut(connection);
+            var sut = this.CreateSut(_factory);
 
             // Act
             var res = sut.Query(this.ConvertWithPageAndSize(1, QueryConstants.MaxElements));
-            connection.Close();
 
             // Assert
             EAssert.IsRight(res);
-
             var result = res.RightContent();
-
             Assert.Equal(count, result.Total);
             Assert.Equal(count, result.Items.Count());
         }
@@ -181,21 +172,16 @@ namespace Exebite.DataAccess.Test
         public void Query_ValidId_ValidResultLimited(int count)
         {
             // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            this.InitializeStorage(connection, QueryConstants.MaxElements + count);
+            this.InitializeStorage(_factory, QueryConstants.MaxElements + count);
 
-            var sut = this.CreateSut(connection);
+            var sut = this.CreateSut(_factory);
 
             // Act
             var res = sut.Query(this.ConvertWithPageAndSize(1, QueryConstants.MaxElements + count));
-            connection.Close();
 
             // Assert
             EAssert.IsRight(res);
-
             var result = res.RightContent();
-
             Assert.Equal(QueryConstants.MaxElements + count, result.Total);
             Assert.Equal(QueryConstants.MaxElements, result.Items.Count());
         }
@@ -204,23 +190,20 @@ namespace Exebite.DataAccess.Test
         public void Query_ErrorReturned()
         {
             // Arrange
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-            this.InitializeStorage(connection, 20);
+            this.InitializeStorage(_factory, 20);
 
-            var sut = this.CreateSut(connection);
+            var sut = this.CreateSut(_factory);
 
             // Act
             var res = sut.Query(this.ConvertNullToQuery());
-            connection.Close();
 
             // Assert
             EAssert.IsLeft(res);
         }
 
-        protected abstract IDatabaseQueryRepository<TResult, TQuery> CreateSut(SqliteConnection connection);
+        protected abstract IDatabaseQueryRepository<TResult, TQuery> CreateSut(IFoodOrderingContextFactory factory);
 
-        protected abstract void InitializeStorage(SqliteConnection connection, int count);
+        protected abstract void InitializeStorage(IFoodOrderingContextFactory factory, int count);
 
         protected abstract int GetId(TResult result);
 

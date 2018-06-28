@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Repositories;
-using Exebite.DataAccess.Test.Mocks;
 using Exebite.DomainModel;
-using Microsoft.Data.Sqlite;
 using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
 namespace Exebite.DataAccess.Test
@@ -50,9 +48,9 @@ namespace Exebite.DataAccess.Test
             return new RestaurantQueryModel(page, size);
         }
 
-        protected override IDatabaseQueryRepository<Restaurant, RestaurantQueryModel> CreateSut(SqliteConnection connection)
+        protected override IDatabaseQueryRepository<Restaurant, RestaurantQueryModel> CreateSut(IFoodOrderingContextFactory factory)
         {
-            return CreateOnlyRestaurantQueryRepositoryInstanceNoData(connection);
+            return CreateOnlyRestaurantQueryRepositoryInstanceNoData(factory);
         }
 
         protected override int GetId(Restaurant result)
@@ -60,9 +58,9 @@ namespace Exebite.DataAccess.Test
             return result.Id;
         }
 
-        protected override void InitializeStorage(SqliteConnection connection, int count)
+        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
         {
-            using (var context = new InMemoryDBFactory(connection).Create())
+            using (var context = factory.Create())
             {
                 var locations = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
                 {

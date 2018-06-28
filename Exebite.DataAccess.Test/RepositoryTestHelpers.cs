@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Exebite.Common;
+using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.Mocks;
@@ -229,60 +230,14 @@ namespace Exebite.DataAccess.Test
             return new RestaurantRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<RestaurantRepository>>().Object);
         }
 
-        internal static RestaurantQueryRepository RestaurantQueryDataForTesting(SqliteConnection connection, int count)
+        internal static RestaurantQueryRepository CreateOnlyRestaurantQueryRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
         {
-            var factory = new InMemoryDBFactory(connection);
-
-            using (var context = factory.Create())
-            {
-                var locations = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
-                {
-                    Id = x,
-                    Name = $"Name {x}",
-                    DailyMenu = new DailyMenuEntity()
-                    {
-                        Id = x
-                    }
-                });
-
-                context.Restaurants.AddRange(locations);
-                context.SaveChanges();
-            }
-
             return new RestaurantQueryRepository(factory, _mapper);
         }
 
-        internal static RestaurantQueryRepository CreateOnlyRestaurantQueryRepositoryInstanceNoData(SqliteConnection connection)
+        internal static RestaurantCommandRepository CreateOnlyRestaurantCommandRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
         {
-            return new RestaurantQueryRepository(new InMemoryDBFactory(connection), _mapper);
-        }
-
-        internal static RestaurantCommandRepository RestaurantCommandDataForTesting(SqliteConnection connection, int count)
-        {
-            var factory = new InMemoryDBFactory(connection);
-
-            using (var context = factory.Create())
-            {
-                var locations = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
-                {
-                    Id = x,
-                    Name = $"Name {x}",
-                    DailyMenu = new DailyMenuEntity()
-                    {
-                        Id = x
-                    }
-                });
-
-                context.Restaurants.AddRange(locations);
-                context.SaveChanges();
-            }
-
             return new RestaurantCommandRepository(factory, _mapper);
-        }
-
-        internal static RestaurantCommandRepository CreateOnlyRestaurantCommandRepositoryInstanceNoData(SqliteConnection connection)
-        {
-            return new RestaurantCommandRepository(new InMemoryDBFactory(connection), _mapper);
         }
 
         #endregion

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Either;
+using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Repositories;
+using Exebite.DataAccess.Test.Mocks;
 using Microsoft.Data.Sqlite;
 using Optional.Xunit;
 using Xunit;
@@ -10,6 +12,16 @@ namespace Exebite.DataAccess.Test
 {
     public abstract class CommandRepositoryTests<TModel, TId, TInput, TUpdate>
     {
+        private readonly IFoodOrderingContextFactory _factory;
+        private readonly SqliteConnection _connection;
+
+        protected CommandRepositoryTests()
+        {
+            _connection = new SqliteConnection("DataSource=:memory:");
+            _connection.Open();
+            _factory = new InMemoryDBFactory(_connection);
+        }
+
         protected abstract IEnumerable<TModel> SampleData { get; }
 
         [Theory]
@@ -19,16 +31,17 @@ namespace Exebite.DataAccess.Test
         [InlineData(17)]
         public void Insert_ObjectAdded_IdBecomesPositiveAfterSave(int count)
         {
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
+            // Arrange
             IEnumerable<TModel> data = this.SampleData.Take(count + 1).ToList();
-            this.InitializeStorage(connection, count);
+            this.InitializeStorage(_factory, count);
             TModel newObj = data.ElementAt(count);
 
-            IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(connection);
+            IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(_factory);
+
+            // Act
             var res = repo.Insert(this.ConvertToInput(newObj));
 
-            connection.Close();
+            // Assert
             EAssert.IsRight(res);
             Assert.True(this.GetId(res) > 0);
         }
@@ -39,17 +52,18 @@ namespace Exebite.DataAccess.Test
         [InlineData(17)]
         public void Delete_InsertThenDelete_DeleteWasSuccessfulExecutedReturnedTrue(int initialCount)
         {
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
+            // Arrange
             IEnumerable<TModel> data = this.SampleData.Take(initialCount + 1).ToList();
-            this.InitializeStorage(connection, initialCount);
+            this.InitializeStorage(_factory, initialCount);
             TModel newObj = data.ElementAt(initialCount);
 
-            IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(connection);
+            IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(_factory);
             var insertedRecordId = repo.Insert(this.ConvertToInput(newObj));
+
+            // Act
             var result = repo.Delete(insertedRecordId.RightContent());
 
-            connection.Close();
+            // Assert
             EAssert.IsRight(result);
             Assert.True(result.RightContent());
         }
@@ -57,18 +71,19 @@ namespace Exebite.DataAccess.Test
         [Fact]
         public void Delete_DeleteAlreadyDeletedRecord_RecordIsNotDeletedFalseReturned()
         {
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
+            // Arrange
             IEnumerable<TModel> data = this.SampleData.Take(1).ToList();
-            this.InitializeStorage(connection, 0);
+            this.InitializeStorage(_factory, 0);
             TModel newObj = data.ElementAt(0);
 
-            IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(connection);
+            IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(_factory);
             var insertedRecordId = repo.Insert(this.ConvertToInput(newObj));
             repo.Delete(insertedRecordId.RightContent());
+
+            // Act
             var result = repo.Delete(insertedRecordId.RightContent());
 
-            connection.Close();
+            // Assert
             EAssert.IsRight(result);
             Assert.False(result.RightContent());
         }
@@ -79,26 +94,26 @@ namespace Exebite.DataAccess.Test
         [InlineData(17, 16)]
         public void Update_ExistingObjectModified_UpdateDoneSuccessfullTrueReturned(int storageCount, int targetIndex)
         {
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
+            // Arrange
             IEnumerable<TModel> data = this.SampleData.Take(storageCount + 1).ToList();
-            this.InitializeStorage(connection, storageCount);
+            this.InitializeStorage(_factory, storageCount);
             TModel insertObject = data.ElementAt(storageCount);
             TModel updateObject = data.ElementAt(targetIndex + 1);
 
-            IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(connection);
+            IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(_factory);
             var insertedRecordId = repo.Insert(this.ConvertToInput(insertObject));
 
+            // Act
             var result = repo.Update(insertedRecordId.RightContent(), this.ConvertToUpdate(updateObject));
 
-            connection.Close();
+            // Assert
             EAssert.IsRight(result);
             Assert.True(result.RightContent());
         }
 
-        protected abstract IDatabaseCommandRepository<TId, TInput, TUpdate> CreateSut(SqliteConnection connection);
+        protected abstract IDatabaseCommandRepository<TId, TInput, TUpdate> CreateSut(IFoodOrderingContextFactory factory);
 
-        protected abstract void InitializeStorage(SqliteConnection connection, int count);
+        protected abstract void InitializeStorage(IFoodOrderingContextFactory factory, int count);
 
         protected abstract TInput ConvertToInput(TModel data);
 
