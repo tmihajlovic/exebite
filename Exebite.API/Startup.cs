@@ -45,10 +45,10 @@ namespace Exebite.API
                     cfg.ConstructServicesUsing(x => this.provider.GetService(x));
                     cfg.AddProfile<DataAccessMappingProfile>();
                     cfg.AddProfile<UIMappingProfile>();
-                    if (HostingEnvironment.IsDevelopment())
-                    {
-                        Mapper.Configuration.AssertConfigurationIsValid();
-                    }
+                    //if (HostingEnvironment.IsDevelopment())
+                    //{
+                    //    Mapper.Configuration.AssertConfigurationIsValid();
+                    //}
                 })
             .AddDataAccessServices();
         }

@@ -10,18 +10,13 @@ namespace Exebite.DataAccess.Repositories
         public QueryBase()
         {
             Page = 0;
-            Size = QueryConstants.MaxElements;
+            Size = int.MaxValue;
         }
 
         public QueryBase(int page, int size)
         {
-            if (size > QueryConstants.MaxElements)
-            {
-                throw new ArgumentOutOfRangeException("Size is too big");
-            }
-
+            Size = size;
             Page = page;
-            Size = QueryConstants.MaxElements;
         }
 
         public int Size { get; }

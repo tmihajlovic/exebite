@@ -64,7 +64,7 @@ namespace Exebite.DataAccess.Test
             var res = sut.Query(null);
             connection.Close();
 
-            EAssert.IsRight(res);
+            EAssert.IsLeft(res);
         }
 
         [Theory]

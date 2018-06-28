@@ -53,10 +53,11 @@ namespace Exebite.DataAccess.Test
             return new RestaurantInsertModel { Name = data.Name, DailyMenuId = data.DailyMenuId };
         }
 
-        protected override RestaurantUpdateModel ConvertToUpdate(Data data)
-        {
-            return new RestaurantUpdateModel { Name = data.Name, DailyMenuId = data.DailyMenuId };
-        }
+            var restaurant = new RestourantInsertModel
+            {
+                Name = "Restaurant name",
+                DailyMenuId = 1
+            };
 
         public sealed class Data
         {
