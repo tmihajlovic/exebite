@@ -69,6 +69,23 @@ namespace Exebite.DataAccess.Test
         }
 
         [Fact]
+        public void Insert_UnexpectedErrorOccur_ErrorReturned()
+        {
+            // Arrange
+            IEnumerable<TModel> data = this.SampleData.Take(2).ToList();
+            this.InitializeStorage(_factory, 1);
+            TModel newObj = data.ElementAt(0);
+
+            IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(_factory);
+
+            // Act
+            var res = repo.Insert(this.ConvertToInvalidInput(newObj));
+
+            // Assert
+            EAssert.IsLeft(res);
+        }
+
+        [Fact]
         public void Delete_DeleteAlreadyDeletedRecord_RecordIsNotDeletedFalseReturned()
         {
             // Arrange
@@ -111,11 +128,34 @@ namespace Exebite.DataAccess.Test
             Assert.True(result.RightContent());
         }
 
+        [Fact]
+        public void Update_UnexpectedErrorOccur_ErrorReturned()
+        {
+            // Arrange
+            IEnumerable<TModel> data = this.SampleData.Take(2).ToList();
+            this.InitializeStorage(_factory, 0);
+            TModel insertObject = data.ElementAt(1);
+            TModel updateObject = data.ElementAt(1);
+
+            IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(_factory);
+            var insertedRecordId = repo.Insert(this.ConvertToInput(insertObject));
+
+            // Act
+            var result = repo.Update(insertedRecordId.RightContent(), this.ConvertToInvalidUpdate(updateObject));
+
+            // Assert
+            EAssert.IsLeft(result);
+        }
+
         protected abstract IDatabaseCommandRepository<TId, TInput, TUpdate> CreateSut(IFoodOrderingContextFactory factory);
 
         protected abstract void InitializeStorage(IFoodOrderingContextFactory factory, int count);
 
         protected abstract TInput ConvertToInput(TModel data);
+
+        protected abstract TInput ConvertToInvalidInput(TModel data);
+
+        protected abstract TUpdate ConvertToInvalidUpdate(TModel data);
 
         protected abstract TUpdate ConvertToUpdate(TModel data);
 

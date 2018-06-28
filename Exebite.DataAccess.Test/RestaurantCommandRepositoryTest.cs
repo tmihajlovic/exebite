@@ -57,6 +57,20 @@ namespace Exebite.DataAccess.Test
             return new RestaurantUpdateModel { Name = data.Name, DailyMenuId = data.DailyMenuId };
         }
 
+        protected override RestaurantInsertModel ConvertToInvalidInput(Data data)
+        {
+#pragma warning disable RETURN0001 // Do not return null
+            return null;
+#pragma warning restore RETURN0001 // Do not return null
+        }
+
+        protected override RestaurantUpdateModel ConvertToInvalidUpdate(Data data)
+        {
+#pragma warning disable RETURN0001 // Do not return null
+            return null;
+#pragma warning restore RETURN0001 // Do not return null
+        }
+
         public sealed class Data
         {
             public string Name { get; set; }

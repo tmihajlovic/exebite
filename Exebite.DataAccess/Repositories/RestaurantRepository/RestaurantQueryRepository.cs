@@ -61,7 +61,6 @@ namespace Exebite.DataAccess.Repositories
             }
             catch (Exception ex)
             {
-
                 return new Left<Error, PagingResult<Restaurant>>(new UnknownError(ex.ToString()));
             }
         }
