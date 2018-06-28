@@ -195,7 +195,7 @@ namespace Exebite.DataAccess.Test
             // Arrange
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
-            var sut = RestaurantQueryDataForTesting(connection, count);
+            var sut = RestaurantQueryDataForTesting(connection, QueryConstants.MaxElements + count);
 
             // Act
             var res = sut.Query(new RestaurantQueryModel(1, QueryConstants.MaxElements + count));
