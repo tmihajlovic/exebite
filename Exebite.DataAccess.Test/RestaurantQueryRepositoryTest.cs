@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using Either;
 using Exebite.DataAccess.Repositories;
-using Exebite.DomainModel;
 using Microsoft.Data.Sqlite;
 using Optional.Xunit;
 using Xunit;
@@ -185,7 +182,6 @@ namespace Exebite.DataAccess.Test
         }
 
         [Theory]
-
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
