@@ -1,6 +1,7 @@
 ﻿using System;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
+using Microsoft.Data.Sqlite;
 using Xunit;
 using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
@@ -12,10 +13,13 @@ namespace Exebite.DataAccess.Test
         public void Query_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(connection);
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => sut.Query(null));
+            connection.Close();
         }
 
         [Theory]
@@ -23,10 +27,13 @@ namespace Exebite.DataAccess.Test
         public void Query_MultipleElements(int count)
         {
             // Arrange
-            var sut = CustomerAliasesDataForTesing(Guid.NewGuid().ToString(), count);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CustomerAliasesDataForTesing(connection, count);
 
             // Act
             var res = sut.Query(new CustomerAliasQueryModel());
+            connection.Close();
 
             // Assert
             Assert.Equal(count, res.Count);
@@ -36,10 +43,13 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_ValidId()
         {
             // Arrange
-            var sut = CustomerAliasesDataForTesing(Guid.NewGuid().ToString(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CustomerAliasesDataForTesing(connection, 1);
 
             // Act
             var res = sut.Query(new CustomerAliasQueryModel() { Id = 1 });
+            connection.Close();
 
             Assert.Equal(1, res.Count);
         }
@@ -50,10 +60,13 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_NonExistingID(int id)
         {
             // Arrange
-            var sut = CustomerAliasesDataForTesing(Guid.NewGuid().ToString(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CustomerAliasesDataForTesing(connection, 1);
 
             // Act
             var res = sut.Query(new CustomerAliasQueryModel() { Id = id });
+            connection.Close();
 
             // Assert
             Assert.Equal(0, res.Count);
@@ -63,17 +76,22 @@ namespace Exebite.DataAccess.Test
         public void Insert_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(connection);
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
+            connection.Close();
         }
 
         [Fact]
         public void Insert_ValidObjectPassed_ObjectSavedInDatabase()
         {
             // Arrange
-            var sut = CustomerAliasesDataForTesing(Guid.NewGuid().ToString(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CustomerAliasesDataForTesing(connection, 1);
 
             var customerAlias = new CustomerAliases
             {
@@ -85,6 +103,7 @@ namespace Exebite.DataAccess.Test
 
             // Act
             var res = sut.Insert(customerAlias);
+            connection.Close();
 
             // Assert
             Assert.Equal(customerAlias.Id, res.Id);
@@ -97,17 +116,22 @@ namespace Exebite.DataAccess.Test
         public void Update_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyCustomerAliasRepositoryInstanceNoData(connection);
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => sut.Update(null));
+            connection.Close();
         }
 
         [Fact]
         public void Update_ValidObjectPassed_ObjectUpdatedInDatabase()
         {
             // Arrange
-            var sut = CustomerAliasesDataForTesing(Guid.NewGuid().ToString(), 2);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CustomerAliasesDataForTesing(connection, 2);
 
             var updatedCustomerAlias = new CustomerAliases
             {
@@ -119,6 +143,7 @@ namespace Exebite.DataAccess.Test
 
             // Act
             var res = sut.Update(updatedCustomerAlias);
+            connection.Close();
 
             // Assert
             Assert.Equal(updatedCustomerAlias.Id, res.Id);

@@ -77,7 +77,7 @@ namespace Exebite.DataAccess.Repositories
         {
             if (queryModel == null)
             {
-                throw new System.ArgumentException("queryModel can't be null");
+                throw new System.ArgumentNullException("queryModel can't be null");
             }
 
             using (var context = _factory.Create())
@@ -104,8 +104,8 @@ namespace Exebite.DataAccess.Repositories
             using (var context = _factory.Create())
             {
                 var currentEntity = context.Recipes.Find(entity.Id);
-                currentEntity.MainCourseId = entity.MainCourse.Id;
-                currentEntity.RestaurantId = entity.Restaurant.Id;
+                currentEntity.MainCourseId = entity.MainCourseId;
+                currentEntity.RestaurantId = entity.RestaurantId;
 
                 // this will remove old references, and after that new ones will be added
                 var addedEntities = Enumerable.Range(0, entity.SideDish.Count).Select(a =>

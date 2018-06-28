@@ -1,24 +1,26 @@
 ﻿using Exebite.DataAccess.Context;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace Exebite.DataAccess.Test.Mocks
 {
     public sealed class InMemoryDBFactory : IFoodOrderingContextFactory
     {
-        private readonly string _name;
+        private readonly SqliteConnection _connection;
 
-        public InMemoryDBFactory(string name)
+        public InMemoryDBFactory(SqliteConnection connection)
         {
-            _name = name;
+            _connection = connection;
         }
 
         public FoodOrderingContext Create()
         {
-            var options = new DbContextOptionsBuilder<FoodOrderingContext>()
-                .UseInMemoryDatabase(_name)
-                .UseLazyLoadingProxies(true)
-                .Options;
-            return new FoodOrderingContext(options);
+            var options = new DbContextOptionsBuilder<FoodOrderingContext>().UseSqlite(_connection).Options;
+
+            var context = new FoodOrderingContext(options);
+            context.Database.EnsureCreated();
+
+            return context;
         }
     }
 }

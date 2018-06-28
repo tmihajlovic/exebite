@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class QueryConstants
+    public static class QueryConstants
     {
         public static int MaxElements { get; } = 100;
-
     }
 }

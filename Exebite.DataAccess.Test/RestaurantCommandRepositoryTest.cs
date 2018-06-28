@@ -1,74 +1,68 @@
-﻿using Exebite.DataAccess.Repositories;
-using Exebite.DomainModel;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Either;
+using Exebite.DataAccess.Entities;
+using Exebite.DataAccess.Repositories;
+using Exebite.DataAccess.Test.Mocks;
+using Microsoft.Data.Sqlite;
 using Optional.Xunit;
-using System;
-using Xunit;
 using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
 namespace Exebite.DataAccess.Test
 {
-    public class RestaurantCommandRepositoryTest
+    public sealed class RestaurantCommandRepositoryTest : CommandRepositoryTests<RestaurantCommandRepositoryTest.Data, int, RestaurantInsertModel, RestaurantUpdateModel>
     {
-        //[Fact]
-        //public void Delete_ExistingRecordIdPassed_ObjectDeletedFromDatabase()
-        //{
-        //    // Arrange
-        //    var sut = RestaurantCommandDataForTesting(Guid.NewGuid().ToString(), 1);
-        //    const int existingId = 1;
+        protected override IEnumerable<Data> SampleData =>
+                      Enumerable.Range(1, int.MaxValue).Select(content => new Data
+                      {
+                          Name = "Restaurant name" + content,
+                          DailyMenuId = content
+                      });
 
-        //    Assert.NotNull(sut.GetByID(existingId));
-
-        //    // Act
-        //    sut.Delete(existingId);
-
-        //    // Assert
-        //    Assert.Null(sut.GetByID(existingId));
-        //}
-
-
-        //[Fact]
-        //public void Update_ValidObjectPassed_ObjectUpdatedInDatabase()
-        //{
-        //    // Arrange
-        //    var sut = RestaurantCommandDataForTesting(Guid.NewGuid().ToString(), 1);
-
-        //    var updatedRestaurant = new Restaurant
-        //    {
-        //        Id = 1,
-        //        Name = "Restaurant name updated",
-        //        DailyMenuId = 1
-        //    };
-
-        //    // Act
-        //    var res = sut.Update(updatedRestaurant);
-
-        //    // Assert
-        //    Assert.Equal(updatedRestaurant.Id, res.Id);
-        //    Assert.Equal(updatedRestaurant.Name, res.Name);
-        //    Assert.Equal(updatedRestaurant.DailyMenuId, res.DailyMenu.Id);
-        //}
-
-        [Fact]
-        public void Insert_ValidObjectPassed_ObjectSavedInDatabase()
+        protected override IDatabaseCommandRepository<int, RestaurantInsertModel, RestaurantUpdateModel> CreateSut(SqliteConnection connection)
         {
-            // Arrange
-            var sut = RestaurantCommandDataForTesting(Guid.NewGuid().ToString(), 0);
-
-            var restaurant = new RestourantInsertModel
-            {
-                Name = "Restaurant name",
-                DailyMenuId = 1
-            };
-
-            // Act
-            var res = sut.Insert(restaurant);
-
-            // Assert
-            EAssert.IsRight(res);
-            var result = res.RightContent();
-            Assert.Equal(1, result);
+            return CreateOnlyRestaurantCommandRepositoryInstanceNoData(connection);
         }
 
+        protected override int GetId(Either<Error, int> newObj)
+        {
+            return newObj.RightContent();
+        }
 
+        protected override void InitializeStorage(SqliteConnection connection, int count)
+        {
+            using (var context = new InMemoryDBFactory(connection).Create())
+            {
+                var locations = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
+                {
+                    Id = x,
+                    Name = $"Name {x}",
+                    DailyMenu = new DailyMenuEntity()
+                    {
+                        Id = x
+                    }
+                });
+
+                context.Restaurants.AddRange(locations);
+                context.SaveChanges();
+            }
+        }
+
+        protected override RestaurantInsertModel ConvertToInput(Data data)
+        {
+            return new RestaurantInsertModel { Name = data.Name, DailyMenuId = data.DailyMenuId };
+        }
+
+        protected override RestaurantUpdateModel ConvertToUpdate(Data data)
+        {
+            return new RestaurantUpdateModel { Name = data.Name, DailyMenuId = data.DailyMenuId };
+        }
+
+        public sealed class Data
+        {
+            public string Name { get; set; }
+
+            public int DailyMenuId { get; set; }
+        }
     }
 }

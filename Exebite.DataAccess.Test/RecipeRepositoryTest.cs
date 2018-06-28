@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
+using Microsoft.Data.Sqlite;
 using Xunit;
 using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
@@ -17,10 +18,13 @@ namespace Exebite.DataAccess.Test
         public void GetById_ValidId_ValidResult(int count, int id)
         {
             // Arrange
-            var sut = RecipeDataForTesting(Guid.NewGuid(), count);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = RecipeDataForTesting(connection, count);
 
             // Act
             var res = sut.GetByID(id);
+            connection.Close();
 
             // Assert
             Assert.NotNull(res);
@@ -32,10 +36,13 @@ namespace Exebite.DataAccess.Test
         public void GetById_InValidId_ValidResult(int count)
         {
             // Arrange
-            var sut = RecipeDataForTesting(Guid.NewGuid(), count);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = RecipeDataForTesting(connection, count);
 
             // Act
             var res = sut.GetByID(count - 1);
+            connection.Close();
 
             // Assert
             Assert.Null(res);
@@ -45,10 +52,13 @@ namespace Exebite.DataAccess.Test
         public void Query_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyFoodRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyRecipeRepositoryInstanceNoData(connection);
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => sut.Query(null));
+            connection.Close();
         }
 
         [Theory]
@@ -59,10 +69,13 @@ namespace Exebite.DataAccess.Test
         public void Query_MultipleElements(int count)
         {
             // Arrange
-            var sut = RecipeDataForTesting(Guid.NewGuid(), count);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = RecipeDataForTesting(connection, count);
 
             // Act
             var res = sut.Query(new RecipeQueryModel());
+            connection.Close();
 
             // Assert
             Assert.Equal(count, res.Count);
@@ -72,10 +85,13 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_ValidId()
         {
             // Arrange
-            var sut = RecipeDataForTesting(Guid.NewGuid(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = RecipeDataForTesting(connection, 1);
 
             // Act
             var res = sut.Query(new RecipeQueryModel() { Id = 1 });
+            connection.Close();
 
             Assert.Equal(1, res.Count);
         }
@@ -87,10 +103,13 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_NonExistingID(int id)
         {
             // Arrange
-            var sut = RecipeDataForTesting(Guid.NewGuid(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = RecipeDataForTesting(connection, 1);
 
             // Act
             var res = sut.Query(new RecipeQueryModel() { Id = id });
+            connection.Close();
 
             // Assert
             Assert.Equal(0, res.Count);
@@ -100,17 +119,22 @@ namespace Exebite.DataAccess.Test
         public void Insert_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyRestaurantRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyRecipeRepositoryInstanceNoData(connection);
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
+            connection.Close();
         }
 
         [Fact]
         public void Insert_ValidObjectPassed_ObjectSavedInDatabase()
         {
             // Arrange
-            var sut = RecipeDataForTesting(Guid.NewGuid(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = RecipeDataForTesting(connection, 1);
 
             var recipe = new Recipe()
             {
@@ -122,6 +146,7 @@ namespace Exebite.DataAccess.Test
 
             // Act
             var res = sut.Insert(recipe);
+            connection.Close();
 
             // Assert
             Assert.Equal(recipe.Id, res.Id);
@@ -133,39 +158,49 @@ namespace Exebite.DataAccess.Test
         public void Update_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyRecipeRepositoryInstanceNoData(Guid.NewGuid());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyRecipeRepositoryInstanceNoData(connection);
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => sut.Update(null));
+            connection.Close();
         }
 
         [Fact]
         public void Update_ValidObjectPassed_ObjectUpdatedInDatabase()
         {
             // Arrange
-            var sut = RestaurantDataForTesting(Guid.NewGuid().ToString(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = RecipeDataForTesting(connection, 2);
 
-            var updatedRestaurant = new Restaurant
+            var updatedRecipe = new Recipe
             {
                 Id = 1,
-                Name = "Restaurant name updated",
-                DailyMenuId = 1
+                MainCourseId = 2,
+                RestaurantId = 2,
+                SideDish = new List<Food> { new Food { Id = 1 }, new Food { Id = 2 } }
             };
 
             // Act
-            var res = sut.Update(updatedRestaurant);
+            var res = sut.Update(updatedRecipe);
+            connection.Close();
 
             // Assert
-            Assert.Equal(updatedRestaurant.Id, res.Id);
-            Assert.Equal(updatedRestaurant.Name, res.Name);
-            Assert.Equal(updatedRestaurant.DailyMenuId, res.DailyMenu.Id);
+            Assert.Equal(updatedRecipe.Id, res.Id);
+            Assert.Equal(updatedRecipe.MainCourseId, res.MainCourseId);
+            Assert.Equal(updatedRecipe.RestaurantId, res.RestaurantId);
+            Assert.Equal(updatedRecipe.SideDish.Count, res.SideDish.Count);
         }
 
         [Fact]
         public void Delete_ExistingRecordIdPassed_ObjectDeletedFromDatabase()
         {
             // Arrange
-            var sut = RestaurantDataForTesting(Guid.NewGuid().ToString(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = RecipeDataForTesting(connection, 1);
             const int existingId = 1;
 
             Assert.NotNull(sut.GetByID(existingId));
@@ -175,6 +210,7 @@ namespace Exebite.DataAccess.Test
 
             // Assert
             Assert.Null(sut.GetByID(existingId));
+            connection.Close();
         }
 
         [Theory]
@@ -185,10 +221,13 @@ namespace Exebite.DataAccess.Test
         public void Get_ValidId_ValidResult(int count)
         {
             // Arrange
-            var sut = RestaurantDataForTesting(Guid.NewGuid().ToString(), count);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = RecipeDataForTesting(connection, count);
 
             // Act
             var res = sut.Get(0, int.MaxValue);
+            connection.Close();
 
             // Assert
             Assert.NotNull(res);

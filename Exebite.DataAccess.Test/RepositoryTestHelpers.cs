@@ -1,5 +1,4 @@
 ﻿#pragma warning disable SA1124 // Do not use regions
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
@@ -8,6 +7,7 @@ using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.Mocks;
 using Exebite.DomainModel;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -28,9 +28,9 @@ namespace Exebite.DataAccess.Test
         }
 
         #region Customer
-        internal static CustomerRepository FillCustomerDataForTesting(string name, IEnumerable<CustomerEntity> customers)
+        internal static CustomerRepository FillCustomerDataForTesting(SqliteConnection connection, IEnumerable<CustomerEntity> customers)
         {
-            var factory = new InMemoryDBFactory(name);
+            var factory = new InMemoryDBFactory(connection);
 
             using (var context = factory.Create())
             {
@@ -50,7 +50,8 @@ namespace Exebite.DataAccess.Test
                     Balance = x,
                     AppUserId = (1000 + x).ToString(),
                     LocationId = x,
-                    Name = $"Name {x}"
+                    Location = new LocationEntity { Id = x, Address = $"Address {x}", Name = $"Name {x}" },
+                    Name = $"Name {x}",
                 });
         }
 
@@ -70,9 +71,9 @@ namespace Exebite.DataAccess.Test
         #endregion
 
         #region Location
-        internal static LocationRepository LocationDataForTesing(string name, int numberOfLocations)
+        internal static LocationRepository LocationDataForTesing(SqliteConnection connection, int numberOfLocations)
         {
-            var factory = new InMemoryDBFactory(name);
+            var factory = new InMemoryDBFactory(connection);
 
             using (var context = factory.Create())
             {
@@ -90,20 +91,28 @@ namespace Exebite.DataAccess.Test
             return new LocationRepository(factory, _mapper, new Mock<ILogger<LocationRepository>>().Object);
         }
 
-        internal static LocationRepository CreateOnlyLocationRepositoryInstanceNoData(string name)
+        internal static LocationRepository CreateOnlyLocationRepositoryInstanceNoData(SqliteConnection connection)
         {
-            return new LocationRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<LocationRepository>>().Object);
+            return new LocationRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<LocationRepository>>().Object);
         }
 
         #endregion Location
 
         #region CustomerAlias
-        internal static CustomerAliasRepository CustomerAliasesDataForTesing(string name, int numberOfCustomerAliases)
+        internal static CustomerAliasRepository CustomerAliasesDataForTesing(SqliteConnection connection, int numberOfCustomerAliases)
         {
-            var factory = new InMemoryDBFactory(name);
+            var factory = new InMemoryDBFactory(connection);
 
             using (var context = factory.Create())
             {
+                var locations = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new LocationEntity()
+                {
+                    Id = x,
+                    Address = $"Address {x}",
+                    Name = $"Name {x}"
+                });
+
+                context.Locations.AddRange(locations);
                 var customerAlias = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new CustomerAliasesEntities
                 {
                     Id = x,
@@ -113,17 +122,26 @@ namespace Exebite.DataAccess.Test
                 });
                 context.CustomerAliases.AddRange(customerAlias);
 
+                var dailyMenus = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new DailyMenuEntity
+                {
+                    Id = x,
+                    RestaurantId = x
+                });
+                context.DailyMenues.AddRange(dailyMenus);
+
                 var restaurant = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new RestaurantEntity
                 {
                     Id = x,
-                    Name = $"Name {x}"
+                    Name = $"Name {x}",
+                    DailyMenuId = x
                 });
                 context.Restaurants.AddRange(restaurant);
 
                 var customers = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new CustomerEntity
                 {
                     Id = x,
-                    Name = $"Name {x}"
+                    Name = $"Name {x}",
+                    LocationId = x
                 });
                 context.Customers.AddRange(customers);
                 context.SaveChanges();
@@ -132,37 +150,39 @@ namespace Exebite.DataAccess.Test
             return new CustomerAliasRepository(factory, _mapper, new Mock<ILogger<CustomerAliasRepository>>().Object);
         }
 
-        internal static CustomerAliasRepository CreateOnlyCustomerAliasRepositoryInstanceNoData(string name)
+        internal static CustomerAliasRepository CreateOnlyCustomerAliasRepositoryInstanceNoData(SqliteConnection connection)
         {
-            return new CustomerAliasRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<CustomerAliasRepository>>().Object);
+            return new CustomerAliasRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<CustomerAliasRepository>>().Object);
         }
         #endregion
 
         #region Food
-        internal static FoodRepository CreateOnlyFoodRepositoryInstanceNoData(string name)
+        internal static FoodRepository CreateOnlyFoodRepositoryInstanceNoData(SqliteConnection connection)
         {
-            return new FoodRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<FoodRepository>>().Object);
+            return new FoodRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<FoodRepository>>().Object);
         }
 
-        internal static FoodRepository FoodDataForTesting(string name, int numberOfFoods)
+        internal static FoodRepository FoodDataForTesting(SqliteConnection connection, int numberOfFoods)
         {
-            var factory = new InMemoryDBFactory(name);
+            var factory = new InMemoryDBFactory(connection);
 
             using (var context = factory.Create())
             {
-                context.Restaurants.Add(new RestaurantEntity()
+                var restaurants = Enumerable.Range(1, numberOfFoods).Select(x => new RestaurantEntity
                 {
-                    Id = 1,
-                    Name = "Test restaurant"
+                    Id = x,
+                    Name = $"Test restaurant {x}"
                 });
+                context.Restaurants.AddRange(restaurants);
 
-                context.DailyMenues.Add(new DailyMenuEntity()
+                var dailyMenues = Enumerable.Range(1, numberOfFoods).Select(x => new DailyMenuEntity
                 {
-                    Id = 1,
-                    RestaurantId = 1
+                    Id = x,
+                    RestaurantId = x
                 });
+                context.DailyMenues.AddRange(dailyMenues);
 
-                var foods = Enumerable.Range(1, numberOfFoods).Select(x => new FoodEntity()
+                var foods = Enumerable.Range(1, numberOfFoods).Select(x => new FoodEntity
                 {
                     Id = x,
                     Name = $"Name {x}",
@@ -181,9 +201,9 @@ namespace Exebite.DataAccess.Test
         #endregion Food
 
         #region Restaurant
-        internal static RestaurantRepository RestaurantDataForTesting(string name, int count)
+        internal static RestaurantRepository RestaurantDataForTesting(SqliteConnection connection, int count)
         {
-            var factory = new InMemoryDBFactory(name);
+            var factory = new InMemoryDBFactory(connection);
 
             using (var context = factory.Create())
             {
@@ -204,15 +224,14 @@ namespace Exebite.DataAccess.Test
             return new RestaurantRepository(factory, _mapper, new Mock<ILogger<RestaurantRepository>>().Object);
         }
 
-        internal static RestaurantRepository CreateOnlyRestaurantRepositoryInstanceNoData(string name)
+        internal static RestaurantRepository CreateOnlyRestaurantRepositoryInstanceNoData(SqliteConnection connection)
         {
-            return new RestaurantRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<RestaurantRepository>>().Object);
+            return new RestaurantRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<RestaurantRepository>>().Object);
         }
 
-
-        internal static RestaurantQueryRepository RestaurantQueryDataForTesting(string name, int count)
+        internal static RestaurantQueryRepository RestaurantQueryDataForTesting(SqliteConnection connection, int count)
         {
-            var factory = new InMemoryDBFactory(name);
+            var factory = new InMemoryDBFactory(connection);
 
             using (var context = factory.Create())
             {
@@ -233,15 +252,14 @@ namespace Exebite.DataAccess.Test
             return new RestaurantQueryRepository(factory, _mapper);
         }
 
-        internal static RestaurantQueryRepository CreateOnlyRestaurantQueryRepositoryInstanceNoData(string name)
+        internal static RestaurantQueryRepository CreateOnlyRestaurantQueryRepositoryInstanceNoData(SqliteConnection connection)
         {
-            return new RestaurantQueryRepository(new InMemoryDBFactory(name), _mapper);
+            return new RestaurantQueryRepository(new InMemoryDBFactory(connection), _mapper);
         }
 
-
-        internal static RestaurantCommandRepository RestaurantCommandDataForTesting(string name, int count)
+        internal static RestaurantCommandRepository RestaurantCommandDataForTesting(SqliteConnection connection, int count)
         {
-            var factory = new InMemoryDBFactory(name);
+            var factory = new InMemoryDBFactory(connection);
 
             using (var context = factory.Create())
             {
@@ -262,18 +280,17 @@ namespace Exebite.DataAccess.Test
             return new RestaurantCommandRepository(factory, _mapper);
         }
 
-        internal static RestaurantCommandRepository CreateOnlyRestaurantCommandRepositoryInstanceNoData(string name)
+        internal static RestaurantCommandRepository CreateOnlyRestaurantCommandRepositoryInstanceNoData(SqliteConnection connection)
         {
-            return new RestaurantCommandRepository(new InMemoryDBFactory(name), _mapper);
+            return new RestaurantCommandRepository(new InMemoryDBFactory(connection), _mapper);
         }
-
 
         #endregion
 
         #region DailyMenu
-        internal static DailyMenuRepository DailyMenuDataForTesing(Guid name, int numberOfDailyMenus)
+        internal static DailyMenuRepository DailyMenuDataForTesing(SqliteConnection connection, int numberOfDailyMenus)
         {
-            var factory = new InMemoryDBFactory(name.ToString());
+            var factory = new InMemoryDBFactory(connection);
 
             using (var context = factory.Create())
             {
@@ -296,7 +313,8 @@ namespace Exebite.DataAccess.Test
                     Id = x,
                     Name = $"Name {x}",
                     Price = x,
-                    Description = $"Description {x}"
+                    Description = $"Description {x}",
+                    RestaurantId = x
                 });
                 context.Foods.AddRange(food);
                 context.SaveChanges();
@@ -305,16 +323,16 @@ namespace Exebite.DataAccess.Test
             return new DailyMenuRepository(factory, _mapper, new Mock<ILogger<DailyMenuRepository>>().Object);
         }
 
-        internal static DailyMenuRepository CreateOnlyDailyMenuRepositoryInstanceNoData(Guid name)
+        internal static DailyMenuRepository CreateOnlyDailyMenuRepositoryInstanceNoData(SqliteConnection connection)
         {
-            return new DailyMenuRepository(new InMemoryDBFactory(name.ToString()), _mapper, new Mock<ILogger<DailyMenuRepository>>().Object);
+            return new DailyMenuRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<DailyMenuRepository>>().Object);
         }
         #endregion DailyMenu
 
         #region Meal
-        internal static MealRepository MealDataForTesing(string name, int numberOfMeals)
+        internal static MealRepository MealDataForTesing(SqliteConnection connection, int numberOfMeals)
         {
-            var factory = new InMemoryDBFactory(name);
+            var factory = new InMemoryDBFactory(connection);
 
             using (var context = factory.Create())
             {
@@ -353,26 +371,34 @@ namespace Exebite.DataAccess.Test
             return new MealRepository(factory, _mapper, new Mock<ILogger<MealRepository>>().Object);
         }
 
-        internal static MealRepository CreateOnlyMealRepositoryInstanceNoData(string name)
+        internal static MealRepository CreateOnlyMealRepositoryInstanceNoData(SqliteConnection connection)
         {
-            return new MealRepository(new InMemoryDBFactory(name), _mapper, new Mock<ILogger<MealRepository>>().Object);
+            return new MealRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<MealRepository>>().Object);
         }
         #endregion
 
         #region Recipe
 
-        internal static RecipeRepository RecipeDataForTesting(Guid name, int numberOfDailyRecipes)
+        internal static RecipeRepository RecipeDataForTesting(SqliteConnection connection, int numberOfDailyRecipes)
         {
-            var factory = new InMemoryDBFactory(name.ToString());
+            var factory = new InMemoryDBFactory(connection);
 
             using (var context = factory.Create())
             {
-                var dailyMenus = Enumerable.Range(1, numberOfDailyRecipes).Select(x => new RecipeEntity
+                var recipes = Enumerable.Range(1, numberOfDailyRecipes).Select(x => new RecipeEntity
+                {
+                    Id = x,
+                    RestaurantId = x,
+                    MainCourseId = x
+                });
+                context.Recipes.AddRange(recipes);
+
+                var dailyMenus = Enumerable.Range(1, numberOfDailyRecipes).Select(x => new DailyMenuEntity
                 {
                     Id = x,
                     RestaurantId = x
                 });
-                context.Recipes.AddRange(dailyMenus);
+                context.DailyMenues.AddRange(dailyMenus);
 
                 var restaurant = Enumerable.Range(1, numberOfDailyRecipes).Select(x => new RestaurantEntity
                 {
@@ -387,7 +413,8 @@ namespace Exebite.DataAccess.Test
                     Id = x,
                     Name = $"Name {x}",
                     Price = x,
-                    Description = $"Description {x}"
+                    Description = $"Description {x}",
+                    RestaurantId = x
                 });
                 context.Foods.AddRange(food);
                 context.SaveChanges();
@@ -396,16 +423,16 @@ namespace Exebite.DataAccess.Test
             return new RecipeRepository(factory, _mapper, new Mock<ILogger<RecipeRepository>>().Object);
         }
 
-        internal static RecipeRepository CreateOnlyRecipeRepositoryInstanceNoData(Guid name)
+        internal static RecipeRepository CreateOnlyRecipeRepositoryInstanceNoData(SqliteConnection connection)
         {
-            return new RecipeRepository(new InMemoryDBFactory(name.ToString()), _mapper, new Mock<ILogger<RecipeRepository>>().Object);
+            return new RecipeRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<RecipeRepository>>().Object);
         }
         #endregion Recipe
 
         #region Order
-        internal static OrderRepository OrderDataForTesting(Guid name, int numberOfOrders)
+        internal static OrderRepository OrderDataForTesting(SqliteConnection connection, int numberOfOrders)
         {
-            var factory = new InMemoryDBFactory(name.ToString());
+            var factory = new InMemoryDBFactory(connection);
 
             using (var context = factory.Create())
             {
@@ -418,15 +445,22 @@ namespace Exebite.DataAccess.Test
 
                 context.Locations.Add(location);
 
-                var customer = new CustomerEntity
+                var customers = Enumerable.Range(1, numberOfOrders).Select(x => new CustomerEntity
                 {
-                    Id = 1,
+                    Id = x,
                     Name = "Customer name ",
                     AppUserId = "AppUserId",
                     Balance = 99.99m,
                     LocationId = 1,
-                };
-                context.Customers.Add(customer);
+                });
+                context.Customers.AddRange(customers);
+
+                var meals = Enumerable.Range(1, numberOfOrders).Select(x => new MealEntity
+                {
+                    Id = x,
+                    Price = 3.2m * x
+                });
+                context.Meals.AddRange(meals);
 
                 var orders = Enumerable.Range(1, numberOfOrders).Select(x => new OrderEntity
                 {
@@ -437,7 +471,6 @@ namespace Exebite.DataAccess.Test
                     Note = "note ",
                     Price = 10.5m * x
                 });
-
                 context.Orders.AddRange(orders);
 
                 context.SaveChanges();
@@ -446,9 +479,9 @@ namespace Exebite.DataAccess.Test
             return new OrderRepository(factory, _mapper, new Mock<ILogger<OrderRepository>>().Object);
         }
 
-        internal static OrderRepository CreateOnlyOrderRepositoryInstanceNoData(Guid name)
+        internal static OrderRepository CreateOnlyOrderRepositoryInstanceNoData(SqliteConnection connection)
         {
-            return new OrderRepository(new InMemoryDBFactory(name.ToString()), _mapper, new Mock<ILogger<OrderRepository>>().Object);
+            return new OrderRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<OrderRepository>>().Object);
         }
         #endregion Recipe
     }

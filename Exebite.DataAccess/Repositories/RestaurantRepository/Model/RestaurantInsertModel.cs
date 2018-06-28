@@ -1,9 +1,9 @@
 ﻿namespace Exebite.DataAccess.Repositories
 {
-    public class RestourantInsertModel
+    public class RestaurantInsertModel
     {
         public string Name { get; set; }
 
-        public int DailyMenuId { get; set; }        
+        public int DailyMenuId { get; set; }
     }
 }

@@ -77,14 +77,11 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var currentEntity = context.Meals.Find(entity.Id);
+                var currentEntity = context.Meals.Include(a => a.FoodEntityMealEntities).First(m => m.Id == entity.Id);
                 currentEntity.Price = entity.Price;
 
                 // this will remove old references, and after that new ones will be added
-                var addedEntities = Enumerable.Range(0, entity.Foods.Count).Select(a =>
-                {
-                    return new FoodEntityMealEntities { FoodEntityId = entity.Foods[a].Id, MealEntityId = entity.Id };
-                }).ToList();
+                var addedEntities = entity.Foods.Select(food => new FoodEntityMealEntities { FoodEntityId = food.Id, MealEntityId = entity.Id }).ToList();
 
                 var deletedEntities = currentEntity.FoodEntityMealEntities.Except(addedEntities).ToList();
 

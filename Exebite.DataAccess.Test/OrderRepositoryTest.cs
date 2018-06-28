@@ -3,6 +3,7 @@ using Exebite.Common;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.Mocks;
 using Exebite.DomainModel;
+using Microsoft.Data.Sqlite;
 using Xunit;
 using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
@@ -21,10 +22,13 @@ namespace Exebite.DataAccess.Test
         public void Query_NullPassed_EmptyListReturned()
         {
             // Arrange
-            var sut = CreateOnlyOrderRepositoryInstanceNoData(Guid.NewGuid());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyOrderRepositoryInstanceNoData(connection);
 
             // Act and Assert
             var result = sut.Query(null);
+            connection.Close();
 
             Assert.Equal(0, result.Count);
         }
@@ -37,10 +41,13 @@ namespace Exebite.DataAccess.Test
         public void Query_MultipleElements(int count)
         {
             // Arrange
-            var sut = OrderDataForTesting(Guid.NewGuid(), count);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = OrderDataForTesting(connection, count);
 
             // Act
             var res = sut.Query(new OrderQueryModel());
+            connection.Close();
 
             // Assert
             Assert.Equal(count, res.Count);
@@ -50,10 +57,13 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_ValidId()
         {
             // Arrange
-            var sut = OrderDataForTesting(Guid.NewGuid(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = OrderDataForTesting(connection, 1);
 
             // Act
             var res = sut.Query(new OrderQueryModel() { Id = 1 });
+            connection.Close();
 
             Assert.Equal(1, res.Count);
         }
@@ -65,10 +75,13 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_NonExistingID(int id)
         {
             // Arrange
-            var sut = OrderDataForTesting(Guid.NewGuid(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = OrderDataForTesting(connection, 1);
 
             // Act
             var res = sut.Query(new OrderQueryModel() { Id = id });
+            connection.Close();
 
             // Assert
             Assert.Equal(0, res.Count);
@@ -78,21 +91,26 @@ namespace Exebite.DataAccess.Test
         public void Insert_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyOrderRepositoryInstanceNoData(Guid.NewGuid());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyOrderRepositoryInstanceNoData(connection);
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
+            connection.Close();
         }
 
         [Fact]
         public void Insert_ValidObjectPassed_ObjectSavedInDatabase()
         {
             // Arrange
-            var sut = OrderDataForTesting(Guid.NewGuid(), 0);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = OrderDataForTesting(connection, 1);
 
             var meal = new Order
             {
-                Id = 1,
+                Id = 2,
                 Price = 23.4M,
                 MealId = 1,
                 CustomerId = 1,
@@ -102,6 +120,7 @@ namespace Exebite.DataAccess.Test
 
             // Act
             var res = sut.Insert(meal);
+            connection.Close();
 
             // Assert
             Assert.Equal(meal.Id, res.Id);
@@ -115,17 +134,22 @@ namespace Exebite.DataAccess.Test
         public void Update_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyOrderRepositoryInstanceNoData(Guid.NewGuid());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyOrderRepositoryInstanceNoData(connection);
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => sut.Update(null));
+            connection.Close();
         }
 
         [Fact]
         public void Update_ValidObjectPassed_ObjectUpdatedInDatabase()
         {
             // Arrange
-            var sut = OrderDataForTesting(Guid.NewGuid(), 2);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = OrderDataForTesting(connection, 2);
 
             var updatedMeal = new Order
             {
@@ -139,6 +163,7 @@ namespace Exebite.DataAccess.Test
 
             // Act
             var res = sut.Update(updatedMeal);
+            connection.Close();
 
             // Assert
             Assert.Equal(updatedMeal.Id, res.Id);

@@ -1,6 +1,7 @@
 ﻿using System;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
+using Microsoft.Data.Sqlite;
 using Xunit;
 using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
@@ -16,10 +17,13 @@ namespace Exebite.DataAccess.Test
         public void GetById_ValidId_ValidResult(int count, int id)
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), count);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = LocationDataForTesing(connection, count);
 
             // Act
             var res = sut.GetByID(id);
+            connection.Close();
 
             // Assert
             Assert.NotNull(res);
@@ -31,10 +35,13 @@ namespace Exebite.DataAccess.Test
         public void GetById_InValidId_ValidResult(int count)
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), count);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = LocationDataForTesing(connection, count);
 
             // Act
             var res = sut.GetByID(count - 1);
+            connection.Close();
 
             // Assert
             Assert.Null(res);
@@ -44,10 +51,13 @@ namespace Exebite.DataAccess.Test
         public void Query_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyLocationRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyLocationRepositoryInstanceNoData(connection);
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => sut.Query(null));
+            connection.Close();
         }
 
         [Theory]
@@ -58,10 +68,13 @@ namespace Exebite.DataAccess.Test
         public void Query_MultipleElements(int count)
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), count);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = LocationDataForTesing(connection, count);
 
             // Act
             var res = sut.Query(new LocationQueryModel());
+            connection.Close();
 
             // Assert
             Assert.Equal(count, res.Count);
@@ -71,10 +84,13 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_ValidId()
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = LocationDataForTesing(connection, 1);
 
             // Act
             var res = sut.Query(new LocationQueryModel() { Id = 1 });
+            connection.Close();
 
             Assert.Equal(1, res.Count);
         }
@@ -86,10 +102,13 @@ namespace Exebite.DataAccess.Test
         public void Query_QueryByIDId_NonExistingID(int id)
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = LocationDataForTesing(connection, 1);
 
             // Act
             var res = sut.Query(new LocationQueryModel() { Id = id });
+            connection.Close();
 
             // Assert
             Assert.Equal(0, res.Count);
@@ -99,17 +118,22 @@ namespace Exebite.DataAccess.Test
         public void Insert_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyLocationRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyLocationRepositoryInstanceNoData(connection);
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => sut.Insert(null));
+            connection.Close();
         }
 
         [Fact]
         public void Insert_ValidObjectPassed_ObjectSavedInDatabase()
         {
             // Arrange
-            var sut = CreateOnlyLocationRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyLocationRepositoryInstanceNoData(connection);
 
             var location = new Location
             {
@@ -120,6 +144,7 @@ namespace Exebite.DataAccess.Test
 
             // Act
             var res = sut.Insert(location);
+            connection.Close();
 
             // Assert
             Assert.Equal(location.Id, res.Id);
@@ -131,17 +156,22 @@ namespace Exebite.DataAccess.Test
         public void Update_NullPassed_ArgumentNullExceptionThrown()
         {
             // Arrange
-            var sut = CreateOnlyLocationRepositoryInstanceNoData(Guid.NewGuid().ToString());
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = CreateOnlyLocationRepositoryInstanceNoData(connection);
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => sut.Update(null));
+            connection.Close();
         }
 
         [Fact]
         public void Update_ValidObjectPassed_ObjectUpdatedInDatabase()
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = LocationDataForTesing(connection, 1);
 
             var updatedLocation = new Location
             {
@@ -152,6 +182,7 @@ namespace Exebite.DataAccess.Test
 
             // Act
             var res = sut.Update(updatedLocation);
+            connection.Close();
 
             // Assert
             Assert.Equal(updatedLocation.Id, res.Id);
@@ -163,7 +194,9 @@ namespace Exebite.DataAccess.Test
         public void Delete_ExistingRecordIdPassed_ObjectDeletedFromDatabase()
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), 1);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = LocationDataForTesing(connection, 1);
             const int existingId = 1;
 
             Assert.NotNull(sut.GetByID(existingId));
@@ -173,6 +206,7 @@ namespace Exebite.DataAccess.Test
 
             // Assert
             Assert.Null(sut.GetByID(existingId));
+            connection.Close();
         }
 
         [Theory]
@@ -183,10 +217,13 @@ namespace Exebite.DataAccess.Test
         public void Get_ValidId_ValidResult(int count)
         {
             // Arrange
-            var sut = LocationDataForTesing(Guid.NewGuid().ToString(), count);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+            var sut = LocationDataForTesing(connection, count);
 
             // Act
             var res = sut.Get(0, int.MaxValue);
+            connection.Close();
 
             // Assert
             Assert.NotNull(res);

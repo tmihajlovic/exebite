@@ -26,7 +26,12 @@ namespace Exebite.DataAccess.Repositories
 
             using (var context = _factory.Create())
             {
-                var dailyMenuEntity = _mapper.Map<DailyMenuEntity>(entity);
+                var dailyMenuEntity = new DailyMenuEntity
+                {
+                    Id = entity.Id,
+                    RestaurantId = entity.RestaurantId,
+                    Foods = entity.Foods.Select(food => context.Foods.Find(food.Id)).ToList()
+                };
 
                 var resultEntity = context.DailyMenues.Add(dailyMenuEntity).Entity;
                 context.SaveChanges();
@@ -67,12 +72,12 @@ namespace Exebite.DataAccess.Repositories
                 var currentEntity = context.DailyMenues.Find(entity.Id);
                 currentEntity.RestaurantId = entity.RestaurantId;
 
-                // this will remove old references, and after that new ones will be added
                 var addedEntities = Enumerable.Range(0, entity.Foods.Count).Select(a =>
                 {
                     return context.Foods.Find(entity.Foods[a].Id);
                 }).ToList();
 
+                // this will remove old references, and after that new ones will be added
                 currentEntity.Foods.Clear();
 
                 addedEntities.ForEach(a => currentEntity.Foods.Add(a));
