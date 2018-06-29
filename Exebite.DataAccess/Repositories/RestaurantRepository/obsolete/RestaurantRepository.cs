@@ -4,7 +4,6 @@ using AutoMapper;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DomainModel;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Exebite.DataAccess.Repositories
@@ -62,13 +61,11 @@ namespace Exebite.DataAccess.Repositories
             using (var context = _factory.Create())
             {
                 var currentEntity = context.Restaurants.Find(entity.Id);
-                currentEntity.DailyMenuId = entity.DailyMenuId;
                 currentEntity.Name = entity.Name;
 
                 context.SaveChanges();
 
-                var resultEntity = context.Restaurants.Include(x => x.DailyMenu)
-                                                      .FirstOrDefault(r => r.Id == entity.Id);
+                var resultEntity = context.Restaurants.FirstOrDefault(r => r.Id == entity.Id);
                 return _mapper.Map<Restaurant>(resultEntity);
             }
         }

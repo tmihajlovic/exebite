@@ -55,6 +55,11 @@ namespace Exebite.DataAccess.Repositories
                     query = query.Where(x => x.Id == queryModel.Id.Value);
                 }
 
+                if (queryModel.RestaurantId != null)
+                {
+                    query = query.Where(x => x.RestaurantId == queryModel.RestaurantId.Value);
+                }
+
                 var results = query.ToList();
                 return _mapper.Map<IList<DailyMenu>>(results);
             }

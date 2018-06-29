@@ -2,6 +2,8 @@
 using Exebite.DataAccess;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
 
 namespace FeatureTestingConsole
 {
@@ -9,6 +11,8 @@ namespace FeatureTestingConsole
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("Setting up FeatureTestingConsole");
+
             ServiceProvider provider = null;
             var serviceCollection = new ServiceCollection()
                 .AddLogging()
@@ -31,7 +35,9 @@ namespace FeatureTestingConsole
 
             var app = provider.GetService<IApp>();
 
+            Console.WriteLine("Starting up FeatureTestingConsole App");
             app.Run(args);
+            Console.WriteLine("Gracefully completed");
         }
     }
 }

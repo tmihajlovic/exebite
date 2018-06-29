@@ -30,9 +30,8 @@ namespace Exebite.DataAccess.Repositories
             {
                 var mealEntity = new MealEntity
                 {
-                    Id = entity.Id,
                     Price = entity.Price,
-                    FoodEntityMealEntities = entity.Foods.Select(x => new FoodEntityMealEntities { FoodEntityId = x.Id }).ToList()
+                    FoodEntityMealEntities = entity.Foods.Select(x => new FoodEntityMealEntities { FoodEntityId = x.Id }).ToList(),
                 };
                 var createEntity = context.Add(mealEntity).Entity;
                 context.SaveChanges();

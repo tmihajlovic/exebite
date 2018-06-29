@@ -133,8 +133,7 @@ namespace Exebite.DataAccess.Test
                 var restaurant = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new RestaurantEntity
                 {
                     Id = x,
-                    Name = $"Name {x}",
-                    DailyMenuId = x
+                    Name = $"Name {x}"
                 });
                 context.Restaurants.AddRange(restaurant);
 
@@ -211,11 +210,7 @@ namespace Exebite.DataAccess.Test
                 var locations = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
                 {
                     Id = x,
-                    Name = $"Name {x}",
-                    DailyMenu = new DailyMenuEntity()
-                    {
-                        Id = x
-                    }
+                    Name = $"Name {x}"                   
                 });
 
                 context.Restaurants.AddRange(locations);
@@ -358,8 +353,7 @@ namespace Exebite.DataAccess.Test
                 var restaurant = Enumerable.Range(1, numberOfDailyRecipes).Select(x => new RestaurantEntity
                 {
                     Id = x,
-                    Name = "Test restaurant " + x,
-                    DailyMenuId = x,
+                    Name = "Test restaurant " + x
                 });
                 context.Restaurants.AddRange(restaurant);
 

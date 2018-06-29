@@ -26,7 +26,6 @@ namespace Exebite.DataAccess.Repositories
                     var restaurantEntity = new RestaurantEntity()
                     {
                         Name = entity.Name,
-                        DailyMenuId = entity.DailyMenuId
                     };
 
                     var addedEntity = context.Restaurants.Add(restaurantEntity).Entity;
@@ -52,9 +51,8 @@ namespace Exebite.DataAccess.Repositories
                 using (var context = _factory.Create())
                 {
                     var currentEntity = context.Restaurants.Find(id);
-                    currentEntity.DailyMenuId = entity.DailyMenuId;
-                    currentEntity.Name = entity.Name;
 
+                    currentEntity.Name = entity.Name;
                     context.SaveChanges();
                 }
 

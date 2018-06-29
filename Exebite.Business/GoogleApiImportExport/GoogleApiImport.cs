@@ -10,13 +10,14 @@ namespace Exebite.Business.GoogleApiImportExport
     {
         private readonly IRestaurantRepository _restaurantRepository;
         private readonly IFoodRepository _foodRepository;
+        private readonly IDailyMenuRepository _dailyMenuRepository;
 
         // connectors
         private readonly ILipaConector _lipaConector;
         private readonly IHedoneConector _hedoneConector;
         private readonly ITeglasConector _teglasConector;
 
-        public GoogleApiImport(IRestaurantRepository restaurantRepository, IFoodRepository foodRepository, ILipaConector lipaConector, ITeglasConector teglasConector, IHedoneConector hedoneConector)
+        public GoogleApiImport(IRestaurantRepository restaurantRepository, IFoodRepository foodRepository, ILipaConector lipaConector, ITeglasConector teglasConector, IHedoneConector hedoneConector, IDailyMenuRepository dailyMenuRepository)
         {
             _restaurantRepository = restaurantRepository;
             _foodRepository = foodRepository;
@@ -25,6 +26,7 @@ namespace Exebite.Business.GoogleApiImportExport
             _lipaConector = lipaConector;
             _hedoneConector = hedoneConector;
             _teglasConector = teglasConector;
+            _dailyMenuRepository = dailyMenuRepository;
         }
 
         /// <summary>
@@ -36,6 +38,11 @@ namespace Exebite.Business.GoogleApiImportExport
             Restaurant hedoneRestaurant = _restaurantRepository.Query(new RestaurantQueryModel { Name = "Hedone" }).First();
             Restaurant teglasRestaurant = _restaurantRepository.Query(new RestaurantQueryModel { Name = "Teglas" }).First();
 
+
+            DailyMenu lipaDailyMenu = _dailyMenuRepository.Query(new DailyMenuQueryModel { RestaurantId = lipaRestaurant.Id }).FirstOrDefault();
+            DailyMenu hedoneDailyMenu = _dailyMenuRepository.Query(new DailyMenuQueryModel { RestaurantId = hedoneRestaurant.Id }).FirstOrDefault();
+            DailyMenu teglasDailyMenu = _dailyMenuRepository.Query(new DailyMenuQueryModel { RestaurantId = teglasRestaurant.Id }).FirstOrDefault();
+
             // Get food from sheet, update database for new and changed and update daily menu
 
             // Lipa
@@ -43,7 +50,7 @@ namespace Exebite.Business.GoogleApiImportExport
             AddAndUpdateFood(lipaRestaurant, _lipaConector);
 
             // Update daily menu
-            lipaRestaurant.DailyMenu.Foods = FoodsFromDB(lipaRestaurant, _lipaConector.GetDailyMenu());
+            lipaDailyMenu.Foods = FoodsFromDB(lipaRestaurant, _lipaConector.GetDailyMenu());
             _restaurantRepository.Update(lipaRestaurant);
 
             // Teglas
@@ -51,7 +58,7 @@ namespace Exebite.Business.GoogleApiImportExport
             AddAndUpdateFood(teglasRestaurant, _teglasConector);
 
             // Update daily menu
-            teglasRestaurant.DailyMenu.Foods = FoodsFromDB(teglasRestaurant, _teglasConector.GetDailyMenu());
+            teglasDailyMenu.Foods = FoodsFromDB(teglasRestaurant, _teglasConector.GetDailyMenu());
             _restaurantRepository.Update(teglasRestaurant);
 
             // Hedone
@@ -59,7 +66,7 @@ namespace Exebite.Business.GoogleApiImportExport
             AddAndUpdateFood(hedoneRestaurant, _hedoneConector);
 
             // Update daily menu
-            hedoneRestaurant.DailyMenu.Foods = FoodsFromDB(hedoneRestaurant, _hedoneConector.GetDailyMenu());
+            hedoneDailyMenu.Foods = FoodsFromDB(hedoneRestaurant, _hedoneConector.GetDailyMenu());
             _restaurantRepository.Update(hedoneRestaurant);
         }
 

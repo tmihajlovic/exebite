@@ -139,7 +139,6 @@ namespace Exebite.DataAccess.Test
             {
                 Id = 1,
                 Name = "Restaurant name",
-                DailyMenuId = 1
             };
 
             // Act
@@ -174,8 +173,7 @@ namespace Exebite.DataAccess.Test
             var updatedRestaurant = new Restaurant
             {
                 Id = 1,
-                Name = "Restaurant name updated",
-                DailyMenuId = 1
+                Name = "Restaurant name updated"            
             };
 
             // Act
@@ -185,7 +183,6 @@ namespace Exebite.DataAccess.Test
             // Assert
             Assert.Equal(updatedRestaurant.Id, res.Id);
             Assert.Equal(updatedRestaurant.Name, res.Name);
-            Assert.Equal(updatedRestaurant.DailyMenuId, res.DailyMenu.Id);
         }
 
         [Fact]

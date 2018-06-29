@@ -65,11 +65,7 @@ namespace Exebite.DataAccess.Test
                 var locations = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
                 {
                     Id = x,
-                    Name = $"Name {x}",
-                    DailyMenu = new DailyMenuEntity()
-                    {
-                        Id = x
-                    }
+                    Name = $"Name {x}"
                 });
 
                 context.Restaurants.AddRange(locations);

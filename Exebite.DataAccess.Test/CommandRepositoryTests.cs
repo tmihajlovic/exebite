@@ -39,11 +39,11 @@ namespace Exebite.DataAccess.Test
             IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(_factory);
 
             // Act
-            var res = repo.Insert(this.ConvertToInput(newObj));
+            var insertedId = repo.Insert(this.ConvertToInput(newObj));
 
             // Assert
-            EAssert.IsRight(res);
-            Assert.True(this.GetId(res) > 0);
+            EAssert.IsRight(insertedId);
+            Assert.True(this.GetId(insertedId) > 0);
         }
 
         [Theory]

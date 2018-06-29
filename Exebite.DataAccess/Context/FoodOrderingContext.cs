@@ -72,38 +72,6 @@ namespace Exebite.DataAccess.Context
                 .HasMany(x => x.Foods);
         }
 
-        private static void Seed(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<RestaurantEntity>()
-                .HasData(new RestaurantEntity
-                {
-                    Id = 1,
-                    Name = "Test restaurant 1",
-                    DailyMenuId = 1,
-                    DailyMenu = new DailyMenuEntity()
-                    {
-                        Id = 1,
-                        RestaurantId = 1,
-                        Foods = new List<FoodEntity>
-                        {
-                            new FoodEntity
-                            {
-                                RestaurantId = 1,
-                                Name = "TestFood 1"
-                            },
-                            new FoodEntity
-                            {
-                                RestaurantId = 1,
-                                Name = "TestFood 2"
-                            },
-                            new FoodEntity
-                            {
-                                RestaurantId = 1,
-                                Name = "TestFood 3"
-                            }
-                        }
-                    }
-                });
-        }
+      
     }
 }
