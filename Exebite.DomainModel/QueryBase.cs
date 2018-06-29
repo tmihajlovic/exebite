@@ -1,4 +1,4 @@
-﻿namespace Exebite.DataAccess.Repositories
+﻿namespace Exebite.DomainModel
 {
     public abstract class QueryBase
     {

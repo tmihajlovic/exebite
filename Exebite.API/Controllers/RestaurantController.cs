@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using Either;
 using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
+using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,78 +14,51 @@ namespace Exebite.API.Controllers
     [Authorize]
     public class RestaurantController : Controller
     {
-        private readonly IRestaurantRepository _restaurantRepository;
+        private readonly IRestaurantQueryRepository _queryRepository;
+        private readonly IRestaurantCommandRepository _commandRepository;
         private readonly IMapper _mapper;
 
-        public RestaurantController(IRestaurantRepository restaurantRepository, IMapper mapper)
+        public RestaurantController(IRestaurantQueryRepository queryRepository, IRestaurantCommandRepository commandRepository, IMapper mapper)
         {
-            _restaurantRepository = restaurantRepository;
+            _queryRepository = queryRepository;
+            _commandRepository = commandRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult Get()
-        {
-            var restaurants = _mapper.Map<IEnumerable<RestaurantModel>>(_restaurantRepository.Get(0, int.MaxValue));
-            return Ok(restaurants);
-        }
+        public IActionResult Get(int page, int size) =>
+            _queryRepository.Query(new RestaurantQueryModel(page, size))
+                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantModel>>(x)))
+                            .Reduce(x => StatusCode(500, x));
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var restaurant = _restaurantRepository.GetByID(id);
-            if (restaurant == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<RestaurantModel>(restaurant));
-        }
+        public IActionResult Get(int id) =>
+                        _queryRepository.Query(new RestaurantQueryModel { Id = id })
+                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantModel>>(x)))
+                            .Reduce(_ => NotFound());
 
         [HttpPost]
-        public IActionResult Post([FromBody]string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                return BadRequest();
-            }
-
-            var createdRestaurant = _restaurantRepository.Insert(new DomainModel.Restaurant { Name = name });
-            return Ok(createdRestaurant.Id);
-        }
+        public IActionResult Post([FromBody]string name) =>
+            _commandRepository.Insert(new RestaurantInsertModel { Name = name })
+                              .Map(x => (IActionResult)Ok(x))
+                              .Reduce(_ => BadRequest());
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                return BadRequest();
-            }
-
-            var currentRestaurant = _restaurantRepository.GetByID(id);
-            if (currentRestaurant == null)
-            {
-                return NotFound();
-            }
-
-            currentRestaurant.Name = name;
-            var updatedRestaurant = _restaurantRepository.Update(currentRestaurant);
-
-            return Ok(updatedRestaurant.Id);
-        }
+        public IActionResult Put(int id, [FromBody]string name) =>
+            _commandRepository.Update(id, new RestaurantUpdateModel { Name = name })
+                              .Map(x => (IActionResult)Ok(_mapper.Map<RestaurantModel>(x)))
+                              .Reduce(_ => NotFound());
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _restaurantRepository.Delete(id);
-            return NoContent();
-        }
+        public IActionResult Delete(int id) =>
+            _commandRepository.Delete(id)
+                .Map(_ => (IActionResult)NoContent())
+                .Reduce(x => StatusCode(500, x));
 
         [HttpGet("Query")]
-        public IActionResult Query(RestaurantQueryModel query)
-        {
-            var locations = _restaurantRepository.Query(query);
-            return Ok(_mapper.Map<IEnumerable<RestaurantModel>>(locations));
-        }
+        public IActionResult Query(RestaurantQueryDto query) =>
+            _queryRepository.Query(_mapper.Map<RestaurantQueryModel>(query))
+                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantModel>>(x)))
+                            .Reduce(x => StatusCode(500, x));
     }
 }

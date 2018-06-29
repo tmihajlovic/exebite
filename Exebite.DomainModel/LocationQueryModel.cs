@@ -1,6 +1,6 @@
-﻿namespace Exebite.DataAccess.Repositories
+﻿namespace Exebite.DomainModel
 {
-    public class CustomerAliasQueryModel
+    public class LocationQueryModel
     {
         public int? Id { get; set; }
 

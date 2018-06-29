@@ -1,6 +1,6 @@
-using System;
 using System.Linq;
 using Exebite.DataAccess.Repositories;
+using Exebite.DomainModel;
 using Microsoft.Data.Sqlite;
 using Xunit;
 using static Exebite.DataAccess.Test.RepositoryTestHelpers;
