@@ -1,6 +1,6 @@
 ﻿namespace Exebite.DataAccess.Repositories
 {
-    internal class ArgumentNotSet : Error
+    public class ArgumentNotSet : Error
     {
         private string message;
 

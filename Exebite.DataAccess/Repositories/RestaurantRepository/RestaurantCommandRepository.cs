@@ -45,12 +45,16 @@ namespace Exebite.DataAccess.Repositories
             {
                 if (entity == null)
                 {
-                    throw new ArgumentNullException(nameof(entity));
+                    return new Left<Error, bool>(new ArgumentNotSet(nameof(entity)));
                 }
 
                 using (var context = _factory.Create())
                 {
                     var currentEntity = context.Restaurants.Find(id);
+                    if (currentEntity == null)
+                    {
+                        return new Left<Error, bool>(new RecordNotFound(nameof(entity)));
+                    }
 
                     currentEntity.Name = entity.Name;
                     context.SaveChanges();

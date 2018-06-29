@@ -4,7 +4,7 @@
     {
         protected QueryBase()
         {
-            Page = 0;
+            Page = 1;
             Size = int.MaxValue;
         }
 

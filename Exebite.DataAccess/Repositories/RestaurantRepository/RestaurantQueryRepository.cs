@@ -25,7 +25,7 @@ namespace Exebite.DataAccess.Repositories
             {
                 if (queryModel == null)
                 {
-                    throw new ArgumentNullException(nameof(queryModel));
+                    return new Left<Error, PagingResult<Restaurant>>(new ArgumentNotSet(nameof(queryModel)));
                 }
 
                 using (var context = _factory.Create())
@@ -53,10 +53,6 @@ namespace Exebite.DataAccess.Repositories
                     var mapped = _mapper.Map<IList<Restaurant>>(results).ToList();
                     return new Right<Error, PagingResult<Restaurant>>(new PagingResult<Restaurant>(mapped, total));
                 }
-            }
-            catch (ArgumentNullException ex)
-            {
-                return new Left<Error, PagingResult<Restaurant>>(new ArgumentNotSet(ex.ToString()));
             }
             catch (Exception ex)
             {
