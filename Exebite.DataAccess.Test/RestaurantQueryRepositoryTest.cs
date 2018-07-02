@@ -62,13 +62,13 @@ namespace Exebite.DataAccess.Test
         {
             using (var context = factory.Create())
             {
-                var locations = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
+                var restaurnats = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
                 {
                     Id = x,
                     Name = $"Name {x}"
                 });
 
-                context.Restaurants.AddRange(locations);
+                context.Restaurants.AddRange(restaurnats);
                 context.SaveChanges();
             }
         }

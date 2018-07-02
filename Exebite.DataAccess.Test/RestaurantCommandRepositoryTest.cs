@@ -15,7 +15,6 @@ namespace Exebite.DataAccess.Test
                       Enumerable.Range(1, int.MaxValue).Select(content => new Data
                       {
                           Name = "Restaurant name" + content,
-                          DailyMenuId = content
                       });
 
         protected override IDatabaseCommandRepository<int, RestaurantInsertModel, RestaurantUpdateModel> CreateSut(IFoodOrderingContextFactory factory)
@@ -75,8 +74,6 @@ namespace Exebite.DataAccess.Test
         public sealed class Data
         {
             public string Name { get; set; }
-
-            public int DailyMenuId { get; set; }
         }
     }
 }

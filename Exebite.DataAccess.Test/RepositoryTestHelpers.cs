@@ -97,6 +97,16 @@ namespace Exebite.DataAccess.Test
             return new LocationRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<LocationRepository>>().Object);
         }
 
+        internal static LocationQueryRepository CreateOnlyLocationQueryRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
+        {
+            return new LocationQueryRepository(factory, _mapper);
+        }
+
+        internal static LocationCommandRepository CreateOnlyLocationCommandRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
+        {
+            return new LocationCommandRepository(factory, _mapper);
+        }
+
         #endregion Location
 
         #region CustomerAlias
