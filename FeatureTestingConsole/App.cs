@@ -73,7 +73,6 @@ namespace FeatureTestingConsole
                 CustomerId = 1,
                 MealId = 1,
                 Note = "Test insert"
-
             };
 
             this._orderRepo.Insert(order);
@@ -145,6 +144,7 @@ namespace FeatureTestingConsole
                 RestaurantId = 1,
                 Type = FoodType.SOUP
             });
+
             // lipa
             _foodRepository.Insert(new Food()
             {

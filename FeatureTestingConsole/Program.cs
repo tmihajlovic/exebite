@@ -1,9 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Exebite.DataAccess;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
 
 namespace FeatureTestingConsole
 {

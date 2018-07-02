@@ -71,7 +71,5 @@ namespace Exebite.DataAccess.Context
             modelBuilder.Entity<DailyMenuEntity>()
                 .HasMany(x => x.Foods);
         }
-
-      
     }
 }
