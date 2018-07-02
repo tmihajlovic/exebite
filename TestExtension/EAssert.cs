@@ -38,7 +38,17 @@ namespace Optional.Xunit
             return item as Right<E, T>;
         }
 
-
+        /// <summary>
+        /// Only use in test!
+        /// </summary>
+        /// <typeparam name="E"></typeparam>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public static E LeftContent<E, T>(this Either<E, T> item)
+        {
+            return item as Left<E, T>;
+        }
     }
 }
 

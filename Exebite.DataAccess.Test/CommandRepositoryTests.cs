@@ -129,7 +129,7 @@ namespace Exebite.DataAccess.Test
         }
 
         [Fact]
-        public void Update_UnexpectedErrorOccur_ErrorReturned()
+        public void Update_InvalidUpdateObject_ArgumentNotSetErrorReturned()
         {
             // Arrange
             IEnumerable<TModel> data = this.SampleData.Take(2).ToList();
@@ -145,6 +145,7 @@ namespace Exebite.DataAccess.Test
 
             // Assert
             EAssert.IsLeft(result);
+            Assert.Equal(typeof(ArgumentNotSet), result.LeftContent().GetType());
         }
 
         [Fact]
@@ -162,6 +163,30 @@ namespace Exebite.DataAccess.Test
 
             // Assert
             EAssert.IsLeft(result);
+            Assert.Equal(typeof(RecordNotFound), result.LeftContent().GetType());
+        }
+
+        [Fact]
+        public void Update_UnExpectedErrorOccurs_ErrorReturned()
+        {
+            // Arrange
+            IEnumerable<TModel> data = this.SampleData.Take(2).ToList();
+            this.InitializeStorage(_factory, 0);
+            TModel insertObject = data.ElementAt(1);
+            TModel updateObject = data.ElementAt(1);
+
+            IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(_factory);
+            var insertedRecordId = repo.Insert(this.ConvertToInput(insertObject));
+
+            // this should make update to throw unexpected error
+            _connection.Close();
+
+            // Act
+            var result = repo.Update(insertedRecordId.RightContent(), this.ConvertToUpdate(updateObject));
+
+            // Assert
+            EAssert.IsLeft(result);
+            Assert.Equal(typeof(UnknownError), result.LeftContent().GetType());
         }
 
         protected abstract IDatabaseCommandRepository<TId, TInput, TUpdate> CreateSut(IFoodOrderingContextFactory factory);
