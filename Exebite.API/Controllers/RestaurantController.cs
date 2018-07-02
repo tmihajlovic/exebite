@@ -63,7 +63,7 @@ namespace Exebite.API.Controllers
         public IActionResult Query(RestaurantQueryDto query) =>
             _queryRepository.Query(_mapper.Map<RestaurantQueryModel>(query))
                             .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantModel>>(x.Items)))
-                            .Reduce(x => StatusCode(500, x));
+                            .Reduce(InternalServerError);
 
         private IActionResult InternalServerError(Error error) =>
             StatusCode(StatusCodes.Status500InternalServerError, error);
