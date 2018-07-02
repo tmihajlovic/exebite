@@ -56,13 +56,15 @@ namespace Exebite.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id) =>
             _commandRepository.Delete(id)
-                .Map(_ => (IActionResult)NoContent())
-                .Reduce(InternalServerError);
+                              .Map(_ => (IActionResult)NoContent())
+                              .Reduce(_ => (IActionResult)NotFound(), error => error is RecordNotFound)
+                              .Reduce(InternalServerError);
 
         [HttpGet("Query")]
         public IActionResult Query(RestaurantQueryDto query) =>
             _queryRepository.Query(_mapper.Map<RestaurantQueryModel>(query))
                             .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantModel>>(x.Items)))
+                            .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
                             .Reduce(InternalServerError);
 
         private IActionResult InternalServerError(Error error) =>

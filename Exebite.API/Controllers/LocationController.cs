@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using Either;
 using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
@@ -14,84 +15,63 @@ namespace Exebite.API.Controllers
     [Authorize]
     public class LocationController : Controller
     {
-        private readonly ILocationRepository _locationRepository;
+        private readonly ILocationCommandRepository _locationCommandRepository;
+        private readonly ILocationQueryRepository _locationQueryRepository;
         private readonly IMapper _mapper;
-        private readonly ILogger<LocationController> _logger;
 
-        public LocationController(ILocationRepository locationRepository, IMapper mapper, ILogger<LocationController> logger)
+        public LocationController(
+            ILocationCommandRepository locationCommandRepository,
+            ILocationQueryRepository locationQueryRepository,
+            IMapper mapper)
         {
-            _locationRepository = locationRepository;
+            _locationCommandRepository = locationCommandRepository;
+            _locationQueryRepository = locationQueryRepository;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpGet]
-        public IActionResult Get()
-        {
-            _logger.LogDebug("Get started");
-            var locations = _mapper.Map<IEnumerable<LocationModel>>(_locationRepository.Get(0, int.MaxValue));
-            _logger.LogDebug("Get finished");
-            return Ok(locations);
-        }
+        public IActionResult Get() =>
+            _locationQueryRepository.Query(new LocationQueryModel())
+                                    .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<LocationModel>>(x.Items)))
+                                    .Reduce(InternalServerError);
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            _logger.LogInformation($"Get the Location with id: {id}");
-            var location = _locationRepository.GetByID(id);
-            if (location == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<LocationModel>(location));
-        }
+        public IActionResult Get(int id) =>
+             _locationQueryRepository.Query(new LocationQueryModel { Id = id })
+                                     .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantModel>>(x.Items)))
+                                     .Reduce(_ => (IActionResult)NotFound(), error => error is RecordNotFound)
+                                     .Reduce(InternalServerError);
 
         [HttpPost]
-        public IActionResult Post([FromBody]CreateLocationModel model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            var createdLocation = _locationRepository.Insert(_mapper.Map<DomainModel.Location>(model));
-
-            return Ok(new { createdLocation.Id });
-        }
+        public IActionResult Post([FromBody]CreateLocationModel model) =>
+            _locationCommandRepository.Insert(_mapper.Map<LocationInsertModel>(model))
+                                      .Map(x => (IActionResult)Ok(x))
+                                      .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
+                                      .Reduce(InternalServerError);
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]UpdateLocationModel model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            var currentLocation = _locationRepository.GetByID(id);
-            if (currentLocation == null)
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(model, currentLocation);
-
-            var updatedLocation = _locationRepository.Update(currentLocation);
-            return Ok(new { updatedLocation.Id });
-        }
+        public IActionResult Put(int id, [FromBody]UpdateLocationModel model) =>
+            _locationCommandRepository.Update(id, _mapper.Map<LocationUpdateModel>(model))
+                                      .Map(x => (IActionResult)Ok(x))
+                                      .Reduce(_ => (IActionResult)NotFound(), error => error is RecordNotFound)
+                                      .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
+                                      .Reduce(InternalServerError);
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _locationRepository.Delete(id);
-            return NoContent();
-        }
+        public IActionResult Delete(int id) =>
+            _locationCommandRepository.Delete(id)
+                              .Map(_ => (IActionResult)NoContent())
+                              .Reduce(_ => (IActionResult)NotFound(), error => error is RecordNotFound)
+                              .Reduce(InternalServerError);
 
         [HttpGet("Query")]
-        public IActionResult Query(LocationQueryModel query)
-        {
-            var locations = _locationRepository.Query(query);
-            return Ok(_mapper.Map<IEnumerable<LocationModel>>(locations));
-        }
+        public IActionResult Query(LocationQueryModel query) =>
+            _locationQueryRepository.Query(_mapper.Map<LocationQueryModel>(query))
+                .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<LocationModel>>(x.Items)))
+                .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
+                .Reduce(InternalServerError);
+
+        private IActionResult InternalServerError(Error error) =>
+                StatusCode(StatusCodes.Status500InternalServerError, error);
     }
 }

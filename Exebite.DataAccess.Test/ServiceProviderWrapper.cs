@@ -20,7 +20,8 @@ namespace Exebite.DataAccess.Test
                                         .AddTransient<IFoodRepository, FoodRepository>()
                                         .AddTransient<IRecipeRepository, RecipeRepository>()
                                         .AddTransient<ICustomerRepository, CustomerRepository>()
-                                        .AddTransient<ILocationRepository, LocationRepository>()
+                                        .AddTransient<ILocationCommandRepository, LocationCommandRepository>()
+                                        .AddTransient<ILocationQueryRepository, LocationQueryRepository>()
                                         .AddTransient<IOrderRepository, OrderRepository>()
                                         .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
                                         .AddAutoMapper(cfg =>

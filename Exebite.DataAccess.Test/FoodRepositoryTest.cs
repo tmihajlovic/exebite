@@ -120,7 +120,7 @@ namespace Exebite.DataAccess.Test
             // Arrange
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
-            var sut = CreateOnlyLocationRepositoryInstanceNoData(connection);
+            var sut = CreateOnlyFoodRepositoryInstanceNoData(connection);
 
             // Act and Assert
             Exception res = Assert.Throws<ArgumentNullException>(() => sut.Insert(null));

@@ -99,7 +99,6 @@ namespace Exebite.DataAccess.Test
             var customers = CreateCustomerEntities(0);
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
-            LocationDataForTesing(connection, 6);
             var customerRepsitory = FillCustomerDataForTesting(connection, customers);
 
             var customer = CreateCustomers(number + 1, 1).FirstOrDefault();

@@ -35,6 +35,14 @@ namespace Exebite.DataAccess.Test
 
             using (var context = factory.Create())
             {
+                var locations = Enumerable.Range(1, 6).Select(x => new LocationEntity()
+                {
+                    Id = x,
+                    Name = $"Name {x}",
+                    Address = $"Address {x}"
+                });
+
+                context.Locations.AddRange(locations);
                 context.Customers.AddRange(customers);
                 context.SaveChanges();
             }
@@ -72,31 +80,6 @@ namespace Exebite.DataAccess.Test
         #endregion
 
         #region Location
-        internal static LocationRepository LocationDataForTesing(SqliteConnection connection, int numberOfLocations)
-        {
-            var factory = new InMemoryDBFactory(connection);
-
-            using (var context = factory.Create())
-            {
-                var locations = Enumerable.Range(1, numberOfLocations).Select(x => new LocationEntity()
-                {
-                    Id = x,
-                    Address = $"Address {x}",
-                    Name = $"Name {x}"
-                });
-
-                context.Locations.AddRange(locations);
-                context.SaveChanges();
-            }
-
-            return new LocationRepository(factory, _mapper, new Mock<ILogger<LocationRepository>>().Object);
-        }
-
-        internal static LocationRepository CreateOnlyLocationRepositoryInstanceNoData(SqliteConnection connection)
-        {
-            return new LocationRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<LocationRepository>>().Object);
-        }
-
         internal static LocationQueryRepository CreateOnlyLocationQueryRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
         {
             return new LocationQueryRepository(factory, _mapper);

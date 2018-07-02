@@ -10,7 +10,8 @@ namespace Exebite.DataAccess
         public static IServiceCollection AddDataAccessServices(this IServiceCollection collection)
         {
             collection.AddTransient<ICustomerRepository, CustomerRepository>();
-            collection.AddTransient<ILocationRepository, LocationRepository>();
+            collection.AddTransient<ILocationCommandRepository, LocationCommandRepository>();
+            collection.AddTransient<ILocationQueryRepository, LocationQueryRepository>();
 
             collection.AddTransient<IRestaurantQueryRepository, RestaurantQueryRepository>();
             collection.AddTransient<IRestaurantCommandRepository, RestaurantCommandRepository>();

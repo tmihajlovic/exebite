@@ -17,7 +17,7 @@ namespace FeatureTestingConsole
         private readonly IRestaurantCommandRepository _restaurantCommandRepository;
         private readonly IFoodRepository _foodRepository;
         private readonly ICustomerRepository _customerRepo;
-        private readonly ILocationRepository _locationRepo;
+        private readonly ILocationCommandRepository _locationCommandRepo;
         private readonly IDailyMenuRepository _dailyMenu;
         private readonly IMealRepository _mealRepo;
         private readonly IFoodOrderingContextFactory factory;
@@ -29,7 +29,7 @@ namespace FeatureTestingConsole
             IRestaurantCommandRepository restaurantCommandRepository,
             IFoodRepository foodRepository,
             ICustomerRepository customerRepository,
-            ILocationRepository locationRepo,
+            ILocationCommandRepository locationCommandRepo,
             IMealRepository mealRepo,
             IFoodOrderingContextFactory factory,
             IDailyMenuRepository dailyMenu,
@@ -40,7 +40,7 @@ namespace FeatureTestingConsole
             _restaurantCommandRepository = restaurantCommandRepository;
             _foodRepository = foodRepository;
             _customerRepo = customerRepository;
-            _locationRepo = locationRepo;
+            _locationCommandRepo = locationCommandRepo;
             _mealRepo = mealRepo;
             this.factory = factory;
             _dailyMenu = dailyMenu;
@@ -126,13 +126,13 @@ namespace FeatureTestingConsole
 
         private void SeedLocation()
         {
-            _locationRepo.Insert(new Location()
+            _locationCommandRepo.Insert(new LocationInsertModel()
             {
                 Name = "Execom VS",
                 Address = "Vojvode stepe 50"
             });
 
-            _locationRepo.Insert(new Location()
+            _locationCommandRepo.Insert(new LocationInsertModel()
             {
                 Name = "Execom JD",
                 Address = "Jovana ducica 50"
