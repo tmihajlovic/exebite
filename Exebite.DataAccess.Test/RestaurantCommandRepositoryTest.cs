@@ -45,12 +45,12 @@ namespace Exebite.DataAccess.Test
 
         protected override RestaurantInsertModel ConvertToInput(Data data)
         {
-            return new RestaurantInsertModel { Name = data.Name, DailyMenuId = data.DailyMenuId };
+            return new RestaurantInsertModel { Name = data.Name };
         }
 
         protected override RestaurantUpdateModel ConvertToUpdate(Data data)
         {
-            return new RestaurantUpdateModel { Name = data.Name, DailyMenuId = data.DailyMenuId };
+            return new RestaurantUpdateModel { Name = data.Name };
         }
 
         protected override RestaurantInsertModel ConvertToInvalidInput(Data data)

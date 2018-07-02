@@ -201,30 +201,6 @@ namespace Exebite.DataAccess.Test
         #endregion Food
 
         #region Restaurant
-        internal static RestaurantRepository RestaurantDataForTesting(SqliteConnection connection, int count)
-        {
-            var factory = new InMemoryDBFactory(connection);
-
-            using (var context = factory.Create())
-            {
-                var locations = Enumerable.Range(1, count).Select(x => new RestaurantEntity()
-                {
-                    Id = x,
-                    Name = $"Name {x}"                   
-                });
-
-                context.Restaurants.AddRange(locations);
-                context.SaveChanges();
-            }
-
-            return new RestaurantRepository(factory, _mapper, new Mock<ILogger<RestaurantRepository>>().Object);
-        }
-
-        internal static RestaurantRepository CreateOnlyRestaurantRepositoryInstanceNoData(SqliteConnection connection)
-        {
-            return new RestaurantRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<RestaurantRepository>>().Object);
-        }
-
         internal static RestaurantQueryRepository CreateOnlyRestaurantQueryRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
         {
             return new RestaurantQueryRepository(factory, _mapper);

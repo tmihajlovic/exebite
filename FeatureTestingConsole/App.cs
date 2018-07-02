@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using Either;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
@@ -9,31 +11,45 @@ namespace FeatureTestingConsole
     public sealed class App : IApp
     {
         private readonly IOrderRepository _orderRepo;
-        private readonly IRestaurantRepository _restaurantRepo;
+        private readonly IRestaurantQueryRepository _restaurantQueryRepository;
+        private readonly IRestaurantCommandRepository _restaurantCommandRepository;
         private readonly IFoodRepository _foodRepository;
         private readonly ICustomerRepository _customerRepo;
         private readonly ILocationRepository _locationRepo;
         private readonly IDailyMenuRepository _dailyMenu;
         private readonly IMealRepository _mealRepo;
         private readonly IFoodOrderingContextFactory factory;
+        private readonly IMapper _mapper;
 
-        public App(IOrderRepository orderRepository, IRestaurantRepository restaurantRepo, IFoodRepository foodRepository, ICustomerRepository customerRepository, ILocationRepository locationRepo, IMealRepository mealRepo, IFoodOrderingContextFactory factory, IDailyMenuRepository dailyMenu)
+        public App(
+            IOrderRepository orderRepository,
+            IRestaurantQueryRepository restaurantQueryRepository,
+            IRestaurantCommandRepository restaurantCommandRepository,
+            IFoodRepository foodRepository,
+            ICustomerRepository customerRepository,
+            ILocationRepository locationRepo,
+            IMealRepository mealRepo,
+            IFoodOrderingContextFactory factory,
+            IDailyMenuRepository dailyMenu,
+            IMapper mapper)
         {
             _orderRepo = orderRepository;
-            _restaurantRepo = restaurantRepo;
+            _restaurantQueryRepository = restaurantQueryRepository;
+            _restaurantCommandRepository = restaurantCommandRepository;
             _foodRepository = foodRepository;
             _customerRepo = customerRepository;
             _locationRepo = locationRepo;
             _mealRepo = mealRepo;
             this.factory = factory;
             _dailyMenu = dailyMenu;
+            _mapper = mapper;
         }
 
         public void Run(string[] args)
         {
             ResetDatabase();
 
-            // leeefs
+            // liefs
             SeedRestaurant();
             SeedLocation();
 
@@ -44,14 +60,13 @@ namespace FeatureTestingConsole
 
             SeedMeal();
 
-
             SeedDailyMenu();
 
-            var restaurant = _restaurantRepo.GetByID(1);
+            var restaurant = _restaurantQueryRepository.Query(new RestaurantQueryModel { Id = 1 })
+                                                       .Map(x => x.Items.First())
+                                                       .Reduce(_ => throw new System.Exception());
 
-            _restaurantRepo.Update(restaurant);
-
-
+            _restaurantCommandRepository.Update(restaurant.Id, _mapper.Map<RestaurantUpdateModel>(restaurant));
 
             var order = new Order()
             {
@@ -81,7 +96,6 @@ namespace FeatureTestingConsole
                 AppUserId = "1514586545614 546456",
                 Balance = 2000m,
                 LocationId = 1
-
             });
 
             _customerRepo.Insert(new Customer()
@@ -110,12 +124,12 @@ namespace FeatureTestingConsole
 
         private void SeedRestaurant()
         {
-            _restaurantRepo.Insert(new Restaurant()
+            _restaurantCommandRepository.Insert(new RestaurantInsertModel()
             {
                 Name = "Lipa restaurant"
             });
 
-            _restaurantRepo.Insert(new Restaurant()
+            _restaurantCommandRepository.Insert(new RestaurantInsertModel()
             {
                 Name = "Hedone restaurant"
             });
@@ -161,7 +175,6 @@ namespace FeatureTestingConsole
 
         private void SeedMeal()
         {
-
             _mealRepo.Insert(new Meal()
             {
                 Foods = new List<Food>()
@@ -208,7 +221,6 @@ namespace FeatureTestingConsole
                 },
                 RestaurantId = 2
             });
-
         }
     }
 }

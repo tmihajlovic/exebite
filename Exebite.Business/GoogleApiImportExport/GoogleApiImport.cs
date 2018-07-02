@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using Either;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
@@ -8,19 +10,31 @@ namespace Exebite.Business.GoogleApiImportExport
 {
     public class GoogleApiImport : IGoogleDataImporter
     {
-        private readonly IRestaurantRepository _restaurantRepository;
+        private readonly IRestaurantQueryRepository _restaurantQueryRepository;
+        private readonly IRestaurantCommandRepository _restaurantCommandRepository;
         private readonly IFoodRepository _foodRepository;
         private readonly IDailyMenuRepository _dailyMenuRepository;
+        private readonly IMapper _mapper;
 
         // connectors
         private readonly ILipaConector _lipaConector;
         private readonly IHedoneConector _hedoneConector;
         private readonly ITeglasConector _teglasConector;
 
-        public GoogleApiImport(IRestaurantRepository restaurantRepository, IFoodRepository foodRepository, ILipaConector lipaConector, ITeglasConector teglasConector, IHedoneConector hedoneConector, IDailyMenuRepository dailyMenuRepository)
+        public GoogleApiImport(
+            IRestaurantQueryRepository restaurantQueryRepository,
+            IRestaurantCommandRepository restaurantCommandRepository,
+            IFoodRepository foodRepository,
+            ILipaConector lipaConector,
+            ITeglasConector teglasConector,
+            IHedoneConector hedoneConector,
+            IDailyMenuRepository dailyMenuRepository,
+            IMapper mapper)
         {
-            _restaurantRepository = restaurantRepository;
+            _restaurantQueryRepository = restaurantQueryRepository;
+            _restaurantCommandRepository = restaurantCommandRepository;
             _foodRepository = foodRepository;
+            _mapper = mapper;
 
             // connectors to a new sheets
             _lipaConector = lipaConector;
@@ -34,10 +48,15 @@ namespace Exebite.Business.GoogleApiImportExport
         /// </summary>
         public void UpdateRestorauntsMenu()
         {
-            Restaurant lipaRestaurant = _restaurantRepository.Query(new RestaurantQueryModel { Name = "Restoran pod Lipom" }).First();
-            Restaurant hedoneRestaurant = _restaurantRepository.Query(new RestaurantQueryModel { Name = "Hedone" }).First();
-            Restaurant teglasRestaurant = _restaurantRepository.Query(new RestaurantQueryModel { Name = "Teglas" }).First();
-
+            Restaurant lipaRestaurant = _restaurantQueryRepository.Query(new RestaurantQueryModel { Name = "Restoran pod Lipom" })
+                                                                  .Map(x => x.Items.First())
+                                                                  .Reduce(_ => throw new System.Exception());
+            Restaurant hedoneRestaurant = _restaurantQueryRepository.Query(new RestaurantQueryModel { Name = "Hedone" })
+                                                                    .Map(x => x.Items.First())
+                                                                    .Reduce(_ => throw new System.Exception());
+            Restaurant teglasRestaurant = _restaurantQueryRepository.Query(new RestaurantQueryModel { Name = "Teglas" })
+                                                                    .Map(x => x.Items.First())
+                                                                    .Reduce(_ => throw new System.Exception());
 
             DailyMenu lipaDailyMenu = _dailyMenuRepository.Query(new DailyMenuQueryModel { RestaurantId = lipaRestaurant.Id }).FirstOrDefault();
             DailyMenu hedoneDailyMenu = _dailyMenuRepository.Query(new DailyMenuQueryModel { RestaurantId = hedoneRestaurant.Id }).FirstOrDefault();
@@ -51,7 +70,7 @@ namespace Exebite.Business.GoogleApiImportExport
 
             // Update daily menu
             lipaDailyMenu.Foods = FoodsFromDB(lipaRestaurant, _lipaConector.GetDailyMenu());
-            _restaurantRepository.Update(lipaRestaurant);
+            _restaurantCommandRepository.Update(lipaRestaurant.Id, _mapper.Map<RestaurantUpdateModel>(lipaRestaurant));
 
             // Teglas
             // Check if all food exist in DB
@@ -59,7 +78,7 @@ namespace Exebite.Business.GoogleApiImportExport
 
             // Update daily menu
             teglasDailyMenu.Foods = FoodsFromDB(teglasRestaurant, _teglasConector.GetDailyMenu());
-            _restaurantRepository.Update(teglasRestaurant);
+            _restaurantCommandRepository.Update(teglasRestaurant.Id, _mapper.Map<RestaurantUpdateModel>(teglasRestaurant));
 
             // Hedone
             // Check if all food exist in DB
@@ -67,7 +86,7 @@ namespace Exebite.Business.GoogleApiImportExport
 
             // Update daily menu
             hedoneDailyMenu.Foods = FoodsFromDB(hedoneRestaurant, _hedoneConector.GetDailyMenu());
-            _restaurantRepository.Update(hedoneRestaurant);
+            _restaurantCommandRepository.Update(hedoneRestaurant.Id, _mapper.Map<RestaurantUpdateModel>(hedoneRestaurant));
         }
 
         /// <summary>

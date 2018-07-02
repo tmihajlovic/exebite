@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Either;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
@@ -11,14 +12,20 @@ namespace Exebite.Business.GoogleApiImportExport
         // Services
         private readonly IOrderService _orderService;
         private readonly ICustomerRepository _customerRepository;
-        private readonly IRestaurantRepository _restaurantRepository;
+        private readonly IRestaurantQueryRepository _restaurantQueryRepository;
 
         // Conectors
         private readonly ILipaConector _lipaConector;
         private readonly IHedoneConector _hedoneConector;
         private readonly ITeglasConector _teglasConector;
 
-        public GoogleApiExport(ITeglasConector teglasConector, IHedoneConector hedoneConector, ILipaConector lipaConector, IOrderService orderService, ICustomerRepository customerRepository, IRestaurantRepository restaurantRepository)
+        public GoogleApiExport(
+            ITeglasConector teglasConector,
+            IHedoneConector hedoneConector,
+            ILipaConector lipaConector,
+            IOrderService orderService,
+            ICustomerRepository customerRepository,
+            IRestaurantQueryRepository restaurantQueryRepository)
         {
             // Conectors
             _lipaConector = lipaConector;
@@ -28,7 +35,7 @@ namespace Exebite.Business.GoogleApiImportExport
             // Services
             _orderService = orderService;
             _customerRepository = customerRepository;
-            _restaurantRepository = restaurantRepository;
+            _restaurantQueryRepository = restaurantQueryRepository;
         }
 
         /// <summary>
@@ -40,7 +47,9 @@ namespace Exebite.Business.GoogleApiImportExport
             switch (restaurantName)
             {
                 case "Restoran pod Lipom":
-                    var lipa = _restaurantRepository.Query(new RestaurantQueryModel { Name = restaurantName }).FirstOrDefault();
+                    var lipa = _restaurantQueryRepository.Query(new RestaurantQueryModel { Name = restaurantName })
+                                                         .Map(x => x.Items.FirstOrDefault())
+                                                         .Reduce(_ => throw new Exception());
                     if (lipa != null)
                     {
                         var lipaOrders = _orderService.GetAllOrdersForRestoraunt(lipa.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
@@ -50,7 +59,9 @@ namespace Exebite.Business.GoogleApiImportExport
                     break;
 
                 case "Hedone":
-                    var hedone = _restaurantRepository.Query(new RestaurantQueryModel { Name = restaurantName }).FirstOrDefault();
+                    var hedone = _restaurantQueryRepository.Query(new RestaurantQueryModel { Name = restaurantName })
+                                                           .Map(x => x.Items.FirstOrDefault())
+                                                           .Reduce(_ => throw new Exception());
                     if (hedone != null)
                     {
                         var hedoneOrders = _orderService.GetAllOrdersForRestoraunt(hedone.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
@@ -60,7 +71,9 @@ namespace Exebite.Business.GoogleApiImportExport
                     break;
 
                 case "Teglas":
-                    var teglas = _restaurantRepository.Query(new RestaurantQueryModel { Name = restaurantName }).FirstOrDefault();
+                    var teglas = _restaurantQueryRepository.Query(new RestaurantQueryModel { Name = restaurantName })
+                                                           .Map(x => x.Items.FirstOrDefault())
+                                                           .Reduce(_ => throw new Exception());
                     if (teglas != null)
                     {
                         var teglasOrders = _orderService.GetAllOrdersForRestoraunt(teglas.Id).Where(o => o.Date == DateTime.Today.Date).ToList();

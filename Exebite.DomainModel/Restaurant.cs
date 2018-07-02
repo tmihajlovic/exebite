@@ -9,7 +9,6 @@ namespace Exebite.DomainModel
         public string Name { get; set; }
 
         public List<Food> Foods { get; set; } = new List<Food>();
-    
 
         public List<Recipe> Recipes { get; set; } = new List<Recipe>();
     }

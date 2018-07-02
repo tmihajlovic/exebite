@@ -23,7 +23,7 @@ namespace FeatureTestingConsole
                     cfg.AddProfile<DataAccessMappingProfile>();
                 })
                 .AddDataAccessServices()
-                .AddTransient(typeof(IConfiguration), x =>
+                .AddTransient(typeof(IConfiguration), _ =>
                 {
                     IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
                     configurationBuilder.AddJsonFile("appsettings.Development.json");
@@ -38,6 +38,7 @@ namespace FeatureTestingConsole
             Console.WriteLine("Starting up FeatureTestingConsole App");
             app.Run(args);
             Console.WriteLine("Gracefully completed");
+            Console.ReadLine();
         }
     }
 }

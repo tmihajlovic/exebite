@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Either;
+using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 
 namespace Exebite.Business
@@ -9,7 +11,7 @@ namespace Exebite.Business
         /// Get restaurants with daily menu
         /// </summary>
         /// <returns>List of restaurants</returns>
-        IList<Restaurant> GetRestorantsWithMenus();
+        Either<Error, PagingResult<Restaurant>> GetRestorantsWithMenus();
 
         /// <summary>
         /// Checks for special offers or food bundels that affect price

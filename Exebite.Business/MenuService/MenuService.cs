@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Either;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 
@@ -8,20 +9,20 @@ namespace Exebite.Business
 {
     public class MenuService : IMenuService
     {
-        private readonly IRestaurantRepository _restaurantRepository;
+        private readonly IRestaurantQueryRepository _restaurantRepository;
         private readonly IFoodRepository _foodRepository;
         private readonly IRecipeRepository _recipeRepository;
 
-        public MenuService(IRestaurantRepository restaurantRepository, IFoodRepository foodRepository, IRecipeRepository recipeRepository)
+        public MenuService(IRestaurantQueryRepository restaurantRepository, IFoodRepository foodRepository, IRecipeRepository recipeRepository)
         {
             _restaurantRepository = restaurantRepository;
             _foodRepository = foodRepository;
             _recipeRepository = recipeRepository;
         }
 
-        public IList<Restaurant> GetRestorantsWithMenus()
+        public Either<Error, PagingResult<Restaurant>> GetRestorantsWithMenus()
         {
-            return _restaurantRepository.Get(0, int.MaxValue);
+            return _restaurantRepository.Query(new RestaurantQueryModel());
         }
 
         public decimal CheckPrice(Meal meal)
