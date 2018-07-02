@@ -76,16 +76,14 @@ namespace Exebite.DataAccess.Repositories
                 {
                     var itemSet = context.Set<RestaurantEntity>();
                     var item = itemSet.Find(id);
-                    if (item != null)
+                    if (item == null)
                     {
-                        itemSet.Remove(item);
-                        context.SaveChanges();
-                        return new Right<Error, bool>(true);
+                        return new Left<Error, bool>(new RecordNotFound($"Record with Id='{id}' is not found."));
                     }
-                    else
-                    {
-                        return new Right<Error, bool>(false);
-                    }
+
+                    itemSet.Remove(item);
+                    context.SaveChanges();
+                    return new Right<Error, bool>(true);
                 }
             }
             catch (Exception ex)
