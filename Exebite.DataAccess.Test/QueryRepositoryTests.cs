@@ -72,10 +72,11 @@ namespace Exebite.DataAccess.Test
             var sut = this.CreateSut(_factory);
 
             // Act
-            var res = sut.Query(this.ConvertNullToQuery());
+            var result = sut.Query(this.ConvertNullToQuery());
 
             // Assert
-            EAssert.IsLeft(res);
+            EAssert.IsLeft(result);
+            Assert.Equal(typeof(ArgumentNotSet), result.LeftContent().GetType());
         }
 
         [Theory]
@@ -83,7 +84,7 @@ namespace Exebite.DataAccess.Test
         [InlineData(1)]
         [InlineData(50)]
         [InlineData(100)]
-        public void Query_MultipleElements(int count)
+        public void Query_MultipleElementsInDatabase_AllElementesReturned(int count)
         {
             // Arrange
             this.InitializeStorage(_factory, count);
@@ -149,10 +150,7 @@ namespace Exebite.DataAccess.Test
         public void Query_ValidId_ValidResult(int count)
         {
             // Arrange
-            IEnumerable<TModel> data = this.SampleData.Take(count + 1).ToList();
             this.InitializeStorage(_factory, count);
-            TModel queryData = data.ElementAt(count);
-
             var sut = this.CreateSut(_factory);
 
             // Act
@@ -188,18 +186,18 @@ namespace Exebite.DataAccess.Test
         }
 
         [Fact]
-        public void Query_ErrorReturned()
+        public void Query_UnExpectedErrorOccurs_ErrorReturned()
         {
             // Arrange
-            this.InitializeStorage(_factory, 20);
-
             var sut = this.CreateSut(_factory);
+            _connection.Close();
 
             // Act
-            var res = sut.Query(this.ConvertNullToQuery());
+            var result = sut.Query(this.ConvertWithPageAndSize(1, QueryConstants.MaxElements));
 
             // Assert
-            EAssert.IsLeft(res);
+            EAssert.IsLeft(result);
+            Assert.Equal(typeof(UnknownError), result.LeftContent().GetType());
         }
 
         protected abstract IDatabaseQueryRepository<TResult, TQuery> CreateSut(IFoodOrderingContextFactory factory);
