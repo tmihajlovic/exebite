@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Either;
 using Exebite.DataAccess.Context;
+using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 
@@ -54,10 +56,10 @@ namespace FeatureTestingConsole
             SeedLocation();
 
             // restaurant related
-            SeedFoods();
 
             SeedCustomer();
-
+            SeedPayment();
+            SeedFoods();
             SeedMeal();
 
             SeedDailyMenu();
@@ -76,6 +78,22 @@ namespace FeatureTestingConsole
             };
 
             this._orderRepo.Insert(order);
+        }
+
+        private void SeedPayment()
+        {
+
+            using (var dc = factory.Create())
+            {
+
+                dc.Payment.Add(new PaymentEntity()
+                {
+                    Amount = 2000,
+                    CustomerId = 1,
+                });
+                dc.SaveChanges();
+            }
+
         }
 
         private void ResetDatabase()

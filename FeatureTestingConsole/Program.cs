@@ -38,6 +38,7 @@ namespace FeatureTestingConsole
             app.Run(args);
             Console.WriteLine("Gracefully completed");
             Console.ReadLine();
+
         }
     }
 }

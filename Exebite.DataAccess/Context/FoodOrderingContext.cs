@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Exebite.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Exebite.DataAccess.Context
 {
@@ -31,6 +32,9 @@ namespace Exebite.DataAccess.Context
         public DbSet<CustomerAliasesEntities> CustomerAliases { get; set; }
 
         public DbSet<DailyMenuEntity> DailyMenues { get; set; }
+
+
+        public DbSet<PaymentEntity> Payment { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -70,6 +74,10 @@ namespace Exebite.DataAccess.Context
 
             modelBuilder.Entity<DailyMenuEntity>()
                 .HasMany(x => x.Foods);
+
+            modelBuilder.Entity<PaymentEntity>()
+                .Property(x => x.Date)
+                .HasDefaultValueSql("GETUTCDATE()");
         }
     }
 }
