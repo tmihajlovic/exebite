@@ -67,6 +67,11 @@ namespace Exebite.DataAccess.Test
 #pragma warning restore RETURN0001 // Do not return null
         }
 
+        protected override int GetUnExistingId()
+        {
+            return 99999;
+        }
+
         public sealed class Data
         {
             public string Name { get; set; }

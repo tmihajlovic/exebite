@@ -147,6 +147,23 @@ namespace Exebite.DataAccess.Test
             EAssert.IsLeft(result);
         }
 
+        [Fact]
+        public void Update_UnExistingObjectUpdate_ErrorReturned()
+        {
+            // Arrange
+            IEnumerable<TModel> data = this.SampleData.Take(4).ToList();
+            this.InitializeStorage(_factory, 0);
+            TModel updateObject = data.ElementAt(3);
+
+            IDatabaseCommandRepository<TId, TInput, TUpdate> repo = this.CreateSut(_factory);
+
+            // Act
+            var result = repo.Update(this.GetUnExistingId(), this.ConvertToUpdate(updateObject));
+
+            // Assert
+            EAssert.IsLeft(result);
+        }
+
         protected abstract IDatabaseCommandRepository<TId, TInput, TUpdate> CreateSut(IFoodOrderingContextFactory factory);
 
         protected abstract void InitializeStorage(IFoodOrderingContextFactory factory, int count);
@@ -160,5 +177,7 @@ namespace Exebite.DataAccess.Test
         protected abstract TUpdate ConvertToUpdate(TModel data);
 
         protected abstract int GetId(Either<Error, TId> newObj);
+
+        protected abstract TId GetUnExistingId();
     }
 }
