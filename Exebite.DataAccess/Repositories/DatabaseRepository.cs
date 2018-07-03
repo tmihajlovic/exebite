@@ -39,10 +39,12 @@ namespace Exebite.DataAccess.Repositories
         {
             using (var dc = _factory.Create())
             {
-                return _mapper.Map<IList<TModel>>(dc.Set<TEntity>()
-                                                    .Skip(page * size)
-                                                    .Take(size)
-                                                    .ToList());
+                var list = dc.Set<TEntity>()
+                             .Skip(page * size)
+                             .Take(size)
+                             .ToList();
+
+                return _mapper.Map<IList<TModel>>(list);
             }
         }
 
