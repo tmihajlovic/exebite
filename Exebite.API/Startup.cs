@@ -11,7 +11,7 @@ namespace Exebite.API
 {
     public class Startup
     {
-        private readonly IServiceProvider provider;
+        private readonly IServiceProvider provider;        
 
         public Startup(IConfiguration configuration, IHostingEnvironment env, IServiceProvider provider)
         {
@@ -58,7 +58,7 @@ namespace Exebite.API
             }
             else
             {
-                app.UseExceptionHandler();
+                app.UseExceptionHandler("/error");
             }
 
             app.UseStatusCodePages();
