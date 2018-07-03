@@ -33,7 +33,6 @@ namespace Exebite.DataAccess.Context
 
         public DbSet<DailyMenuEntity> DailyMenues { get; set; }
 
-
         public DbSet<PaymentEntity> Payment { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
