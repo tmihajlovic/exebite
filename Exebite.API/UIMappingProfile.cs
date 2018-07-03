@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Exebite.API.Models;
+using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 
 #pragma warning disable SA1123 // Do not place regions within elements
@@ -48,6 +49,8 @@ namespace Exebite.API
             #region ResaurantModel
             CreateMap(typeof(Restaurant), typeof(RestaurantDto));
             CreateMap(typeof(RestaurantQueryDto), typeof(RestaurantQueryModel));
+
+
             #endregion  ResaurantModel
             #region DailyMenuModel
             CreateMap(typeof(DailyMenu), typeof(DailyMenuDto));
