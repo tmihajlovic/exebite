@@ -29,54 +29,15 @@ namespace Exebite.DataAccess.Test
         }
 
         #region Customer
-        internal static CustomerRepository FillCustomerDataForTesting(SqliteConnection connection, IEnumerable<CustomerEntity> customers)
+        internal static CustomerQueryRepository CreateOnlyCustomerQueryRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
         {
-            var factory = new InMemoryDBFactory(connection);
-
-            using (var context = factory.Create())
-            {
-                var locations = Enumerable.Range(1, 6).Select(x => new LocationEntity()
-                {
-                    Id = x,
-                    Name = $"Name {x}",
-                    Address = $"Address {x}"
-                });
-
-                context.Locations.AddRange(locations);
-                context.Customers.AddRange(customers);
-                context.SaveChanges();
-            }
-
-            return new CustomerRepository(factory, _mapper, new Mock<ILogger<CustomerRepository>>().Object);
+            return new CustomerQueryRepository(factory, _mapper);
         }
 
-        internal static IEnumerable<CustomerEntity> CreateCustomerEntities(int numberOfCustomers)
+        internal static CustomerCommandRepository CreateOnlyCustomerCommandRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
         {
-            return Enumerable.Range(1, numberOfCustomers)
-                .Select(x => new CustomerEntity()
-                {
-                    Id = x,
-                    Balance = x,
-                    AppUserId = (1000 + x).ToString(),
-                    LocationId = x,
-                    Location = new LocationEntity { Id = x, Address = $"Address {x}", Name = $"Name {x}" },
-                    Name = $"Name {x}",
-                });
+            return new CustomerCommandRepository(factory, _mapper);
         }
-
-        internal static IEnumerable<Customer> CreateCustomers(int startId, int numberOfCustomers)
-        {
-            return Enumerable.Range(startId, numberOfCustomers)
-                            .Select(x => new Customer()
-                            {
-                                Id = x,
-                                Balance = x,
-                                AppUserId = (1000 + x).ToString(),
-                                LocationId = x,
-                                Name = $"Name {x}"
-                            });
-        }
-
         #endregion
 
         #region Location
