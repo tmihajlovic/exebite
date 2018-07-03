@@ -8,7 +8,7 @@ using Microsoft.Data.Sqlite;
 using Optional.Xunit;
 using Xunit;
 
-namespace Exebite.DataAccess.Test
+namespace Exebite.DataAccess.Test.BaseTests
 {
     public abstract class QueryRepositoryTests<TModel, TResult, TQuery>
     {

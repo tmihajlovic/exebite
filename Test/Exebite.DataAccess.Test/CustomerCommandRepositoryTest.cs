@@ -4,6 +4,7 @@ using Either;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Repositories;
+using Exebite.DataAccess.Test.BaseTests;
 using Optional.Xunit;
 using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
