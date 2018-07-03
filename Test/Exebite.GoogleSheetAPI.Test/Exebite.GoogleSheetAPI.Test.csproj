@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Exebite.GoogleSheetAPI\Exebite.GoogleSheetAPI.csproj" />
+    <ProjectReference Include="..\..\Exebite.GoogleSheetAPI\Exebite.GoogleSheetAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

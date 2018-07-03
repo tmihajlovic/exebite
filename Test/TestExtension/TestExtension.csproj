@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Either\Either.csproj" />
-    <ProjectReference Include="..\Option\Option.csproj" />
+    <ProjectReference Include="..\..\Either\Either.csproj" />
+    <ProjectReference Include="..\..\Option\Option.csproj" />
   </ItemGroup>
 
 </Project>
