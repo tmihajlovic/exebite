@@ -15,11 +15,7 @@ namespace Exebite.DataAccess
             CreateMap<OrderEntity, Order>();
             CreateMap<FoodEntity, Food>();
             CreateMap<RestaurantEntity, Restaurant>();
-            CreateMap<RestaurantInsertModel, Restaurant>();
-            CreateMap<RestaurantUpdateModel, Restaurant>();
             CreateMap<LocationEntity, Location>();
-            CreateMap<LocationInsertModel, Location>();
-            CreateMap<LocationUpdateModel, Location>();
             CreateMap<RecipeEntity, Recipe>()
                 .ForMember(r => r.SideDish, v => v.MapFrom(c => c.FoodEntityRecipeEntities.Select(re => re.FoodEntity).ToList()));
             CreateMap<DailyMenuEntity, DailyMenu>();
