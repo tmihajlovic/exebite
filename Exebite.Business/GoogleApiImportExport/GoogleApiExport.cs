@@ -11,10 +11,10 @@ namespace Exebite.Business.GoogleApiImportExport
     {
         // Services
         private readonly IOrderService _orderService;
-        private readonly ICustomerRepository _customerRepository;
-        private readonly IRestaurantQueryRepository _restaurantQueryRepository;
+        private readonly ICustomerQueryRepository _customerQueryRepo;
+        private readonly IRestaurantQueryRepository _restaurantQueryRepo;
 
-        // Conectors
+        // Connectors
         private readonly ILipaConector _lipaConector;
         private readonly IHedoneConector _hedoneConector;
         private readonly ITeglasConector _teglasConector;
@@ -24,18 +24,18 @@ namespace Exebite.Business.GoogleApiImportExport
             IHedoneConector hedoneConector,
             ILipaConector lipaConector,
             IOrderService orderService,
-            ICustomerRepository customerRepository,
-            IRestaurantQueryRepository restaurantQueryRepository)
+            ICustomerQueryRepository customerQueryRepo,
+            IRestaurantQueryRepository restaurantQueryRepo)
         {
-            // Conectors
+            // Connectors
             _lipaConector = lipaConector;
             _hedoneConector = hedoneConector;
             _teglasConector = teglasConector;
 
             // Services
             _orderService = orderService;
-            _customerRepository = customerRepository;
-            _restaurantQueryRepository = restaurantQueryRepository;
+            _customerQueryRepo = customerQueryRepo;
+            _restaurantQueryRepo = restaurantQueryRepo;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Exebite.Business.GoogleApiImportExport
             switch (restaurantName)
             {
                 case "Restoran pod Lipom":
-                    var lipa = _restaurantQueryRepository.Query(new RestaurantQueryModel { Name = restaurantName })
+                    var lipa = _restaurantQueryRepo.Query(new RestaurantQueryModel { Name = restaurantName })
                                                          .Map(x => x.Items.FirstOrDefault())
                                                          .Reduce(_ => throw new Exception());
                     if (lipa != null)
@@ -59,7 +59,7 @@ namespace Exebite.Business.GoogleApiImportExport
                     break;
 
                 case "Hedone":
-                    var hedone = _restaurantQueryRepository.Query(new RestaurantQueryModel { Name = restaurantName })
+                    var hedone = _restaurantQueryRepo.Query(new RestaurantQueryModel { Name = restaurantName })
                                                            .Map(x => x.Items.FirstOrDefault())
                                                            .Reduce(_ => throw new Exception());
                     if (hedone != null)
@@ -71,7 +71,7 @@ namespace Exebite.Business.GoogleApiImportExport
                     break;
 
                 case "Teglas":
-                    var teglas = _restaurantQueryRepository.Query(new RestaurantQueryModel { Name = restaurantName })
+                    var teglas = _restaurantQueryRepo.Query(new RestaurantQueryModel { Name = restaurantName })
                                                            .Map(x => x.Items.FirstOrDefault())
                                                            .Reduce(_ => throw new Exception());
                     if (teglas != null)
@@ -101,7 +101,9 @@ namespace Exebite.Business.GoogleApiImportExport
         /// </summary>
         public void UpdateKasaTab()
         {
-            var customerList = _customerRepository.Get(0, int.MaxValue).ToList();
+            var customerList = _customerQueryRepo.Query(new CustomerQueryModel())
+                                                 .Map(x => x.Items.ToList())
+                                                 .Reduce(_ => throw new Exception());
             _teglasConector.WriteKasaTab(customerList);
 
             _lipaConector.WriteKasaTab(customerList);

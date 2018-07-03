@@ -5,7 +5,6 @@ using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exebite.API.Controllers
@@ -13,7 +12,7 @@ namespace Exebite.API.Controllers
     [Produces("application/json")]
     [Route("api/restaurant")]
     [Authorize]
-    public class RestaurantController : Controller
+    public class RestaurantController : ControllerBase
     {
         private readonly IRestaurantQueryRepository _queryRepository;
         private readonly IRestaurantCommandRepository _commandRepository;
@@ -34,7 +33,7 @@ namespace Exebite.API.Controllers
 
         [HttpGet("{id}")]
         public IActionResult Get(int id) =>
-                        _queryRepository.Query(new RestaurantQueryModel { Id = id })
+            _queryRepository.Query(new RestaurantQueryModel { Id = id })
                             .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantModel>>(x.Items)))
                             .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
                             .Reduce(InternalServerError);
@@ -66,8 +65,5 @@ namespace Exebite.API.Controllers
                             .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantModel>>(x.Items)))
                             .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
                             .Reduce(InternalServerError);
-
-        private IActionResult InternalServerError(Error error) =>
-            StatusCode(StatusCodes.Status500InternalServerError, error);
     }
 }

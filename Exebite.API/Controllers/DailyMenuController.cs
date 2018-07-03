@@ -10,7 +10,7 @@ namespace Exebite.API.Controllers
     [Produces("application/json")]
     [Route("api/dailymenu")]
     [Authorize]
-    public class DailyMenuController : Controller
+    public class DailyMenuController : ControllerBase
     {
         private readonly IDailyMenuRepository _dailyMenuRepository;
         private readonly IMapper _exebiteMapper;

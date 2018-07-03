@@ -5,7 +5,6 @@ using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exebite.API.Controllers
@@ -13,7 +12,7 @@ namespace Exebite.API.Controllers
     [Produces("application/json")]
     [Route("api/location")]
     [Authorize]
-    public class LocationController : Controller
+    public class LocationController : ControllerBase
     {
         private readonly ILocationCommandRepository _commandRepository;
         private readonly ILocationQueryRepository _queryRepository;
@@ -70,8 +69,5 @@ namespace Exebite.API.Controllers
                 .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<LocationModel>>(x.Items)))
                 .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
                 .Reduce(InternalServerError);
-
-        private IActionResult InternalServerError(Error error) =>
-                StatusCode(StatusCodes.Status500InternalServerError, error);
     }
 }

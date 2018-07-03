@@ -34,7 +34,8 @@ namespace Exebite.JobScheduler.Unity
             container.RegisterType<IJobSchedulerRepository, JobSchedulerRepository>();
             container.RegisterType<IMenuService, MenuService>();
             container.RegisterType<IOrderService, OrderService>();
-            container.RegisterType<ICustomerRepository, CustomerRepository>();
+            container.RegisterType<ICustomerQueryRepository, CustomerQueryRepository>();
+            container.RegisterType<ICustomerCommandRepository, CustomerCommandRepository>();
             container.RegisterType<IFoodRepository, FoodRepository>();
             container.RegisterType<ILocationCommandRepository, LocationCommandRepository>();
             container.RegisterType<ILocationQueryRepository, LocationQueryRepository>();

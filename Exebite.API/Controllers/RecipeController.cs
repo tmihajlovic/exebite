@@ -10,7 +10,7 @@ namespace Exebite.API.Controllers
     [Produces("application/json")]
     [Route("api/recipe")]
     [Authorize]
-    public class RecipeController : Controller
+    public class RecipeController : ControllerBase
     {
         private readonly IRecipeRepository _recipeRepository;
         private readonly IMapper _exebiteMapper;

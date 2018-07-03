@@ -9,7 +9,7 @@ namespace Exebite.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/customeraliases")]
-    public class CustomerAliasesController : Controller
+    public class CustomerAliasesController : ControllerBase
     {
         private readonly ICustomerAliasRepository _customerAliasRepository;
         private readonly IMapper _mapper;

@@ -10,9 +10,9 @@ namespace Exebite.API
         public UIMappingProfile()
         {
             #region CustomerModel
-            CreateMap(typeof(CustomerModel), typeof(Customer));
-            CreateMap(typeof(CreateCustomerModel), typeof(Customer));
-            CreateMap(typeof(UpdateCustomerModel), typeof(Customer));
+            CreateMap(typeof(CustomerDto), typeof(Customer));
+            CreateMap(typeof(CreateCustomerDto), typeof(Customer));
+            CreateMap(typeof(UpdateCustomerDto), typeof(Customer));
             #endregion CustomerModel
             #region CustomerAliasesModel
             CreateMap(typeof(CustomerAliases), typeof(CustomerAliasModel));

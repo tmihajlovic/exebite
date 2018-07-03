@@ -2,7 +2,7 @@
 
 namespace Exebite.API.Models
 {
-    public class UpdateCustomerModel
+    public class UpdateCustomerDto
     {
         [Required]
         public string Name { get; set; }

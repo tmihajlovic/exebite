@@ -16,7 +16,7 @@ namespace FeatureTestingConsole
         private readonly IRestaurantQueryRepository _restaurantQueryRepository;
         private readonly IRestaurantCommandRepository _restaurantCommandRepository;
         private readonly IFoodRepository _foodRepository;
-        private readonly ICustomerRepository _customerRepo;
+        private readonly ICustomerCommandRepository _customerCommandRepo;
         private readonly ILocationCommandRepository _locationCommandRepo;
         private readonly IDailyMenuRepository _dailyMenu;
         private readonly IMealRepository _mealRepo;
@@ -25,10 +25,10 @@ namespace FeatureTestingConsole
 
         public App(
             IOrderRepository orderRepository,
-            IRestaurantQueryRepository restaurantQueryRepository,
-            IRestaurantCommandRepository restaurantCommandRepository,
+            IRestaurantQueryRepository restaurantQueryRepo,
+            IRestaurantCommandRepository restaurantCommandRepo,
             IFoodRepository foodRepository,
-            ICustomerRepository customerRepository,
+            ICustomerCommandRepository customerCommandRepo,
             ILocationCommandRepository locationCommandRepo,
             IMealRepository mealRepo,
             IFoodOrderingContextFactory factory,
@@ -36,10 +36,10 @@ namespace FeatureTestingConsole
             IMapper mapper)
         {
             _orderRepo = orderRepository;
-            _restaurantQueryRepository = restaurantQueryRepository;
-            _restaurantCommandRepository = restaurantCommandRepository;
+            _restaurantQueryRepository = restaurantQueryRepo;
+            _restaurantCommandRepository = restaurantCommandRepo;
             _foodRepository = foodRepository;
-            _customerRepo = customerRepository;
+            _customerCommandRepo = customerCommandRepo;
             _locationCommandRepo = locationCommandRepo;
             _mealRepo = mealRepo;
             this.factory = factory;
@@ -55,9 +55,7 @@ namespace FeatureTestingConsole
             SeedRestaurant();
             SeedLocation();
 
-            // restaurant related
-
-            SeedCustomer();
+            SeedCustomer(); // restaurant related
             SeedPayment();
             SeedFoods();
             SeedMeal();
@@ -82,10 +80,8 @@ namespace FeatureTestingConsole
 
         private void SeedPayment()
         {
-
             using (var dc = factory.Create())
             {
-
                 dc.Payment.Add(new PaymentEntity()
                 {
                     Amount = 2000,
@@ -93,7 +89,6 @@ namespace FeatureTestingConsole
                 });
                 dc.SaveChanges();
             }
-
         }
 
         private void ResetDatabase()
@@ -107,7 +102,7 @@ namespace FeatureTestingConsole
 
         private void SeedCustomer()
         {
-            _customerRepo.Insert(new Customer()
+            _customerCommandRepo.Insert(new CustomerInsertModel
             {
                 Name = "Customer 1",
                 AppUserId = "1514586545614 546456",
@@ -115,7 +110,7 @@ namespace FeatureTestingConsole
                 LocationId = 1
             });
 
-            _customerRepo.Insert(new Customer()
+            _customerCommandRepo.Insert(new CustomerInsertModel
             {
                 Name = "Customer 2",
                 AppUserId = "1514586545614 546456",

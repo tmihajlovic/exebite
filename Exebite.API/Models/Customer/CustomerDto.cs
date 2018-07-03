@@ -1,6 +1,6 @@
 ﻿namespace Exebite.API.Models
 {
-    public class CustomerModel
+    public class CustomerDto
     {
         public int Id { get; set; }
 

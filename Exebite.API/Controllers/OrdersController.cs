@@ -12,17 +12,19 @@ namespace Exebite.API.Controllers
     [Produces("application/json")]
     [Route("api/orders")]
     [Authorize]
-    public class OrdersController : Controller
+    public class OrdersController : ControllerBase
     {
-        private readonly ICustomerRepository _customerRepository;
         private readonly IMenuService _menuService;
         private readonly IOrderService _orderService;
         private readonly IFoodRepository _foodRepository;
         private readonly IMapper _mapper;
 
-        public OrdersController(ICustomerRepository customerRepository, IMenuService menuService, IOrderService orderService, IFoodRepository foodRepository, IMapper mapper)
+        public OrdersController(
+            IMenuService menuService,
+            IOrderService orderService,
+            IFoodRepository foodRepository,
+            IMapper mapper)
         {
-            _customerRepository = customerRepository;
             _menuService = menuService;
             _orderService = orderService;
             _foodRepository = foodRepository;

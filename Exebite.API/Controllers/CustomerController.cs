@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using Either;
 using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exebite.API.Controllers
@@ -11,71 +13,58 @@ namespace Exebite.API.Controllers
     [Produces("application/json")]
     [Route("api/Customer")]
     [Authorize]
-    public class CustomerController : Controller
+    public class CustomerController : ControllerBase
     {
-        private readonly ICustomerRepository _customerRepository;
+        private readonly ICustomerQueryRepository _queryRepo;
+        private readonly ICustomerCommandRepository _commandRepo;
         private readonly IMapper _mapper;
 
-        public CustomerController(ICustomerRepository customerRepository, IMapper mapper)
+        public CustomerController(ICustomerQueryRepository queryRepo, ICustomerCommandRepository commandRepo, IMapper mapper)
         {
-            _customerRepository = customerRepository;
+            _queryRepo = queryRepo;
+            _commandRepo = commandRepo;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult Get()
-        {
-            var customers = _customerRepository.Get(0, int.MaxValue);
-            return Ok(_mapper.Map<IEnumerable<CustomerModel>>(customers));
-        }
+        public IActionResult Get(int page, int size) =>
+            _queryRepo.Query(new CustomerQueryModel(page, size))
+                      .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<CustomerDto>>(x.Items)))
+                      .Reduce(InternalServerError);
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var customer = _customerRepository.GetByID(id);
-            return Ok(_mapper.Map<CustomerModel>(customer));
-        }
+        public IActionResult Get(int id) =>
+            _queryRepo.Query(new CustomerQueryModel { Id = id })
+                      .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<CustomerDto>>(x.Items)))
+                      .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
+                      .Reduce(InternalServerError);
 
         [HttpGet("Query")]
-        public IActionResult Query(CustomerQueryModel query)
-        {
-            var customers = _customerRepository.Query(query);
-            return Ok(_mapper.Map<IEnumerable<CustomerModel>>(customers));
-        }
+        public IActionResult Query(CustomerQueryModel query) =>
+            _queryRepo.Query(_mapper.Map<CustomerQueryModel>(query))
+                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<CustomerDto>>(x.Items)))
+                            .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
+                            .Reduce(InternalServerError);
 
         [HttpPost]
-        public IActionResult Post([FromBody]CreateCustomerModel createModel)
-        {
-            var customer = _mapper.Map<Customer>(createModel);
-            var id = _customerRepository.Insert(customer);
-            return Ok(new { id });
-        }
+        public IActionResult Post([FromBody]CreateCustomerDto createModel) =>
+            _commandRepo.Insert(_mapper.Map<CustomerInsertModel>(createModel))
+                        .Map(x => (IActionResult)Ok(x))
+                        .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
+                        .Reduce(InternalServerError);
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateCustomerModel customerViewModel)
-        {
-            if (customerViewModel == null)
-            {
-                return BadRequest();
-            }
-
-            var currentCustomer = _customerRepository.GetByID(id);
-            if (currentCustomer == null)
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(customerViewModel, currentCustomer);
-            var updatedCustomer = _customerRepository.Update(currentCustomer);
-
-            return Ok(new { updatedCustomer.Id });
-        }
+        public IActionResult Put(int id, [FromBody] UpdateCustomerDto model) =>
+            _commandRepo.Update(id, _mapper.Map<CustomerUpdateModel>(model))
+                  .Map(x => (IActionResult)Ok(x))
+                  .Reduce(_ => (IActionResult)NotFound(), error => error is RecordNotFound)
+                  .Reduce(InternalServerError);
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _customerRepository.Delete(id);
-            return NoContent();
-        }
+        public IActionResult Delete(int id) =>
+            _commandRepo.Delete(id)
+                        .Map(_ => (IActionResult)NoContent())
+                        .Reduce(_ => (IActionResult)NotFound(), error => error is RecordNotFound)
+                        .Reduce(InternalServerError);
     }
 }
