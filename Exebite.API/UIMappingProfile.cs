@@ -28,6 +28,7 @@ namespace Exebite.API
             CreateMap(typeof(Location), typeof(LocationDto));
             CreateMap(typeof(UpdateLocationDto), typeof(Location));
             CreateMap(typeof(CreateLocationDto), typeof(Location));
+            CreateMap(typeof(LocationQueryDto), typeof(LocationQueryModel));
             #endregion LocationModel
             #region MealEntity
             CreateMap(typeof(Order), typeof(OrderDto));

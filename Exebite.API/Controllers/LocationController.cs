@@ -38,36 +38,36 @@ namespace Exebite.API.Controllers
         public IActionResult Get(int id) =>
              _queryRepository.Query(new LocationQueryModel { Id = id })
                                      .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantDto>>(x.Items)))
-                                     .Reduce(_ => (IActionResult)NotFound(), error => error is RecordNotFound)
+                                     .Reduce(_ => NotFound(), error => error is RecordNotFound)
                                      .Reduce(InternalServerError);
 
         [HttpPost]
         public IActionResult Post([FromBody]CreateLocationDto model) =>
             _commandRepository.Insert(_mapper.Map<LocationInsertModel>(model))
                                       .Map(x => (IActionResult)Ok(x))
-                                      .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
+                                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                                       .Reduce(InternalServerError);
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]UpdateLocationDto model) =>
             _commandRepository.Update(id, _mapper.Map<LocationUpdateModel>(model))
                                       .Map(x => (IActionResult)Ok(x))
-                                      .Reduce(_ => (IActionResult)NotFound(), error => error is RecordNotFound)
-                                      .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
+                                      .Reduce(_ => NotFound(), error => error is RecordNotFound)
+                                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                                       .Reduce(InternalServerError);
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id) =>
             _commandRepository.Delete(id)
                               .Map(_ => (IActionResult)NoContent())
-                              .Reduce(_ => (IActionResult)NotFound(), error => error is RecordNotFound)
+                              .Reduce(_ => NotFound(), error => error is RecordNotFound)
                               .Reduce(InternalServerError);
 
         [HttpGet("Query")]
-        public IActionResult Query(LocationQueryModel query) =>
+        public IActionResult Query(LocationQueryDto query) =>
             _queryRepository.Query(_mapper.Map<LocationQueryModel>(query))
                 .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<LocationDto>>(x.Items)))
-                .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
+                .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                 .Reduce(InternalServerError);
     }
 }
