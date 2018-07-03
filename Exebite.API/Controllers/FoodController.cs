@@ -25,7 +25,7 @@ namespace Exebite.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var foods = _mapper.Map<IEnumerable<FoodModel>>(_foodRepository.Get(0, int.MaxValue));
+            var foods = _mapper.Map<IEnumerable<FoodDto>>(_foodRepository.Get(0, int.MaxValue));
             return Ok(foods);
         }
 
@@ -38,11 +38,11 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<FoodModel>(food));
+            return Ok(_mapper.Map<FoodDto>(food));
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]CreateFoodModel model)
+        public IActionResult Post([FromBody]CreateFoodDto model)
         {
             if (model == null)
             {
@@ -55,7 +55,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]UpdateFoodModel model)
+        public IActionResult Put(int id, [FromBody]UpdateFoodDto model)
         {
             if (model == null)
             {
@@ -84,7 +84,7 @@ namespace Exebite.API.Controllers
         public IActionResult Query(FoodQueryModel query)
         {
             var foods = _foodRepository.Query(query);
-            return Ok(_mapper.Map<IEnumerable<FoodModel>>(foods));
+            return Ok(_mapper.Map<IEnumerable<FoodDto>>(foods));
         }
     }
 }

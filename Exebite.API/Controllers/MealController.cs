@@ -24,7 +24,7 @@ namespace Exebite.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var meals = _exebiteMapper.Map<IEnumerable<MealModel>>(_mealRepository.Get(0, int.MaxValue));
+            var meals = _exebiteMapper.Map<IEnumerable<MealDto>>(_mealRepository.Get(0, int.MaxValue));
             return Ok(meals);
         }
 
@@ -37,11 +37,11 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            return Ok(_exebiteMapper.Map<MealModel>(meal));
+            return Ok(_exebiteMapper.Map<MealDto>(meal));
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]CreateMealModel model)
+        public IActionResult Post([FromBody]CreateMealDto model)
         {
             if (model == null)
             {
@@ -54,7 +54,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]UpdateMealModel model)
+        public IActionResult Put(int id, [FromBody]UpdateMealDto model)
         {
             if (model == null)
             {

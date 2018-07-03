@@ -28,13 +28,13 @@ namespace Exebite.API.Controllers
         [HttpGet]
         public IActionResult Get(int page, int size) =>
             _queryRepository.Query(new RestaurantQueryModel(page, size))
-                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantModel>>(x.Items)))
+                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantDto>>(x.Items)))
                             .Reduce(InternalServerError);
 
         [HttpGet("{id}")]
         public IActionResult Get(int id) =>
             _queryRepository.Query(new RestaurantQueryModel { Id = id })
-                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantModel>>(x.Items)))
+                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantDto>>(x.Items)))
                             .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
                             .Reduce(InternalServerError);
 
@@ -62,7 +62,7 @@ namespace Exebite.API.Controllers
         [HttpGet("Query")]
         public IActionResult Query(RestaurantQueryDto query) =>
             _queryRepository.Query(_mapper.Map<RestaurantQueryModel>(query))
-                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantModel>>(x.Items)))
+                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantDto>>(x.Items)))
                             .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
                             .Reduce(InternalServerError);
     }

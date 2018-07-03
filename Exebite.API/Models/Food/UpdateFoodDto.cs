@@ -5,13 +5,13 @@ using Newtonsoft.Json.Converters;
 
 namespace Exebite.API.Models
 {
-    public class CreateFoodModel
+    public class UpdateFoodDto
     {
         [Required]
         public string Name { get; set; }
 
-        [Required]
         [JsonConverter(typeof(StringEnumConverter))]
+        [Required]
         public FoodType Type { get; set; }
 
         [Range(0, double.MaxValue)]

@@ -23,7 +23,7 @@ namespace Exebite.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var customerAliases = _mapper.Map<IEnumerable<MealModel>>(_customerAliasRepository.Get(0, int.MaxValue));
+            var customerAliases = _mapper.Map<IEnumerable<MealDto>>(_customerAliasRepository.Get(0, int.MaxValue));
             return Ok(customerAliases);
         }
 
@@ -36,11 +36,11 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<CustomerAliasModel>(customerAlias));
+            return Ok(_mapper.Map<CustomerAliasDto>(customerAlias));
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]CreateCustomerAliasModel model)
+        public IActionResult Post([FromBody]CreateCustomerAliasDto model)
         {
             if (model == null)
             {
@@ -52,7 +52,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]UpdateCustomerAliasModel model)
+        public IActionResult Put(int id, [FromBody]UpdateCustomerAliasDto model)
         {
             if (model == null)
             {
@@ -82,7 +82,7 @@ namespace Exebite.API.Controllers
         public IActionResult Query(CustomerAliasQueryModel query)
         {
             var locations = _customerAliasRepository.Query(query);
-            return Ok(_mapper.Map<IEnumerable<CustomerAliasModel>>(locations));
+            return Ok(_mapper.Map<IEnumerable<CustomerAliasDto>>(locations));
         }
     }
 }

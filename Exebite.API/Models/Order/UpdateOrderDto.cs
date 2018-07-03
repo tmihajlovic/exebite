@@ -2,7 +2,7 @@
 
 namespace Exebite.API.Models
 {
-    public class UpdateOrderModel
+    public class UpdateOrderDto
     {
         [Required]
         public int[] FoodIds { get; set; }

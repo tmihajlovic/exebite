@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Exebite.API.Models
 {
-    public class UpdateMealModel
+    public class CreateMealDto
     {
         [Range(0, double.MaxValue)]
         public decimal Price { get; set; }
 
         [Required]
-        public List<FoodModel> Foods { get; set; }
+        public List<FoodDto> Foods { get; set; }
     }
 }

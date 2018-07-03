@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Exebite.API.Models
 {
-    public class UpdateRecipeModel
+    public class CreateRecipeDto
     {
         [Required]
         public int RestaurantId { get; set; }
@@ -12,6 +12,6 @@ namespace Exebite.API.Models
         public int FoodId { get; set; }
 
         [Required]
-        public List<FoodModel> SideDish { get; set; }
+        public List<FoodDto> SideDish { get; set; }
     }
 }

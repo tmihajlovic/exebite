@@ -2,7 +2,7 @@
 
 namespace Exebite.API.Models
 {
-    public class OrderModel
+    public class OrderDto
     {
         public int Id { get; set; }
 

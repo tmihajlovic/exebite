@@ -2,7 +2,7 @@
 
 namespace Exebite.API.Models
 {
-    public class CreateLocationModel
+    public class UpdateLocationDto
     {
         [Required]
         public string Name { get; set; }

@@ -35,7 +35,7 @@ namespace Exebite.API.Controllers
         public IActionResult Get()
         {
             var listOfOrders = _orderService.GetAllOrders();
-            return Ok(_mapper.Map<IEnumerable<OrderModel>>(listOfOrders));
+            return Ok(_mapper.Map<IEnumerable<OrderDto>>(listOfOrders));
         }
 
         [HttpGet("{id}")]
@@ -47,11 +47,11 @@ namespace Exebite.API.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<OrderModel>(order));
+            return Ok(_mapper.Map<OrderDto>(order));
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CreateOrderModel model)
+        public IActionResult Post([FromBody] CreateOrderDto model)
         {
             if (model == null)
             {
@@ -64,7 +64,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateOrderModel model)
+        public IActionResult Put(int id, [FromBody] UpdateOrderDto model)
         {
             if (model == null)
             {

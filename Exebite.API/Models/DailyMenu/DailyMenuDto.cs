@@ -1,9 +1,9 @@
 ﻿namespace Exebite.API.Models
 {
-    public class MealModel
+    public class DailyMenuDto
     {
         public int Id { get; set; }
 
-        public decimal Price { get; set; }
+        public int RestaurantId { get; set; }
     }
 }

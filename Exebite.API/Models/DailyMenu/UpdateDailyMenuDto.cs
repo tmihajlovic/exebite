@@ -2,7 +2,7 @@
 
 namespace Exebite.API.Models
 {
-    public class UpdateDailyMenuModel
+    public class UpdateDailyMenuDto
     {
         [Required]
         public int RestaurantId { get; set; }

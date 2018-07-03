@@ -2,7 +2,7 @@
 
 namespace Exebite.API.Models
 {
-    public class CreateCustomerAliasModel
+    public class UpdateCustomerAliasDto
     {
         [Required]
         public string Alias { get; set; }

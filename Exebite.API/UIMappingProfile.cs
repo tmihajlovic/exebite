@@ -15,43 +15,43 @@ namespace Exebite.API
             CreateMap(typeof(UpdateCustomerDto), typeof(Customer));
             #endregion CustomerModel
             #region CustomerAliasesModel
-            CreateMap(typeof(CustomerAliases), typeof(CustomerAliasModel));
-            CreateMap(typeof(CreateCustomerAliasModel), typeof(CustomerAliases));
-            CreateMap(typeof(UpdateCustomerAliasModel), typeof(CustomerAliases));
+            CreateMap(typeof(CustomerAliases), typeof(CustomerAliasDto));
+            CreateMap(typeof(CreateCustomerAliasDto), typeof(CustomerAliases));
+            CreateMap(typeof(UpdateCustomerAliasDto), typeof(CustomerAliases));
             #endregion CustomerAliasesModel
             #region FoodModel
-            CreateMap(typeof(Food), typeof(FoodModel));
-            CreateMap(typeof(CreateFoodModel), typeof(Food));
-            CreateMap(typeof(UpdateFoodModel), typeof(Food));
+            CreateMap(typeof(Food), typeof(FoodDto));
+            CreateMap(typeof(CreateFoodDto), typeof(Food));
+            CreateMap(typeof(UpdateFoodDto), typeof(Food));
             #endregion  FoodModel
             #region LocationModel
-            CreateMap(typeof(Location), typeof(LocationModel));
-            CreateMap(typeof(UpdateLocationModel), typeof(Location));
-            CreateMap(typeof(CreateLocationModel), typeof(Location));
+            CreateMap(typeof(Location), typeof(LocationDto));
+            CreateMap(typeof(UpdateLocationDto), typeof(Location));
+            CreateMap(typeof(CreateLocationDto), typeof(Location));
             #endregion LocationModel
             #region MealEntity
-            CreateMap(typeof(Order), typeof(OrderModel));
-            CreateMap(typeof(CreateOrderModel), typeof(Order));
-            CreateMap(typeof(UpdateOrderModel), typeof(Order));
+            CreateMap(typeof(Order), typeof(OrderDto));
+            CreateMap(typeof(CreateOrderDto), typeof(Order));
+            CreateMap(typeof(UpdateOrderDto), typeof(Order));
             #endregion MealEntity
             #region MealModel
-            CreateMap(typeof(Meal), typeof(MealModel));
-            CreateMap(typeof(CreateMealModel), typeof(Meal));
-            CreateMap(typeof(UpdateMealModel), typeof(Meal));
+            CreateMap(typeof(Meal), typeof(MealDto));
+            CreateMap(typeof(CreateMealDto), typeof(Meal));
+            CreateMap(typeof(UpdateMealDto), typeof(Meal));
             #endregion MealModel
             #region RecipeModel
-            CreateMap(typeof(Recipe), typeof(RecipeModel));
-            CreateMap(typeof(CreateRecipeModel), typeof(Recipe));
-            CreateMap(typeof(UpdateRecipeModel), typeof(Recipe));
+            CreateMap(typeof(Recipe), typeof(RecipeDto));
+            CreateMap(typeof(CreateRecipeDto), typeof(Recipe));
+            CreateMap(typeof(UpdateRecipeDto), typeof(Recipe));
             #endregion RecipeModel
             #region ResaurantModel
-            CreateMap(typeof(Restaurant), typeof(RestaurantModel));
+            CreateMap(typeof(Restaurant), typeof(RestaurantDto));
             CreateMap(typeof(RestaurantQueryDto), typeof(RestaurantQueryModel));
             #endregion  ResaurantModel
             #region DailyMenuModel
-            CreateMap(typeof(DailyMenu), typeof(DailyMenuModel));
-            CreateMap(typeof(UpdateDailyMenuModel), typeof(DailyMenu));
-            CreateMap(typeof(CreateDailyMenuModel), typeof(DailyMenu));
+            CreateMap(typeof(DailyMenu), typeof(DailyMenuDto));
+            CreateMap(typeof(UpdateDailyMenuDto), typeof(DailyMenu));
+            CreateMap(typeof(CreateDailyMenuDto), typeof(DailyMenu));
             #endregion
         }
     }
