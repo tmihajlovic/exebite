@@ -1,14 +1,17 @@
-﻿using System;
-using AutoMapper;
-using Exebite.DataAccess;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Exebite.API
+﻿namespace Exebite.API
 {
+    using System;
+    using System.Reflection;
+    using AutoMapper;
+    using Exebite.DataAccess;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc.Authorization;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using NJsonSchema;
+    using NSwag.AspNetCore;
+
     public class Startup
     {
         private readonly IServiceProvider provider;
@@ -64,6 +67,12 @@ namespace Exebite.API
             app.UseStatusCodePages();
 
             app.UseMvc();
+
+            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
+            {
+                settings.GeneratorSettings.DefaultPropertyNameHandling =
+                    PropertyNameHandling.CamelCase;
+            });
         }
     }
 }
