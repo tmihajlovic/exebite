@@ -22,5 +22,11 @@ namespace Exebite.API.Controllers
 
         protected IActionResult AllOk<T>(T content) =>
             StatusCode(StatusCodes.Status200OK, content);
+
+
+        protected IActionResult OkNoContent() =>
+            StatusCode(StatusCodes.Status204NoContent);
+
+
     }
 }

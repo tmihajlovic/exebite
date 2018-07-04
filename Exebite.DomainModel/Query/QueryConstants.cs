@@ -2,6 +2,6 @@
 {
     public static class QueryConstants
     {
-        public static int MaxElements { get; } = 100;
+        public const int MaxElements  = 100;
     }
 }

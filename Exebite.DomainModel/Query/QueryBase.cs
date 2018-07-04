@@ -5,7 +5,7 @@
         protected QueryBase()
         {
             Page = 1;
-            Size = int.MaxValue;
+            Size = QueryConstants.MaxElements;
         }
 
         protected QueryBase(int page, int size)
