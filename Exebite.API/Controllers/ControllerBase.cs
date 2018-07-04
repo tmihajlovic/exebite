@@ -26,7 +26,5 @@ namespace Exebite.API.Controllers
 
         protected IActionResult OkNoContent() =>
             StatusCode(StatusCodes.Status204NoContent);
-
-
     }
 }

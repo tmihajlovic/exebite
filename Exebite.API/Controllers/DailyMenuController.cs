@@ -6,7 +6,7 @@ using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NLog;
+using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
@@ -18,13 +18,13 @@ namespace Exebite.API.Controllers
         private readonly IDailyMenuQueryRepository _queryRepo;
         private readonly IDailyMenuCommandRepository _commandRepo;
         private readonly IMapper _mapper;
-        private readonly ILogger _logger;
+        private readonly ILogger<DailyMenuController> _logger;
 
         public DailyMenuController(
             IDailyMenuQueryRepository queryRepo,
             IDailyMenuCommandRepository commandRepo,
             IMapper mapper,
-            ILogger logger)
+            ILogger<DailyMenuController> logger)
         {
             _mapper = mapper;
             _queryRepo = queryRepo;
@@ -35,43 +35,42 @@ namespace Exebite.API.Controllers
         [HttpGet]
         public IActionResult Get(int page, int size) =>
             _queryRepo.Query(new DailyMenuQueryModel(page, size))
-                      .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<DailyMenuDto>>(x.Items)))
-                      .Reduce(_ => InternalServerError(), x => _logger.Error(x));
+                      .Map(x => AllOk(_mapper.Map<PagingResult<DailyMenuDto>>(x)))
+                      .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("{id}")]
         public IActionResult Get(int id) =>
             _queryRepo.Query(new DailyMenuQueryModel { Id = id })
-                      .Map(x => AllOk(_mapper.Map<IEnumerable<DailyMenuDto>>(x.Items)))
-                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.Error(x))
-                      .Reduce(_ => InternalServerError(), x => _logger.Error(x));
+                      .Map(x => AllOk(_mapper.Map<PagingResult<DailyMenuDto>>(x)))
+                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
+                      .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPost]
         public IActionResult Post([FromBody]CreateDailyMenuDto model) =>
             _commandRepo.Insert(_mapper.Map<DailyMenuInsertModel>(model))
                         .Map(x => Created(new { id = x }))
                         .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
-                        .Reduce(_ => InternalServerError(), x => _logger.Error(x));
+                        .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]UpdateDailyMenuDto model) =>
             _commandRepo.Update(id, _mapper.Map<DailyMenuUpdateModel>(model))
                         .Map(x => AllOk(new { updated = x }))
-                        .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.Error(x))
-                        .Reduce(_ => InternalServerError(), x => _logger.Error(x));
+                        .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.LogError(x.ToString()))
+                        .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id) =>
             _commandRepo.Delete(id)
-                        .Map(_ => (IActionResult)NoContent())
-                        .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.Error(x))
-                        .Reduce(_ => InternalServerError(), x => _logger.Error(x));
+                        .Map(_ => OkNoContent())
+                        .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.LogError(x.ToString()))
+                        .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("Query")]
         public IActionResult Query([FromQuery]DailyMenuQueryDto query) =>
             _queryRepo.Query(_mapper.Map<DailyMenuQueryModel>(query))
-                      .Map(_mapper.Map<PagingResult<DailyMenuDto>>)
-                      .Map(AllOk)
-                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.Error(x))
-                      .Reduce(_ => InternalServerError(), x => _logger.Error(x));
+                      .Map(x => AllOk(_mapper.Map<PagingResult<DailyMenuDto>>(x)))
+                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
+                      .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
     }
 }

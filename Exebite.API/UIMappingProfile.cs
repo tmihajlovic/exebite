@@ -13,11 +13,13 @@ namespace Exebite.API
             CreateMap(typeof(CustomerDto), typeof(Customer));
             CreateMap(typeof(CreateCustomerDto), typeof(Customer));
             CreateMap(typeof(UpdateCustomerDto), typeof(Customer));
+            CreateMap(typeof(CustomerQueryDto), typeof(CustomerQueryModel));
             #endregion CustomerModel
             #region CustomerAliasesModel
             CreateMap(typeof(CustomerAliases), typeof(CustomerAliasDto));
             CreateMap(typeof(CreateCustomerAliasDto), typeof(CustomerAliases));
             CreateMap(typeof(UpdateCustomerAliasDto), typeof(CustomerAliases));
+            CreateMap(typeof(CustomerAliasQueryDto), typeof(CustomerAliasQueryModel));
             #endregion CustomerAliasesModel
             #region FoodModel
             CreateMap(typeof(Food), typeof(FoodDto));
