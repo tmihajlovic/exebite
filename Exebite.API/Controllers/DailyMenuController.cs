@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Either;
 using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
