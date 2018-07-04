@@ -136,50 +136,14 @@ namespace Exebite.DataAccess.Test
         #endregion DailyMenu
 
         #region Meal
-        internal static MealRepository MealDataForTesing(SqliteConnection connection, int numberOfMeals)
+        internal static MealQueryRepository CreateMealQueryRepositoryInstance(IFoodOrderingContextFactory factory)
         {
-            var factory = new InMemoryDBFactory(connection);
-
-            using (var context = factory.Create())
-            {
-                context.Restaurants.Add(new RestaurantEntity()
-                {
-                    Id = 1,
-                    Name = "Test restaurant"
-                });
-
-                var foods = Enumerable.Range(1, numberOfMeals).Select(x => new FoodEntity()
-                {
-                    Id = x,
-                    Name = $"Name {x}",
-                    Description = $"Description {x}",
-                    Price = x,
-                    Type = FoodType.MAIN_COURSE,
-                    RestaurantId = 1
-                });
-
-                context.Foods.AddRange(foods);
-
-                var meals = Enumerable.Range(1, numberOfMeals).Select(x => new MealEntity
-                {
-                    Id = x,
-                    Price = x,
-                    FoodEntityMealEntities = new List<FoodEntityMealEntities>
-                    {
-                        new FoodEntityMealEntities { FoodEntityId = x }
-                    }
-                });
-
-                context.Meals.AddRange(meals);
-                context.SaveChanges();
-            }
-
-            return new MealRepository(factory, _mapper, new Mock<ILogger<MealRepository>>().Object);
+            return new MealQueryRepository(factory, _mapper);
         }
 
-        internal static MealRepository CreateOnlyMealRepositoryInstanceNoData(SqliteConnection connection)
+        internal static MealCommandRepository CreateMealCommandRepositoryInstance(IFoodOrderingContextFactory factory)
         {
-            return new MealRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<MealRepository>>().Object);
+            return new MealCommandRepository(factory, _mapper);
         }
         #endregion
 

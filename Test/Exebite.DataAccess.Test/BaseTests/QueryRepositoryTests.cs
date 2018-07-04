@@ -163,28 +163,6 @@ namespace Exebite.DataAccess.Test.BaseTests
             Assert.Equal(count, result.Items.Count());
         }
 
-        [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData(3)]
-        [InlineData(99)]
-        public void Query_ValidId_ValidResultLimited(int count)
-        {
-            // Arrange
-            this.InitializeStorage(_factory, QueryConstants.MaxElements + count);
-
-            var sut = this.CreateSut(_factory);
-
-            // Act
-            var res = sut.Query(this.ConvertWithPageAndSize(1, QueryConstants.MaxElements + count));
-
-            // Assert
-            EAssert.IsRight(res);
-            var result = res.RightContent();
-            Assert.Equal(QueryConstants.MaxElements + count, result.Total);
-            Assert.Equal(QueryConstants.MaxElements, result.Items.Count());
-        }
-
         [Fact]
         public void Query_UnExpectedErrorOccurs_ErrorReturned()
         {

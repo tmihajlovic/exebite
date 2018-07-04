@@ -10,6 +10,7 @@
             : base(page, size)
         {
         }
+
         public int? Id { get; set; }
 
         public int? RestaurantId { get; set; }
