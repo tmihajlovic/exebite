@@ -104,9 +104,14 @@ namespace Exebite.DataAccess.Test
             return new CustomerAliasRepository(factory, _mapper, new Mock<ILogger<CustomerAliasRepository>>().Object);
         }
 
-        internal static CustomerAliasRepository CreateOnlyCustomerAliasRepositoryInstanceNoData(SqliteConnection connection)
+        internal static CustomerAliasCommandRepository CreateOnlyCustomerAliasCommandRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
         {
-            return new CustomerAliasRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<CustomerAliasRepository>>().Object);
+            return new CustomerAliasCommandRepository(factory, _mapper);
+        }
+
+        internal static CustomerAliasQueryRepository CreateOnlyCustomerAliasQueryRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
+        {
+            return new CustomerAliasQueryRepository(factory, _mapper);
         }
         #endregion
 
