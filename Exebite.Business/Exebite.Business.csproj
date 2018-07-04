@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Exebite.DataAccess\Exebite.DataAccess.csproj" />
     <ProjectReference Include="..\Exebite.GoogleSheetAPI\Exebite.GoogleSheetAPI.csproj" />
+    <ProjectReference Include="..\Option\Option.csproj" />
   </ItemGroup>
 
 </Project>

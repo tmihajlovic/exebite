@@ -66,12 +66,12 @@ namespace Exebite.DataAccess.Test
         #endregion
 
         #region Food
-        internal static FoodRepository CreateOnlyFoodRepositoryInstanceNoData(SqliteConnection connection)
+        internal static IFoodQueryRepository CreateOnlyFoodRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
         {
-            return new FoodRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<FoodRepository>>().Object);
+            return new FoodQueryRepository(factory, _mapper);
         }
 
-        internal static FoodRepository FoodDataForTesting(SqliteConnection connection, int numberOfFoods)
+        internal static IFoodQueryRepository FoodDataForTesting(SqliteConnection connection, int numberOfFoods)
         {
             var factory = new InMemoryDBFactory(connection);
 
@@ -105,7 +105,7 @@ namespace Exebite.DataAccess.Test
                 context.SaveChanges();
             }
 
-            return new FoodRepository(factory, _mapper, new Mock<ILogger<FoodRepository>>().Object);
+            return new FoodQueryRepository(factory, _mapper);
         }
         #endregion Food
 

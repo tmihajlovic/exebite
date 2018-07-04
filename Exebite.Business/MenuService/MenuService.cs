@@ -4,20 +4,21 @@ using System.Linq;
 using Either;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
+using Option;
 
 namespace Exebite.Business
 {
     public class MenuService : IMenuService
     {
         private readonly IRestaurantQueryRepository _restaurantRepository;
-        private readonly IFoodRepository _foodRepository;
+        private readonly IFoodQueryRepository _foodQueryRepository;
         private readonly IRecipeRepository _recipeRepository;
 
-        public MenuService(IRestaurantQueryRepository restaurantRepository, IFoodRepository foodRepository, IRecipeRepository recipeRepository)
+        public MenuService(IRestaurantQueryRepository restaurantRepository, IRecipeRepository recipeRepository, IFoodQueryRepository foodQueryRepository)
         {
             _restaurantRepository = restaurantRepository;
-            _foodRepository = foodRepository;
             _recipeRepository = recipeRepository;
+            _foodQueryRepository = foodQueryRepository;
         }
 
         public Either<Error, PagingResult<Restaurant>> GetRestorantsWithMenus()
@@ -31,22 +32,17 @@ namespace Exebite.Business
             throw new NotImplementedException();
         }
 
-        public List<Food> CheckAvailableSideDishes(int foodId)
+        public IList<Food> CheckAvailableSideDishes(int foodId)
         {
-            var food = _foodRepository.GetByID(foodId);
-            if (food == null)
-            {
-                throw new ArgumentException("Non existing food");
-            }
+            // TODO move to railway style when refactoring menu service
+            var recepies = _foodQueryRepository.Query(new FoodQueryModel() { Id = foodId })
+                .Map(x => x.Items.FirstOrNone())
+                .Map(z =>
+                    z.Map(x => _recipeRepository.Query(new RecipeQueryModel() { MainCourseId = x.Id }))
+                     .Reduce(new List<Recipe>())
+                ).Reduce(_ => new List<Recipe>());
 
-            var allRecipe = _recipeRepository.Get(0, int.MaxValue);
-            var foodRecipe = allRecipe.SingleOrDefault(r => r.MainCourse.Id == food.Id);
-            if (foodRecipe != null)
-            {
-                return foodRecipe.SideDish;
-            }
-
-            return new List<Food>();
+            return recepies.SelectMany(x => x.SideDish).ToList();
         }
     }
 }

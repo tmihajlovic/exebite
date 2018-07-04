@@ -12,7 +12,9 @@ namespace Exebite.Business.GoogleApiImportExport
     {
         private readonly IRestaurantQueryRepository _restaurantQueryRepository;
         private readonly IRestaurantCommandRepository _restaurantCommandRepository;
-        private readonly IFoodRepository _foodRepository;
+        private readonly IFoodQueryRepository _foodQueryRepository;
+        private readonly IFoodCommandRepository _foodCommandRepository;
+
         private readonly IDailyMenuQueryRepository _dailyMenuQueryRepository;
         private readonly IMapper _mapper;
 
@@ -24,16 +26,16 @@ namespace Exebite.Business.GoogleApiImportExport
         public GoogleApiImport(
             IRestaurantQueryRepository restaurantQueryRepository,
             IRestaurantCommandRepository restaurantCommandRepository,
-            IFoodRepository foodRepository,
             ILipaConector lipaConector,
             ITeglasConector teglasConector,
             IHedoneConector hedoneConector,
             IDailyMenuQueryRepository dailyMenuQueryRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IFoodQueryRepository foodQueryRepository,
+            IFoodCommandRepository foodCommandRepository)
         {
             _restaurantQueryRepository = restaurantQueryRepository;
             _restaurantCommandRepository = restaurantCommandRepository;
-            _foodRepository = foodRepository;
             _mapper = mapper;
 
             // connectors to a new sheets
@@ -41,6 +43,8 @@ namespace Exebite.Business.GoogleApiImportExport
             _hedoneConector = hedoneConector;
             _teglasConector = teglasConector;
             _dailyMenuQueryRepository = dailyMenuQueryRepository;
+            _foodQueryRepository = foodQueryRepository;
+            _foodCommandRepository = foodCommandRepository;
         }
 
         /// <summary>
@@ -108,14 +112,17 @@ namespace Exebite.Business.GoogleApiImportExport
                 var dbFood = restaurant.Foods.SingleOrDefault(f => f.Name == food.Name);
                 if (dbFood != null)
                 {
-                    dbFood.Price = food.Price;
-                    dbFood.Description = food.Description;
-                    _foodRepository.Update(dbFood);
+
+                    var d = _mapper.Map<FoodUpdateModel>(dbFood);
+                    d.Price = food.Price;
+                    d.Description = food.Description;
+                    _foodCommandRepository.Update(dbFood.Id, d);
                 }
                 else
                 {
-                    food.Restaurant = restaurant;
-                    _foodRepository.Insert(food);
+                    var d = _mapper.Map<FoodInsertModel>(food);
+                    d.RestaurantId = restaurant.Id;
+                    _foodCommandRepository.Insert(d);
                 }
             }
 
@@ -124,8 +131,9 @@ namespace Exebite.Business.GoogleApiImportExport
                 var sheetFood = sheetFoods.SingleOrDefault(f => f.Name == food.Name);
                 if (sheetFood == null)
                 {
-                    food.IsInactive = true;
-                    _foodRepository.Update(food);
+                    var udpateModel = _mapper.Map<FoodUpdateModel>(food);
+                    udpateModel.IsInactive = true;
+                    _foodCommandRepository.Update(food.Id, udpateModel);
                 }
             }
         }
@@ -134,18 +142,24 @@ namespace Exebite.Business.GoogleApiImportExport
         /// Finds <see cref="Food"/> in database based on sheet data
         /// </summary>
         /// <param name="restaurant">Restaurant to get food for</param>
-        /// <param name="foods">Food list from sheet</param>
+        /// <param name="dailyMenufoods">Food list from sheet</param>
         /// <returns>Food list from database</returns>
-        private List<Food> FoodsFromDB(Restaurant restaurant, List<Food> foods)
+        private List<Food> FoodsFromDB(Restaurant restaurant, List<Food> dailyMenufoods)
         {
-            List<Food> result = new List<Food>();
-            List<Food> dbFood = _foodRepository.Get(0, int.MaxValue).Where(f => f.Restaurant.Id == restaurant.Id).ToList();
-            foreach (var food in foods)
-            {
-                result.Add(dbFood.First(f => f.Name == food.Name));
-            }
+            var results = _foodQueryRepository.Query(new FoodQueryModel() { RestaurantId = restaurant.Id })
+                .Map(x =>
+                {
+                    List<Food> result = new List<Food>();
+                    foreach (var food in dailyMenufoods)
+                    {
+                        result.Add(x.Items.First(f => f.Name == food.Name));
+                    }
 
-            return result;
+                    return result;
+                })
+                .Reduce(x => new List<Food>());
+
+            return results;
         }
     }
 }
