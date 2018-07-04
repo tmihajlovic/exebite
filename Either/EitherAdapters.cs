@@ -28,5 +28,32 @@ namespace Either
             either is Left<TLeft, TRight> bound && when(bound)
                 ? (Either<TLeft, TRight>)map(bound)
                 : either;
+
+        public static TRight Reduce<TLeft, TRight>(
+            this Either<TLeft, TRight> either, Func<TLeft, TRight> map, Action<TLeft> logAction)
+        {
+            switch (either)
+            {
+                case Left<TLeft, TRight> left:
+                    logAction(left);
+                    return map(left);
+                default:
+                    return (Right<TLeft, TRight>)either;
+            }
+        }
+
+        public static Either<TLeft, TRight> Reduce<TLeft, TRight>(
+            this Either<TLeft, TRight> either, Func<TLeft, TRight> map,
+            Func<TLeft, bool> when, Action<TLeft> action)
+        {
+            switch (either)
+            {
+                case Left<TLeft, TRight> bound when when(bound):
+                    action(bound);
+                    return (Either<TLeft, TRight>)map(bound);
+                default:
+                    return either;
+            }
+        }
     }
 }

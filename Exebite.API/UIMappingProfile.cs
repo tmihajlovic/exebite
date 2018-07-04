@@ -49,8 +49,6 @@ namespace Exebite.API
             #region ResaurantModel
             CreateMap(typeof(Restaurant), typeof(RestaurantDto));
             CreateMap(typeof(RestaurantQueryDto), typeof(RestaurantQueryModel));
-
-
             #endregion  ResaurantModel
             #region DailyMenuModel
             CreateMap(typeof(DailyMenu), typeof(DailyMenuDto));

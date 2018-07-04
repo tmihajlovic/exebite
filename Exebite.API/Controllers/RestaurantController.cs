@@ -6,6 +6,7 @@ using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace Exebite.API.Controllers
 {
@@ -17,59 +18,56 @@ namespace Exebite.API.Controllers
         private readonly IRestaurantQueryRepository _queryRepository;
         private readonly IRestaurantCommandRepository _commandRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public RestaurantController(IRestaurantQueryRepository queryRepository, IRestaurantCommandRepository commandRepository, IMapper mapper)
+        public RestaurantController(IRestaurantQueryRepository queryRepository, IRestaurantCommandRepository commandRepository, IMapper mapper, ILogger logger)
         {
             _queryRepository = queryRepository;
             _commandRepository = commandRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
         public IActionResult Get(int page, int size) =>
             _queryRepository.Query(new RestaurantQueryModel(page, size))
                             .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantDto>>(x.Items)))
-                            .Reduce(InternalServerError);
+                            .Reduce(_ => InternalServerError(), x => _logger.Error(x));
 
         [HttpGet("{id}")]
         public IActionResult Get(int id) =>
             _queryRepository.Query(new RestaurantQueryModel { Id = id })
-                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantDto>>(x.Items)))
-                            .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
-                            .Reduce(InternalServerError);
+                            .Map(x => AllOk(_mapper.Map<IEnumerable<RestaurantDto>>(x.Items)))
+                            .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.Error(x))
+                            .Reduce(_ => InternalServerError(), x => _logger.Error(x));
 
         [HttpPost]
         public IActionResult Post([FromBody]RestaurantInsertModelDto restaurant) =>
             _commandRepository.Insert(_mapper.Map<RestaurantInsertModel>(restaurant))
                               .Map(x => Created(new { id = x }))
                               .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
-                              .Reduce(InternalServerError);
+                              .Reduce(_ => InternalServerError(), x => _logger.Error(x));
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]RestaurantUpdateModelDto restaurant) =>
             _commandRepository.Update(id, _mapper.Map<RestaurantUpdateModel>(restaurant))
                               .Map(x => AllOk(new { updated = x }))
-                              .Reduce(_ => NotFound(), error => error is RecordNotFound)
-                              .Reduce(InternalServerError);
+                              .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.Error(x))
+                              .Reduce(_ => InternalServerError(), x => _logger.Error(x));
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id) =>
             _commandRepository.Delete(id)
                               .Map(_ => (IActionResult)NoContent())
-                              .Reduce(_ => (IActionResult)NotFound(), error => error is RecordNotFound)
-                              .Reduce(InternalServerError);
+                              .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.Error(x))
+                              .Reduce(_ => InternalServerError(), x => _logger.Error(x));
 
         [HttpGet("Query")]
         public IActionResult Query([FromQuery]RestaurantQueryDto query) =>
             _queryRepository.Query(_mapper.Map<RestaurantQueryModel>(query))
-                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<RestaurantDto>>(x.Items)))
-                            .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
-                            .Reduce(InternalServerError);
-
-        private IActionResult Created<T>(T content) =>
-            StatusCode(StatusCodes.Status201Created, content);
-
-        private IActionResult AllOk<T>(T content) =>
-            StatusCode(StatusCodes.Status200OK, content);
+                            .Map(_mapper.Map<PagingResult<RestaurantDto>>)
+                            .Map(AllOk)
+                            .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.Error(x))
+                            .Reduce(_ => InternalServerError(), x => _logger.Error(x));
     }
 }
