@@ -36,35 +36,35 @@ namespace Exebite.API.Controllers
         public IActionResult Get(int id) =>
             _queryRepo.Query(new CustomerQueryModel { Id = id })
                       .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<CustomerDto>>(x.Items)))
-                      .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
+                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                       .Reduce(InternalServerError);
 
         [HttpGet("Query")]
         public IActionResult Query(CustomerQueryModel query) =>
             _queryRepo.Query(_mapper.Map<CustomerQueryModel>(query))
-                            .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<CustomerDto>>(x.Items)))
-                            .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
-                            .Reduce(InternalServerError);
+                      .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<CustomerDto>>(x.Items)))
+                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
+                      .Reduce(InternalServerError);
 
         [HttpPost]
         public IActionResult Post([FromBody]CreateCustomerDto createModel) =>
             _commandRepo.Insert(_mapper.Map<CustomerInsertModel>(createModel))
                         .Map(x => (IActionResult)Ok(x))
-                        .Reduce(_ => (IActionResult)BadRequest(), error => error is ArgumentNotSet)
+                        .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                         .Reduce(InternalServerError);
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UpdateCustomerDto model) =>
             _commandRepo.Update(id, _mapper.Map<CustomerUpdateModel>(model))
-                  .Map(x => (IActionResult)Ok(x))
-                  .Reduce(_ => (IActionResult)NotFound(), error => error is RecordNotFound)
-                  .Reduce(InternalServerError);
+                        .Map(x => (IActionResult)Ok(x))
+                        .Reduce(_ => NotFound(), error => error is RecordNotFound)
+                        .Reduce(InternalServerError);
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id) =>
             _commandRepo.Delete(id)
                         .Map(_ => (IActionResult)NoContent())
-                        .Reduce(_ => (IActionResult)NotFound(), error => error is RecordNotFound)
+                        .Reduce(_ => NotFound(), error => error is RecordNotFound)
                         .Reduce(InternalServerError);
     }
 }

@@ -54,56 +54,6 @@ namespace Exebite.DataAccess.Test
         #endregion Location
 
         #region CustomerAlias
-        internal static CustomerAliasRepository CustomerAliasesDataForTesing(SqliteConnection connection, int numberOfCustomerAliases)
-        {
-            var factory = new InMemoryDBFactory(connection);
-
-            using (var context = factory.Create())
-            {
-                var locations = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new LocationEntity()
-                {
-                    Id = x,
-                    Address = $"Address {x}",
-                    Name = $"Name {x}"
-                });
-
-                context.Locations.AddRange(locations);
-                var customerAlias = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new CustomerAliasesEntities
-                {
-                    Id = x,
-                    Alias = $"Alias {x}",
-                    CustomerId = x,
-                    RestaurantId = x
-                });
-                context.CustomerAliases.AddRange(customerAlias);
-
-                var dailyMenus = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new DailyMenuEntity
-                {
-                    Id = x,
-                    RestaurantId = x
-                });
-                context.DailyMenues.AddRange(dailyMenus);
-
-                var restaurant = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new RestaurantEntity
-                {
-                    Id = x,
-                    Name = $"Name {x}"
-                });
-                context.Restaurants.AddRange(restaurant);
-
-                var customers = Enumerable.Range(1, numberOfCustomerAliases).Select(x => new CustomerEntity
-                {
-                    Id = x,
-                    Name = $"Name {x}",
-                    LocationId = x
-                });
-                context.Customers.AddRange(customers);
-                context.SaveChanges();
-            }
-
-            return new CustomerAliasRepository(factory, _mapper, new Mock<ILogger<CustomerAliasRepository>>().Object);
-        }
-
         internal static CustomerAliasCommandRepository CreateOnlyCustomerAliasCommandRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
         {
             return new CustomerAliasCommandRepository(factory, _mapper);

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using Either;
 using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
@@ -11,78 +12,59 @@ namespace Exebite.API.Controllers
     [Route("api/customeraliases")]
     public class CustomerAliasesController : ControllerBase
     {
-        private readonly ICustomerAliasRepository _customerAliasRepository;
+        private readonly ICustomerAliasQueryRepository _queryRepo;
+        private readonly ICustomerAliasCommandRepository _commandRepo;
         private readonly IMapper _mapper;
 
-        public CustomerAliasesController(ICustomerAliasRepository customerAliasesRepository, IMapper mapper)
+        public CustomerAliasesController(
+            ICustomerAliasQueryRepository queryRepo,
+            ICustomerAliasCommandRepository commandRepo,
+            IMapper mapper)
         {
             _mapper = mapper;
-            _customerAliasRepository = customerAliasesRepository;
+            _queryRepo = queryRepo;
+            _commandRepo = commandRepo;
         }
 
         [HttpGet]
-        public IActionResult Get()
-        {
-            var customerAliases = _mapper.Map<IEnumerable<MealDto>>(_customerAliasRepository.Get(0, int.MaxValue));
-            return Ok(customerAliases);
-        }
+        public IActionResult Get(int page, int size) =>
+            _queryRepo.Query(new CustomerAliasQueryModel(page, size))
+                      .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<CustomerAliasDto>>(x.Items)))
+                      .Reduce(InternalServerError);
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var customerAlias = _customerAliasRepository.GetByID(id);
-            if (customerAlias == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<CustomerAliasDto>(customerAlias));
-        }
+        public IActionResult Get(int id) =>
+            _queryRepo.Query(new CustomerAliasQueryModel { Id = id })
+                      .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<CustomerAliasDto>>(x.Items)))
+                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
+                      .Reduce(InternalServerError);
 
         [HttpPost]
-        public IActionResult Post([FromBody]CreateCustomerAliasDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            var createdCustomerAlias = _customerAliasRepository.Insert(_mapper.Map<DomainModel.CustomerAliases>(model));
-            return Ok(new { createdCustomerAlias.Id });
-        }
+        public IActionResult Post([FromBody]CreateCustomerAliasDto model) =>
+            _commandRepo.Insert(_mapper.Map<CustomerAliasInsertModel>(model))
+                        .Map(x => (IActionResult)Ok(x))
+                        .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
+                        .Reduce(InternalServerError);
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]UpdateCustomerAliasDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            var currentCustomerAlias = _customerAliasRepository.GetByID(id);
-            if (currentCustomerAlias == null)
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(model, currentCustomerAlias);
-
-            var updatedMeal = _customerAliasRepository.Update(currentCustomerAlias);
-            return Ok(new { updatedMeal.Id });
-        }
+        public IActionResult Put(int id, [FromBody]UpdateCustomerAliasDto model) =>
+            _commandRepo.Update(id, _mapper.Map<CustomerAliasUpdateModel>(model))
+                        .Map(x => (IActionResult)Ok(x))
+                        .Reduce(_ => NotFound(), error => error is RecordNotFound)
+                        .Reduce(InternalServerError);
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _customerAliasRepository.Delete(id);
-            return NoContent();
-        }
+        public IActionResult Delete(int id) =>
+            _commandRepo.Delete(id)
+                        .Map(_ => (IActionResult)NoContent())
+                        .Reduce(_ => NotFound(), error => error is RecordNotFound)
+                        .Reduce(InternalServerError);
 
         [HttpGet("Query")]
-        public IActionResult Query(CustomerAliasQueryModel query)
-        {
-            var locations = _customerAliasRepository.Query(query);
-            return Ok(_mapper.Map<IEnumerable<CustomerAliasDto>>(locations));
-        }
+        public IActionResult Query(CustomerAliasQueryModel query) =>
+            _queryRepo.Query(_mapper.Map<CustomerAliasQueryModel>(query))
+                      .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<CustomerAliasDto>>(x.Items)))
+                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
+                      .Reduce(InternalServerError);
     }
 }
