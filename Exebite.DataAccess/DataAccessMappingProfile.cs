@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using AutoMapper;
 using Exebite.DataAccess.Entities;
-using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 
 namespace Exebite.DataAccess
@@ -17,9 +16,13 @@ namespace Exebite.DataAccess
             CreateMap<RestaurantEntity, Restaurant>();
             CreateMap<LocationEntity, Location>();
             CreateMap<RecipeEntity, Recipe>()
+
+                // many to many relationship mapping
                 .ForMember(r => r.SideDish, v => v.MapFrom(c => c.FoodEntityRecipeEntities.Select(re => re.FoodEntity).ToList()));
             CreateMap<DailyMenuEntity, DailyMenu>();
             CreateMap<MealEntity, Meal>()
+
+                // many to many relationship mapping
                 .ForMember(f => f.Foods, v => v.MapFrom(c => c.FoodEntityMealEntities.Select(fl => fl.FoodEntity).ToList()));
         }
 

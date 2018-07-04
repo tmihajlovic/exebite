@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Microsoft.Data.Sqlite;
 using Xunit;

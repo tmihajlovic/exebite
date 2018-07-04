@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Exebite.DataAccess.Entities;
+﻿using Exebite.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Exebite.DataAccess.Context
 {

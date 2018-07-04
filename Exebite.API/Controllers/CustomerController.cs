@@ -5,7 +5,6 @@ using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exebite.API.Controllers

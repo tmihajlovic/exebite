@@ -1,5 +1,4 @@
-﻿using System;
-using Either;
+﻿using Either;
 
 namespace Exebite.DataAccess.Repositories
 {

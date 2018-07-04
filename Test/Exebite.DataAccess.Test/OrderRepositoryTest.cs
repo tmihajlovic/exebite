@@ -1,6 +1,5 @@
 ﻿using System;
 using Exebite.Common;
-using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.Mocks;
 using Exebite.DomainModel;
 using Microsoft.Data.Sqlite;
