@@ -17,7 +17,7 @@ namespace FeatureTestingConsole
         private readonly IFoodRepository _foodRepository;
         private readonly ICustomerCommandRepository _customerCommandRepo;
         private readonly ILocationCommandRepository _locationCommandRepo;
-        private readonly IDailyMenuRepository _dailyMenu;
+        private readonly IDailyMenuCommandRepository _dailyMenuCommandRepo;
         private readonly IMealRepository _mealRepo;
         private readonly IFoodOrderingContextFactory factory;
         private readonly IMapper _mapper;
@@ -31,7 +31,7 @@ namespace FeatureTestingConsole
             ILocationCommandRepository locationCommandRepo,
             IMealRepository mealRepo,
             IFoodOrderingContextFactory factory,
-            IDailyMenuRepository dailyMenu,
+            IDailyMenuCommandRepository dailyMenuCommand,
             IMapper mapper)
         {
             _orderRepo = orderRepository;
@@ -42,7 +42,7 @@ namespace FeatureTestingConsole
             _locationCommandRepo = locationCommandRepo;
             _mealRepo = mealRepo;
             this.factory = factory;
-            _dailyMenu = dailyMenu;
+            _dailyMenuCommandRepo = dailyMenuCommand;
             _mapper = mapper;
         }
 
@@ -206,7 +206,7 @@ namespace FeatureTestingConsole
 
         private void SeedDailyMenu()
         {
-            _dailyMenu.Insert(new DailyMenu()
+            _dailyMenuCommandRepo.Insert(new DailyMenuInsertModel()
             {
                 Foods = new List<Food>()
                 {
@@ -222,7 +222,7 @@ namespace FeatureTestingConsole
                 RestaurantId = 1
             });
 
-            _dailyMenu.Insert(new DailyMenu()
+            _dailyMenuCommandRepo.Insert(new DailyMenuInsertModel()
             {
                 Foods = new List<Food>()
                 {

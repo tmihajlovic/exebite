@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using Either;
 using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
+using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace Exebite.API.Controllers
 {
@@ -12,72 +15,63 @@ namespace Exebite.API.Controllers
     [Authorize]
     public class DailyMenuController : ControllerBase
     {
-        private readonly IDailyMenuRepository _dailyMenuRepository;
-        private readonly IMapper _exebiteMapper;
+        private readonly IDailyMenuQueryRepository _queryRepo;
+        private readonly IDailyMenuCommandRepository _commandRepo;
+        private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public DailyMenuController(IDailyMenuRepository dailyMenuRepository, IMapper exebiteMapper)
+        public DailyMenuController(
+            IDailyMenuQueryRepository queryRepo,
+            IDailyMenuCommandRepository commandRepo,
+            IMapper mapper,
+            ILogger logger)
         {
-            _exebiteMapper = exebiteMapper;
-            _dailyMenuRepository = dailyMenuRepository;
+            _mapper = mapper;
+            _queryRepo = queryRepo;
+            _commandRepo = commandRepo;
+            _logger = logger;
         }
 
         [HttpGet]
-        public IActionResult Get()
-        {
-            var meals = _exebiteMapper.Map<IEnumerable<DailyMenuDto>>(_dailyMenuRepository.Get(0, int.MaxValue));
-            return Ok(meals);
-        }
+        public IActionResult Get(int page, int size) =>
+            _queryRepo.Query(new DailyMenuQueryModel(page, size))
+                      .Map(x => (IActionResult)Ok(_mapper.Map<IEnumerable<DailyMenuDto>>(x.Items)))
+                      .Reduce(_ => InternalServerError(), x => _logger.Error(x));
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var meal = _dailyMenuRepository.GetByID(id);
-            if (meal == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_exebiteMapper.Map<DailyMenuDto>(meal));
-        }
+        public IActionResult Get(int id) =>
+            _queryRepo.Query(new DailyMenuQueryModel { Id = id })
+                      .Map(x => AllOk(_mapper.Map<IEnumerable<DailyMenuDto>>(x.Items)))
+                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.Error(x))
+                      .Reduce(_ => InternalServerError(), x => _logger.Error(x));
 
         [HttpPost]
-        public IActionResult Post([FromBody]CreateDailyMenuDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            var createdDailyMenu = _dailyMenuRepository.Insert(_exebiteMapper.Map<DomainModel.DailyMenu>(model));
-
-            return Ok(new { createdDailyMenu.Id });
-        }
+        public IActionResult Post([FromBody]CreateDailyMenuDto model) =>
+            _commandRepo.Insert(_mapper.Map<DailyMenuInsertModel>(model))
+                        .Map(x => Created(new { id = x }))
+                        .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
+                        .Reduce(_ => InternalServerError(), x => _logger.Error(x));
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]UpdateDailyMenuDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            var currentDailyMenu = _dailyMenuRepository.GetByID(id);
-            if (currentDailyMenu == null)
-            {
-                return NotFound();
-            }
-
-            _exebiteMapper.Map(model, currentDailyMenu);
-
-            var updatedMeal = _dailyMenuRepository.Update(currentDailyMenu);
-            return Ok(new { updatedMeal.Id });
-        }
+        public IActionResult Put(int id, [FromBody]UpdateDailyMenuDto model) =>
+            _commandRepo.Update(id, _mapper.Map<DailyMenuUpdateModel>(model))
+                        .Map(x => AllOk(new { updated = x }))
+                        .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.Error(x))
+                        .Reduce(_ => InternalServerError(), x => _logger.Error(x));
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _dailyMenuRepository.Delete(id);
-            return NoContent();
-        }
+        public IActionResult Delete(int id) =>
+            _commandRepo.Delete(id)
+                        .Map(_ => (IActionResult)NoContent())
+                        .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.Error(x))
+                        .Reduce(_ => InternalServerError(), x => _logger.Error(x));
+
+        [HttpGet("Query")]
+        public IActionResult Query([FromQuery]DailyMenuQueryDto query) =>
+            _queryRepo.Query(_mapper.Map<DailyMenuQueryModel>(query))
+                      .Map(_mapper.Map<PagingResult<DailyMenuDto>>)
+                      .Map(AllOk)
+                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.Error(x))
+                      .Reduce(_ => InternalServerError(), x => _logger.Error(x));
     }
 }

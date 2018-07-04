@@ -13,11 +13,10 @@ namespace Exebite.DataAccess
             collection.AddTransient<ICustomerCommandRepository, CustomerCommandRepository>();
             collection.AddTransient<ILocationCommandRepository, LocationCommandRepository>();
             collection.AddTransient<ILocationQueryRepository, LocationQueryRepository>();
-
             collection.AddTransient<IRestaurantQueryRepository, RestaurantQueryRepository>();
             collection.AddTransient<IRestaurantCommandRepository, RestaurantCommandRepository>();
-            collection.AddTransient<IDailyMenuRepository, DailyMenuRepository>();
-
+            collection.AddTransient<IDailyMenuQueryRepository, DailyMenuQueryRepository>();
+            collection.AddTransient<IDailyMenuCommandRepository, DailyMenuCommandRepository>();
             collection.AddTransient<IFoodOrderingContextFactory, FoodOrderingContextFactory>();
             collection.AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>();
             collection.AddTransient<IFoodRepository, FoodRepository>();

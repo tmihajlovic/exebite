@@ -20,7 +20,11 @@ namespace Exebite.API.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        public RestaurantController(IRestaurantQueryRepository queryRepository, IRestaurantCommandRepository commandRepository, IMapper mapper, ILogger logger)
+        public RestaurantController(
+            IRestaurantQueryRepository queryRepository,
+            IRestaurantCommandRepository commandRepository,
+            IMapper mapper,
+            ILogger logger)
         {
             _queryRepository = queryRepository;
             _commandRepository = commandRepository;

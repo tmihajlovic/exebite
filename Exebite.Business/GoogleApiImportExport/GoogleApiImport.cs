@@ -13,7 +13,7 @@ namespace Exebite.Business.GoogleApiImportExport
         private readonly IRestaurantQueryRepository _restaurantQueryRepository;
         private readonly IRestaurantCommandRepository _restaurantCommandRepository;
         private readonly IFoodRepository _foodRepository;
-        private readonly IDailyMenuRepository _dailyMenuRepository;
+        private readonly IDailyMenuQueryRepository _dailyMenuQueryRepository;
         private readonly IMapper _mapper;
 
         // connectors
@@ -28,7 +28,7 @@ namespace Exebite.Business.GoogleApiImportExport
             ILipaConector lipaConector,
             ITeglasConector teglasConector,
             IHedoneConector hedoneConector,
-            IDailyMenuRepository dailyMenuRepository,
+            IDailyMenuQueryRepository dailyMenuQueryRepository,
             IMapper mapper)
         {
             _restaurantQueryRepository = restaurantQueryRepository;
@@ -40,7 +40,7 @@ namespace Exebite.Business.GoogleApiImportExport
             _lipaConector = lipaConector;
             _hedoneConector = hedoneConector;
             _teglasConector = teglasConector;
-            _dailyMenuRepository = dailyMenuRepository;
+            _dailyMenuQueryRepository = dailyMenuQueryRepository;
         }
 
         /// <summary>
@@ -58,9 +58,15 @@ namespace Exebite.Business.GoogleApiImportExport
                                                                     .Map(x => x.Items.First())
                                                                     .Reduce(_ => throw new System.Exception());
 
-            DailyMenu lipaDailyMenu = _dailyMenuRepository.Query(new DailyMenuQueryModel { RestaurantId = lipaRestaurant.Id }).FirstOrDefault();
-            DailyMenu hedoneDailyMenu = _dailyMenuRepository.Query(new DailyMenuQueryModel { RestaurantId = hedoneRestaurant.Id }).FirstOrDefault();
-            DailyMenu teglasDailyMenu = _dailyMenuRepository.Query(new DailyMenuQueryModel { RestaurantId = teglasRestaurant.Id }).FirstOrDefault();
+            DailyMenu lipaDailyMenu = _dailyMenuQueryRepository.Query(new DailyMenuQueryModel { RestaurantId = lipaRestaurant.Id })
+                                                               .Map(x => x.Items.FirstOrDefault())
+                                                               .Reduce(_ => throw new System.Exception());
+            DailyMenu hedoneDailyMenu = _dailyMenuQueryRepository.Query(new DailyMenuQueryModel { RestaurantId = hedoneRestaurant.Id })
+                                                                 .Map(x => x.Items.FirstOrDefault())
+                                                                 .Reduce(_ => throw new System.Exception());
+            DailyMenu teglasDailyMenu = _dailyMenuQueryRepository.Query(new DailyMenuQueryModel { RestaurantId = teglasRestaurant.Id })
+                                                                 .Map(x => x.Items.FirstOrDefault())
+                                                                 .Reduce(_ => throw new System.Exception());
 
             // Get food from sheet, update database for new and changed and update daily menu
 

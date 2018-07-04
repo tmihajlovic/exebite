@@ -53,6 +53,7 @@ namespace Exebite.API
             CreateMap(typeof(DailyMenu), typeof(DailyMenuDto));
             CreateMap(typeof(UpdateDailyMenuDto), typeof(DailyMenu));
             CreateMap(typeof(CreateDailyMenuDto), typeof(DailyMenu));
+            CreateMap(typeof(DailyMenuQueryDto), typeof(DailyMenuQueryModel));
             #endregion
         }
     }
