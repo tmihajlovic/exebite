@@ -45,13 +45,6 @@ namespace Exebite.API.Controllers
                       .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                       .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        [HttpGet("Query")]
-        public IActionResult Query(CustomerQueryModel query) =>
-            _queryRepo.Query(_mapper.Map<CustomerQueryModel>(query))
-                      .Map(x => AllOk(_mapper.Map<PagingResult<CustomerDto>>(x)))
-                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
-                      .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
-
         [HttpPost]
         public IActionResult Post([FromBody]CreateCustomerDto createModel) =>
             _commandRepo.Insert(_mapper.Map<CustomerInsertModel>(createModel))
