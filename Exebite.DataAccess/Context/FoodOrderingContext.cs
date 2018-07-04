@@ -70,7 +70,10 @@ namespace Exebite.DataAccess.Context
                 .HasOne(x => x.Restaurant);
 
             modelBuilder.Entity<DailyMenuEntity>()
-                .HasMany(x => x.Foods);
+                .HasMany(x => x.Foods)
+                .WithOne(x => x.DailyMenu)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<PaymentEntity>()
                 .Property(x => x.Date)

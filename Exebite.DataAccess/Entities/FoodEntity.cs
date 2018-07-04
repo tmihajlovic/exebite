@@ -21,6 +21,11 @@ namespace Exebite.DataAccess.Entities
 
         public bool IsInactive { get; set; }
 
+        [ForeignKey(nameof(DailyMenuEntity))]
+        public int? DailyMenuId { get; set; }
+
+        public virtual DailyMenuEntity DailyMenu { get; set; }
+
         [ForeignKey(nameof(Restaurant))]
         public int RestaurantId { get; set; }
 

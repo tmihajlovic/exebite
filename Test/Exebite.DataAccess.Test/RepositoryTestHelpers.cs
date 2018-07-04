@@ -123,45 +123,16 @@ namespace Exebite.DataAccess.Test
         #endregion
 
         #region DailyMenu
-        internal static DailyMenuRepository DailyMenuDataForTesing(SqliteConnection connection, int numberOfDailyMenus)
+        internal static DailyMenuQueryRepository CreateDailyMenuQueryRepositoryInstance(IFoodOrderingContextFactory factory)
         {
-            var factory = new InMemoryDBFactory(connection);
-
-            using (var context = factory.Create())
-            {
-                var dailyMenus = Enumerable.Range(1, numberOfDailyMenus).Select(x => new DailyMenuEntity
-                {
-                    Id = x,
-                    RestaurantId = x
-                });
-                context.DailyMenues.AddRange(dailyMenus);
-
-                var restaurant = Enumerable.Range(1, numberOfDailyMenus).Select(x => new RestaurantEntity
-                {
-                    Id = x,
-                    Name = $"Name {x}"
-                });
-                context.Restaurants.AddRange(restaurant);
-
-                var food = Enumerable.Range(1, numberOfDailyMenus).Select(x => new FoodEntity
-                {
-                    Id = x,
-                    Name = $"Name {x}",
-                    Price = x,
-                    Description = $"Description {x}",
-                    RestaurantId = x
-                });
-                context.Foods.AddRange(food);
-                context.SaveChanges();
-            }
-
-            return new DailyMenuRepository(factory, _mapper, new Mock<ILogger<DailyMenuRepository>>().Object);
+            return new DailyMenuQueryRepository(factory, _mapper);
         }
 
-        internal static DailyMenuRepository CreateOnlyDailyMenuRepositoryInstanceNoData(SqliteConnection connection)
+        internal static DailyMenuCommandRepository CreateDailyMenuCommandRepositoryInstance(IFoodOrderingContextFactory factory)
         {
-            return new DailyMenuRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<DailyMenuRepository>>().Object);
+            return new DailyMenuCommandRepository(factory, _mapper);
         }
+
         #endregion DailyMenu
 
         #region Meal
