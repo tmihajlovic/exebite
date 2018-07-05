@@ -9,6 +9,6 @@ namespace Exebite.API.Models
         public decimal Price { get; set; }
 
         [Required]
-        public List<FoodDto> Foods { get; set; }
+        public List<int> Foods { get; set; }
     }
 }

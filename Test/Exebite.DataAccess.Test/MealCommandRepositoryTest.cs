@@ -18,7 +18,7 @@ namespace Exebite.DataAccess.Test
                       {
                           Id = content,
                           Price = 2.3m * content,
-                          Foods = new List<Food> { new Food { Id = content } }
+                          Foods = new List<int> { content }
                       });
 
         protected override IDatabaseCommandRepository<int, MealInsertModel, MealUpdateModel> CreateSut(IFoodOrderingContextFactory factory)
@@ -109,7 +109,7 @@ namespace Exebite.DataAccess.Test
         {
             public int? Id { get; set; }
 
-            public List<Food> Foods { get; set; } = new List<Food>();
+            public List<int> Foods { get; set; } = new List<int>();
 
             public decimal Price { get; set; }
         }

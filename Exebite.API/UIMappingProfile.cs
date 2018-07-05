@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using Exebite.API.Models;
+using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 
 #pragma warning disable SA1123 // Do not place regions within elements
@@ -32,16 +34,17 @@ namespace Exebite.API
             CreateMap(typeof(CreateLocationDto), typeof(Location));
             CreateMap(typeof(LocationQueryDto), typeof(LocationQueryModel));
             #endregion LocationModel
-            #region MealEntity
+            #region Order
             CreateMap(typeof(Order), typeof(OrderDto));
             CreateMap(typeof(CreateOrderDto), typeof(Order));
             CreateMap(typeof(UpdateOrderDto), typeof(Order));
-            CreateMap(typeof(MealQueryDto), typeof(MealQueryModel));
-            #endregion MealEntity
+            #endregion Order
             #region MealModel
-            CreateMap(typeof(Meal), typeof(MealDto));
+            CreateMap<Meal, MealDto>()
+                .ForMember(m => m.Foods, m => m.MapFrom(x => x.Foods.Select(a => a.Id)));
             CreateMap(typeof(CreateMealDto), typeof(Meal));
             CreateMap(typeof(UpdateMealDto), typeof(Meal));
+            CreateMap(typeof(MealQueryDto), typeof(MealQueryModel));
             #endregion MealModel
             #region RecipeModel
             CreateMap(typeof(Recipe), typeof(RecipeDto));

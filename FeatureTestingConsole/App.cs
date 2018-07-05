@@ -192,17 +192,7 @@ namespace FeatureTestingConsole
         {
             _mealCommandRepo.Insert(new MealInsertModel()
             {
-                Foods = new List<Food>()
-                {
-                    new Food()
-                    {
-                        Id = 1
-                    },
-                    new Food()
-                    {
-                        Id = 2
-                    }
-                },
+                Foods = new List<int>() { 1, 2 },
                 Price = 400m
             });
         }
