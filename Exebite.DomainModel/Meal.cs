@@ -6,8 +6,8 @@ namespace Exebite.DomainModel
     {
         public int Id { get; set; }
 
-        public List<Food> Foods { get; set; } = new List<Food>();
-
         public decimal Price { get; set; }
+
+        public List<Food> Foods { get; set; } = new List<Food>();
     }
 }

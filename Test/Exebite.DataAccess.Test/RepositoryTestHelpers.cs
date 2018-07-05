@@ -1,16 +1,9 @@
 ﻿#pragma warning disable SA1124 // Do not use regions
-using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using Exebite.Common;
 using Exebite.DataAccess.Context;
-using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.Mocks;
-using Exebite.DomainModel;
-using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.Logging;
-using Moq;
 
 namespace Exebite.DataAccess.Test
 {
@@ -70,43 +63,6 @@ namespace Exebite.DataAccess.Test
         {
             return new FoodQueryRepository(factory, _mapper);
         }
-
-        internal static IFoodQueryRepository FoodDataForTesting(SqliteConnection connection, int numberOfFoods)
-        {
-            var factory = new InMemoryDBFactory(connection);
-
-            using (var context = factory.Create())
-            {
-                var restaurants = Enumerable.Range(1, numberOfFoods).Select(x => new RestaurantEntity
-                {
-                    Id = x,
-                    Name = $"Test restaurant {x}"
-                });
-                context.Restaurants.AddRange(restaurants);
-
-                var dailyMenues = Enumerable.Range(1, numberOfFoods).Select(x => new DailyMenuEntity
-                {
-                    Id = x,
-                    RestaurantId = x
-                });
-                context.DailyMenues.AddRange(dailyMenues);
-
-                var foods = Enumerable.Range(1, numberOfFoods).Select(x => new FoodEntity
-                {
-                    Id = x,
-                    Name = $"Name {x}",
-                    Description = $"Description {x}",
-                    Price = x,
-                    Type = FoodType.MAIN_COURSE,
-                    RestaurantId = 1
-                });
-
-                context.Foods.AddRange(foods);
-                context.SaveChanges();
-            }
-
-            return new FoodQueryRepository(factory, _mapper);
-        }
         #endregion Food
 
         #region Restaurant
@@ -149,52 +105,14 @@ namespace Exebite.DataAccess.Test
 
         #region Recipe
 
-        internal static RecipeRepository RecipeDataForTesting(SqliteConnection connection, int numberOfDailyRecipes)
+        internal static RecipeQueryRepository CreateOnlyRecipeQueryRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
         {
-            var factory = new InMemoryDBFactory(connection);
-
-            using (var context = factory.Create())
-            {
-                var recipes = Enumerable.Range(1, numberOfDailyRecipes).Select(x => new RecipeEntity
-                {
-                    Id = x,
-                    RestaurantId = x,
-                    MainCourseId = x
-                });
-                context.Recipes.AddRange(recipes);
-
-                var dailyMenus = Enumerable.Range(1, numberOfDailyRecipes).Select(x => new DailyMenuEntity
-                {
-                    Id = x,
-                    RestaurantId = x
-                });
-                context.DailyMenues.AddRange(dailyMenus);
-
-                var restaurant = Enumerable.Range(1, numberOfDailyRecipes).Select(x => new RestaurantEntity
-                {
-                    Id = x,
-                    Name = "Test restaurant " + x
-                });
-                context.Restaurants.AddRange(restaurant);
-
-                var food = Enumerable.Range(1, numberOfDailyRecipes).Select(x => new FoodEntity
-                {
-                    Id = x,
-                    Name = $"Name {x}",
-                    Price = x,
-                    Description = $"Description {x}",
-                    RestaurantId = x
-                });
-                context.Foods.AddRange(food);
-                context.SaveChanges();
-            }
-
-            return new RecipeRepository(factory, _mapper, new Mock<ILogger<RecipeRepository>>().Object);
+            return new RecipeQueryRepository(factory, _mapper);
         }
 
-        internal static RecipeRepository CreateOnlyRecipeRepositoryInstanceNoData(SqliteConnection connection)
+        internal static RecipeCommandRepository CreateOnlyRecipeCommandRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
         {
-            return new RecipeRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<RecipeRepository>>().Object);
+            return new RecipeCommandRepository(factory, _mapper);
         }
         #endregion Recipe
 

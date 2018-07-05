@@ -14,19 +14,21 @@ namespace Exebite.DataAccess.Test
             ServiceCollectionExtensions.UseStaticRegistration = false;
             var serviceProvider = new ServiceCollection()
                                         .AddLogging()
+                                        .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
+                                        .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
                                         .AddTransient<IFoodOrderingContextFactory, InMemoryDBFactory>()
                                         .AddTransient<IRestaurantCommandRepository, RestaurantCommandRepository>()
                                         .AddTransient<IRestaurantQueryRepository, RestaurantQueryRepository>()
                                         .AddTransient<IFoodQueryRepository, FoodQueryRepository>()
                                         .AddTransient<IFoodCommandRepository, FoodCommandRepository>()
-                                        .AddTransient<IRecipeRepository, RecipeRepository>()
+                                        .AddTransient<IRecipeQueryRepository, RecipeQueryRepository>()
+                                        .AddTransient<IRecipeCommandRepository, RecipeCommandRepository>()
                                         .AddTransient<ICustomerQueryRepository, CustomerQueryRepository>()
                                         .AddTransient<ICustomerCommandRepository, CustomerCommandRepository>()
                                         .AddTransient<ILocationCommandRepository, LocationCommandRepository>()
                                         .AddTransient<ILocationQueryRepository, LocationQueryRepository>()
-                                        .AddTransient<IOrderQueryRepository, OrderQueryRepository>()
                                         .AddTransient<IOrderCommandRepository, OrderCommandRepository>()
-                                        .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
+                                        .AddTransient<IOrderQueryRepository, OrderQueryRepository>()
                                         .AddAutoMapper(cfg =>
                                                     cfg.AddProfile<DataAccessMappingProfile>());
 

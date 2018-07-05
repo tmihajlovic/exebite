@@ -11,14 +11,14 @@ namespace Exebite.Business
     public class MenuService : IMenuService
     {
         private readonly IRestaurantQueryRepository _restaurantRepository;
+        private readonly IRecipeQueryRepository _recipeQueryRepository;
         private readonly IFoodQueryRepository _foodQueryRepository;
-        private readonly IRecipeRepository _recipeRepository;
 
-        public MenuService(IRestaurantQueryRepository restaurantRepository, IRecipeRepository recipeRepository, IFoodQueryRepository foodQueryRepository)
+        public MenuService(IRestaurantQueryRepository restaurantRepository, IFoodQueryRepository foodQueryRepository, IRecipeQueryRepository recipeQueryRepository)
         {
             _restaurantRepository = restaurantRepository;
-            _recipeRepository = recipeRepository;
             _foodQueryRepository = foodQueryRepository;
+            _recipeQueryRepository = recipeQueryRepository;
         }
 
         public Either<Error, PagingResult<Restaurant>> GetRestorantsWithMenus()
@@ -34,13 +34,13 @@ namespace Exebite.Business
 
         public IList<Food> CheckAvailableSideDishes(int foodId)
         {
-            // TODO move to railway style when refactoring menu service
             var recepies = _foodQueryRepository.Query(new FoodQueryModel() { Id = foodId })
                 .Map(x => x.Items.FirstOrNone())
                 .Map(z =>
-                    z.Map(x => _recipeRepository.Query(new RecipeQueryModel() { MainCourseId = x.Id }))
-                     .Reduce(new List<Recipe>())
-                ).Reduce(_ => new List<Recipe>());
+                    z.Map(x => _recipeQueryRepository.Query(new RecipeQueryModel() { MainCourseId = x.Id }))
+                     .Reduce(PagingResult<Recipe>.Empty()))
+                .Map(x => x.Items)
+                .Reduce(_ => new List<Recipe>());
 
             return recepies.SelectMany(x => x.SideDish).ToList();
         }

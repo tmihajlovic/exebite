@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using Either;
 using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
+using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
@@ -12,70 +15,49 @@ namespace Exebite.API.Controllers
     [Authorize]
     public class RecipeController : ControllerBase
     {
-        private readonly IRecipeRepository _recipeRepository;
-        private readonly IMapper _exebiteMapper;
+        private readonly IRecipeQueryRepository _queryRepository;
+        private readonly IRecipeCommandRepository _commandRepository;
+        private readonly IMapper _mapper;
+        private readonly ILogger<RecipeController> _logger;
 
-        public RecipeController(IRecipeRepository recipeRepository, IMapper exebiteMapper)
+        public RecipeController(
+            IRecipeQueryRepository queryRepository,
+            IRecipeCommandRepository commandRepository,
+            IMapper mapper,
+            ILogger<RecipeController> logger)
         {
-            _exebiteMapper = exebiteMapper;
-            _recipeRepository = recipeRepository;
-        }
-
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var recipes = _exebiteMapper.Map<IEnumerable<RecipeDto>>(_recipeRepository.Get(0, int.MaxValue));
-            return Ok(recipes);
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var recipe = _recipeRepository.GetByID(id);
-            if (recipe == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_exebiteMapper.Map<RecipeDto>(recipe));
+            _queryRepository = queryRepository;
+            _commandRepository = commandRepository;
+            _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]CreateRecipeDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            var createdRecipe = _recipeRepository.Insert(_exebiteMapper.Map<DomainModel.Recipe>(model));
-            return Ok(new { createdRecipe.Id });
-        }
+        public IActionResult Post([FromBody]RecipeInsertModelDto Recipe) =>
+            _commandRepository.Insert(_mapper.Map<RecipeInsertModel>(Recipe))
+                              .Map(x => Created(new { id = x }))
+                              .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
+                              .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]UpdateRecipeDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            var currentRecipe = _recipeRepository.GetByID(id);
-            if (currentRecipe == null)
-            {
-                return NotFound();
-            }
-
-            _exebiteMapper.Map(model, currentRecipe);
-            var updatedRecipe = _recipeRepository.Update(currentRecipe);
-            return Ok(new { updatedRecipe.Id });
-        }
+        public IActionResult Put(int id, [FromBody]UpdateRecipeDto Recipe) =>
+            _commandRepository.Update(id, _mapper.Map<RecipeUpdateModel>(Recipe))
+                              .Map(x => AllOk(new { updated = x }))
+                              .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.LogError(x.ToString()))
+                              .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _recipeRepository.Delete(id);
-            return NoContent();
-        }
+        public IActionResult Delete(int id) =>
+            _commandRepository.Delete(id)
+                              .Map(_ => (IActionResult)NoContent())
+                              .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.LogError(x.ToString()))
+                              .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
+
+        [HttpGet("Query")]
+        public IActionResult Query([FromQuery]RecipeQueryDto query) =>
+            _queryRepository.Query(_mapper.Map<RecipeQueryModel>(query))
+                            .Map(x => AllOk(_mapper.Map<PagingResult<RecipeDto>>(x)))
+                            .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
+                            .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
     }
 }

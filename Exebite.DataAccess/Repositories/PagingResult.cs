@@ -13,5 +13,11 @@ namespace Exebite.DataAccess.Repositories
         public int Total { get; }
 
         public IEnumerable<T> Items { get; }
+
+
+        public static PagingResult<T> Empty() {
+
+            return new PagingResult<T>(new List<T>(), 0);
+        }
     }
 }

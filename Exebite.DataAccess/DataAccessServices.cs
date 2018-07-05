@@ -21,7 +21,10 @@ namespace Exebite.DataAccess
             collection.AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>();
             collection.AddTransient<IFoodQueryRepository, FoodQueryRepository>();
             collection.AddTransient<IFoodCommandRepository, FoodCommandRepository>();
-            collection.AddTransient<IRecipeRepository, RecipeRepository>();
+
+            collection.AddTransient<IRecipeQueryRepository, RecipeQueryRepository>();
+            collection.AddTransient<IRecipeCommandRepository, RecipeCommandRepository>();
+
             collection.AddTransient<IOrderQueryRepository, OrderQueryRepository>();
             collection.AddTransient<IOrderCommandRepository, OrderCommandRepository>();
             collection.AddTransient<IMealQueryRepository, MealQueryRepository>();
