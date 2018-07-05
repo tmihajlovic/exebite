@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Either;
 using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/customeraliases")]
+    [Route("api/CustomerAliases")]
+    [Authorize]
     public class CustomerAliasesController : ControllerBase
     {
         private readonly ICustomerAliasQueryRepository _queryRepo;

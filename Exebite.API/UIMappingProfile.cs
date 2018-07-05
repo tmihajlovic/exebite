@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using AutoMapper;
 using Exebite.API.Models;
-using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 
 #pragma warning disable SA1123 // Do not place regions within elements
@@ -12,54 +11,54 @@ namespace Exebite.API
         public UIMappingProfile()
         {
             #region CustomerModel
-            CreateMap(typeof(CustomerDto), typeof(Customer));
-            CreateMap(typeof(CreateCustomerDto), typeof(Customer));
-            CreateMap(typeof(UpdateCustomerDto), typeof(Customer));
-            CreateMap(typeof(CustomerQueryDto), typeof(CustomerQueryModel));
+            CreateMap<CustomerDto, Customer>();
+            CreateMap<CreateCustomerDto, Customer>();
+            CreateMap<UpdateCustomerDto, Customer>();
+            CreateMap<CustomerQueryDto, CustomerQueryModel>();
             #endregion CustomerModel
             #region CustomerAliasesModel
-            CreateMap(typeof(CustomerAliases), typeof(CustomerAliasDto));
-            CreateMap(typeof(CreateCustomerAliasDto), typeof(CustomerAliases));
-            CreateMap(typeof(UpdateCustomerAliasDto), typeof(CustomerAliases));
-            CreateMap(typeof(CustomerAliasQueryDto), typeof(CustomerAliasQueryModel));
+            CreateMap<CustomerAliases, CustomerAliasDto>();
+            CreateMap<CreateCustomerAliasDto, CustomerAliases>();
+            CreateMap<UpdateCustomerAliasDto, CustomerAliases>();
+            CreateMap<CustomerAliasQueryDto, CustomerAliasQueryModel>();
             #endregion CustomerAliasesModel
             #region FoodModel
-            CreateMap(typeof(Food), typeof(FoodDto));
-            CreateMap(typeof(CreateFoodDto), typeof(Food));
-            CreateMap(typeof(UpdateFoodDto), typeof(Food));
+            CreateMap<Food, FoodDto>();
+            CreateMap<CreateFoodDto, Food>();
+            CreateMap<UpdateFoodDto, Food>();
             #endregion  FoodModel
             #region LocationModel
-            CreateMap(typeof(Location), typeof(LocationDto));
-            CreateMap(typeof(UpdateLocationDto), typeof(Location));
-            CreateMap(typeof(CreateLocationDto), typeof(Location));
-            CreateMap(typeof(LocationQueryDto), typeof(LocationQueryModel));
+            CreateMap<Location, LocationDto>();
+            CreateMap<UpdateLocationDto, Location>();
+            CreateMap<CreateLocationDto, Location>();
+            CreateMap<LocationQueryDto, LocationQueryModel>();
             #endregion LocationModel
             #region Order
-            CreateMap(typeof(Order), typeof(OrderDto));
-            CreateMap(typeof(CreateOrderDto), typeof(Order));
-            CreateMap(typeof(UpdateOrderDto), typeof(Order));
+            CreateMap<Order, OrderDto>();
+            CreateMap<CreateOrderDto, Order>();
+            CreateMap<UpdateOrderDto, Order>();
             #endregion Order
             #region MealModel
             CreateMap<Meal, MealDto>()
                 .ForMember(m => m.Foods, m => m.MapFrom(x => x.Foods.Select(a => a.Id)));
-            CreateMap(typeof(CreateMealDto), typeof(Meal));
-            CreateMap(typeof(UpdateMealDto), typeof(Meal));
-            CreateMap(typeof(MealQueryDto), typeof(MealQueryModel));
+            CreateMap<CreateMealDto, Meal>();
+            CreateMap<UpdateMealDto, Meal>();
+            CreateMap<MealQueryDto, MealQueryModel>();
             #endregion MealModel
             #region RecipeModel
-            CreateMap(typeof(Recipe), typeof(RecipeDto));
-            CreateMap(typeof(CreateRecipeDto), typeof(Recipe));
-            CreateMap(typeof(UpdateRecipeDto), typeof(Recipe));
-            #endregion RecipeModel
+            CreateMap<Recipe, RecipeDto>();
+            CreateMap<CreateRecipeDto, Recipe>();
+            CreateMap<UpdateRecipeDto, Recipe>();
+            #endregion RecipeModelgit he
             #region ResaurantModel
-            CreateMap(typeof(Restaurant), typeof(RestaurantDto));
-            CreateMap(typeof(RestaurantQueryDto), typeof(RestaurantQueryModel));
+            CreateMap<Restaurant, RestaurantDto>();
+            CreateMap<RestaurantQueryDto, RestaurantQueryModel>();
             #endregion  ResaurantModel
             #region DailyMenuModel
-            CreateMap(typeof(DailyMenu), typeof(DailyMenuDto));
-            CreateMap(typeof(UpdateDailyMenuDto), typeof(DailyMenu));
-            CreateMap(typeof(CreateDailyMenuDto), typeof(DailyMenu));
-            CreateMap(typeof(DailyMenuQueryDto), typeof(DailyMenuQueryModel));
+            CreateMap<DailyMenu, DailyMenuDto>();
+            CreateMap<UpdateDailyMenuDto, DailyMenu>();
+            CreateMap<CreateDailyMenuDto, DailyMenu>();
+            CreateMap<DailyMenuQueryDto, DailyMenuQueryModel>();
             #endregion
         }
     }
