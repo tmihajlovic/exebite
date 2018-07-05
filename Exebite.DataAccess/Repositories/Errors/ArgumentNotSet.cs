@@ -2,11 +2,8 @@
 {
     public class ArgumentNotSet : Error
     {
-        private string message;
+        public ArgumentNotSet(string message) => Message = message;
 
-        public ArgumentNotSet(string message)
-        {
-            this.message = message;
-        }
+        public string Message { get; }
     }
 }

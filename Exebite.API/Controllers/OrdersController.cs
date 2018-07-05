@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+using Either;
 using Exebite.API.Models;
-using Exebite.Business;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
@@ -14,73 +14,55 @@ namespace Exebite.API.Controllers
     [Authorize]
     public class OrdersController : ControllerBase
     {
-        private readonly IOrderService _orderService;
+        private readonly IOrderQueryRepository _queryRepo;
+        private readonly IOrderCommandRepository _commandRepo;
         private readonly IMapper _mapper;
+        private readonly ILogger<OrdersController> _logger;
 
         public OrdersController(
-            IOrderService orderService,
-            IMapper mapper)
+            IOrderQueryRepository queryRepo,
+            IOrderCommandRepository commandRepo,
+            IMapper mapper,
+            ILogger<OrdersController> logger)
         {
-            _orderService = orderService;
+            _queryRepo = queryRepo;
+            _commandRepo = commandRepo;
             _mapper = mapper;
-        }
-
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var listOfOrders = _orderService.GetAllOrders();
-            return Ok(_mapper.Map<IEnumerable<OrderDto>>(listOfOrders));
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var order = _orderService.GetOrderById(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<OrderDto>(order));
+            _logger = logger;
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CreateOrderDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            var createdOrder = _orderService.CreateOrder(_mapper.Map<Order>(model));
-
-            return Ok(createdOrder.Id);
-        }
+        public IActionResult Post([FromBody] CreateOrderDto model) =>
+            _commandRepo.Insert(_mapper.Map<OrderInsertModel>(model))
+                        .Map(x => Created(new { id = x }))
+                        .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
+                        .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateOrderDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            Order currentOrder = _orderService.GetOrderById(id);
-            if (currentOrder == null)
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(model, currentOrder);
-            var updatedOrder = _orderService.UpdateOrder(currentOrder);
-            return Ok(updatedOrder.Id);
-        }
+        public IActionResult Put(int id, [FromBody] UpdateOrderDto model) =>
+            _commandRepo.Update(id, _mapper.Map<OrderUpdateModel>(model))
+                        .Map(x => AllOk(new { updated = x }))
+                        .Reduce(_ => NotFound(), error => error is RecordNotFound)
+                        .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _orderService.DeleteOrder(id);
-            return NoContent();
-        }
+        public IActionResult Delete(int id) =>
+            _commandRepo.Delete(id)
+                        .Map(_ => OkNoContent())
+                        .Reduce(_ => NotFound(), error => error is RecordNotFound)
+                        .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
+
+        [HttpGet("Query")]
+        public IActionResult Query([FromQuery]OrderQueryDto query) =>
+            _queryRepo.Query(_mapper.Map<OrderQueryModel>(query))
+                      .Map(x => AllOk(_mapper.Map<PagingResult<OrderDto>>(x)))
+                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
+                      .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
+
+        [HttpGet("GetAllOrdersForRestaurant")]
+        public IActionResult GetAllOrdersForRestaurant(int restaurantId, int page, int size) =>
+            _queryRepo.GetAllOrdersForRestaurant(restaurantId, page, size)
+                      .Map(x => AllOk(_mapper.Map<PagingResult<OrderDto>>(x)))
+                      .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
     }
 }

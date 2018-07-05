@@ -11,7 +11,7 @@ namespace FeatureTestingConsole
 {
     public sealed class App : IApp
     {
-        private readonly IOrderRepository _orderRepo;
+        private readonly IOrderCommandRepository _orderCommandRepo;
         private readonly IRestaurantQueryRepository _restaurantQueryRepository;
         private readonly IRestaurantCommandRepository _restaurantCommandRepository;
         private readonly IFoodCommandRepository _foodCommandRepository;
@@ -24,7 +24,7 @@ namespace FeatureTestingConsole
         private readonly IMapper _mapper;
 
         public App(
-            IOrderRepository orderRepository,
+            IOrderCommandRepository orderCommandRepo,
             IRestaurantQueryRepository restaurantQueryRepo,
             IRestaurantCommandRepository restaurantCommandRepo,
             ICustomerCommandRepository customerCommandRepo,
@@ -36,7 +36,7 @@ namespace FeatureTestingConsole
             IFoodQueryRepository foodQueryRepository,
             IFoodCommandRepository foodCommandRepository)
         {
-            _orderRepo = orderRepository;
+            _orderCommandRepo = orderCommandRepo;
             _restaurantQueryRepository = restaurantQueryRepo;
             _restaurantCommandRepository = restaurantCommandRepo;
             _customerCommandRepo = customerCommandRepo;
@@ -70,14 +70,14 @@ namespace FeatureTestingConsole
 
             _restaurantCommandRepository.Update(restaurant.Id, _mapper.Map<RestaurantUpdateModel>(restaurant));
 
-            var order = new Order()
+            var order = new OrderInsertModel()
             {
                 CustomerId = 1,
                 MealId = 1,
                 Note = "Test insert"
             };
 
-            this._orderRepo.Insert(order);
+            this._orderCommandRepo.Insert(order);
         }
 
         private void SeedPayment()

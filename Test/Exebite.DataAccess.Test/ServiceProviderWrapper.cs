@@ -24,7 +24,8 @@ namespace Exebite.DataAccess.Test
                                         .AddTransient<ICustomerCommandRepository, CustomerCommandRepository>()
                                         .AddTransient<ILocationCommandRepository, LocationCommandRepository>()
                                         .AddTransient<ILocationQueryRepository, LocationQueryRepository>()
-                                        .AddTransient<IOrderRepository, OrderRepository>()
+                                        .AddTransient<IOrderQueryRepository, OrderQueryRepository>()
+                                        .AddTransient<IOrderCommandRepository, OrderCommandRepository>()
                                         .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
                                         .AddAutoMapper(cfg =>
                                                     cfg.AddProfile<DataAccessMappingProfile>());

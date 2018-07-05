@@ -5,6 +5,7 @@ using AutoMapper;
 using Either;
 using Exebite.DataAccess.Context;
 using Exebite.DomainModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace Exebite.DataAccess.Repositories
 {
@@ -17,6 +18,30 @@ namespace Exebite.DataAccess.Repositories
         {
             _factory = factory;
             _mapper = mapper;
+        }
+
+        public Either<Error, PagingResult<Order>> GetAllOrdersForRestaurant(int restaruntId, int page, int size)
+        {
+            try
+            {
+                using (var context = _factory.Create())
+                {
+                    var restarurantMeals = context.Meals.SelectMany(x => x.FoodEntityMealEntities.Where(a => a.FoodEntity.RestaurantId == restaruntId)
+                                                                                                 .Select(a => a.MealEntityId));
+
+                    var query = context.Orders.Where(o => restarurantMeals.Contains(o.MealId));
+                    var total = query.Count();
+                    var results = query.Skip((page - 1) * size)
+                                       .Take(size);
+
+                    var mapped = _mapper.Map<IList<Order>>(results).ToList();
+                    return new Right<Error, PagingResult<Order>>(new PagingResult<Order>(mapped, total));
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Left<Error, PagingResult<Order>>(new UnknownError(ex.ToString()));
+            }
         }
 
         public Either<Error, PagingResult<Order>> Query(OrderQueryModel queryModel)
@@ -35,6 +60,16 @@ namespace Exebite.DataAccess.Repositories
                     if (queryModel.Id != null)
                     {
                         query = query.Where(x => x.Id == queryModel.Id.Value);
+                    }
+
+                    if (queryModel.Date != null)
+                    {
+                        query = query.Where(x => x.Date == queryModel.Date.Value);
+                    }
+
+                    if (queryModel.CustomerId != null)
+                    {
+                        query = query.Where(x => x.CustomerId == queryModel.CustomerId.Value);
                     }
 
                     var total = query.Count();

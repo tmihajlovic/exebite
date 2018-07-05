@@ -2,11 +2,8 @@
 {
     public class RecordNotFound : Error
     {
-        private readonly string message;
+        public RecordNotFound(string message) => Message = message;
 
-        public RecordNotFound(string message)
-        {
-            this.message = message;
-        }
+        public string Message { get; }
     }
 }

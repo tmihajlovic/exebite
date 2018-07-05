@@ -10,7 +10,7 @@ namespace Exebite.Business.GoogleApiImportExport
     public class GoogleApiExport : IGoogleDataExporter
     {
         // Services
-        private readonly IOrderService _orderService;
+        private readonly IOrderQueryRepository _orderQueryRepo;
         private readonly ICustomerQueryRepository _customerQueryRepo;
         private readonly IRestaurantQueryRepository _restaurantQueryRepo;
 
@@ -23,7 +23,7 @@ namespace Exebite.Business.GoogleApiImportExport
             ITeglasConector teglasConector,
             IHedoneConector hedoneConector,
             ILipaConector lipaConector,
-            IOrderService orderService,
+            IOrderQueryRepository orderQueryRepo,
             ICustomerQueryRepository customerQueryRepo,
             IRestaurantQueryRepository restaurantQueryRepo)
         {
@@ -33,7 +33,7 @@ namespace Exebite.Business.GoogleApiImportExport
             _teglasConector = teglasConector;
 
             // Services
-            _orderService = orderService;
+            _orderQueryRepo = orderQueryRepo;
             _customerQueryRepo = customerQueryRepo;
             _restaurantQueryRepo = restaurantQueryRepo;
         }
@@ -52,7 +52,9 @@ namespace Exebite.Business.GoogleApiImportExport
                                                          .Reduce(_ => throw new Exception());
                     if (lipa != null)
                     {
-                        var lipaOrders = _orderService.GetAllOrdersForRestoraunt(lipa.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
+                        var lipaOrders = _orderQueryRepo.GetAllOrdersForRestaurant(lipa.Id, 1, int.MaxValue)
+                                                        .Map(x => x.Items.Where(o => o.Date == DateTime.Today.Date).ToList())
+                                                        .Reduce(_ => throw new Exception());
                         _lipaConector.PlaceOrders(lipaOrders);
                     }
 
@@ -64,7 +66,9 @@ namespace Exebite.Business.GoogleApiImportExport
                                                            .Reduce(_ => throw new Exception());
                     if (hedone != null)
                     {
-                        var hedoneOrders = _orderService.GetAllOrdersForRestoraunt(hedone.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
+                        var hedoneOrders = _orderQueryRepo.GetAllOrdersForRestaurant(hedone.Id, 1, int.MaxValue)
+                                                          .Map(x => x.Items.Where(o => o.Date == DateTime.Today.Date).ToList())
+                                                          .Reduce(_ => throw new Exception());
                         _hedoneConector.PlaceOrders(hedoneOrders);
                     }
 
@@ -76,7 +80,9 @@ namespace Exebite.Business.GoogleApiImportExport
                                                            .Reduce(_ => throw new Exception());
                     if (teglas != null)
                     {
-                        var teglasOrders = _orderService.GetAllOrdersForRestoraunt(teglas.Id).Where(o => o.Date == DateTime.Today.Date).ToList();
+                        var teglasOrders = _orderQueryRepo.GetAllOrdersForRestaurant(teglas.Id, 1, int.MaxValue)
+                                                          .Map(x => x.Items.Where(o => o.Date == DateTime.Today.Date).ToList())
+                                                          .Reduce(_ => throw new Exception());
                         _teglasConector.PlaceOrders(teglasOrders);
                     }
 

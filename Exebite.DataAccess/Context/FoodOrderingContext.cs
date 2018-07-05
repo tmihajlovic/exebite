@@ -78,6 +78,9 @@ namespace Exebite.DataAccess.Context
             modelBuilder.Entity<PaymentEntity>()
                 .Property(x => x.Date)
                 .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<OrderEntity>()
+                .HasIndex(x => x.Date);
         }
     }
 }

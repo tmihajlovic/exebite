@@ -23,7 +23,7 @@ namespace Exebite.API.Controllers
             ICustomerQueryRepository queryRepo,
             ICustomerCommandRepository commandRepo,
             IMapper mapper,
-            Logger<CustomerController> logger)
+            ILogger<CustomerController> logger)
         {
             _queryRepo = queryRepo;
             _commandRepo = commandRepo;
