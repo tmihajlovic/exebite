@@ -49,7 +49,7 @@ namespace Exebite.DataAccess.Test
 
         protected override IDatabaseQueryRepository<CustomerAliases, CustomerAliasQueryModel> CreateSut(IFoodOrderingContextFactory factory)
         {
-            return CreateOnlyCustomerAliasQueryRepositoryInstanceNoData(factory);
+            return CreateCustomerAliasQueryRepositoryInstance(factory);
         }
 
         protected override int GetId(CustomerAliases result)

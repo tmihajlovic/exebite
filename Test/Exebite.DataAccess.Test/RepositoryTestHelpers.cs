@@ -54,12 +54,12 @@ namespace Exebite.DataAccess.Test
         #endregion Location
 
         #region CustomerAlias
-        internal static CustomerAliasCommandRepository CreateOnlyCustomerAliasCommandRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
+        internal static CustomerAliasCommandRepository CreateCustomerAliasCommandRepositoryInstance(IFoodOrderingContextFactory factory)
         {
             return new CustomerAliasCommandRepository(factory, _mapper);
         }
 
-        internal static CustomerAliasQueryRepository CreateOnlyCustomerAliasQueryRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
+        internal static CustomerAliasQueryRepository CreateCustomerAliasQueryRepositoryInstance(IFoodOrderingContextFactory factory)
         {
             return new CustomerAliasQueryRepository(factory, _mapper);
         }
@@ -199,60 +199,16 @@ namespace Exebite.DataAccess.Test
         #endregion Recipe
 
         #region Order
-        internal static OrderRepository OrderDataForTesting(SqliteConnection connection, int numberOfOrders)
+        internal static OrderCommandRepository CreateOrderCommandRepositoryInstance(IFoodOrderingContextFactory factory)
         {
-            var factory = new InMemoryDBFactory(connection);
-
-            using (var context = factory.Create())
-            {
-                var location = new LocationEntity
-                {
-                    Id = 1,
-                    Name = "location name ",
-                    Address = "Address"
-                };
-
-                context.Locations.Add(location);
-
-                var customers = Enumerable.Range(1, numberOfOrders).Select(x => new CustomerEntity
-                {
-                    Id = x,
-                    Name = "Customer name ",
-                    AppUserId = "AppUserId",
-                    Balance = 99.99m,
-                    LocationId = 1,
-                });
-                context.Customers.AddRange(customers);
-
-                var meals = Enumerable.Range(1, numberOfOrders).Select(x => new MealEntity
-                {
-                    Id = x,
-                    Price = 3.2m * x
-                });
-                context.Meals.AddRange(meals);
-
-                var orders = Enumerable.Range(1, numberOfOrders).Select(x => new OrderEntity
-                {
-                    Id = x,
-                    CustomerId = x,
-                    Date = _dateTime.Now().AddHours(x),
-                    MealId = x,
-                    Note = "note ",
-                    Price = 10.5m * x
-                });
-                context.Orders.AddRange(orders);
-
-                context.SaveChanges();
-            }
-
-            return new OrderRepository(factory, _mapper, new Mock<ILogger<OrderRepository>>().Object);
+            return new OrderCommandRepository(factory, _mapper);
         }
 
-        internal static OrderRepository CreateOnlyOrderRepositoryInstanceNoData(SqliteConnection connection)
+        internal static OrderQueryRepository CreateOrderQueryRepositoryInstance(IFoodOrderingContextFactory factory)
         {
-            return new OrderRepository(new InMemoryDBFactory(connection), _mapper, new Mock<ILogger<OrderRepository>>().Object);
+            return new OrderQueryRepository(factory, _mapper);
         }
-        #endregion Recipe
+        #endregion Order
     }
 }
 #pragma warning restore SA1124 // Do not use regions

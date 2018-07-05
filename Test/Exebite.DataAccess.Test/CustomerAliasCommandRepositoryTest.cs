@@ -57,7 +57,7 @@ namespace Exebite.DataAccess.Test
 
         protected override IDatabaseCommandRepository<int, CustomerAliasInsertModel, CustomerAliasUpdateModel> CreateSut(IFoodOrderingContextFactory factory)
         {
-            return CreateOnlyCustomerAliasCommandRepositoryInstanceNoData(factory);
+            return CreateCustomerAliasCommandRepositoryInstance(factory);
         }
 
         protected override int GetId(Either<Error, int> newObj)
