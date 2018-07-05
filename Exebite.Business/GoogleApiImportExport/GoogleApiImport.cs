@@ -112,7 +112,6 @@ namespace Exebite.Business.GoogleApiImportExport
                 var dbFood = restaurant.Foods.SingleOrDefault(f => f.Name == food.Name);
                 if (dbFood != null)
                 {
-
                     var d = _mapper.Map<FoodUpdateModel>(dbFood);
                     d.Price = food.Price;
                     d.Description = food.Description;
@@ -157,7 +156,7 @@ namespace Exebite.Business.GoogleApiImportExport
 
                     return result;
                 })
-                .Reduce(x => new List<Food>());
+                .Reduce(_ => new List<Food>());
 
             return results;
         }

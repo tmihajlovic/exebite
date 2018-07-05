@@ -33,15 +33,15 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]RecipeInsertModelDto Recipe) =>
-            _commandRepository.Insert(_mapper.Map<RecipeInsertModel>(Recipe))
+        public IActionResult Post([FromBody]RecipeInsertModelDto recipe) =>
+            _commandRepository.Insert(_mapper.Map<RecipeInsertModel>(recipe))
                               .Map(x => Created(new { id = x }))
                               .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                               .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]UpdateRecipeDto Recipe) =>
-            _commandRepository.Update(id, _mapper.Map<RecipeUpdateModel>(Recipe))
+        public IActionResult Put(int id, [FromBody]UpdateRecipeDto recipe) =>
+            _commandRepository.Update(id, _mapper.Map<RecipeUpdateModel>(recipe))
                               .Map(x => AllOk(new { updated = x }))
                               .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.LogError(x.ToString()))
                               .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));

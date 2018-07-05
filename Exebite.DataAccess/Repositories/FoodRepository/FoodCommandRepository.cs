@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Either;
 using Exebite.DataAccess.Context;

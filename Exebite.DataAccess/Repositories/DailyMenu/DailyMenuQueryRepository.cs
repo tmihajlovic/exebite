@@ -41,6 +41,7 @@ namespace Exebite.DataAccess.Repositories
                     {
                         query = query.Where(x => x.RestaurantId == queryModel.RestaurantId.Value);
                     }
+
                     var size = queryModel.Size <= QueryConstants.MaxElements ? queryModel.Size : QueryConstants.MaxElements;
 
                     var total = query.Count();

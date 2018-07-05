@@ -33,13 +33,6 @@ namespace Exebite.DataAccess.Test
         {
             using (var context = factory.Create())
             {
-                //var restourant = new RestaurantEntity()
-                //{
-                //    Name = "Restaurant name " + 1
-                //};
-
-
-
                 var restaurants = Enumerable.Range(1, count + 6)
                                             .Select(x => new RestaurantEntity()
                                             {

@@ -2,7 +2,6 @@
 {
     public class FoodQueryModel :QueryBase
     {
-        
         public FoodQueryModel() : base()
         {
         }

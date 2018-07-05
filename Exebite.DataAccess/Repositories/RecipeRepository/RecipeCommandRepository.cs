@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using AutoMapper;
 using Either;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Exebite.DataAccess.Repositories
 {
@@ -36,7 +34,6 @@ namespace Exebite.DataAccess.Repositories
                     return new Right<Error, int>(addedEntity.Id);
                 }
             }
-         
             catch (Exception ex)
             {
                 return new Left<Error, int>(new UnknownError(ex.ToString()));
@@ -96,16 +93,6 @@ namespace Exebite.DataAccess.Repositories
             {
                 return new Left<Error, bool>(new UnknownError(ex.ToString()));
             }
-        }
-
-        public Either<Error, int> Insert(RestaurantInsertModel entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Either<Error, bool> Update(int id, RestaurantUpdateModel entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }

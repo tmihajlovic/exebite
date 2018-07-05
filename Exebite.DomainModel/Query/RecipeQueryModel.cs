@@ -2,7 +2,6 @@
 {
     public class RecipeQueryModel : QueryBase
     {
-
         public RecipeQueryModel() : base()
         {
 
@@ -15,9 +14,6 @@
 
         public int? Id { get; set; }
 
-
         public int? MainCourseId { get; set; }
-
-
     }
 }
