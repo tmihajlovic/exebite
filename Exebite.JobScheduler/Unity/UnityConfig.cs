@@ -43,7 +43,6 @@ namespace Exebite.JobScheduler.Unity
             container.RegisterType<ILocationQueryRepository, LocationQueryRepository>();
             container.RegisterType<IRestaurantCommandRepository, RestaurantCommandRepository>();
             container.RegisterType<IRestaurantQueryRepository, RestaurantQueryRepository>();
-            s
             container.RegisterType<IGoogleDataImporter, GoogleApiImport>();
             container.RegisterType<IGoogleSheetServiceFactory, GoogleSheetServiceFactory>();
             container.RegisterType<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>();
