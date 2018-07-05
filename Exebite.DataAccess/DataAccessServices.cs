@@ -22,7 +22,8 @@ namespace Exebite.DataAccess
             collection.AddTransient<IFoodRepository, FoodRepository>();
             collection.AddTransient<IRecipeRepository, RecipeRepository>();
             collection.AddTransient<IOrderRepository, OrderRepository>();
-            collection.AddTransient<IMealRepository, MealRepository>();
+            collection.AddTransient<IMealQueryRepository, MealQueryRepository>();
+            collection.AddTransient<IMealCommandRepository, MealCommandRepository>();
             collection.AddTransient<IRecipeToRecipeEntityConverter, RecipeToRecipeEntityConverter>();
             collection.AddTransient<IFoodToFoodEntityConverter, FoodToFoodEntityConverter>();
             return collection;

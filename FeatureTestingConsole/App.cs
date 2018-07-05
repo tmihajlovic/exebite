@@ -18,7 +18,7 @@ namespace FeatureTestingConsole
         private readonly ICustomerCommandRepository _customerCommandRepo;
         private readonly ILocationCommandRepository _locationCommandRepo;
         private readonly IDailyMenuCommandRepository _dailyMenuCommandRepo;
-        private readonly IMealRepository _mealRepo;
+        private readonly IMealCommandRepository _mealCommandRepo;
         private readonly IFoodOrderingContextFactory factory;
         private readonly IMapper _mapper;
 
@@ -29,7 +29,7 @@ namespace FeatureTestingConsole
             IFoodRepository foodRepository,
             ICustomerCommandRepository customerCommandRepo,
             ILocationCommandRepository locationCommandRepo,
-            IMealRepository mealRepo,
+            IMealCommandRepository mealCommandRepo,
             IFoodOrderingContextFactory factory,
             IDailyMenuCommandRepository dailyMenuCommand,
             IMapper mapper)
@@ -40,7 +40,7 @@ namespace FeatureTestingConsole
             _foodRepository = foodRepository;
             _customerCommandRepo = customerCommandRepo;
             _locationCommandRepo = locationCommandRepo;
-            _mealRepo = mealRepo;
+            _mealCommandRepo = mealCommandRepo;
             this.factory = factory;
             _dailyMenuCommandRepo = dailyMenuCommand;
             _mapper = mapper;
@@ -187,7 +187,7 @@ namespace FeatureTestingConsole
 
         private void SeedMeal()
         {
-            _mealRepo.Insert(new Meal()
+            _mealCommandRepo.Insert(new MealInsertModel()
             {
                 Foods = new List<Food>()
                 {
