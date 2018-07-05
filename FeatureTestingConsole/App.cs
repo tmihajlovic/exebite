@@ -14,36 +14,39 @@ namespace FeatureTestingConsole
         private readonly IOrderRepository _orderRepo;
         private readonly IRestaurantQueryRepository _restaurantQueryRepository;
         private readonly IRestaurantCommandRepository _restaurantCommandRepository;
-        private readonly IFoodRepository _foodRepository;
+        private readonly IFoodCommandRepository _foodCommandRepository;
+        private readonly IFoodQueryRepository _foodQueryRepository;
         private readonly ICustomerCommandRepository _customerCommandRepo;
         private readonly ILocationCommandRepository _locationCommandRepo;
         private readonly IDailyMenuCommandRepository _dailyMenuCommandRepo;
         private readonly IMealCommandRepository _mealCommandRepo;
-        private readonly IFoodOrderingContextFactory factory;
+        private readonly IFoodOrderingContextFactory _factory;
         private readonly IMapper _mapper;
 
         public App(
             IOrderRepository orderRepository,
             IRestaurantQueryRepository restaurantQueryRepo,
             IRestaurantCommandRepository restaurantCommandRepo,
-            IFoodRepository foodRepository,
             ICustomerCommandRepository customerCommandRepo,
             ILocationCommandRepository locationCommandRepo,
             IMealCommandRepository mealCommandRepo,
             IFoodOrderingContextFactory factory,
             IDailyMenuCommandRepository dailyMenuCommand,
-            IMapper mapper)
+            IMapper mapper,
+            IFoodQueryRepository foodQueryRepository,
+            IFoodCommandRepository foodCommandRepository)
         {
             _orderRepo = orderRepository;
             _restaurantQueryRepository = restaurantQueryRepo;
             _restaurantCommandRepository = restaurantCommandRepo;
-            _foodRepository = foodRepository;
             _customerCommandRepo = customerCommandRepo;
             _locationCommandRepo = locationCommandRepo;
             _mealCommandRepo = mealCommandRepo;
-            this.factory = factory;
+            _factory = factory;
             _dailyMenuCommandRepo = dailyMenuCommand;
             _mapper = mapper;
+            _foodQueryRepository = foodQueryRepository;
+            _foodCommandRepository = foodCommandRepository;
         }
 
         public void Run(string[] args)
@@ -79,7 +82,7 @@ namespace FeatureTestingConsole
 
         private void SeedPayment()
         {
-            using (var dc = factory.Create())
+            using (var dc = _factory.Create())
             {
                 dc.Payment.Add(new PaymentEntity()
                 {
@@ -92,7 +95,7 @@ namespace FeatureTestingConsole
 
         private void ResetDatabase()
         {
-            using (var dc = factory.Create())
+            using (var dc = _factory.Create())
             {
                 dc.Database.EnsureDeleted();
                 dc.Database.EnsureCreated();
@@ -149,7 +152,7 @@ namespace FeatureTestingConsole
         private void SeedFoods()
         {
             // Lipa
-            _foodRepository.Insert(new Food()
+            _foodCommandRepository.Insert(new FoodInsertModel()
             {
                 Name = "Supa",
                 Price = 100,
@@ -158,7 +161,7 @@ namespace FeatureTestingConsole
             });
 
             // lipa
-            _foodRepository.Insert(new Food()
+            _foodCommandRepository.Insert(new FoodInsertModel()
             {
                 Name = "Kaubojska pasta",
                 Price = 100,
@@ -167,7 +170,7 @@ namespace FeatureTestingConsole
             });
 
             // Hedone
-            _foodRepository.Insert(new Food()
+            _foodCommandRepository.Insert(new FoodInsertModel()
             {
                 Name = "Ramstek",
                 Price = 400,
@@ -176,7 +179,7 @@ namespace FeatureTestingConsole
             });
 
             // Hedone
-            _foodRepository.Insert(new Food()
+            _foodCommandRepository.Insert(new FoodInsertModel()
             {
                 Name = "Princes krofna",
                 Price = 100,

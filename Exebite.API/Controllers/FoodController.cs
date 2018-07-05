@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+using Either;
 using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
@@ -13,78 +14,55 @@ namespace Exebite.API.Controllers
     [Authorize]
     public class FoodController : ControllerBase
     {
-        private readonly IFoodRepository _foodRepository;
+        private readonly IFoodQueryRepository _foodQueryRepository;
+        private readonly IFoodCommandRepository _foodCommandRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<FoodController> _logger;
 
-        public FoodController(IFoodRepository foodRepository, IMapper mapper)
+        public FoodController(
+            IFoodCommandRepository foodCommandRepository,
+            IFoodQueryRepository foodRepository,
+            IMapper mapper,
+            ILogger<FoodController> logger)
         {
-            _foodRepository = foodRepository;
+            _foodQueryRepository = foodRepository;
+            _foodCommandRepository = foodCommandRepository;
             _mapper = mapper;
-        }
-
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var foods = _mapper.Map<IEnumerable<FoodDto>>(_foodRepository.Get(0, int.MaxValue));
-            return Ok(foods);
+            _logger = logger;
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var food = _foodRepository.GetByID(id);
-            if (food == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<FoodDto>(food));
-        }
+        public IActionResult Get(int id) =>
+             _foodQueryRepository.Query(new FoodQueryModel() { Id = id })
+                                 .Map(x => AllOk(_mapper.Map<PagingResult<FoodDto>>(x)))
+                                 .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPost]
-        public IActionResult Post([FromBody]CreateFoodDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            var createdFood = _foodRepository.Insert(_mapper.Map<DomainModel.Food>(model));
-
-            return Ok(new { createdFood.Id });
-        }
+        public IActionResult Post([FromBody]CreateFoodDto model) =>
+            _foodCommandRepository.Insert(_mapper.Map<FoodInsertModel>(model))
+                                  .Map(x => AllOk(new { id = x }))
+                                  .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
+                                  .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]UpdateFoodDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            var currentFood = _foodRepository.GetByID(id);
-            if (currentFood == null)
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(model, currentFood);
-            var updatedFood = _foodRepository.Update(currentFood);
-            return Ok(new { updatedFood.Id });
-        }
+        public IActionResult Put(int id, [FromBody]UpdateFoodDto model) =>
+            _foodCommandRepository.Update(id, _mapper.Map<FoodUpdateModel>(model))
+                                  .Map(x => AllOk(new { result = x }))
+                                  .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
+                                  .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _foodRepository.Delete(id);
-            return NoContent();
-        }
+        public IActionResult Delete(int id) =>
+            _foodCommandRepository.Delete(id)
+                                  .Map(x => AllOk(new { removed = x }))
+                                  .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
+                                  .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("Query")]
-        public IActionResult Query(FoodQueryModel query)
-        {
-            var foods = _foodRepository.Query(query);
-            return Ok(_mapper.Map<IEnumerable<FoodDto>>(foods));
-        }
+        public IActionResult Query(FoodQueryModelDto query) =>
+            _foodQueryRepository.Query(_mapper.Map<FoodQueryModel>(query))
+                                .Map(x => AllOk(_mapper.Map<PagingResult<FoodDto>>(x)))
+                                .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
+                                .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
     }
 }

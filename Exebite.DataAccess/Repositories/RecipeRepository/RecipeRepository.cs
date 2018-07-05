@@ -89,6 +89,11 @@ namespace Exebite.DataAccess.Repositories
                     query = query.Where(x => x.Id == queryModel.Id.Value);
                 }
 
+                if (queryModel.MainCourseId != null)
+                {
+                    query = query.Where(x => x.MainCourseId == queryModel.MainCourseId);
+                }
+
                 var results = query.ToList();
                 return _mapper.Map<IList<Recipe>>(results);
             }

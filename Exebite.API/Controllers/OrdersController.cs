@@ -14,20 +14,14 @@ namespace Exebite.API.Controllers
     [Authorize]
     public class OrdersController : ControllerBase
     {
-        private readonly IMenuService _menuService;
         private readonly IOrderService _orderService;
-        private readonly IFoodRepository _foodRepository;
         private readonly IMapper _mapper;
 
         public OrdersController(
-            IMenuService menuService,
             IOrderService orderService,
-            IFoodRepository foodRepository,
             IMapper mapper)
         {
-            _menuService = menuService;
             _orderService = orderService;
-            _foodRepository = foodRepository;
             _mapper = mapper;
         }
 

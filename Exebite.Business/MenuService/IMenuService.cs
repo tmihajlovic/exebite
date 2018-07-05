@@ -25,6 +25,6 @@ namespace Exebite.Business
         /// </summary>
         /// <param name="foodId">Id of food</param>
         /// <returns>List of side dishes, condament and salads that pair with given food</returns>
-        List<Food> CheckAvailableSideDishes(int foodId);
+        IList<Food> CheckAvailableSideDishes(int foodId);
     }
 }
