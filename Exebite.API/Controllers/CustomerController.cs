@@ -31,19 +31,6 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IActionResult Get(int page, int size) =>
-            _queryRepo.Query(new CustomerQueryModel(page, size))
-                      .Map(x => AllOk(_mapper.Map<PagingResult<CustomerDto>>(x)))
-                      .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id) =>
-            _queryRepo.Query(new CustomerQueryModel { Id = id })
-                      .Map(x => AllOk(_mapper.Map<PagingResult<CustomerDto>>(x)))
-                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
-                      .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
-
         [HttpPost]
         public IActionResult Post([FromBody]CreateCustomerDto createModel) =>
             _commandRepo.Insert(_mapper.Map<CustomerInsertModel>(createModel))

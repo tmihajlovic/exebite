@@ -31,12 +31,6 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id) =>
-             _foodQueryRepository.Query(new FoodQueryModel() { Id = id })
-                                 .Map(x => AllOk(_mapper.Map<PagingResult<FoodDto>>(x)))
-                                 .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
-
         [HttpPost]
         public IActionResult Post([FromBody]CreateFoodDto model) =>
             _foodCommandRepository.Insert(_mapper.Map<FoodInsertModel>(model))

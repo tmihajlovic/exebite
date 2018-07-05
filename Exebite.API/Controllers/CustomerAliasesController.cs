@@ -30,19 +30,6 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IActionResult Get(int page, int size) =>
-            _queryRepo.Query(new CustomerAliasQueryModel(page, size))
-                      .Map(x => AllOk(_mapper.Map<PagingResult<CustomerAliasDto>>(x)))
-                      .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id) =>
-            _queryRepo.Query(new CustomerAliasQueryModel { Id = id })
-                      .Map(x => AllOk(_mapper.Map<PagingResult<CustomerAliasDto>>(x)))
-                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
-                      .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
-
         [HttpPost]
         public IActionResult Post([FromBody]CreateCustomerAliasDto model) =>
             _commandRepo.Insert(_mapper.Map<CustomerAliasInsertModel>(model))
@@ -65,7 +52,7 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("Query")]
-        public IActionResult Query(CustomerAliasQueryDto query) =>
+        public IActionResult Query([FromQuery]CustomerAliasQueryDto query) =>
             _queryRepo.Query(_mapper.Map<CustomerAliasQueryModel>(query))
                       .Map(x => AllOk(_mapper.Map<PagingResult<CustomerAliasDto>>(x)))
                       .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)

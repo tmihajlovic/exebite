@@ -31,19 +31,6 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IActionResult Get(int page, int size) =>
-            _queryRepository.Query(new RestaurantQueryModel(page, size))
-                            .Map(x => AllOk(_mapper.Map<PagingResult<RestaurantDto>>(x)))
-                            .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id) =>
-            _queryRepository.Query(new RestaurantQueryModel { Id = id })
-                            .Map(x => AllOk(_mapper.Map<PagingResult<RestaurantDto>>(x)))
-                            .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
-                            .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
-
         [HttpPost]
         public IActionResult Post([FromBody]RestaurantInsertModelDto restaurant) =>
             _commandRepository.Insert(_mapper.Map<RestaurantInsertModel>(restaurant))

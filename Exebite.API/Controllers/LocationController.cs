@@ -31,19 +31,6 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IActionResult Get() =>
-            _queryRepository.Query(new LocationQueryModel())
-                            .Map(x => AllOk(_mapper.Map<PagingResult<LocationDto>>(x.Items)))
-                            .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id) =>
-             _queryRepository.Query(new LocationQueryModel { Id = id })
-                             .Map(x => AllOk(_mapper.Map<PagingResult<RestaurantDto>>(x.Items)))
-                             .Reduce(_ => NotFound(), error => error is RecordNotFound)
-                             .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
-
         [HttpPost]
         public IActionResult Post([FromBody]CreateLocationDto model) =>
             _commandRepository.Insert(_mapper.Map<LocationInsertModel>(model))
