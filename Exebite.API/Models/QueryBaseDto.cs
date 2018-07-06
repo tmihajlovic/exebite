@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Exebite.DomainModel;
+﻿using Exebite.DataAccess.Repositories;
+using System.ComponentModel.DataAnnotations;
 
 namespace Exebite.API.Models
 {

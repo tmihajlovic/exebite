@@ -1,15 +1,15 @@
-﻿namespace Exebite.DomainModel
+﻿namespace Exebite.DataAccess.Repositories
 {
     public class RecipeQueryModel : QueryBase
     {
-        public RecipeQueryModel() : base()
+        public RecipeQueryModel()
+            : base()
         {
-
         }
 
-        public RecipeQueryModel(int page, int size) : base(page, size)
+        public RecipeQueryModel(int page, int size)
+            : base(page, size)
         {
-
         }
 
         public int? Id { get; set; }

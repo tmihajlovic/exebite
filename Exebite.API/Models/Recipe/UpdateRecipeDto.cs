@@ -9,7 +9,7 @@ namespace Exebite.API.Models
         public int RestaurantId { get; set; }
 
         [Required]
-        public int FoodId { get; set; }
+        public int MainCourseId { get; set; }
 
         [Required]
         public List<FoodDto> SideDish { get; set; }

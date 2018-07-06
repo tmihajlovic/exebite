@@ -2,7 +2,6 @@
 using Either;
 using Exebite.API.Models;
 using Exebite.DataAccess.Repositories;
-using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

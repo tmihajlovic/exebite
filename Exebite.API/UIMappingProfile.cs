@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using AutoMapper;
 using Exebite.API.Models;
+using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 
 #pragma warning disable SA1123 // Do not place regions within elements

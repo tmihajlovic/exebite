@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Exebite.DomainModel
+namespace Exebite.DataAccess.Repositories
 {
     public class OrderQueryModel : QueryBase
     {

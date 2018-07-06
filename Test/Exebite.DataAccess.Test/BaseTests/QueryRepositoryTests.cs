@@ -3,7 +3,6 @@ using System.Linq;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.Mocks;
-using Exebite.DomainModel;
 using Microsoft.Data.Sqlite;
 using Optional.Xunit;
 using Xunit;

@@ -1,4 +1,4 @@
-﻿namespace Exebite.DomainModel
+﻿namespace Exebite.DataAccess.Repositories
 {
     public class LocationQueryModel : QueryBase
     {

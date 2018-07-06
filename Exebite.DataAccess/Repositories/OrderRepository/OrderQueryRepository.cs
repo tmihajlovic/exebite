@@ -5,7 +5,6 @@ using AutoMapper;
 using Either;
 using Exebite.DataAccess.Context;
 using Exebite.DomainModel;
-using Microsoft.EntityFrameworkCore;
 
 namespace Exebite.DataAccess.Repositories
 {

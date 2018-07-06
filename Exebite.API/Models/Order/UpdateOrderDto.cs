@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Exebite.API.Models
 {
@@ -9,5 +10,17 @@ namespace Exebite.API.Models
 
         [Required]
         public string Note { get; set; }
+
+        [Required]
+        public decimal Price { get; set; }
+
+        [Required]
+        public DateTime Date { get; set; }
+
+        [Required]
+        public int MealId { get; set; }
+
+        [Required]
+        public int CustomerId { get; set; }
     }
 }
