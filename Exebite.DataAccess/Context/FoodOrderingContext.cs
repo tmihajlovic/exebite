@@ -1,10 +1,15 @@
-﻿using Exebite.DataAccess.Entities;
+﻿using System;
+using System.Linq;
+using Exebite.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Exebite.DataAccess.Context
 {
     public class FoodOrderingContext : DbContext, IFoodOrderingContext
     {
+        private readonly string _lastModified = "LastModified";
+        private readonly string _created = "Created";
+
         private readonly DbContextOptions<FoodOrderingContext> _dbContextOptions;
 
         public FoodOrderingContext(DbContextOptions<FoodOrderingContext> dbContextOptions)
@@ -32,6 +37,25 @@ namespace Exebite.DataAccess.Context
         public DbSet<DailyMenuEntity> DailyMenues { get; set; }
 
         public DbSet<PaymentEntity> Payment { get; set; }
+
+        public override int SaveChanges()
+        {
+            ChangeTracker.DetectChanges();
+            var timestamp = DateTime.UtcNow;
+            foreach (var entry in ChangeTracker.Entries()
+                                              .Where(e => e.State == EntityState.Added
+                                                       || e.State == EntityState.Modified))
+            {
+                entry.Property(_lastModified).CurrentValue = timestamp;
+
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Property(_created).CurrentValue = timestamp;
+                }
+            }
+
+            return base.SaveChanges();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -81,6 +105,12 @@ namespace Exebite.DataAccess.Context
 
             modelBuilder.Entity<OrderEntity>()
                 .HasIndex(x => x.Date);
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                modelBuilder.Entity(entityType.Name).Property<DateTime>(_created);
+                modelBuilder.Entity(entityType.Name).Property<DateTime>(_lastModified);
+            }
         }
     }
 }
