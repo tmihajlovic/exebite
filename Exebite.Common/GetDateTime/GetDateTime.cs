@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Exebite.Common.DateTimeComponent
+namespace Exebite.Common
 {
     public class GetDateTime : IGetDateTime
     {

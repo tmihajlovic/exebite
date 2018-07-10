@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using AutoMapper;
+using Exebite.Common;
 using Exebite.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -51,7 +52,8 @@ namespace Exebite.API
                     cfg.AddProfile<DataAccessMappingProfile>();
                     cfg.AddProfile<UIMappingProfile>();
                 })
-            .AddDataAccessServices();
+            .AddDataAccessServices()
+            .AddCommonServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
