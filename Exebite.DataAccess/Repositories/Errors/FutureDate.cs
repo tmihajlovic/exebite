@@ -1,4 +1,6 @@
-﻿namespace Exebite.DataAccess.Repositories
+﻿using Exebite.Common;
+
+namespace Exebite.DataAccess.Repositories
 {
     public sealed class FutureDate : Error
     {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Either;
+using Exebite.Common;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 

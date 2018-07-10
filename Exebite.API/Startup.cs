@@ -1,39 +1,41 @@
-﻿namespace Exebite.API
-{
-    using System;
-    using System.Reflection;
-    using AutoMapper;
-    using Exebite.DataAccess;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc.Authorization;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using NJsonSchema;
-    using NSwag.AspNetCore;
+﻿using System;
+using System.Reflection;
+using AutoMapper;
+using Exebite.DataAccess;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using NJsonSchema;
+using NSwag.AspNetCore;
 
+namespace Exebite.API
+{
     public class Startup
     {
-        private readonly IServiceProvider provider;
+        private readonly IServiceProvider _provider;
+        private readonly IConfiguration _configuration;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         public Startup(IConfiguration configuration, IHostingEnvironment env, IServiceProvider provider)
         {
-            Configuration = configuration;
-            HostingEnvironment = env;
-            this.provider = provider;
+            _configuration = configuration;
+            _hostingEnvironment = env;
+            _provider = provider;
         }
-
-        public static IConfiguration Configuration { get; private set; }
-
-        public static IHostingEnvironment HostingEnvironment { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication()
-                .AddGoogle();
+                .AddGoogle(googleOptions =>
+                {
+                    googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
+                    googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
+                });
 
-            if (HostingEnvironment.IsDevelopment())
+            if (_hostingEnvironment.IsDevelopment())
             {
                 services.AddMvc(opts => opts.Filters.Add(new AllowAnonymousFilter()));
             }
@@ -45,7 +47,7 @@
             services.AddAutoMapper(
                 cfg =>
                 {
-                    cfg.ConstructServicesUsing(x => this.provider.GetService(x));
+                    cfg.ConstructServicesUsing(x => _provider.GetService(x));
                     cfg.AddProfile<DataAccessMappingProfile>();
                     cfg.AddProfile<UIMappingProfile>();
                 })
@@ -67,6 +69,8 @@
             app.UseStatusCodePages();
 
             app.UseMvc();
+
+            app.UseAuthentication();
 
             app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
             {

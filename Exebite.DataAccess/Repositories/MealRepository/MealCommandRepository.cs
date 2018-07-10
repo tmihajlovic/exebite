@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using Either;
+using Exebite.Common;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;

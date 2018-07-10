@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Either\Either.csproj" />
+    <ProjectReference Include="..\Exebite.Common\Exebite.Common.csproj" />
     <ProjectReference Include="..\Exebite.DomainModel\Exebite.DomainModel.csproj" />
   </ItemGroup>
 

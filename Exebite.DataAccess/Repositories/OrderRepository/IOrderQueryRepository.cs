@@ -1,4 +1,5 @@
 ﻿using Either;
+using Exebite.Common;
 using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Repositories
