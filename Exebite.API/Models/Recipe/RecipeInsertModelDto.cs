@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Exebite.API.Models;
 
-namespace Exebite.API.Models
+namespace Exebite.API.Controllers
 {
-    public class CreateRecipeDto
+    public class RecipeInsertModelDto
     {
         [Required]
+        [Range(1, int.MaxValue)]
         public int RestaurantId { get; set; }
 
         [Required]
+        [Range(1, int.MaxValue)]
         public int MainCourseId { get; set; }
 
         [Required]
-        public List<FoodDto> SideDish { get; set; }
+        public IEnumerable<FoodDto> SideDish { get; set; }
     }
 }
