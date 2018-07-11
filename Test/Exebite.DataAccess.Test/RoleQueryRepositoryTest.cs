@@ -65,7 +65,7 @@ namespace Exebite.DataAccess.Test
                     Name = $"Name {x}"
                 });
 
-                context.Roles.AddRange(roles);
+                context.Role.AddRange(roles);
                 context.SaveChanges();
             }
         }

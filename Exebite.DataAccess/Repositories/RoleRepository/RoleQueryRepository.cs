@@ -31,7 +31,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var query = context.Roles.AsQueryable();
+                    var query = context.Role.AsQueryable();
 
                     if (queryModel.Id != null)
                     {
