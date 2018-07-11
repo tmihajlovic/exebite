@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Either;
 using Exebite.API.Models;
+using Exebite.Common;
 using Exebite.DataAccess.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,13 @@ namespace Exebite.API.Controllers
     {
         private readonly IRecipeQueryRepository _queryRepository;
         private readonly IRecipeCommandRepository _commandRepository;
-        private readonly IMapper _mapper;
+        private readonly IEitherMapper _mapper;
         private readonly ILogger<RecipeController> _logger;
 
         public RecipeController(
             IRecipeQueryRepository queryRepository,
             IRecipeCommandRepository commandRepository,
-            IMapper mapper,
+            IEitherMapper mapper,
             ILogger<RecipeController> logger)
         {
             _queryRepository = queryRepository;
@@ -32,17 +33,19 @@ namespace Exebite.API.Controllers
 
         [HttpPost]
         public IActionResult Post([FromBody]RecipeInsertModelDto recipe) =>
-            _commandRepository.Insert(_mapper.Map<RecipeInsertModel>(recipe))
-                              .Map(x => Created(new { id = x }))
-                              .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
-                              .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
+            _mapper.Map<RecipeInsertModel>(recipe)
+                   .Map(_commandRepository.Insert)
+                   .Map(x => Created(new { id = x }))
+                   .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
+                   .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]UpdateRecipeDto recipe) =>
-            _commandRepository.Update(id, _mapper.Map<RecipeUpdateModel>(recipe))
-                              .Map(x => AllOk(new { updated = x }))
-                              .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.LogError(x.ToString()))
-                              .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
+            _mapper.Map<RecipeUpdateModel>(recipe)
+                   .Map(x => _commandRepository.Update(id, x))
+                   .Map(x => AllOk(new { updated = x }))
+                   .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.LogError(x.ToString()))
+                   .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id) =>
@@ -53,9 +56,11 @@ namespace Exebite.API.Controllers
 
         [HttpGet("Query")]
         public IActionResult Query([FromQuery]RecipeQueryDto query) =>
-            _queryRepository.Query(_mapper.Map<RecipeQueryModel>(query))
-                            .Map(x => AllOk(_mapper.Map<PagingResult<RecipeDto>>(x)))
-                            .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
-                            .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
+            _mapper.Map<RecipeQueryModel>(query)
+                   .Map(_queryRepository.Query)
+                   .Map(_mapper.Map<PagingResult<RecipeDto>>)
+                   .Map(AllOk)
+                   .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
+                   .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
     }
 }

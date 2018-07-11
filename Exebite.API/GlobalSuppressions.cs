@@ -8,3 +8,4 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:Field names must not begin with underscore", Justification = "Not our rule")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "CLASS0001:Seal class", Justification = "Not our rule")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File must have header", Justification = "Skiping headers")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Used by middleware", Scope = "member", Target = "~M:Exebite.API.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)")]

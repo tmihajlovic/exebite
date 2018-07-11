@@ -1,6 +1,6 @@
-﻿using AutoMapper;
-using Either;
+﻿using Either;
 using Exebite.API.Models;
+using Exebite.Common;
 using Exebite.DataAccess.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +15,13 @@ namespace Exebite.API.Controllers
     {
         private readonly IOrderQueryRepository _queryRepo;
         private readonly IOrderCommandRepository _commandRepo;
-        private readonly IMapper _mapper;
+        private readonly IEitherMapper _mapper;
         private readonly ILogger<OrdersController> _logger;
 
         public OrdersController(
             IOrderQueryRepository queryRepo,
             IOrderCommandRepository commandRepo,
-            IMapper mapper,
+            IEitherMapper mapper,
             ILogger<OrdersController> logger)
         {
             _queryRepo = queryRepo;
@@ -32,17 +32,19 @@ namespace Exebite.API.Controllers
 
         [HttpPost]
         public IActionResult Post([FromBody] CreateOrderDto model) =>
-            _commandRepo.Insert(_mapper.Map<OrderInsertModel>(model))
-                        .Map(x => Created(new { id = x }))
-                        .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
-                        .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
+            _mapper.Map<OrderInsertModel>(model)
+                   .Map(_commandRepo.Insert)
+                   .Map(x => Created(new { id = x }))
+                   .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
+                   .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] UpdateOrderDto model) =>
-            _commandRepo.Update(id, _mapper.Map<OrderUpdateModel>(model))
-                        .Map(x => AllOk(new { updated = x }))
-                        .Reduce(_ => NotFound(), error => error is RecordNotFound)
-                        .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
+            _mapper.Map<OrderUpdateModel>(model)
+                   .Map(x => _commandRepo.Update(id, x))
+                   .Map(x => AllOk(new { updated = x }))
+                   .Reduce(_ => NotFound(), error => error is RecordNotFound)
+                   .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id) =>
@@ -53,15 +55,18 @@ namespace Exebite.API.Controllers
 
         [HttpGet("Query")]
         public IActionResult Query([FromQuery]OrderQueryDto query) =>
-            _queryRepo.Query(_mapper.Map<OrderQueryModel>(query))
-                      .Map(x => AllOk(_mapper.Map<PagingResult<OrderDto>>(x)))
-                      .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
-                      .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
+            _mapper.Map<OrderQueryModel>(query)
+                   .Map(_queryRepo.Query)
+                   .Map(_mapper.Map<PagingResult<OrderDto>>)
+                   .Map(x => AllOk(x))
+                   .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
+                   .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("GetAllOrdersForRestaurant")]
         public IActionResult GetAllOrdersForRestaurant(int restaurantId, int page, int size) =>
             _queryRepo.GetAllOrdersForRestaurant(restaurantId, page, size)
-                      .Map(x => AllOk(_mapper.Map<PagingResult<OrderDto>>(x)))
+                      .Map(_mapper.Map<PagingResult<OrderDto>>)
+                      .Map(AllOk)
                       .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
     }
 }

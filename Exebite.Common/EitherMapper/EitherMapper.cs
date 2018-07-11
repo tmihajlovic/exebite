@@ -13,6 +13,10 @@ namespace Exebite.Common
             _mapper = mapper;
         }
 
+        public IConfigurationProvider Configuration => _mapper.ConfigurationProvider;
+
+        public Func<Type, object> ServiceCtor => _mapper.ServiceCtor;
+
         public Either<Error, TDestination> Map<TDestination>(object source)
         {
             try
@@ -126,7 +130,7 @@ namespace Exebite.Common
             try
             {
                 return _mapper.Map(source, sourceType, sourceType, destinationType, opts);
-            }
+            }            
             catch (Exception ex)
             {
                 return new Left<MappingError, object>(new MappingError(ex.ToString()));

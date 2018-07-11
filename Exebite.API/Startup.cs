@@ -3,6 +3,7 @@ using System.Reflection;
 using AutoMapper;
 using Exebite.API.Authorization;
 using Exebite.Business;
+using Exebite.Common;
 using Exebite.DataAccess;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
@@ -64,7 +65,8 @@ namespace Exebite.API
                     cfg.AddProfile<DataAccessMappingProfile>();
                     cfg.AddProfile<UIMappingProfile>();
                 })
-            .AddDataAccessServices();
+            .AddDataAccessServices()
+            .AddCommonServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -57,7 +57,8 @@ namespace Exebite.API.Controllers
         public IActionResult Query([FromQuery]CustomerAliasQueryDto query) =>
             _mapper.Map<CustomerAliasQueryModel>(query)
                       .Map(x => _queryRepo.Query(x))
-                      .Map(x => AllOk(_mapper.Map<PagingResult<CustomerAliasDto>>(x)))
+                      .Map(_mapper.Map<PagingResult<CustomerAliasDto>>)
+                      .Map(AllOk)
                       .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                       .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
     }

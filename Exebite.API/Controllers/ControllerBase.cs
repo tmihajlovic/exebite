@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Exebite.API.Controllers.Attributes;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exebite.API.Controllers
 {
+    [ValidateModel]
     public class ControllerBase : Controller
     {
         protected IActionResult InternalServerError(string error) =>

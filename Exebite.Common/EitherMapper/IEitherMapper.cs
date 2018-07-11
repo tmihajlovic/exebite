@@ -9,11 +9,11 @@ namespace Exebite.Common
         //
         // Summary:
         //     Configuration provider for performing maps
-        //IConfigurationProvider ConfigurationProvider { get; }
-        //
+        IConfigurationProvider Configuration { get; }        
+        
         // Summary:
         //     Factory method for creating runtime instances of converters, resolvers etc.
-        //Func<Type, object> ServiceCtor { get; }
+        Func<Type, object> ServiceCtor { get; }
 
         //
         // Summary:
