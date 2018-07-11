@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
 namespace Exebite.API.Models
@@ -6,7 +7,7 @@ namespace Exebite.API.Models
     public class UpdateOrderDto
     {
         [Required]
-        public int[] FoodIds { get; set; }
+        public IEnumerable[] FoodIds { get; set; }
 
         [Required]
         public string Note { get; set; }

@@ -1,5 +1,4 @@
 ﻿using Either;
-using Exebite.API.Controllers.Attributes;
 using Exebite.API.Models;
 using Exebite.Common;
 using Exebite.DataAccess.Repositories;
@@ -57,10 +56,10 @@ namespace Exebite.API.Controllers
         [HttpGet("Query")]
         public IActionResult Query([FromQuery]RestaurantQueryDto query) =>
             _mapper.Map<RestaurantQueryModel>(query)
-                .Map(_queryRepository.Query)
-                .Map(_mapper.Map<PagingResult<RestaurantDto>>)
-                .Map(AllOk)
-                .Reduce(_ => BadRequest(ModelState), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
-                .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
+                   .Map(_queryRepository.Query)
+                   .Map(_mapper.Map<PagingResult<RestaurantDto>>)
+                   .Map(AllOk)
+                   .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
+                   .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
     }
 }

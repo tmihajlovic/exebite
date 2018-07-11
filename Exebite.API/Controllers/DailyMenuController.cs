@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Either;
 using Exebite.API.Models;
+using Exebite.Common;
 using Exebite.DataAccess.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,13 @@ namespace Exebite.API.Controllers
     {
         private readonly IDailyMenuQueryRepository _queryRepo;
         private readonly IDailyMenuCommandRepository _commandRepo;
-        private readonly IMapper _mapper;
+        private readonly IEitherMapper _mapper;
         private readonly ILogger<DailyMenuController> _logger;
 
         public DailyMenuController(
             IDailyMenuQueryRepository queryRepo,
             IDailyMenuCommandRepository commandRepo,
-            IMapper mapper,
+            IEitherMapper mapper,
             ILogger<DailyMenuController> logger)
         {
             _mapper = mapper;
@@ -32,14 +33,16 @@ namespace Exebite.API.Controllers
 
         [HttpPost]
         public IActionResult Post([FromBody]CreateDailyMenuDto model) =>
-            _commandRepo.Insert(_mapper.Map<DailyMenuInsertModel>(model))
+            _mapper.Map<DailyMenuInsertModel>(model)
+                        .Map(_commandRepo.Insert)
                         .Map(x => Created(new { id = x }))
                         .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]UpdateDailyMenuDto model) =>
-            _commandRepo.Update(id, _mapper.Map<DailyMenuUpdateModel>(model))
+            _mapper.Map<DailyMenuUpdateModel>(model)
+                        .Map(x => _commandRepo.Update(id, x))
                         .Map(x => AllOk(new { updated = x }))
                         .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.LogError(x.ToString()))
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
@@ -53,8 +56,10 @@ namespace Exebite.API.Controllers
 
         [HttpGet("Query")]
         public IActionResult Query([FromQuery]DailyMenuQueryDto query) =>
-            _queryRepo.Query(_mapper.Map<DailyMenuQueryModel>(query))
-                      .Map(x => AllOk(_mapper.Map<PagingResult<DailyMenuDto>>(x)))
+            _mapper.Map<DailyMenuQueryModel>(query)
+                      .Map(_queryRepo.Query)
+                      .Map(_mapper.Map<PagingResult<DailyMenuDto>>)
+                      .Map(AllOk)
                       .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
                       .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
     }

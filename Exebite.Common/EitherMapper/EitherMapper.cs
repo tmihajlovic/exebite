@@ -130,7 +130,7 @@ namespace Exebite.Common
             try
             {
                 return _mapper.Map(source, sourceType, sourceType, destinationType, opts);
-            }
+            }            
             catch (Exception ex)
             {
                 return new Left<MappingError, object>(new MappingError(ex.ToString()));
