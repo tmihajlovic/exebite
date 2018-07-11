@@ -68,21 +68,21 @@ namespace Exebite.DataAccess.Test
                     RestaurantId = x,
                     MainCourseId = x
                 });
-                context.Recipes.AddRange(recipes);
+                context.Recipe.AddRange(recipes);
 
                 var dailyMenus = Enumerable.Range(1, count).Select(x => new DailyMenuEntity
                 {
                     Id = x,
                     RestaurantId = x
                 });
-                context.DailyMenues.AddRange(dailyMenus);
+                context.DailyMenu.AddRange(dailyMenus);
 
                 var restaurant = Enumerable.Range(1, count).Select(x => new RestaurantEntity
                 {
                     Id = x,
                     Name = "Test restaurant " + x
                 });
-                context.Restaurants.AddRange(restaurant);
+                context.Restaurant.AddRange(restaurant);
 
                 var food = Enumerable.Range(1, count).Select(x => new FoodEntity
                 {
@@ -92,7 +92,7 @@ namespace Exebite.DataAccess.Test
                     Description = $"Description {x}",
                     RestaurantId = x
                 });
-                context.Foods.AddRange(food);
+                context.Food.AddRange(food);
                 context.SaveChanges();
             }
         }

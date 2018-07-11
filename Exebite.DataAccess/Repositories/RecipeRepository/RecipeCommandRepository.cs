@@ -30,7 +30,7 @@ namespace Exebite.DataAccess.Repositories
                         RestaurantId = entity.RestaurantId
                     };
 
-                    var addedEntity = context.Recipes.Add(recipeEntity).Entity;
+                    var addedEntity = context.Recipe.Add(recipeEntity).Entity;
                     context.SaveChanges();
                     return new Right<Error, int>(addedEntity.Id);
                 }
@@ -52,7 +52,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var currentEntity = context.Recipes.Find(id);
+                    var currentEntity = context.Recipe.Find(id);
                     if (currentEntity == null)
                     {
                         return new Left<Error, bool>(new RecordNotFound(nameof(entity)));

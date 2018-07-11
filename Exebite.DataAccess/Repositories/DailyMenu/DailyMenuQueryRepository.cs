@@ -31,7 +31,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var query = context.DailyMenues.AsQueryable();
+                    var query = context.DailyMenu.AsQueryable();
 
                     if (queryModel.Id != null)
                     {

@@ -33,7 +33,7 @@ namespace Exebite.DataAccess.Repositories
                         RoleId = entity.RoleId
                     };
 
-                    var addedEntity = context.Customers.Add(customerEntity).Entity;
+                    var addedEntity = context.Customer.Add(customerEntity).Entity;
                     context.SaveChanges();
                     return new Right<Error, int>(addedEntity.Id);
                 }
@@ -55,7 +55,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var currentEntity = context.Customers.Find(id);
+                    var currentEntity = context.Customer.Find(id);
                     if (currentEntity == null)
                     {
                         return new Left<Error, bool>(new RecordNotFound(nameof(entity)));

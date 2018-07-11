@@ -1,5 +1,6 @@
 ﻿#pragma warning disable SA1124 // Do not use regions
 using AutoMapper;
+using AutoMapper.Configuration;
 using Exebite.Common;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Repositories;
@@ -14,11 +15,13 @@ namespace Exebite.DataAccess.Test
 
         static RepositoryTestHelpers()
         {
-            ServiceCollectionExtensions.UseStaticRegistration = false;
-            Mapper.Initialize(cfg => cfg.AddProfile<DataAccessMappingProfile>());
-
             _dateTime = new GetDateTimeStub();
-            _mapper = Mapper.Instance;
+
+            ServiceCollectionExtensions.UseStaticRegistration = false;
+            var configExpresion = new MapperConfigurationExpression();
+            configExpresion.AddProfile<DataAccessMappingProfile>();
+            var config = new MapperConfiguration(configExpresion);
+            _mapper = new Mapper(config) as IMapper;
         }
 
         #region Customer
@@ -102,6 +105,19 @@ namespace Exebite.DataAccess.Test
             return new MealCommandRepository(factory, _mapper);
         }
         #endregion
+
+        #region Payment
+
+        internal static PaymentQueryRepository CreateOnlyPaymentQueryRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
+        {
+            return new PaymentQueryRepository(factory, _mapper);
+        }
+
+        internal static PaymentCommandRepository CreateOnlyPaymentCommandRepositoryInstanceNoData(IFoodOrderingContextFactory factory)
+        {
+            return new PaymentCommandRepository(factory, _mapper);
+        }
+        #endregion Payment
 
         #region Recipe
 

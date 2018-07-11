@@ -18,27 +18,27 @@ namespace Exebite.DataAccess.Context
             _dbContextOptions = dbContextOptions;
         }
 
-        public DbSet<FoodEntity> Foods { get; set; }
+        public DbSet<FoodEntity> Food { get; set; }
 
-        public DbSet<OrderEntity> Orders { get; set; }
+        public DbSet<OrderEntity> Order { get; set; }
 
-        public DbSet<CustomerEntity> Customers { get; set; }
+        public DbSet<CustomerEntity> Customer { get; set; }
 
-        public DbSet<MealEntity> Meals { get; set; }
+        public DbSet<MealEntity> Meal { get; set; }
 
-        public DbSet<RestaurantEntity> Restaurants { get; set; }
+        public DbSet<RestaurantEntity> Restaurant { get; set; }
 
-        public DbSet<RecipeEntity> Recipes { get; set; }
+        public DbSet<RecipeEntity> Recipe { get; set; }
 
-        public DbSet<LocationEntity> Locations { get; set; }
+        public DbSet<LocationEntity> Location { get; set; }
 
-        public DbSet<CustomerAliasesEntities> CustomerAliases { get; set; }
+        public DbSet<CustomerAliasesEntities> CustomerAlias { get; set; }
 
-        public DbSet<DailyMenuEntity> DailyMenues { get; set; }
+        public DbSet<DailyMenuEntity> DailyMenu { get; set; }
 
         public DbSet<PaymentEntity> Payment { get; set; }
 
-        public DbSet<RoleEntity> Roles { get; set; }
+        public DbSet<RoleEntity> Role { get; set; }
 
         public override int SaveChanges()
         {
@@ -102,8 +102,7 @@ namespace Exebite.DataAccess.Context
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<PaymentEntity>()
-                .Property(x => x.Date)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasOne(x => x.Customer);
 
             modelBuilder.Entity<OrderEntity>()
                 .HasIndex(x => x.Date);

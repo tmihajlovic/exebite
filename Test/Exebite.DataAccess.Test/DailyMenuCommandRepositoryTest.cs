@@ -41,14 +41,14 @@ namespace Exebite.DataAccess.Test
                     Id = x,
                     RestaurantId = x
                 });
-                context.DailyMenues.AddRange(dailyMenus);
+                context.DailyMenu.AddRange(dailyMenus);
 
                 var restaurant = Enumerable.Range(1, count + 6).Select(x => new RestaurantEntity
                 {
                     Id = x,
                     Name = $"Name {x}"
                 });
-                context.Restaurants.AddRange(restaurant);
+                context.Restaurant.AddRange(restaurant);
 
                 var food = Enumerable.Range(1, count + 6).Select(x => new FoodEntity
                 {
@@ -58,7 +58,7 @@ namespace Exebite.DataAccess.Test
                     Description = $"Description {x}",
                     RestaurantId = x
                 });
-                context.Foods.AddRange(food);
+                context.Food.AddRange(food);
                 context.SaveChanges();
             }
         }

@@ -39,7 +39,7 @@ namespace Exebite.DataAccess.Test
                     Name = $"Name {x}"
                 });
 
-                context.Restaurants.AddRange(locations);
+                context.Restaurant.AddRange(locations);
                 context.SaveChanges();
             }
         }

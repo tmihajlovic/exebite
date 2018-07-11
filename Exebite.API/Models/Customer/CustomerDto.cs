@@ -10,7 +10,7 @@
 
         public int LocationId { get; set; }
 
-        public string AppUserId { get; set; }
+        public string GoogleUserId { get; set; }
 
         public int RoleId { get; set; }
     }

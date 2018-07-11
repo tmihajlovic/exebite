@@ -16,8 +16,5 @@ namespace Exebite.DataAccess.Entities
         public virtual CustomerEntity Customer { get; set; }
 
         public decimal Amount { get; set; }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime? Date { get; set; }
     }
 }

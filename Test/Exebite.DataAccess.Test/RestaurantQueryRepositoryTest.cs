@@ -69,7 +69,7 @@ namespace Exebite.DataAccess.Test
                     Name = $"Name {x}"
                 });
 
-                context.Restaurants.AddRange(restaurnats);
+                context.Restaurant.AddRange(restaurnats);
                 context.SaveChanges();
             }
         }

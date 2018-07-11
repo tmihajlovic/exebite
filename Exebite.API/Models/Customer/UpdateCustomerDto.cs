@@ -14,7 +14,7 @@ namespace Exebite.API.Models
         public int LocationId { get; set; }
 
         [Required]
-        public string AppUserId { get; set; }
+        public string GoogleUserId { get; set; }
 
         [Required]
         public int RoleId { get; set; }

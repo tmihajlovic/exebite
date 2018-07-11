@@ -30,7 +30,7 @@ namespace Exebite.DataAccess.Repositories
                         Address = entity.Address
                     };
 
-                    var addedEntity = context.Locations.Add(locationEntity).Entity;
+                    var addedEntity = context.Location.Add(locationEntity).Entity;
                     context.SaveChanges();
                     return new Right<Error, int>(addedEntity.Id);
                 }
@@ -52,7 +52,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var currentEntity = context.Locations.Find(id);
+                    var currentEntity = context.Location.Find(id);
                     if (currentEntity == null)
                     {
                         return new Left<Error, bool>(new RecordNotFound(nameof(entity)));

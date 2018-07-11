@@ -36,7 +36,7 @@ namespace Exebite.DataAccess.Test
         {
             using (var context = factory.Create())
             {
-                context.Restaurants.Add(new RestaurantEntity()
+                context.Restaurant.Add(new RestaurantEntity()
                 {
                     Id = 1,
                     Name = "Test restaurant"
@@ -52,7 +52,7 @@ namespace Exebite.DataAccess.Test
                     RestaurantId = 1
                 });
 
-                context.Foods.AddRange(foods);
+                context.Food.AddRange(foods);
 
                 var meals = Enumerable.Range(1, count).Select(x => new MealEntity
                 {
@@ -64,7 +64,7 @@ namespace Exebite.DataAccess.Test
                     }
                 });
 
-                context.Meals.AddRange(meals);
+                context.Meal.AddRange(meals);
                 context.SaveChanges();
             }
         }

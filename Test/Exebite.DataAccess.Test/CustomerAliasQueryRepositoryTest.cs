@@ -67,7 +67,7 @@ namespace Exebite.DataAccess.Test
                     Address = $"Address {x}",
                     Name = $"Name {x}"
                 });
-                context.Locations.AddRange(locations);
+                context.Location.AddRange(locations);
 
                 var customerAlias = Enumerable.Range(1, count).Select(x => new CustomerAliasesEntities
                 {
@@ -76,28 +76,28 @@ namespace Exebite.DataAccess.Test
                     CustomerId = x,
                     RestaurantId = x
                 });
-                context.CustomerAliases.AddRange(customerAlias);
+                context.CustomerAlias.AddRange(customerAlias);
 
                 var dailyMenus = Enumerable.Range(1, count).Select(x => new DailyMenuEntity
                 {
                     Id = x,
                     RestaurantId = x
                 });
-                context.DailyMenues.AddRange(dailyMenus);
+                context.DailyMenu.AddRange(dailyMenus);
 
                 var restaurant = Enumerable.Range(1, count).Select(x => new RestaurantEntity
                 {
                     Id = x,
                     Name = $"Name {x}"
                 });
-                context.Restaurants.AddRange(restaurant);
+                context.Restaurant.AddRange(restaurant);
 
                 var roles = Enumerable.Range(1, count + 6).Select(x => new RoleEntity
                 {
                     Id = x,
                     Name = $"role name {x}"
                 });
-                context.Roles.AddRange(roles);
+                context.Role.AddRange(roles);
 
                 var customers = Enumerable.Range(1, count).Select(x => new CustomerEntity
                 {
@@ -106,7 +106,7 @@ namespace Exebite.DataAccess.Test
                     LocationId = x,
                     RoleId = x
                 });
-                context.Customers.AddRange(customers);
+                context.Customer.AddRange(customers);
                 context.SaveChanges();
             }
         }

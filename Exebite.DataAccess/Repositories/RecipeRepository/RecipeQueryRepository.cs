@@ -31,7 +31,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var query = context.Recipes.AsQueryable();
+                    var query = context.Recipe.AsQueryable();
 
                     if (queryModel.Id.HasValue)
                     {
@@ -65,7 +65,7 @@ namespace Exebite.DataAccess.Repositories
             {
                 using (var context = _factory.Create())
                 {
-                    var recepieEntities = context.Foods.Where(fe => fe.Id == foodId).SelectMany(r => r.FoodEntityRecipeEntities.Select(x => x.RecipeEntity)).ToList();
+                    var recepieEntities = context.Food.Where(fe => fe.Id == foodId).SelectMany(r => r.FoodEntityRecipeEntities.Select(x => x.RecipeEntity)).ToList();
 
                     var recepies = _mapper.Map<IList<Recipe>>(recepieEntities);
 

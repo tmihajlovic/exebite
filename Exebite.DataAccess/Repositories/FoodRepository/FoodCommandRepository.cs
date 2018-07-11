@@ -42,7 +42,7 @@ namespace Exebite.DataAccess.Repositories
                         RestaurantId = entity.RestaurantId,
                     };
 
-                    var addedEntity = context.Foods.Add(foodEntity).Entity;
+                    var addedEntity = context.Food.Add(foodEntity).Entity;
                     context.SaveChanges();
                     return new Right<Error, int>(addedEntity.Id);
                 }
@@ -64,7 +64,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var currentEntity = context.Foods.Find(id);
+                    var currentEntity = context.Food.Find(id);
                     if (currentEntity == null)
                     {
                         return new Left<Error, bool>(new RecordNotFound(nameof(entity)));
@@ -118,7 +118,7 @@ namespace Exebite.DataAccess.Repositories
             {
                 using (var dc = _factory.Create())
                 {
-                    var itemSet = dc.Foods.Where(x => foodIds.Contains(x.Id));
+                    var itemSet = dc.Food.Where(x => foodIds.Contains(x.Id));
                     foreach (var item in itemSet)
                     {
                         item.IsInactive = true;

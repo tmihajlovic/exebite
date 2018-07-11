@@ -28,10 +28,10 @@ namespace Exebite.DataAccess.Repositories
                     var dailyMenuEntity = new DailyMenuEntity
                     {
                         RestaurantId = entity.RestaurantId,
-                        Foods = entity.Foods.Select(food => context.Foods.Find(food.Id)).ToList()
+                        Foods = entity.Foods.Select(food => context.Food.Find(food.Id)).ToList()
                     };
 
-                    var addedEntity = context.DailyMenues.Add(dailyMenuEntity).Entity;
+                    var addedEntity = context.DailyMenu.Add(dailyMenuEntity).Entity;
                     context.SaveChanges();
                     return new Right<Error, int>(addedEntity.Id);
                 }
@@ -53,7 +53,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var currentEntity = context.DailyMenues.Find(id);
+                    var currentEntity = context.DailyMenu.Find(id);
                     if (currentEntity == null)
                     {
                         return new Left<Error, bool>(new RecordNotFound(nameof(entity)));
@@ -61,7 +61,7 @@ namespace Exebite.DataAccess.Repositories
 
                     currentEntity.RestaurantId = entity.RestaurantId;
 
-                    var addedEntities = entity.Foods.Select(food => context.Foods.Find(food.Id)).ToList();
+                    var addedEntities = entity.Foods.Select(food => context.Food.Find(food.Id)).ToList();
 
                     // this will remove old references, and after that new ones will be added
                     currentEntity.Foods.Clear();

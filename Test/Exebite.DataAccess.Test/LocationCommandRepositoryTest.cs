@@ -71,7 +71,7 @@ namespace Exebite.DataAccess.Test
                     Address = $"Address {x}"
                 });
 
-                context.Locations.AddRange(locations);
+                context.Location.AddRange(locations);
                 context.SaveChanges();
             }
         }

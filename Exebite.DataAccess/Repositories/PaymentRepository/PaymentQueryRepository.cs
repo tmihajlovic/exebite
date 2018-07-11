@@ -9,48 +9,49 @@ using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class LocationQueryRepository : ILocationQueryRepository
+    public class PaymentQueryRepository : IPaymentQueryRepository
     {
         private readonly IMapper _mapper;
         private readonly IFoodOrderingContextFactory _factory;
 
-        public LocationQueryRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public PaymentQueryRepository(IFoodOrderingContextFactory factory, IMapper mapper)
         {
             _factory = factory;
             _mapper = mapper;
         }
 
-        public Either<Error, PagingResult<Location>> Query(LocationQueryModel queryModel)
+        public Either<Error, PagingResult<Payment>> Query(PaymentQueryModel queryModel)
         {
             try
             {
                 if (queryModel == null)
                 {
-                    return new Left<Error, PagingResult<Location>>(new ArgumentNotSet(nameof(queryModel)));
+                    return new Left<Error, PagingResult<Payment>>(new ArgumentNotSet(nameof(queryModel)));
                 }
 
                 using (var context = _factory.Create())
                 {
-                    var query = context.Location.AsQueryable();
+                    var query = context.Payment.AsQueryable();
 
-                    if (queryModel.Id != null)
+                    if (queryModel.Id.HasValue)
                     {
-                        query = query.Where(x => x.Id == queryModel.Id.Value);
+                        query = query.Where(x => x.Id == queryModel.Id);
                     }
 
                     var total = query.Count();
+
                     query = query
                         .Skip((queryModel.Page - 1) * queryModel.Size)
                         .Take(queryModel.Size);
 
-                    var results = query.ToList();
-                    var mapped = _mapper.Map<IList<Location>>(results).ToList();
-                    return new Right<Error, PagingResult<Location>>(new PagingResult<Location>(mapped, total));
+                    var recepieEntities = query.ToList();
+                    var recepies = _mapper.Map<IList<Payment>>(recepieEntities).ToList();
+                    return new Right<Error, PagingResult<Payment>>(new PagingResult<Payment>(recepies, total));
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Error, PagingResult<Location>>(new UnknownError(ex.ToString()));
+                return new Left<Error, PagingResult<Payment>>(new UnknownError(ex.ToString()));
             }
         }
     }

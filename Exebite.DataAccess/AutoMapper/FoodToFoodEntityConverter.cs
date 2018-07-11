@@ -32,9 +32,9 @@ namespace Exebite.DataAccess.AutoMapper
                     FoodEntityMealEntity = new List<FoodEntityMealEntities>(),
                     FoodEntityRecipeEntities = new List<FoodEntityRecipeEntity>()
                 };
-                destination.Restaurant = dbContext.Restaurants.Find(destination.RestaurantId);
-                destination.FoodEntityMealEntity = dbContext.Foods.Where(fme => fme.Id == source.Id).SelectMany(x => x.FoodEntityMealEntity).ToList();
-                destination.FoodEntityRecipeEntities = dbContext.Recipes.Where(fre => fre.Id == source.Id).SelectMany(x => x.FoodEntityRecipeEntities).ToList();
+                destination.Restaurant = dbContext.Restaurant.Find(destination.RestaurantId);
+                destination.FoodEntityMealEntity = dbContext.Food.Where(fme => fme.Id == source.Id).SelectMany(x => x.FoodEntityMealEntity).ToList();
+                destination.FoodEntityRecipeEntities = dbContext.Recipe.Where(fre => fre.Id == source.Id).SelectMany(x => x.FoodEntityRecipeEntities).ToList();
 
                 return destination;
             }

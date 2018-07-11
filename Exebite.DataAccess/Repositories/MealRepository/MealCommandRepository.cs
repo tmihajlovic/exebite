@@ -53,7 +53,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var currentEntity = context.Meals.Include(a => a.FoodEntityMealEntities).FirstOrDefault(m => m.Id == id);
+                    var currentEntity = context.Meal.Include(a => a.FoodEntityMealEntities).FirstOrDefault(m => m.Id == id);
                     if (currentEntity == null)
                     {
                         return new Left<Error, bool>(new RecordNotFound(nameof(entity)));

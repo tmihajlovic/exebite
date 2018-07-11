@@ -7,31 +7,30 @@ using Exebite.DataAccess.Entities;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class CustomerAliasCommandRepository : ICustomerAliasCommandRepository
+    public class PaymentCommandRepository : IPaymentCommandRepository
     {
         private readonly IMapper _mapper;
         private readonly IFoodOrderingContextFactory _factory;
 
-        public CustomerAliasCommandRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public PaymentCommandRepository(IFoodOrderingContextFactory factory, IMapper mapper)
         {
             _mapper = mapper;
             _factory = factory;
         }
 
-        public Either<Error, int> Insert(CustomerAliasInsertModel entity)
+        public Either<Error, int> Insert(PaymentInsertModel entity)
         {
             try
             {
                 using (var context = _factory.Create())
                 {
-                    var customerAliases = new CustomerAliasesEntities()
+                    var paymentEntity = new PaymentEntity()
                     {
-                        Alias = entity.Alias,
-                        CustomerId = entity.CustomerId,
-                        RestaurantId = entity.RestaurantId
+                        Amount = entity.Amount,
+                        CustomerId = entity.CustomerId
                     };
 
-                    var addedEntity = context.CustomerAlias.Add(customerAliases).Entity;
+                    var addedEntity = context.Payment.Add(paymentEntity).Entity;
                     context.SaveChanges();
                     return new Right<Error, int>(addedEntity.Id);
                 }
@@ -42,7 +41,7 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, bool> Update(int id, CustomerAliasUpdateModel entity)
+        public Either<Error, bool> Update(int id, PaymentUpdateModel entity)
         {
             try
             {
@@ -53,15 +52,15 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var currentEntity = context.CustomerAlias.Find(id);
+                    var currentEntity = context.Payment.Find(id);
                     if (currentEntity == null)
                     {
                         return new Left<Error, bool>(new RecordNotFound(nameof(entity)));
                     }
 
-                    currentEntity.Alias = entity.Alias;
                     currentEntity.CustomerId = entity.CustomerId;
-                    currentEntity.RestaurantId = entity.RestaurantId;
+                    currentEntity.Amount = entity.Amount;
+
                     context.SaveChanges();
                 }
 
@@ -79,7 +78,7 @@ namespace Exebite.DataAccess.Repositories
             {
                 using (var context = _factory.Create())
                 {
-                    var itemSet = context.Set<CustomerAliasesEntities>();
+                    var itemSet = context.Set<PaymentEntity>();
                     var item = itemSet.Find(id);
                     if (item == null)
                     {
