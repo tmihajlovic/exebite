@@ -49,6 +49,10 @@ namespace Exebite.API
             CreateMap<DailyMenu, DailyMenuDto>();
             CreateMap<DailyMenuQueryDto, DailyMenuQueryModel>();
             #endregion
+            #region Role
+            CreateMap<Role, RoleDto>();
+            CreateMap<RoleQueryDto, RoleQueryModel>();
+            #endregion Role
         }
     }
 }

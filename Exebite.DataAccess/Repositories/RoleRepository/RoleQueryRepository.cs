@@ -9,29 +9,29 @@ using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class LocationQueryRepository : ILocationQueryRepository
+    public class RoleQueryRepository : IRoleQueryRepository
     {
         private readonly IMapper _mapper;
         private readonly IFoodOrderingContextFactory _factory;
 
-        public LocationQueryRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public RoleQueryRepository(IFoodOrderingContextFactory factory, IMapper mapper)
         {
             _factory = factory;
             _mapper = mapper;
         }
 
-        public Either<Error, PagingResult<Location>> Query(LocationQueryModel queryModel)
+        public Either<Error, PagingResult<Role>> Query(RoleQueryModel queryModel)
         {
             try
             {
                 if (queryModel == null)
                 {
-                    return new Left<Error, PagingResult<Location>>(new ArgumentNotSet(nameof(queryModel)));
+                    return new Left<Error, PagingResult<Role>>(new ArgumentNotSet(nameof(queryModel)));
                 }
 
                 using (var context = _factory.Create())
                 {
-                    var query = context.Locations.AsQueryable();
+                    var query = context.Roles.AsQueryable();
 
                     if (queryModel.Id != null)
                     {
@@ -44,13 +44,13 @@ namespace Exebite.DataAccess.Repositories
                         .Take(queryModel.Size);
 
                     var results = query.ToList();
-                    var mapped = _mapper.Map<IList<Location>>(results).ToList();
-                    return new Right<Error, PagingResult<Location>>(new PagingResult<Location>(mapped, total));
+                    var mapped = _mapper.Map<IList<Role>>(results).ToList();
+                    return new Right<Error, PagingResult<Role>>(new PagingResult<Role>(mapped, total));
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Error, PagingResult<Location>>(new UnknownError(ex.ToString()));
+                return new Left<Error, PagingResult<Role>>(new UnknownError(ex.ToString()));
             }
         }
     }

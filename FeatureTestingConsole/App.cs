@@ -20,7 +20,7 @@ namespace FeatureTestingConsole
         private readonly IRestaurantQueryRepository _restaurantQueryRepository;
         private readonly IRestaurantCommandRepository _restaurantCommandRepository;
         private readonly IFoodCommandRepository _foodCommandRepository;
-        private readonly IRoleService _roleService;
+        private readonly IRoleCommandRepository _roleCommandRepo;
         private readonly IFoodQueryRepository _foodQueryRepository;
         private readonly ICustomerCommandRepository _customerCommandRepo;
         private readonly ILocationCommandRepository _locationCommandRepo;
@@ -41,7 +41,7 @@ namespace FeatureTestingConsole
             IMapper mapper,
             IFoodQueryRepository foodQueryRepository,
             IFoodCommandRepository foodCommandRepository,
-            IRoleService roleService)
+            IRoleCommandRepository roleCommandRepo)
         {
             _orderCommandRepo = orderCommandRepo;
             _restaurantQueryRepository = restaurantQueryRepo;
@@ -54,7 +54,7 @@ namespace FeatureTestingConsole
             _mapper = mapper;
             _foodQueryRepository = foodQueryRepository;
             _foodCommandRepository = foodCommandRepository;
-            _roleService = roleService;
+            _roleCommandRepo = roleCommandRepo;
         }
 
         public void Run(string[] args)
@@ -91,18 +91,8 @@ namespace FeatureTestingConsole
 
         private void SeedRole()
         {
-            using (var dc = _factory.Create())
-            {
-                dc.Roles.Add(new RoleEntity()
-                {
-                    Name = "Admin"
-                });
-                dc.Roles.Add(new RoleEntity()
-                {
-                    Name = "User"
-                });
-                dc.SaveChanges();
-            }
+            _roleCommandRepo.Insert(new RoleInsertModel { Name = "Admin" });
+            _roleCommandRepo.Insert(new RoleInsertModel { Name = "User" });
         }
 
         private void SeedPayment()

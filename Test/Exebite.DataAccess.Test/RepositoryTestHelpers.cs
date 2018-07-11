@@ -127,6 +127,19 @@ namespace Exebite.DataAccess.Test
             return new OrderQueryRepository(factory, _mapper);
         }
         #endregion Order
+
+        #region Role
+        internal static RoleQueryRepository CreateRoleQueryRepositoryInstance(IFoodOrderingContextFactory factory)
+        {
+            return new RoleQueryRepository(factory, _mapper);
+        }
+
+        internal static RoleCommandRepository CreateroleCommandRepositoryInstance(IFoodOrderingContextFactory factory)
+        {
+            return new RoleCommandRepository(factory, _mapper);
+        }
+
+        #endregion Role
     }
 }
 #pragma warning restore SA1124 // Do not use regions
