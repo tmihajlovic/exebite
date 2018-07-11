@@ -40,7 +40,7 @@ namespace Exebite.DataAccess.Test
                                                 Name = "Restaurant name " + x
                                             });
 
-                context.Restaurants.AddRange(restaurants);
+                context.Restaurant.AddRange(restaurants);
                 context.SaveChanges();
 
                 var foods = Enumerable.Range(1, count + 6).Select(x => new FoodEntity()
@@ -50,7 +50,7 @@ namespace Exebite.DataAccess.Test
                     Price = x * 100,
                     RestaurantId = 1
                 });
-                context.Foods.AddRange(foods);
+                context.Food.AddRange(foods);
                 context.SaveChanges();
             }
         }

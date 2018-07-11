@@ -5,20 +5,20 @@ namespace Exebite.DataAccess.Context
 {
     public interface IFoodOrderingContext
     {
-        DbSet<CustomerAliasesEntities> CustomerAliases { get; set; }
+        DbSet<CustomerAliasesEntities> CustomerAlias { get; set; }
 
-        DbSet<CustomerEntity> Customers { get; set; }
+        DbSet<CustomerEntity> Customer { get; set; }
 
-        DbSet<FoodEntity> Foods { get; set; }
+        DbSet<FoodEntity> Food { get; set; }
 
-        DbSet<LocationEntity> Locations { get; set; }
+        DbSet<LocationEntity> Location { get; set; }
 
-        DbSet<MealEntity> Meals { get; set; }
+        DbSet<MealEntity> Meal { get; set; }
 
-        DbSet<OrderEntity> Orders { get; set; }
+        DbSet<OrderEntity> Order { get; set; }
 
-        DbSet<RecipeEntity> Recipes { get; set; }
+        DbSet<RecipeEntity> Recipe { get; set; }
 
-        DbSet<RestaurantEntity> Restaurants { get; set; }
+        DbSet<RestaurantEntity> Restaurant { get; set; }
     }
 }

@@ -93,11 +93,11 @@ namespace FeatureTestingConsole
         {
             using (var dc = _factory.Create())
             {
-                dc.Roles.Add(new RoleEntity()
+                dc.Role.Add(new RoleEntity()
                 {
                     Name = "Admin"
                 });
-                dc.Roles.Add(new RoleEntity()
+                dc.Role.Add(new RoleEntity()
                 {
                     Name = "User"
                 });

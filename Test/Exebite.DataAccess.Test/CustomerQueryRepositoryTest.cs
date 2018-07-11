@@ -70,7 +70,7 @@ namespace Exebite.DataAccess.Test
                        RoleId = x,
                        Role = new RoleEntity { Id = x, Name = $"Role {x}" }
                    });
-                context.Customers.AddRange(customers);
+                context.Customer.AddRange(customers);
                 context.SaveChanges();
             }
         }

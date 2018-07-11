@@ -54,8 +54,7 @@ namespace Exebite.API
             }
 
             // when we get client id and secret uncomment this
-            //services.AddAuthorization(options => options.AddCustomPolicies());
-
+            // services.AddAuthorization(options => options.AddCustomPolicies());
             services.AddTransient<IRoleService, RoleService>();
 
             services.AddAutoMapper(

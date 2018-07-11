@@ -76,14 +76,14 @@ namespace Exebite.DataAccess.Test
                     Name = "location name ",
                     Address = "Address"
                 };
-                context.Locations.Add(location);
+                context.Location.Add(location);
 
                 var roles = Enumerable.Range(1, count + 6).Select(x => new RoleEntity
                 {
                     Id = x,
                     Name = $"role name {x}"
                 });
-                context.Roles.AddRange(roles);
+                context.Role.AddRange(roles);
 
                 var customers = Enumerable.Range(1, count).Select(x => new CustomerEntity
                 {
@@ -94,14 +94,14 @@ namespace Exebite.DataAccess.Test
                     LocationId = 1,
                     RoleId = x
                 });
-                context.Customers.AddRange(customers);
+                context.Customer.AddRange(customers);
 
                 var meals = Enumerable.Range(1, count).Select(x => new MealEntity
                 {
                     Id = x,
                     Price = 3.2m * x
                 });
-                context.Meals.AddRange(meals);
+                context.Meal.AddRange(meals);
 
                 var orders = Enumerable.Range(1, count).Select(x => new OrderEntity
                 {
@@ -112,7 +112,7 @@ namespace Exebite.DataAccess.Test
                     Note = "note ",
                     Price = 10.5m * x
                 });
-                context.Orders.AddRange(orders);
+                context.Order.AddRange(orders);
 
                 context.SaveChanges();
             }

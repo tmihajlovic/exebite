@@ -26,10 +26,10 @@ namespace Exebite.DataAccess.Repositories
             {
                 using (var context = _factory.Create())
                 {
-                    var restarurantMeals = context.Meals.SelectMany(x => x.FoodEntityMealEntities.Where(a => a.FoodEntity.RestaurantId == restaruntId)
+                    var restarurantMeals = context.Meal.SelectMany(x => x.FoodEntityMealEntities.Where(a => a.FoodEntity.RestaurantId == restaruntId)
                                                                                                  .Select(a => a.MealEntityId));
 
-                    var query = context.Orders.Where(o => restarurantMeals.Contains(o.MealId));
+                    var query = context.Order.Where(o => restarurantMeals.Contains(o.MealId));
                     var total = query.Count();
                     var results = query.Skip((page - 1) * size)
                                        .Take(size);
@@ -55,7 +55,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var query = context.Orders.AsQueryable();
+                    var query = context.Order.AsQueryable();
 
                     if (queryModel.Id != null)
                     {

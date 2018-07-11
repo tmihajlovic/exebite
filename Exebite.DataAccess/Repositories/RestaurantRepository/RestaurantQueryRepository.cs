@@ -31,7 +31,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var query = context.Restaurants.AsQueryable();
+                    var query = context.Restaurant.AsQueryable();
 
                     if (queryModel.Id != null)
                     {

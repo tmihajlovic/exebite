@@ -34,13 +34,13 @@ namespace Exebite.DataAccess.Test
         {
             using (var context = factory.Create())
             {
-                context.Roles.Add(new RoleEntity()
+                context.Role.Add(new RoleEntity()
                 {
                     Id = 1,
                     Name = "Test Role"
                 });
 
-                context.Locations.Add(new LocationEntity()
+                context.Location.Add(new LocationEntity()
                 {
                     Id = 1,
                     Name = "Test location"
@@ -54,7 +54,7 @@ namespace Exebite.DataAccess.Test
                     RoleId = 1
                 });
 
-                context.Customers.AddRange(customers);
+                context.Customer.AddRange(customers);
 
                 var locations = Enumerable.Range(1, count).Select(x => new PaymentEntity()
                 {
@@ -66,7 +66,6 @@ namespace Exebite.DataAccess.Test
                 context.Payment.AddRange(locations);
                 context.SaveChanges();
             }
-
         }
 
         protected override PaymentInsertModel ConvertToInput(Data data)

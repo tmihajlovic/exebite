@@ -44,7 +44,7 @@ namespace Exebite.DataAccess.Test
                        Id = x,
                        Name = $"Name {x}",
                    });
-                context.Locations.AddRange(locations);
+                context.Location.AddRange(locations);
 
                 var roles = Enumerable.Range(1, count + 6)
                    .Select(x => new RoleEntity()
@@ -52,7 +52,7 @@ namespace Exebite.DataAccess.Test
                        Id = x,
                        Name = $"Name {x}",
                    });
-                context.Roles.AddRange(roles);
+                context.Role.AddRange(roles);
 
                 var customers = Enumerable.Range(1, count)
                    .Select(x => new CustomerEntity()
@@ -64,7 +64,7 @@ namespace Exebite.DataAccess.Test
                        Name = $"Name {x}",
                        RoleId = x
                    });
-                context.Customers.AddRange(customers);
+                context.Customer.AddRange(customers);
                 context.SaveChanges();
             }
         }

@@ -15,15 +15,12 @@ namespace Exebite.DataAccess.Test
 
         static RepositoryTestHelpers()
         {
-            ServiceCollectionExtensions.UseStaticRegistration = false;
-           // Mapper.Initialize(cfg => cfg.AddProfile<DataAccessMappingProfile>());
-
             _dateTime = new GetDateTimeStub();
+
+            ServiceCollectionExtensions.UseStaticRegistration = false;
             var configExpresion = new MapperConfigurationExpression();
             configExpresion.AddProfile<DataAccessMappingProfile>();
-
             var config = new MapperConfiguration(configExpresion);
-
             _mapper = new Mapper(config) as IMapper;
         }
 

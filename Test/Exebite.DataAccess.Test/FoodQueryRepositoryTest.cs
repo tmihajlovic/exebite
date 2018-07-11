@@ -64,7 +64,7 @@ namespace Exebite.DataAccess.Test
             {
                 var restaurant = new RestaurantEntity() { Name = "testRestaurant" };
 
-                var insertedRestauran = context.Restaurants.Add(restaurant).Entity;
+                var insertedRestauran = context.Restaurant.Add(restaurant).Entity;
                 var dailyMenu = new DailyMenuEntity()
                 {
                     RestaurantId = insertedRestauran.Id
@@ -77,7 +77,7 @@ namespace Exebite.DataAccess.Test
                     RestaurantId = insertedRestauran.Id
                 });
 
-                context.Foods.AddRange(foods);
+                context.Food.AddRange(foods);
                 context.SaveChanges();
             }
         }

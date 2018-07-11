@@ -5,7 +5,6 @@
         public PaymentQueryModel()
             : base()
         {
-
         }
 
         public PaymentQueryModel(int page, int size)

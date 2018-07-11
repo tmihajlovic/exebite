@@ -33,7 +33,7 @@ namespace Exebite.DataAccess.Repositories
                         Price = entity.Price,
                     };
 
-                    var addedEntity = context.Orders.Add(orderEntity).Entity;
+                    var addedEntity = context.Order.Add(orderEntity).Entity;
                     context.SaveChanges();
                     return new Right<Error, int>(addedEntity.Id);
                 }
@@ -55,7 +55,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var currentEntity = context.Orders.Find(id);
+                    var currentEntity = context.Order.Find(id);
                     if (currentEntity == null)
                     {
                         return new Left<Error, bool>(new RecordNotFound(nameof(entity)));

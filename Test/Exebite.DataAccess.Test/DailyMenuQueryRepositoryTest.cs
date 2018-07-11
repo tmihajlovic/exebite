@@ -66,14 +66,14 @@ namespace Exebite.DataAccess.Test
                     Id = x,
                     RestaurantId = x
                 });
-                context.DailyMenues.AddRange(dailyMenus);
+                context.DailyMenu.AddRange(dailyMenus);
 
                 var restaurant = Enumerable.Range(1, count).Select(x => new RestaurantEntity
                 {
                     Id = x,
                     Name = $"Name {x}"
                 });
-                context.Restaurants.AddRange(restaurant);
+                context.Restaurant.AddRange(restaurant);
                 context.SaveChanges();
             }
         }

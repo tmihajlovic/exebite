@@ -32,7 +32,7 @@ namespace Exebite.DataAccess.AutoMapper
             {
                 using (var dbcontext = _factory.Create())
                 {
-                    var fre = dbcontext.Recipes.FirstOrDefault(r => r.Id == source.Id).FoodEntityRecipeEntities.SingleOrDefault(i => i.FoodEntityId == food.Id);
+                    var fre = dbcontext.Recipe.FirstOrDefault(r => r.Id == source.Id).FoodEntityRecipeEntities.SingleOrDefault(i => i.FoodEntityId == food.Id);
                     if (fre == null)
                     {
                         destination.FoodEntityRecipeEntities.Add(new FoodEntityRecipeEntity
