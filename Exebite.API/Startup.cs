@@ -53,8 +53,7 @@ namespace Exebite.API
                 services.AddMvc();
             }
 
-            // when we get client id and secret uncomment this
-            // services.AddAuthorization(options => options.AddCustomPolicies());
+            services.AddAuthorization(options => options.AddCustomPolicies());
             services.AddTransient<IRoleService, RoleService>();
 
             services.AddAutoMapper(
@@ -78,11 +77,12 @@ namespace Exebite.API
             else
             {
                 app.UseExceptionHandler("/error");
+                // when we get client id and secret uncomment this
+                // app.UseAuthentication();
             }
 
             app.UseStatusCodePages();
 
-            app.UseAuthentication();
 
             app.UseMvc();
 
