@@ -11,5 +11,7 @@
         public int LocationId { get; set; }
 
         public string AppUserId { get; set; }
+
+        public int RoleId { get; set; }
     }
 }

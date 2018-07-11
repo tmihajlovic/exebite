@@ -23,6 +23,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Exebite.Business\Exebite.Business.csproj" />
     <ProjectReference Include="..\Exebite.DataAccess\Exebite.DataAccess.csproj" />
   </ItemGroup>
 </Project>

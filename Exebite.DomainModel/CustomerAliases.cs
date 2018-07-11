@@ -4,9 +4,9 @@
     {
         public int Id { get; set; }
 
-        public virtual Customer Customer { get; set; }
+        public Customer Customer { get; set; }
 
-        public virtual Restaurant Restaurant { get; set; }
+        public Restaurant Restaurant { get; set; }
 
         public string Alias { get; set; }
     }

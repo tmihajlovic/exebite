@@ -14,9 +14,13 @@ namespace Exebite.DomainModel
 
         public Location Location { get; set; }
 
-        public virtual List<Order> Orders { get; set; }
+        public int RoleId { get; set; }
 
-        public virtual List<CustomerAliases> Aliases { get; set; }
+        public Role Role { get; set; }
+
+        public List<Order> Orders { get; set; }
+
+        public List<CustomerAliases> Aliases { get; set; }
 
         public string AppUserId { get; set; }
     }

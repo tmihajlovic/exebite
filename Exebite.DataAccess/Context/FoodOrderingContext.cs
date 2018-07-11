@@ -38,6 +38,8 @@ namespace Exebite.DataAccess.Context
 
         public DbSet<PaymentEntity> Payment { get; set; }
 
+        public DbSet<RoleEntity> Roles { get; set; }
+
         public override int SaveChanges()
         {
             ChangeTracker.DetectChanges();

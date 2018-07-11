@@ -27,9 +27,10 @@ namespace Exebite.DataAccess.Repositories
                     var customerEntity = new CustomerEntity()
                     {
                         Name = entity.Name,
-                        AppUserId = entity.AppUserId,
+                        GoogleUserId = entity.GoogleUserId,
                         Balance = entity.Balance,
-                        LocationId = entity.LocationId
+                        LocationId = entity.LocationId,
+                        RoleId = entity.RoleId
                     };
 
                     var addedEntity = context.Customers.Add(customerEntity).Entity;
@@ -61,9 +62,10 @@ namespace Exebite.DataAccess.Repositories
                     }
 
                     currentEntity.Name = entity.Name;
-                    currentEntity.AppUserId = entity.AppUserId;
+                    currentEntity.GoogleUserId = entity.GoogleUserId;
                     currentEntity.Balance = entity.Balance;
                     currentEntity.LocationId = entity.LocationId;
+                    currentEntity.RoleId = entity.RoleId;
                     context.SaveChanges();
                 }
 

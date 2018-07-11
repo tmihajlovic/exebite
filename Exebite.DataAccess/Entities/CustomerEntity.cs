@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Entities
 {
-    [Table(nameof(Customer))]
+    [Table("Customer")]
     public class CustomerEntity
     {
         [Key]
@@ -15,12 +14,17 @@ namespace Exebite.DataAccess.Entities
 
         public decimal Balance { get; set; }
 
-        public string AppUserId { get; set; }
+        public string GoogleUserId { get; set; }
 
         [ForeignKey(nameof(Location))]
         public int LocationId { get; set; }
 
         public virtual LocationEntity Location { get; set; }
+
+        [ForeignKey(nameof(Role))]
+        public int RoleId { get; set; }
+
+        public virtual RoleEntity Role { get; set; }
 
         public virtual List<OrderEntity> Orders { get; set; }
 

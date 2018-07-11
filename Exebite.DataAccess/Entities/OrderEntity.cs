@@ -1,11 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Entities
 {
-    [Table(nameof(Order))]
+    [Table("Order")]
     public class OrderEntity
     {
         [Key]

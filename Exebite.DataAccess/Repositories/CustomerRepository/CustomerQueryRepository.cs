@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using AutoMapper;
 using Either;
 using Exebite.Common;
@@ -18,6 +19,27 @@ namespace Exebite.DataAccess.Repositories
         {
             _factory = factory;
             _mapper = mapper;
+        }
+
+        public Either<Error, string> GetRole(string googleId)
+        {
+            try
+            {
+                using (var context = _factory.Create())
+                {
+                    var customer = context.Customers.FirstOrDefault(x => x.GoogleUserId == googleId);
+                    if (customer == null)
+                    {
+                        return new Left<Error, string>(new RecordNotFound($"Record with GoogleId='{googleId}' is not found."));
+                    }
+
+                    return new Right<Error, string>(customer.Role.Name);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Left<Error, string>(new UnknownError(ex.ToString()));
+            }
         }
 
         public Either<Error, PagingResult<Customer>> Query(CustomerQueryModel queryModel)

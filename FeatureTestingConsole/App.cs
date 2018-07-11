@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using Either;
+using Exebite.Business;
+using Exebite.Common;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
 using Exebite.DataAccess.Repositories;
@@ -15,6 +20,7 @@ namespace FeatureTestingConsole
         private readonly IRestaurantQueryRepository _restaurantQueryRepository;
         private readonly IRestaurantCommandRepository _restaurantCommandRepository;
         private readonly IFoodCommandRepository _foodCommandRepository;
+        private readonly IRoleService _roleService;
         private readonly IFoodQueryRepository _foodQueryRepository;
         private readonly ICustomerCommandRepository _customerCommandRepo;
         private readonly ILocationCommandRepository _locationCommandRepo;
@@ -34,7 +40,8 @@ namespace FeatureTestingConsole
             IDailyMenuCommandRepository dailyMenuCommand,
             IMapper mapper,
             IFoodQueryRepository foodQueryRepository,
-            IFoodCommandRepository foodCommandRepository)
+            IFoodCommandRepository foodCommandRepository,
+            IRoleService roleService)
         {
             _orderCommandRepo = orderCommandRepo;
             _restaurantQueryRepository = restaurantQueryRepo;
@@ -47,6 +54,7 @@ namespace FeatureTestingConsole
             _mapper = mapper;
             _foodQueryRepository = foodQueryRepository;
             _foodCommandRepository = foodCommandRepository;
+            _roleService = roleService;
         }
 
         public void Run(string[] args)
@@ -56,6 +64,7 @@ namespace FeatureTestingConsole
             // liefs
             SeedRestaurant();
             SeedLocation();
+            SeedRole();
 
             SeedCustomer(); // restaurant related
             SeedPayment();
@@ -66,7 +75,7 @@ namespace FeatureTestingConsole
 
             var restaurant = _restaurantQueryRepository.Query(new RestaurantQueryModel { Id = 1 })
                                                        .Map(x => x.Items.First())
-                                                       .Reduce(_ => throw new System.Exception());
+                                                       .Reduce(_ => throw new Exception());
 
             _restaurantCommandRepository.Update(restaurant.Id, _mapper.Map<RestaurantUpdateModel>(restaurant));
 
@@ -78,6 +87,22 @@ namespace FeatureTestingConsole
             };
 
             this._orderCommandRepo.Insert(order);
+        }
+
+        private void SeedRole()
+        {
+            using (var dc = _factory.Create())
+            {
+                dc.Roles.Add(new RoleEntity()
+                {
+                    Name = "Admin"
+                });
+                dc.Roles.Add(new RoleEntity()
+                {
+                    Name = "User"
+                });
+                dc.SaveChanges();
+            }
         }
 
         private void SeedPayment()
@@ -106,18 +131,20 @@ namespace FeatureTestingConsole
         {
             _customerCommandRepo.Insert(new CustomerInsertModel
             {
-                Name = "Customer 1",
-                AppUserId = "1514586545614 546456",
+                Name = "Admin customer",
+                GoogleUserId = "AdminGoogleId",
                 Balance = 2000m,
-                LocationId = 1
+                LocationId = 1,
+                RoleId = 1
             });
 
             _customerCommandRepo.Insert(new CustomerInsertModel
             {
-                Name = "Customer 2",
-                AppUserId = "1514586545614 546456",
+                Name = "User customer",
+                GoogleUserId = "UserGoogleId",
                 Balance = -400m,
-                LocationId = 2
+                LocationId = 2,
+                RoleId = 2
             });
         }
 

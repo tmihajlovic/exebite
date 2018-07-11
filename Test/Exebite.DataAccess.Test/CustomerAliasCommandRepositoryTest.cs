@@ -19,7 +19,8 @@ namespace Exebite.DataAccess.Test
                   Id = content,
                   Alias = $"Alias {content}",
                   CustomerId = content,
-                  RestaurantId = content
+                  RestaurantId = content,
+                  RoleId = content
               });
 
         protected override CustomerAliasInsertModel ConvertToInput(Data data)
@@ -81,8 +82,15 @@ namespace Exebite.DataAccess.Test
                     Address = $"Address {x}",
                     Name = $"Name {x}"
                 });
-
                 context.Locations.AddRange(locations);
+
+                var roles = Enumerable.Range(1, count + 6).Select(x => new RoleEntity
+                {
+                    Id = x,
+                    Name = $"role name {x}"
+                });
+                context.Roles.AddRange(roles);
+
                 var customerAlias = Enumerable.Range(1, count).Select(x => new CustomerAliasesEntities
                 {
                     Id = x,
@@ -103,7 +111,8 @@ namespace Exebite.DataAccess.Test
                 {
                     Id = x,
                     Name = $"Name {x}",
-                    LocationId = x
+                    LocationId = x,
+                    RoleId = x
                 });
                 context.Customers.AddRange(customers);
                 context.SaveChanges();
@@ -119,6 +128,8 @@ namespace Exebite.DataAccess.Test
             public int CustomerId { get; set; }
 
             public int RestaurantId { get; set; }
+
+            public int RoleId { get; set; }
         }
     }
 }

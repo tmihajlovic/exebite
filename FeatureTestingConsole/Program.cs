@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using Exebite.Business;
 using Exebite.DataAccess;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +29,8 @@ namespace FeatureTestingConsole
                     configurationBuilder.AddJsonFile("appsettings.Development.json");
                     return configurationBuilder.Build();
                 })
-                .AddTransient<IApp, App>();
+                .AddTransient<IApp, App>()
+                .AddTransient<IRoleService, RoleService>();
 
             provider = serviceCollection.BuildServiceProvider();
 

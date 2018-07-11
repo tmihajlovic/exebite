@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Reflection;
 using AutoMapper;
+using Exebite.API.Authorization;
+using Exebite.Business;
 using Exebite.DataAccess;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -28,7 +31,12 @@ namespace Exebite.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication()
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = GoogleDefaults.AuthenticationScheme;
+                    options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                })
                 .AddGoogle(googleOptions =>
                 {
                     googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
@@ -43,6 +51,11 @@ namespace Exebite.API
             {
                 services.AddMvc();
             }
+
+            // when we get client id and secret uncomment this
+            //services.AddAuthorization(options => options.AddCustomPolicies());
+
+            services.AddTransient<IRoleService, RoleService>();
 
             services.AddAutoMapper(
                 cfg =>
@@ -68,9 +81,9 @@ namespace Exebite.API
 
             app.UseStatusCodePages();
 
-            app.UseMvc();
-
             app.UseAuthentication();
+
+            app.UseMvc();
 
             app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
             {

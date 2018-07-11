@@ -30,7 +30,8 @@ namespace Exebite.DataAccess.Test
                           MealId = content,
                           Note = $"Note {content}",
                           Price = 3.4m * content,
-                          Date = _dateTime.Now()
+                          Date = _dateTime.Now(),
+                          RoleId = content
                       });
 
         protected override IDatabaseCommandRepository<int, OrderInsertModel, OrderUpdateModel> CreateSut(IFoodOrderingContextFactory factory)
@@ -56,13 +57,22 @@ namespace Exebite.DataAccess.Test
 
                 context.Locations.Add(location);
 
+                var role = new RoleEntity
+                {
+                    Id = 1,
+                    Name = "role name",
+                };
+
+                context.Roles.Add(role);
+
                 var customers = Enumerable.Range(1, count + 6).Select(x => new CustomerEntity
                 {
                     Id = x,
                     Name = "Customer name ",
-                    AppUserId = "AppUserId",
+                    GoogleUserId = "GoogleUserId",
                     Balance = 99.99m,
                     LocationId = 1,
+                    RoleId = 1
                 });
                 context.Customers.AddRange(customers);
 
@@ -144,6 +154,8 @@ namespace Exebite.DataAccess.Test
             public int MealId { get; set; }
 
             public int CustomerId { get; set; }
+
+            public int RoleId { get; set; }
         }
     }
 }

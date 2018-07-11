@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Entities
 {
-    [Table(nameof(Recipe))]
+    [Table("Recipe")]
     public class RecipeEntity
     {
         [Key]

@@ -33,6 +33,7 @@ namespace Exebite.DataAccess
             collection.AddTransient<IMealCommandRepository, MealCommandRepository>();
             collection.AddTransient<IRecipeToRecipeEntityConverter, RecipeToRecipeEntityConverter>();
             collection.AddTransient<IFoodToFoodEntityConverter, FoodToFoodEntityConverter>();
+
             return collection;
         }
     }

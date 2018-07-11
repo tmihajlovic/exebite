@@ -76,16 +76,23 @@ namespace Exebite.DataAccess.Test
                     Name = "location name ",
                     Address = "Address"
                 };
-
                 context.Locations.Add(location);
+
+                var roles = Enumerable.Range(1, count + 6).Select(x => new RoleEntity
+                {
+                    Id = x,
+                    Name = $"role name {x}"
+                });
+                context.Roles.AddRange(roles);
 
                 var customers = Enumerable.Range(1, count).Select(x => new CustomerEntity
                 {
                     Id = x,
                     Name = "Customer name ",
-                    AppUserId = "AppUserId",
+                    GoogleUserId = "GoogleUserId",
                     Balance = 99.99m,
                     LocationId = 1,
+                    RoleId = x
                 });
                 context.Customers.AddRange(customers);
 

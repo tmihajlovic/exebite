@@ -20,7 +20,8 @@ namespace Exebite.DataAccess.Test
                  Name = $"Name {content}",
                  AppUserId = $"AppUserId {1003 + content}",
                  Balance = 3.3m * content,
-                 LocationId = content
+                 LocationId = content,
+                 RoleId = content
              });
 
         protected override IDatabaseCommandRepository<int, CustomerInsertModel, CustomerUpdateModel> CreateSut(IFoodOrderingContextFactory factory)
@@ -45,14 +46,23 @@ namespace Exebite.DataAccess.Test
                    });
                 context.Locations.AddRange(locations);
 
+                var roles = Enumerable.Range(1, count + 6)
+                   .Select(x => new RoleEntity()
+                   {
+                       Id = x,
+                       Name = $"Name {x}",
+                   });
+                context.Roles.AddRange(roles);
+
                 var customers = Enumerable.Range(1, count)
                    .Select(x => new CustomerEntity()
                    {
                        Id = x,
                        Balance = x,
-                       AppUserId = (1000 + x).ToString(),
+                       GoogleUserId = (1000 + x).ToString(),
                        LocationId = x,
                        Name = $"Name {x}",
+                       RoleId = x
                    });
                 context.Customers.AddRange(customers);
                 context.SaveChanges();
@@ -61,12 +71,26 @@ namespace Exebite.DataAccess.Test
 
         protected override CustomerInsertModel ConvertToInput(Data data)
         {
-            return new CustomerInsertModel { Name = data.Name, AppUserId = data.AppUserId, Balance = data.Balance, LocationId = data.LocationId };
+            return new CustomerInsertModel
+            {
+                Name = data.Name,
+                GoogleUserId = data.AppUserId,
+                Balance = data.Balance,
+                LocationId = data.LocationId,
+                RoleId = data.RoleId
+            };
         }
 
         protected override CustomerUpdateModel ConvertToUpdate(Data data)
         {
-            return new CustomerUpdateModel { Name = data.Name, LocationId = data.LocationId, Balance = data.Balance, AppUserId = data.AppUserId };
+            return new CustomerUpdateModel
+            {
+                Name = data.Name,
+                LocationId = data.LocationId,
+                Balance = data.Balance,
+                GoogleUserId = data.AppUserId,
+                RoleId = data.RoleId
+            };
         }
 
         protected override CustomerInsertModel ConvertToInvalidInput(Data data)
@@ -99,6 +123,8 @@ namespace Exebite.DataAccess.Test
             public int LocationId { get; set; }
 
             public string AppUserId { get; set; }
+
+            public int RoleId { get; set; }
         }
     }
 }

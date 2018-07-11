@@ -24,6 +24,8 @@ namespace Exebite.DataAccess
 
                 // many to many relationship mapping
                 .ForMember(f => f.Foods, v => v.MapFrom(c => c.FoodEntityMealEntities.Select(fl => fl.FoodEntity).ToList()));
+
+            CreateMap<RoleEntity, Role>();
         }
 
         public override string ProfileName => "DataAccessMappingProfile";

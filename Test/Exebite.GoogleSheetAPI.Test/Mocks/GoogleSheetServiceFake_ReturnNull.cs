@@ -10,12 +10,16 @@ namespace Exebite.GoogleSheetAPI.Test.Mocks
 
         public ValueRange GetColumns(string sheetId, string range)
         {
+#pragma warning disable RETURN0001 // Do not return null
             return null;
+#pragma warning restore RETURN0001 // Do not return null
         }
 
         public ValueRange GetRows(string sheetId, string range)
         {
+#pragma warning disable RETURN0001 // Do not return null
             return null;
+#pragma warning restore RETURN0001 // Do not return null
         }
 
         public void Update(ValueRange body, string sheetId, string range)

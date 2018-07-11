@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Entities
 {
-    [Table(nameof(Location))]
+    [Table("Location")]
     public class LocationEntity
     {
         [Key]

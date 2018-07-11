@@ -5,7 +5,7 @@ using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Entities
 {
-    [Table(nameof(Food))]
+    [Table("Food")]
     public class FoodEntity
     {
         [Key]

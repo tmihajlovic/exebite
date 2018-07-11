@@ -2,7 +2,7 @@
 
 namespace Exebite.DataAccess.Entities
 {
-    [Table(nameof(FoodEntityRecipeEntity))]
+    [Table("FoodToRecipe")]
     public class FoodEntityRecipeEntity
     {
         public int FoodEntityId { get; set; }

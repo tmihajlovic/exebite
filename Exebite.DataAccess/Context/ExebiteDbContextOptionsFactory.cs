@@ -14,8 +14,10 @@ namespace Exebite.DataAccess.Context
 
         public DbContextOptions<FoodOrderingContext> Create()
         {
-            var test = _configRoot.GetConnectionString("ExeBiteConnectionString");
-            var dbContextOptions = new DbContextOptionsBuilder<FoodOrderingContext>().UseSqlServer(test).UseLazyLoadingProxies().Options;
+            var connectionString = _configRoot.GetConnectionString("ExeBiteConnectionString");
+            var dbContextOptions = new DbContextOptionsBuilder<FoodOrderingContext>().UseSqlServer(connectionString)
+                                                                                     .UseLazyLoadingProxies()
+                                                                                     .Options;
             return dbContextOptions;
         }
     }

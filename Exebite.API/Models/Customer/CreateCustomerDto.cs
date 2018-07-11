@@ -15,5 +15,8 @@ namespace Exebite.API.Models
 
         [Required]
         public string AppUserId { get; set; }
+
+        [Required]
+        public int RoleId { get; set; }
     }
 }
