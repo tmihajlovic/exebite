@@ -102,8 +102,7 @@ namespace Exebite.DataAccess.Context
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<PaymentEntity>()
-                .Property(x => x.Date)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasOne(x => x.Customer);
 
             modelBuilder.Entity<OrderEntity>()
                 .HasIndex(x => x.Date);

@@ -10,6 +10,8 @@ namespace Exebite.DomainModel
 
         public decimal Balance { get; set; }
 
+        public string GoogleUserId { get; set; }
+
         public int LocationId { get; set; }
 
         public Location Location { get; set; }
@@ -22,6 +24,6 @@ namespace Exebite.DomainModel
 
         public List<CustomerAliases> Aliases { get; set; }
 
-        public string AppUserId { get; set; }
+
     }
 }

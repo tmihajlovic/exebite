@@ -1,14 +1,10 @@
-﻿using System;
-
-namespace Exebite.DomainModel
+﻿namespace Exebite.API.Models
 {
-    public class Payment
+    public class PaymentDto
     {
         public int Id { get; set; }
 
         public int CustomerId { get; set; }
-
-        public Customer Customer { get; set; }
 
         public decimal Amount { get; set; }
     }
