@@ -16,6 +16,7 @@ namespace Exebite.API.Models
         [Required]
         public string GoogleUserId { get; set; }
 
+        // TODO: Maybe we should set that only admin can update role.
         [Required]
         public int RoleId { get; set; }
     }

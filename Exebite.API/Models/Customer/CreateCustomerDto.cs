@@ -16,6 +16,8 @@ namespace Exebite.API.Models
         [Required]
         public string GoogleUserId { get; set; }
 
+        // TODO: Should this be in insert model? Maybe we should set default User role,
+        // and only admin will be able to do role update.
         [Required]
         public int RoleId { get; set; }
     }
