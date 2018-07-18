@@ -16,6 +16,33 @@ namespace Either
                 ? map(right)
                 : (TLeft)(Left<TLeft, TRight>)either;
 
+        public static Either<TLeft, TNewRight> Map<TLeft, TRight, TNewRight>(
+            this Either<TLeft, TRight> either, Func<TRight, TNewRight> map, Action<TRight> logAction)
+        {
+            switch (either)
+            {
+                case Right<TLeft, TRight> right:
+                    logAction(right);
+                    return map(right);
+                default:
+                    return (TLeft)(Left<TLeft, TRight>)either;
+            }
+        }
+
+
+        public static Either<TLeft, TNewRight> Map<TLeft, TRight, TNewRight>(
+            this Either<TLeft, TRight> either, Func<TRight, Either<TLeft, TNewRight>> map, Action<TRight> logAction)
+        {
+            switch (either)
+            {
+                case Right<TLeft, TRight> right:
+                    logAction(right);
+                    return map(right);
+                default:
+                    return (TLeft)(Left<TLeft, TRight>)either;
+            }
+        }
+
         public static TRight Reduce<TLeft, TRight>(
             this Either<TLeft, TRight> either, Func<TLeft, TRight> map) =>
             either is Left<TLeft, TRight> left

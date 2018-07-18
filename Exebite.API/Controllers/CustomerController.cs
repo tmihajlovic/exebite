@@ -54,11 +54,14 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("Query")]
+        [ProducesResponseType(200, Type = typeof(PagingResult<CustomerDto>))]
+        [ProducesResponseType(500, Type = typeof(PagingResult<CustomerDto>))]
+
         public IActionResult Query([FromQuery]CustomerQueryDto query) =>
             _mapper.Map<CustomerQueryModel>(query)
-                      .Map(_queryRepo.Query)
+                      .Map(_queryRepo.Query, x => _logger.LogTrace("Query called"))
                       .Map(_mapper.Map<PagingResult<CustomerDto>>)
-                      .Map(AllOk)
+                      .Map(_ => InternalServerError())
                       .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
                       .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
     }
