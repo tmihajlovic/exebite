@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Exebite.API.Controllers
 {
     [Route("")]
+    [Authorize]
     public class HomeController : Controller
     {
         [HttpGet]

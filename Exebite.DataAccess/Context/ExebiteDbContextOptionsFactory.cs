@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Exebite.DataAccess.Context
 {
@@ -14,7 +15,12 @@ namespace Exebite.DataAccess.Context
 
         public DbContextOptions<FoodOrderingContext> Create()
         {
-            var connectionString = _configRoot.GetConnectionString("ExeBiteConnectionString");
+            var environmentConnectionString = Environment.GetEnvironmentVariable("ExeBiteConnectionString", EnvironmentVariableTarget.User);
+
+            var connectionString = !string.IsNullOrEmpty(environmentConnectionString)
+                                    ? environmentConnectionString
+                                    : _configRoot.GetConnectionString("ExeBiteConnectionString");
+
             var dbContextOptions = new DbContextOptionsBuilder<FoodOrderingContext>().UseSqlServer(connectionString)
                                                                                      .UseLazyLoadingProxies()
                                                                                      .Options;
