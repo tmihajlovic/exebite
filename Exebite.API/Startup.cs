@@ -5,13 +5,14 @@ using Exebite.API.Authorization;
 using Exebite.Business;
 using Exebite.Common;
 using Exebite.DataAccess;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NJsonSchema;
+
 using NSwag.AspNetCore;
 
 namespace Exebite.API
@@ -32,18 +33,17 @@ namespace Exebite.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = GoogleDefaults.AuthenticationScheme;
-                    options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
-                })
-                .AddGoogle(googleOptions =>
-                {
-                    googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
-                    googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
-                });
-
+            // services.AddAuthentication(options =>
+            //    {
+            //        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            //        options.DefaultSignInScheme = GoogleDefaults.AuthenticationScheme;
+            //        options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+            //    })
+            //    .AddGoogle(googleOptions =>
+            //    {
+            //        googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
+            //        googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
+            //    });
             if (_hostingEnvironment.IsDevelopment())
             {
                 services.AddMvc(opts => opts.Filters.Add(new AllowAnonymousFilter()));
@@ -70,6 +70,10 @@ namespace Exebite.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseRewriter(new RewriteOptions()
+                .AddRedirect("swager", "swagger")
+                .AddRedirect("apiDefinition", "swagger"));
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -77,12 +81,12 @@ namespace Exebite.API
             else
             {
                 app.UseExceptionHandler("/error");
+
                 // when we get client id and secret uncomment this
                 // app.UseAuthentication();
             }
 
             app.UseStatusCodePages();
-
 
             app.UseMvc();
 
