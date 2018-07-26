@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Either;
 using Exebite.Business;
-using Exebite.Common;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Exebite.API.Authorization
@@ -17,19 +18,25 @@ namespace Exebite.API.Authorization
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, RequireRoleRequirment requirement)
         {
-            switch (await _roleService.GetRoleForGoogleUserAsync(context.User.Identity.Name).ConfigureAwait(false))
-            {
-                case Right<Error, string> role:
-                    if (requirement.Roles.Contains(role))
-                    {
-                        context.Succeed(requirement);
-                    }
+            var role = await _roleService.GetRoleForGoogleUserAsync(context.User.Claims).ConfigureAwait(false);
+            role.Map(x => CheckTheRole(x, requirement, context))
+                .Reduce(_ => FailTheContext(context));
+        }
 
-                    break;
-                default:
-                    context.Fail();
-                    break;
+        private bool FailTheContext(AuthorizationHandlerContext context)
+        {
+            context.Fail();
+            return true;
+        }
+
+        private bool CheckTheRole(string role, RequireRoleRequirment requirement, AuthorizationHandlerContext context)
+        {
+            if (requirement.Roles.Any(str => role.IndexOf(str, StringComparison.OrdinalIgnoreCase) > -1))
+            {
+                context.Succeed(requirement);
             }
+
+            return true;
         }
     }
 }

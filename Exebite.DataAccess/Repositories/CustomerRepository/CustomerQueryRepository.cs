@@ -59,6 +59,11 @@ namespace Exebite.DataAccess.Repositories
                         query = query.Where(x => x.Id == queryModel.Id.Value);
                     }
 
+                    if (!string.IsNullOrWhiteSpace(queryModel.GoogleId))
+                    {
+                        query = query.Where(x => x.GoogleUserId == queryModel.GoogleId);
+                    }
+
                     var size = queryModel.Size <= QueryConstants.MaxElements ? queryModel.Size : QueryConstants.MaxElements;
 
                     var total = query.Count();

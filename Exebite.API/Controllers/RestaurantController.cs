@@ -1,4 +1,5 @@
 ﻿using Either;
+using Exebite.API.Authorization;
 using Exebite.API.Models;
 using Exebite.Common;
 using Exebite.DataAccess.Repositories;
@@ -31,6 +32,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = nameof(AccessPolicy.CreateRestaurantAccessPolicy))]
         public IActionResult Post([FromBody]RestaurantInsertModelDto restaurant) =>
             _mapper.Map<RestaurantInsertModel>(restaurant)
                    .Map(_commandRepository.Insert)
@@ -39,6 +41,7 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.UpdateRestaurantAccessPolicy))]
         public IActionResult Put(int id, [FromBody]RestaurantUpdateModelDto restaurant) =>
             _mapper.Map<RestaurantUpdateModel>(restaurant)
                    .Map(x => _commandRepository.Update(id, x))
@@ -47,6 +50,7 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.DeleteRestaurantAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepository.Delete(id)
                               .Map(_ => (IActionResult)NoContent())
@@ -54,6 +58,7 @@ namespace Exebite.API.Controllers
                               .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("Query")]
+        [Authorize(Policy = nameof(AccessPolicy.ReadRestaurantAccessPolicy))]
         public IActionResult Query([FromQuery]RestaurantQueryDto query) =>
             _mapper.Map<RestaurantQueryModel>(query)
                    .Map(_queryRepository.Query)

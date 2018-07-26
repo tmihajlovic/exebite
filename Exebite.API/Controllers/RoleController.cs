@@ -1,4 +1,5 @@
 ﻿using Either;
+using Exebite.API.Authorization;
 using Exebite.API.Models;
 using Exebite.Common;
 using Exebite.DataAccess.Repositories;
@@ -31,6 +32,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = nameof(AccessPolicy.CreateRoleAccessPolicy))]
         public IActionResult Post([FromBody]CreateRoleDto model) =>
             _mapper.Map<RoleInsertModel>(model)
                    .Map(_commandRepository.Insert)
@@ -39,6 +41,7 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.UpdateRoleAccessPolicy))]
         public IActionResult Put(int id, [FromBody]UpdateRoleDto model) =>
             _mapper.Map<RoleUpdateModel>(model)
                    .Map(x => _commandRepository.Update(id, x))
@@ -48,6 +51,7 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.DeleteRoleAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepository.Delete(id)
                               .Map(_ => OkNoContent())
@@ -55,6 +59,7 @@ namespace Exebite.API.Controllers
                               .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("Query")]
+        [Authorize(Policy = nameof(AccessPolicy.ReadRoleAccessPolicy))]
         public IActionResult Query(RoleQueryDto query) =>
             _mapper.Map<RoleQueryModel>(query)
                    .Map(_queryRepository.Query)

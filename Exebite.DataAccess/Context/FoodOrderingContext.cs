@@ -107,6 +107,9 @@ namespace Exebite.DataAccess.Context
             modelBuilder.Entity<OrderEntity>()
                 .HasIndex(x => x.Date);
 
+            modelBuilder.Entity<CustomerEntity>()
+                .HasIndex(x => x.GoogleUserId);
+
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 modelBuilder.Entity(entityType.Name).Property<DateTime>(_created);

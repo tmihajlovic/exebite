@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Either;
+using Exebite.API.Authorization;
 using Exebite.API.Models;
 using Exebite.Common;
 using Exebite.DataAccess.Repositories;
@@ -32,6 +33,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = nameof(AccessPolicy.CreateDailyMenuAccessPolicy))]
         public IActionResult Post([FromBody]CreateDailyMenuDto model) =>
             _mapper.Map<DailyMenuInsertModel>(model)
                         .Map(_commandRepo.Insert)
@@ -40,6 +42,7 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.UpdateDailyMenuAccessPolicy))]
         public IActionResult Put(int id, [FromBody]UpdateDailyMenuDto model) =>
             _mapper.Map<DailyMenuUpdateModel>(model)
                         .Map(x => _commandRepo.Update(id, x))
@@ -48,6 +51,7 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.DeleteDailyMenuAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepo.Delete(id)
                         .Map(_ => OkNoContent())
@@ -55,6 +59,7 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("Query")]
+        [Authorize(Policy = nameof(AccessPolicy.ReadDailyMenuAccessPolicy))]
         public IActionResult Query([FromQuery]DailyMenuQueryDto query) =>
             _mapper.Map<DailyMenuQueryModel>(query)
                       .Map(_queryRepo.Query)

@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using AutoMapper;
 using Exebite.API.Authorization;
 using Exebite.Business;
 using Exebite.Common;
 using Exebite.DataAccess;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,28 +37,40 @@ namespace Exebite.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddAuthentication(options =>
-            //    {
-            //        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            //        options.DefaultSignInScheme = GoogleDefaults.AuthenticationScheme;
-            //        options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
-            //    })
-            //    .AddGoogle(googleOptions =>
-            //    {
-            //        googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
-            //        googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
-            //    });
-            if (_hostingEnvironment.IsDevelopment())
+            services.ConfigureApplicationCookie(o =>
             {
-                services.AddMvc(opts => opts.Filters.Add(new AllowAnonymousFilter()));
-            }
-            else
-            {
-                services.AddMvc();
-            }
+                o.Events.OnRedirectToLogin = c =>
+                {
+                    c.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return Task.CompletedTask;
+                };
+
+                o.Events.OnRedirectToAccessDenied = c =>
+                {
+                    c.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    return Task.CompletedTask;
+                };
+            });
+
+            services.AddAuthentication(
+                    v =>
+                    {
+                        v.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                        v.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                    }).AddGoogle(googleOptions =>
+                    {
+                        googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
+                        googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
+                    });
+
+            services.AddMvc();
 
             services.AddAuthorization(options => options.AddCustomPolicies());
+            services.AddDefaultIdentity<IdentityUser>();
+
             services.AddTransient<IRoleService, RoleService>();
+            services.AddScoped<IAuthorizationHandler, RoleHandler>();
+            services.AddTransient<IAuthorizationHandler, RoleHandler>();
 
             services.AddAutoMapper(
                 cfg =>
@@ -83,9 +99,10 @@ namespace Exebite.API
                 app.UseExceptionHandler("/error");
 
                 // when we get client id and secret uncomment this
-                // app.UseAuthentication();
+                //app.UseAuthentication();
             }
 
+            app.UseAuthentication();
             app.UseStatusCodePages();
 
             app.UseMvc();

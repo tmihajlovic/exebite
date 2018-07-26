@@ -1,4 +1,5 @@
 ﻿using Either;
+using Exebite.API.Authorization;
 using Exebite.API.Models;
 using Exebite.Common;
 using Exebite.DataAccess.Repositories;
@@ -31,6 +32,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = nameof(AccessPolicy.CreateOrdersAccessPolicy))]
         public IActionResult Post([FromBody] CreateOrderDto model) =>
             _mapper.Map<OrderInsertModel>(model)
                    .Map(_commandRepo.Insert)
@@ -39,6 +41,7 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.UpdateOrdersAccessPolicy))]
         public IActionResult Put(int id, [FromBody] UpdateOrderDto model) =>
             _mapper.Map<OrderUpdateModel>(model)
                    .Map(x => _commandRepo.Update(id, x))
@@ -47,6 +50,7 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.DeleteOrdersAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepo.Delete(id)
                         .Map(_ => OkNoContent())
@@ -54,6 +58,7 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("Query")]
+        [Authorize(Policy = nameof(AccessPolicy.ReadOrdersAccessPolicy))]
         public IActionResult Query([FromQuery]OrderQueryDto query) =>
             _mapper.Map<OrderQueryModel>(query)
                    .Map(_queryRepo.Query)
@@ -63,6 +68,7 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("GetAllOrdersForRestaurant")]
+        [Authorize(Policy = nameof(AccessPolicy.ReadOrdersAccessPolicy))]
         public IActionResult GetAllOrdersForRestaurant(int restaurantId, int page, int size) =>
             _queryRepo.GetAllOrdersForRestaurant(restaurantId, page, size)
                       .Map(_mapper.Map<PagingResult<OrderDto>>)

@@ -1,4 +1,5 @@
 ﻿using Either;
+using Exebite.API.Authorization;
 using Exebite.API.Models;
 using Exebite.Common;
 using Exebite.DataAccess.Repositories;
@@ -31,6 +32,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = nameof(AccessPolicy.CreateCustomerAliasesAccessPolicy))]
         public IActionResult Post([FromBody]CreateCustomerAliasDto model) =>
             _mapper.Map<CustomerAliasInsertModel>(model)
                         .Map(x => _commandRepo.Insert(x))
@@ -39,6 +41,7 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.UpdateCustomerAliasesAccessPolicy))]
         public IActionResult Put(int id, [FromBody]UpdateCustomerAliasDto model) =>
             _mapper.Map<CustomerAliasUpdateModel>(model)
                         .Map(x => _commandRepo.Update(id, x))
@@ -47,6 +50,7 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.DeleteCustomerAliasesAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepo.Delete(id)
                         .Map(_ => OkNoContent())
@@ -54,6 +58,7 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("Query")]
+        [Authorize(Policy = nameof(AccessPolicy.ReadCustomerAliasesAccessPolicy))]
         public IActionResult Query([FromQuery]CustomerAliasQueryDto query) =>
             _mapper.Map<CustomerAliasQueryModel>(query)
                       .Map(x => _queryRepo.Query(x))
