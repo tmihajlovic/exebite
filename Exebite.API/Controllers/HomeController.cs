@@ -56,7 +56,7 @@ public class HomeController : ControllerBase
                           Balance = 0,
                           GoogleUserId = googleId,
                           Name = User.Claims.FirstOrDefault(x => x.Type.EndsWith("name"))?.Value,
-                          RoleId = 1,
+                          RoleId = 2,
                           LocationId = 1
                       })
                       .Map(AllOk)
