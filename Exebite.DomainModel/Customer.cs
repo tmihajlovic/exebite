@@ -10,13 +10,13 @@ namespace Exebite.DomainModel
 
         public decimal Balance { get; set; }
 
-        public string GoogleUserId { get; set; }
+        public string GoogleId { get; set; }
 
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
 
         public Location Location { get; set; }
 
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
 
         public Role Role { get; set; }
 

@@ -89,7 +89,7 @@ namespace Exebite.DataAccess.Test
                 {
                     Id = x,
                     Name = "Customer name ",
-                    GoogleUserId = "GoogleUserId",
+                    GoogleId = "GoogleUserId",
                     Balance = 99.99m,
                     LocationId = 1,
                     RoleId = x

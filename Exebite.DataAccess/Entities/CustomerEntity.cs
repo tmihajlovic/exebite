@@ -14,15 +14,15 @@ namespace Exebite.DataAccess.Entities
 
         public decimal Balance { get; set; }
 
-        public string GoogleUserId { get; set; }
+        public string GoogleId { get; set; }
 
         [ForeignKey(nameof(Location))]
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
 
         public virtual LocationEntity Location { get; set; }
 
         [ForeignKey(nameof(Role))]
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
 
         public virtual RoleEntity Role { get; set; }
 

@@ -59,7 +59,7 @@ namespace Exebite.DataAccess.Test
                    {
                        Id = x,
                        Balance = x,
-                       GoogleUserId = (1000 + x).ToString(),
+                       GoogleId = (1000 + x).ToString(),
                        LocationId = x,
                        Name = $"Name {x}",
                        RoleId = x
@@ -74,7 +74,7 @@ namespace Exebite.DataAccess.Test
             return new CustomerInsertModel
             {
                 Name = data.Name,
-                GoogleUserId = data.AppUserId,
+                GoogleId = data.AppUserId,
                 Balance = data.Balance,
                 LocationId = data.LocationId,
                 RoleId = data.RoleId

@@ -53,10 +53,8 @@ public class HomeController : ControllerBase
                       new CustomerInsertModel
                       {
                           Balance = 0,
-                          GoogleUserId = googleId,
-                          Name = User.Claims.FirstOrDefault(x => x.Type.EndsWith("name"))?.Value,
-                          RoleId = 2,
-                          LocationId = 1
+                          GoogleId = googleId,
+                          Name = User.Claims.FirstOrDefault(x => x.Type.EndsWith("name"))?.Value
                       })
                       .Map(x => AllOk(new { id = x }))
                       .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
