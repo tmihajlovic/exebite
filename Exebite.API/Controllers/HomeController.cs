@@ -58,11 +58,11 @@ public class HomeController : ControllerBase
                           RoleId = 2,
                           LocationId = 1
                       })
-                      .Map(AllOk)
+                      .Map(x => AllOk(new { id = x }))
                       .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
             }
 
-            return AllOk(customers.Items.First().Id);
+            return AllOk(new { id = customers.Items.First().Id });
         }
     }
 }
