@@ -39,8 +39,7 @@ public class HomeController : ControllerBase
         [Authorize]
         public IActionResult GoogleSignIn()
         {
-            var claim = User.Claims.FirstOrDefault(x => x.Type.EndsWith("nameidentifier"));
-            string googleId = claim.Value;
+            string googleId = User.Claims.FirstOrDefault(x => x.Type.EndsWith("nameidentifier"))?.Value;
             return _queryRepo.Query(new CustomerQueryModel { GoogleId = googleId })
                    .Map(x => SignInUser(x, googleId))
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
