@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -6,6 +7,8 @@ using Exebite.API.Authorization;
 using Exebite.Business;
 using Exebite.Common;
 using Exebite.DataAccess;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -37,19 +40,10 @@ namespace Exebite.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureApplicationCookie(o =>
+            services.ConfigureApplicationCookie(options =>
             {
-                o.Events.OnRedirectToLogin = c =>
-                {
-                    c.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    return Task.CompletedTask;
-                };
-
-                o.Events.OnRedirectToAccessDenied = c =>
-                {
-                    c.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    return Task.CompletedTask;
-                };
+                options.Events.OnRedirectToAccessDenied = Helper.ReplaceRedirector(HttpStatusCode.Forbidden, options.Events.OnRedirectToAccessDenied);
+                options.Events.OnRedirectToLogin = Helper.ReplaceRedirector(HttpStatusCode.Unauthorized, options.Events.OnRedirectToLogin);
             });
 
             services.AddAuthentication(
@@ -98,11 +92,9 @@ namespace Exebite.API
             {
                 app.UseExceptionHandler("/error");
 
-                // when we get client id and secret uncomment this
-                //app.UseAuthentication();
+                app.UseAuthentication();
             }
 
-            app.UseAuthentication();
             app.UseStatusCodePages();
 
             app.UseMvc();

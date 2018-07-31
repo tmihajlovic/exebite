@@ -2,15 +2,16 @@
 using Either;
 using Exebite.Common;
 using Exebite.DataAccess.Repositories;
-using Microsoft.AspNetCore.Authorization;using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
     [Produces("application/json")]
     [Route("")]
-   [Authorize]
-public class HomeController : ControllerBase
+    [Authorize]
+    public class HomeController : ControllerBase
     {
         private readonly ICustomerCommandRepository _commandRepo;
         private readonly ICustomerQueryRepository _queryRepo;
