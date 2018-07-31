@@ -10,7 +10,6 @@ namespace Exebite.API.Controllers
 {
     [Produces("application/json")]
     [Route("")]
-    [Authorize]
     public class HomeController : ControllerBase
     {
         private readonly ICustomerCommandRepository _commandRepo;

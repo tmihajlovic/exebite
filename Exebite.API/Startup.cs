@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Net;
 using System.Reflection;
-using System.Threading.Tasks;
 using AutoMapper;
 using Exebite.API.Authorization;
 using Exebite.Business;
 using Exebite.Common;
 using Exebite.DataAccess;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
@@ -91,9 +87,9 @@ namespace Exebite.API
             else
             {
                 app.UseExceptionHandler("/error");
-
-                app.UseAuthentication();
             }
+
+            app.UseAuthentication();
 
             app.UseStatusCodePages();
 
