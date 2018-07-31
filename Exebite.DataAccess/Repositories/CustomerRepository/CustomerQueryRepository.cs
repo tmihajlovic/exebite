@@ -32,7 +32,7 @@ namespace Exebite.DataAccess.Repositories
                         return new Left<Error, string>(new RecordNotFound($"Record with GoogleId='{googleId}' is not found."));
                     }
 
-                    return new Right<Error, string>(customer.Role.Name);
+                    return new Right<Error, string>(customer.Role != null ? customer.Role.Name : string.Empty);
                 }
             }
             catch (Exception ex)
