@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Exebite.Converters.Delimiters;
 
 namespace Exebite.Converters
 {
@@ -12,9 +13,9 @@ namespace Exebite.Converters
         /// </summary>
         /// <typeparam name="T">Object definition to be serialized</typeparam>
         /// <param name="input">Collection of objects to be serialized</param>
-        /// <param name="delimiter"> Delimiter to be used</param>
+        /// <param name="delimiter">Delimiter to be used</param>
         /// <returns>CSV string</returns>string Serialize<T>(IEnumerable<T> input, string delimiter = ";") where T : class;
-        string Serialize<T>(IEnumerable<T> input, string delimiter = ";") where T : class;
+        string Serialize<T>(IEnumerable<T> input, Delimiter delimiter) where T : class;
 
         /// <summary>
         /// Deserializes the value separated file and maps output to collection of objects.
@@ -23,6 +24,6 @@ namespace Exebite.Converters
         /// <param name="inputLines">Lines to be split</param>
         /// <param name="delimiter">Delimiter of the values</param>
         /// <returns></returns>
-        IEnumerable<T> Deserialize<T>(string[] inputLines, string delimiter = ",") where T : new();
+        IEnumerable<T> Deserialize<T>(string[] inputLines, Delimiter delimiter) where T : new();
     }
 }

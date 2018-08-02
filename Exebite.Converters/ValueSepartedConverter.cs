@@ -4,12 +4,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Exebite.Converters.Attributes;
+using Exebite.Converters.Delimiters;
 
 namespace Exebite.Converters
 {
     public class ValueSepartedConverter : IValueSepartedConverter
     {
-        public string Serialize<T>(IEnumerable<T> input, string delimiter = ";") where T : class
+        public string Serialize<T>(IEnumerable<T> input, Delimiter delimiter) where T : class
         {
             var properties = typeof(T).GetProperties();
             if (properties.Length == 0)
@@ -20,13 +21,13 @@ namespace Exebite.Converters
             // get headers
             var header = properties
                 .Select(GetHeaderName)
-                .Aggregate((a, b) => a + delimiter + b);
+                .Aggregate((a, b) => a + delimiter.Value + b);
 
             //create lines out of values
             var csvLines = input.Select(item => item.GetType()
                                 .GetProperties()
                                 .Select(property => GetPropertyValue(item, property.Name))
-                                .Aggregate((a, b) => a + delimiter + b));
+                                .Aggregate((a, b) => a + delimiter.Value + b));
 
             var body = new StringBuilder();
             foreach (var line in csvLines)
@@ -45,12 +46,12 @@ namespace Exebite.Converters
         /// <param name="inputLines">Lines to be split</param>
         /// <param name="delimiter">Delimiter of the values</param>
         /// <returns></returns>
-        public IEnumerable<T> Deserialize<T>(string[] inputLines, string delimiter = ",") where T : new()
+        public IEnumerable<T> Deserialize<T>(string[] inputLines, Delimiter delimiter) where T : new()
         {
-            var header = inputLines[0].Split(new[] { delimiter }, StringSplitOptions.None);
+            var header = inputLines[0].Split(new[] { delimiter.Value }, StringSplitOptions.None);
             var body = inputLines.Skip(1);
             return new List<T>(body.Select(line =>
-                                            CreateObjectFromValues<T>(line.Split(new[] { delimiter }, StringSplitOptions.None), header)));
+                                            CreateObjectFromValues<T>(line.Split(new[] { delimiter.Value }, StringSplitOptions.None), header)));
         }
 
         /// <summary>
