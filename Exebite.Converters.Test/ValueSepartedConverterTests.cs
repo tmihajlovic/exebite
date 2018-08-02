@@ -119,14 +119,17 @@ namespace Exebite.Converters.Test
                 ShortValue = 2,
                 LongValue = 3,
                 Date = DateTime.Parse("2018-12-22"),
-                BoolValueToInt = true
+                BoolValueToInt = true,
+                DoubleValue = 3.2,
+                FloatValue = 5
             };
             // Act
             var result = sut.Deserialize<TestClass>(new[]
             {
-                "Name,IntValue,ShortValue,LongValue,Date,BoolValueToInt",
+                "Name,IntValue,ShortValue,LongValue,Date,BoolValueToInt,DoubleValue,FloatValue",
                 $"{expectedValues.Name}, {expectedValues.IntValue}, {expectedValues.ShortValue}," +
-                $"{expectedValues.LongValue}, {expectedValues.Date}, {expectedValues.BoolValueToInt}"
+                $"{expectedValues.LongValue}, {expectedValues.Date}, {expectedValues.BoolValueToInt}," +
+                $" {expectedValues.DoubleValue}, {expectedValues.FloatValue}"
             });
 
             // Assert
@@ -137,6 +140,65 @@ namespace Exebite.Converters.Test
             Assert.Equal(expectedValues.LongValue, result.ElementAt(0).LongValue);
             Assert.Equal(expectedValues.Date, result.ElementAt(0).Date);
             Assert.Equal(expectedValues.BoolValueToInt, result.ElementAt(0).BoolValueToInt);
+            Assert.Equal(expectedValues.DoubleValue, result.ElementAt(0).DoubleValue);
+            Assert.Equal(expectedValues.FloatValue, result.ElementAt(0).FloatValue);
+        }
+
+        [Fact]
+        public void Deserialize_TextHasEmptyStringTypeValue_PropertyMappedToDefault()
+        {
+            // Arrange
+            var sut = new ValueSepartedConverter();
+            var expectedValues = new TestClass
+            {
+                Name = "1",
+                IntValue = 0,
+                ShortValue = 0,
+                LongValue = 0,
+                Date = DateTime.Parse("0001-01-01"),
+                BoolValueToInt = false,
+                DoubleValue = 0,
+                FloatValue = 0
+            };
+            // Act
+            var result = sut.Deserialize<TestClass>(new[]
+            {
+                "Name,IntValue,ShortValue,LongValue,Date,BoolValueToInt,DoubleValue,FloatValue",
+                "1,IntValue,ShortValue,LongValue,Date,BoolValueToInt,DoubleValue,FloatValue"
+            });
+
+            // Assert
+            Assert.Single(result);
+            Assert.Equal(expectedValues.Name, result.ElementAt(0).Name);
+            Assert.Equal(expectedValues.IntValue, result.ElementAt(0).IntValue);
+            Assert.Equal(expectedValues.ShortValue, result.ElementAt(0).ShortValue);
+            Assert.Equal(expectedValues.LongValue, result.ElementAt(0).LongValue);
+            Assert.Equal(expectedValues.Date, result.ElementAt(0).Date);
+            Assert.Equal(expectedValues.BoolValueToInt, result.ElementAt(0).BoolValueToInt);
+            Assert.Equal(expectedValues.DoubleValue, result.ElementAt(0).DoubleValue);
+            Assert.Equal(expectedValues.FloatValue, result.ElementAt(0).FloatValue);
+        }
+
+        [Fact]
+        public void Deserialize_TextHasWrongBodyValueTypes_PropertyMappedToNull()
+        {
+            // Arrange
+            var sut = new ValueSepartedConverter();
+            var expectedValues = new TestClass
+            {
+                Name = null,
+            };
+
+            // Act
+            var result = sut.Deserialize<TestClass>(new[]
+            {
+                "Name",
+                ""
+            });
+
+            // Assert
+            Assert.Single(result);
+            Assert.Equal(expectedValues.Name, result.ElementAt(0).Name);
         }
 
         private class NoProperty { }
@@ -156,6 +218,10 @@ namespace Exebite.Converters.Test
             public short ShortValue { get; set; }
 
             public long LongValue { get; set; }
+
+            public double DoubleValue { get; set; }
+
+            public float FloatValue { get; set; }
 
             [Format(Format = "YYYY-DD-MM")]
             public DateTime Date { get; set; }
