@@ -33,7 +33,7 @@ namespace Exebite.Converters.Test
             // Arrange
             var sut = new ValueSepartedConverter();
             var expectedSplitCharacters = (typeof(TestClass).GetProperties().Length * (numberOfBodyElements + 1)) - numberOfBodyElements;
-            var delimiter = new CommaDelimiter();
+            var delimiter = new TestDelimiter();
 
             // Act
             var result = sut.Serialize(_testClasses.Take(numberOfBodyElements), delimiter);
@@ -48,7 +48,7 @@ namespace Exebite.Converters.Test
         {
             // Arrange
             var sut = new ValueSepartedConverter();
-            var delimiter = new CommaDelimiter();
+            var delimiter = new TestDelimiter();
 
             // Act
             var result = sut.Serialize(_testClasses.Take(1), delimiter);
@@ -63,7 +63,7 @@ namespace Exebite.Converters.Test
         {
             // Arrange
             var sut = new ValueSepartedConverter();
-            var delimiter = new CommaDelimiter();
+            var delimiter = new TestDelimiter();
 
             // Act
             var result = sut.Serialize(new List<NoHeaderData> { new NoHeaderData { NoHeader = "test" } }, delimiter);
@@ -77,7 +77,7 @@ namespace Exebite.Converters.Test
         {
             // Arrange
             var sut = new ValueSepartedConverter();
-            var delimiter = new CommaDelimiter();
+            var delimiter = new TestDelimiter();
 
             // Act
             var result = sut.Serialize(new List<NoProperty>(), delimiter);
@@ -93,7 +93,7 @@ namespace Exebite.Converters.Test
             var sut = new ValueSepartedConverter();
 
             // Act
-            var result = sut.Deserialize<NoProperty>(new[] { "NoHeader" }, new CommaDelimiter());
+            var result = sut.Deserialize<NoProperty>(new[] { "NoHeader" }, new TestDelimiter());
 
             // Assert
             Assert.Empty(result);
@@ -106,7 +106,7 @@ namespace Exebite.Converters.Test
             var sut = new ValueSepartedConverter();
 
             // Act
-            var result = sut.Deserialize<NoProperty>(new[] { "Header", "Body, part 2" }, new CommaDelimiter());
+            var result = sut.Deserialize<NoProperty>(new[] { "Header", "Body, part 2" }, new TestDelimiter());
 
             // Assert
             Assert.Single(result);
@@ -128,15 +128,16 @@ namespace Exebite.Converters.Test
                 DoubleValue = 3.2,
                 FloatValue = 5
             };
+            var delimiterValue = new TestDelimiter().Value;
 
             // Act
             var result = sut.Deserialize<TestClass>(new[]
             {
-                "Name,IntValue,ShortValue,LongValue,Date,BoolValueToInt,DoubleValue,FloatValue",
-                $"{expectedValues.Name}, {expectedValues.IntValue}, {expectedValues.ShortValue}," +
-                $"{expectedValues.LongValue}, {expectedValues.Date}, {expectedValues.BoolValueToInt}," +
-                $" {expectedValues.DoubleValue}, {expectedValues.FloatValue}"
-            }, new CommaDelimiter());
+                $"Name{delimiterValue}IntValue{delimiterValue}ShortValue{delimiterValue}LongValue{delimiterValue}Date{delimiterValue}BoolValueToInt{delimiterValue}DoubleValue{delimiterValue}FloatValue",
+                $"{expectedValues.Name}{delimiterValue} {expectedValues.IntValue}{delimiterValue} {expectedValues.ShortValue}{delimiterValue}" +
+                $"{expectedValues.LongValue}{delimiterValue} {expectedValues.Date}{delimiterValue} {expectedValues.BoolValueToInt}{delimiterValue}" +
+                $" {expectedValues.DoubleValue}{delimiterValue} {expectedValues.FloatValue}"
+            }, new TestDelimiter());
 
             // Assert
             Assert.Single(result);
@@ -166,12 +167,14 @@ namespace Exebite.Converters.Test
                 DoubleValue = 0,
                 FloatValue = 0
             };
+            var delimiterValue = new TestDelimiter().Value;
+
             // Act
             var result = sut.Deserialize<TestClass>(new[]
             {
-                "Name,IntValue,ShortValue,LongValue,Date,BoolValueToInt,DoubleValue,FloatValue",
-                "1,IntValue,ShortValue,LongValue,Date,BoolValueToInt,DoubleValue,FloatValue"
-            }, new CommaDelimiter());
+               $"Name{delimiterValue}IntValue{delimiterValue}ShortValue{delimiterValue}LongValue{delimiterValue}Date{delimiterValue}BoolValueToInt{delimiterValue}DoubleValue{delimiterValue}FloatValue",
+                $"1{delimiterValue}IntValue{delimiterValue}ShortValue{delimiterValue}LongValue{delimiterValue}Date{delimiterValue}BoolValueToInt{delimiterValue}DoubleValue{delimiterValue}FloatValue"
+            }, new TestDelimiter());
 
             // Assert
             Assert.Single(result);
@@ -196,11 +199,19 @@ namespace Exebite.Converters.Test
             };
 
             // Act
-            var result = sut.Deserialize<TestClass>(new[] { "Name", "" }, new CommaDelimiter());
+            var result = sut.Deserialize<TestClass>(new[] { "Name", "" }, new TestDelimiter());
 
             // Assert
             Assert.Single(result);
             Assert.Equal(expectedValues.Name, result.ElementAt(0).Name);
+        }
+
+        private class TestDelimiter : Delimiter
+        {
+            public TestDelimiter() :
+                base("-;")
+            {
+            }
         }
 
         private class NoProperty { }
