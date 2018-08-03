@@ -157,7 +157,7 @@ namespace Exebite.Converters
                     {
                         var type = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
 
-                        if (Convert.ChangeType(values[i], type).ToString() == string.Empty)
+                        if (Convert.ChangeType(values[i], type).ToString()?.Length == 0)
                         {
                             propertyInfo.SetValue(newObject, null, null);
                         }
