@@ -14,7 +14,7 @@ namespace Exebite.DataAccess.Entities
 
         public decimal Balance { get; set; }
 
-        public string GoogleId { get; set; }
+        public string GoogleUserId { get; set; }
 
         [ForeignKey(nameof(Location))]
         public int? LocationId { get; set; }

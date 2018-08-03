@@ -63,7 +63,7 @@ namespace Exebite.DataAccess.Test
                    {
                        Id = x,
                        Balance = x,
-                       GoogleId = (1000 + x).ToString(),
+                       GoogleUserId = (1000 + x).ToString(),
                        LocationId = x,
                        Location = new LocationEntity { Id = x, Address = $"Address {x}", Name = $"Name {x}" },
                        Name = $"Name {x}",

@@ -108,7 +108,7 @@ namespace Exebite.DataAccess.Context
                 .HasIndex(x => x.Date);
 
             modelBuilder.Entity<CustomerEntity>()
-                .HasIndex(x => x.GoogleId);
+                .HasIndex(x => x.GoogleUserId);
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {

@@ -13,6 +13,6 @@
 
         public int? Id { get; set; }
 
-        public string GoogleId { get; set; }
+        public string GoogleUserId { get; set; }
     }
 }

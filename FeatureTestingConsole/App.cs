@@ -122,7 +122,7 @@ namespace FeatureTestingConsole
             _customerCommandRepo.Insert(new CustomerInsertModel
             {
                 Name = "Admin customer",
-                GoogleId = "AdminGoogleId",
+                GoogleUserId = "AdminGoogleId",
                 Balance = 2000m,
                 LocationId = 1,
                 RoleId = 1
@@ -131,7 +131,7 @@ namespace FeatureTestingConsole
             _customerCommandRepo.Insert(new CustomerInsertModel
             {
                 Name = "User customer",
-                GoogleId = "UserGoogleId",
+                GoogleUserId = "UserGoogleId",
                 Balance = -400m,
                 LocationId = 2,
                 RoleId = 2

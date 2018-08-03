@@ -10,7 +10,7 @@ namespace Exebite.DomainModel
 
         public decimal Balance { get; set; }
 
-        public string GoogleId { get; set; }
+        public string GoogleUserId { get; set; }
 
         public int? LocationId { get; set; }
 

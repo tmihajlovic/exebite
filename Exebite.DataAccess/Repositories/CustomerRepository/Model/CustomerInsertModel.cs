@@ -8,7 +8,7 @@
 
         public int? LocationId { get; set; }
 
-        public string GoogleId { get; set; }
+        public string GoogleUserId { get; set; }
 
         public int? RoleId { get; set; }
     }

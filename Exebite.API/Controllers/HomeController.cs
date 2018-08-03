@@ -40,7 +40,7 @@ namespace Exebite.API.Controllers
         public IActionResult GoogleSignIn()
         {
             string googleId = User.Claims.FirstOrDefault(x => x.Type.EndsWith("nameidentifier"))?.Value;
-            return _queryRepo.Query(new CustomerQueryModel { GoogleId = googleId })
+            return _queryRepo.Query(new CustomerQueryModel { GoogleUserId = googleId })
                    .Map(x => SignInUser(x, googleId))
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
         }
@@ -53,7 +53,7 @@ namespace Exebite.API.Controllers
                       new CustomerInsertModel
                       {
                           Balance = 0,
-                          GoogleId = googleId,
+                          GoogleUserId = googleId,
                           Name = User.Claims.FirstOrDefault(x => x.Type.EndsWith("name"))?.Value
                       })
                       .Map(x => AllOk(new { id = x }))

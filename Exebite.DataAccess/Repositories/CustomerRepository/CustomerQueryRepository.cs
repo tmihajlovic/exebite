@@ -26,10 +26,10 @@ namespace Exebite.DataAccess.Repositories
             {
                 using (var context = _factory.Create())
                 {
-                    var customer = context.Customer.FirstOrDefault(x => x.GoogleId == googleId);
+                    var customer = context.Customer.FirstOrDefault(x => x.GoogleUserId == googleId);
                     if (customer == null)
                     {
-                        return new Left<Error, string>(new RecordNotFound($"Record with GoogleId='{googleId}' is not found."));
+                        return new Left<Error, string>(new RecordNotFound($"Record with GoogleUserId='{googleId}' is not found."));
                     }
 
                     return new Right<Error, string>(customer.Role != null ? customer.Role.Name : string.Empty);
@@ -59,9 +59,9 @@ namespace Exebite.DataAccess.Repositories
                         query = query.Where(x => x.Id == queryModel.Id.Value);
                     }
 
-                    if (!string.IsNullOrWhiteSpace(queryModel.GoogleId))
+                    if (!string.IsNullOrWhiteSpace(queryModel.GoogleUserId))
                     {
-                        query = query.Where(x => x.GoogleId == queryModel.GoogleId);
+                        query = query.Where(x => x.GoogleUserId == queryModel.GoogleUserId);
                     }
 
                     var size = queryModel.Size <= QueryConstants.MaxElements ? queryModel.Size : QueryConstants.MaxElements;
