@@ -35,7 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mappings.Test", "Test\Mappi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Converters", "Exebite.Converters\Exebite.Converters.csproj", "{31689F22-155D-4917-87C0-40F0C000ADD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.Converters.Test", "Exebite.Converters.Test\Exebite.Converters.Test.csproj", "{ADC20FE6-E4E1-42CC-8F31-9CCDEDC23BF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Converters.Test", "Exebite.Converters.Test\Exebite.Converters.Test.csproj", "{ADC20FE6-E4E1-42CC-8F31-9CCDEDC23BF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClient", "WebClient\WebClient.csproj", "{56FC4A5D-4595-4983-8B20-6417501FB107}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +109,10 @@ Global
 		{ADC20FE6-E4E1-42CC-8F31-9CCDEDC23BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADC20FE6-E4E1-42CC-8F31-9CCDEDC23BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADC20FE6-E4E1-42CC-8F31-9CCDEDC23BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56FC4A5D-4595-4983-8B20-6417501FB107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56FC4A5D-4595-4983-8B20-6417501FB107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56FC4A5D-4595-4983-8B20-6417501FB107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56FC4A5D-4595-4983-8B20-6417501FB107}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

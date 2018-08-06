@@ -6,6 +6,7 @@ using Exebite.API.Authorization;
 using Exebite.Business;
 using Exebite.Common;
 using Exebite.DataAccess;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -43,11 +44,13 @@ namespace Exebite.API
             });
 
             services.AddAuthentication(
-                    v =>
+                    options =>
                     {
-                        v.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
-                        v.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-                    }).AddGoogle(googleOptions =>
+                        options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                        //options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    })
+                    .AddGoogle(googleOptions =>
                     {
                         googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
                         googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
