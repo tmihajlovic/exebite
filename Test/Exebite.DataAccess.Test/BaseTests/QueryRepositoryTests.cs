@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Exebite.Common;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Repositories;
 using Exebite.DataAccess.Test.Mocks;

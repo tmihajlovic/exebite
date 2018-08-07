@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Exebite.DataAccess\Exebite.DataAccess.csproj" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Exebite.Common\Exebite.Common.csproj" />
+    <ProjectReference Include="..\Exebite.DomainModel\Exebite.DomainModel.csproj" />
   </ItemGroup>
 
 </Project>

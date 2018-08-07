@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using Either;
+﻿using Either;
 using Exebite.API.Authorization;
-using Exebite.API.Models;
 using Exebite.Common;
 using Exebite.DataAccess.Repositories;
+using Exebite.DtoModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
