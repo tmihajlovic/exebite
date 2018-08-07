@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using WebClient.Models;
 
 namespace WebClient
 {
@@ -47,6 +49,9 @@ namespace WebClient
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<TempContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("TempContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
