@@ -6,23 +6,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Exebite.DtoModels;
+using WebClient.Services;
 
 namespace WebClient.Controllers
 {
     public class LocationController : Controller
     {
-        private readonly TempContext _context;
+        private readonly ILocationService _service;
 
-        public LocationController(TempContext context)
+        public LocationController(ILocationService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: Location
         public async Task<IActionResult> Index()
         {
-            //return View(await _context.LocationDto.ToListAsync());
-            return View(new List<LocationDto>());
+            return View(await _service.QueryAsync(new LocationQueryDto()).ConfigureAwait(false));
         }
 
         // GET: Location/Details/5
@@ -33,14 +33,13 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var locationDto = await _context.LocationDto
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (locationDto == null)
+            var locationDto = await _service.QueryAsync(new LocationQueryDto { Id = id }).ConfigureAwait(false);
+            if (locationDto.Total == 0)
             {
                 return NotFound();
             }
 
-            return View(locationDto);
+            return View(locationDto.Items.First());
         }
 
         // GET: Location/Create
@@ -54,12 +53,11 @@ namespace WebClient.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Address")] CreateLocationDto locationDto)
+        public async Task<IActionResult> Create([Bind("Name,Address")] LocationDto locationDto)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(locationDto);
-                await _context.SaveChangesAsync();
+                await _service.CreateAsync(new CreateLocationDto { Name = locationDto.Name, Address = locationDto.Address }).ConfigureAwait(false);
                 return RedirectToAction(nameof(Index));
             }
             return View(locationDto);
@@ -73,12 +71,12 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var locationDto = await _context.LocationDto.FindAsync(id);
-            if (locationDto == null)
+            var locationDto = await _service.QueryAsync(new LocationQueryDto { Id = id }).ConfigureAwait(false);
+            if (locationDto.Total == 0)
             {
                 return NotFound();
             }
-            return View(locationDto);
+            return View(locationDto.Items.First());
         }
 
         // POST: Location/Edit/5
@@ -86,7 +84,7 @@ namespace WebClient.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address")] LocationDto locationDto)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Address")] LocationDto locationDto)
         {
             if (id != locationDto.Id)
             {
@@ -97,8 +95,7 @@ namespace WebClient.Controllers
             {
                 try
                 {
-                    _context.Update(locationDto);
-                    await _context.SaveChangesAsync();
+                    await _service.UpdateAsync(id, new UpdateLocationDto { Name = locationDto.Name, Address = locationDto.Address }).ConfigureAwait(false);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,14 +121,13 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var locationDto = await _context.LocationDto
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (locationDto == null)
+            var locationDto = await _service.QueryAsync(new LocationQueryDto { Id = id }).ConfigureAwait(false);
+            if (locationDto.Total == 0)
             {
                 return NotFound();
             }
 
-            return View(locationDto);
+            return View(locationDto.Items.First());
         }
 
         // POST: Location/Delete/5
@@ -139,15 +135,13 @@ namespace WebClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var locationDto = await _context.LocationDto.FindAsync(id);
-            _context.LocationDto.Remove(locationDto);
-            await _context.SaveChangesAsync();
+            await _service.DeleteByIdAsync(id).ConfigureAwait(false);
             return RedirectToAction(nameof(Index));
         }
 
         private bool LocationDtoExists(int id)
         {
-            return _context.LocationDto.Any(e => e.Id == id);
+            return _service.QueryAsync(new LocationQueryDto { Id = id }).Result.Total != 0;
         }
     }
 }
