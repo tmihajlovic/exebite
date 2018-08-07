@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Converters", "Exebi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Converters.Test", "Exebite.Converters.Test\Exebite.Converters.Test.csproj", "{ADC20FE6-E4E1-42CC-8F31-9CCDEDC23BF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClient", "WebClient\WebClient.csproj", "{DEF1A60C-567D-455C-A5AF-0719B870A720}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{ADC20FE6-E4E1-42CC-8F31-9CCDEDC23BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADC20FE6-E4E1-42CC-8F31-9CCDEDC23BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADC20FE6-E4E1-42CC-8F31-9CCDEDC23BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEF1A60C-567D-455C-A5AF-0719B870A720}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEF1A60C-567D-455C-A5AF-0719B870A720}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEF1A60C-567D-455C-A5AF-0719B870A720}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEF1A60C-567D-455C-A5AF-0719B870A720}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
