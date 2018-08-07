@@ -8,4 +8,8 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Exebite.DtoModels\Exebite.DtoModels.csproj" />
+  </ItemGroup>
+
 </Project>
