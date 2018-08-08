@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Exebite.Common;
 using Exebite.DtoModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebClient.Services;
 
 namespace WebClient.Controllers
@@ -22,7 +19,13 @@ namespace WebClient.Controllers
         // GET: CustomerAlias
         public async Task<IActionResult> Index()
         {
-            return View(await _service.QueryAsync(new CustomerAliasQueryDto()).ConfigureAwait(false));
+            var queryDto = new CustomerAliasQueryDto()
+            {
+                Page = 1,
+                Size = QueryConstants.MaxElements - 1
+            };
+            var res = await _service.QueryAsync(queryDto).ConfigureAwait(false);
+            return View(res.Items);
         }
 
         // GET: CustomerAlias/Details/5
@@ -33,7 +36,7 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var customerAliasDto = await _service.QueryAsync(new CustomerAliasQueryDto { Id = id }).ConfigureAwait(false);
+            var customerAliasDto = await _service.QueryAsync(new CustomerAliasQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
             if (customerAliasDto == null)
             {
                 return NotFound();
@@ -71,7 +74,7 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var customerAliasDto = await _service.QueryAsync(new CustomerAliasQueryDto { Id = id }).ConfigureAwait(false);
+            var customerAliasDto = await _service.QueryAsync(new CustomerAliasQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
             if (customerAliasDto == null)
             {
                 return NotFound();
@@ -121,7 +124,7 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var customerAliasDto = await _service.QueryAsync(new CustomerAliasQueryDto { Id = id }).ConfigureAwait(false);
+            var customerAliasDto = await _service.QueryAsync(new CustomerAliasQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
             if (customerAliasDto == null)
             {
                 return NotFound();
@@ -141,7 +144,7 @@ namespace WebClient.Controllers
 
         private bool CustomerAliasExists(int id)
         {
-            return _service.QueryAsync(new CustomerAliasQueryDto { Id = id }).Result.Total != 0;
+            return _service.QueryAsync(new CustomerAliasQueryDto { Id = id, Page = 1, Size = 1 }).Result.Total != 0;
         }
     }
 }

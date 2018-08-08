@@ -1,17 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Exebite.Common;
 using Exebite.DtoModels;
+using WebClient.Services.Core;
 
 namespace WebClient.Services
 {
-    public interface ICustomerAliasService
+    public interface ICustomerAliasService : IRestService<CreateCustomerAliasDto, CustomerAliasQueryDto, UpdateCustomerAliasDto, CustomerAliasDto>
     {
-        Task<int> CreateAsync(CreateCustomerAliasDto model);
-
-        Task<PagingResult<CustomerAliasDto>> QueryAsync(CustomerAliasQueryDto query);
-
-        Task<bool> DeleteByIdAsync(int id);
-
-        Task<bool> UpdateAsync(int id, UpdateCustomerAliasDto model);
     }
 }

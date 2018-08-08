@@ -4,17 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Exebite.Common;
 using Exebite.DtoModels;
+using WebClient.Services.Core;
 
 namespace WebClient.Services
 {
-    public interface ICustomerService
+    public interface ICustomerService : IRestService<CreateCustomerDto, CustomerQueryDto, UpdateCustomerDto, CustomerDto>
     {
-        Task<int> CreateAsync(CreateCustomerDto model);
-
-        Task<PagingResult<CustomerDto>> QueryAsync(CustomerQueryDto query);
-
-        Task DeleteByIdAsync(int id);
-
-        Task<bool> UpdateAsync(int id, UpdateCustomerDto model);
     }
 }

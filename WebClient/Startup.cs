@@ -46,8 +46,10 @@ namespace WebClient
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IHttpClientWrapper, HttpClientWrapper>();
+            services.AddTransient<ILocationService, LocationService>();
+            services.AddTransient<ICustomerAliasService, CustormerAliasService>();
+            services.AddTransient<ICustomerService, CustomerService>();
 
             services.AddDbContext<TempContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("TempContext")));
