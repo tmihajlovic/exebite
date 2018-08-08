@@ -1,24 +1,19 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Exebite.Common;
 using Exebite.DtoModels;
 using WebClient.Extensions;
+using WebClient.Wrappers;
 
 namespace WebClient.Services
 {
     public class LocationService : ILocationService
     {
-        private readonly HttpClient _client;
+        private readonly IHttpClientWrapper _client;
 
-        private const string _baseUrl = "http://localhost:29796/api/";
-
-        public LocationService()
+        public LocationService(IHttpClientWrapper client)
         {
-            _client = new HttpClient
-            {
-                BaseAddress = new Uri(_baseUrl)
-            };
+            _client = client;
         }
 
         public async Task<int> CreateAsync(CreateLocationDto model)
@@ -52,7 +47,5 @@ namespace WebClient.Services
             var body = await response.Content.ReadAsAsync<dynamic>().ConfigureAwait(false);
             return body.updated;
         }
-
-
     }
 }

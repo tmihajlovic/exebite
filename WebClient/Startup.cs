@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using WebClient.Models;
 using WebClient.Services;
+using WebClient.Wrappers;
 
 namespace WebClient
 {
@@ -48,11 +44,10 @@ namespace WebClient
             })
             .AddCookie();
 
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddTransient<ILocationService, LocationService>();
-
+            services.AddTransient<IHttpClientWrapper, HttpClientWrapper>();
 
             services.AddDbContext<TempContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("TempContext")));
