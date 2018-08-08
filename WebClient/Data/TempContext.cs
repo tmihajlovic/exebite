@@ -17,4 +17,6 @@ using Exebite.DtoModels;
         public DbSet<Exebite.DtoModels.OrderDto> OrderDto { get; set; }
 
         public DbSet<Exebite.DtoModels.CustomerAliasDto> CustomerAliasDto { get; set; }
+
+        public DbSet<Exebite.DtoModels.CustomerDto> CustomerDto { get; set; }
     }
