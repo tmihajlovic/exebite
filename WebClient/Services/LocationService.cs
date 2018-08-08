@@ -1,8 +1,8 @@
-﻿using Exebite.Common;
-using Exebite.DtoModels;
+﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
+using Exebite.Common;
+using Exebite.DtoModels;
 using WebClient.Extensions;
 
 namespace WebClient.Services
@@ -15,38 +15,41 @@ namespace WebClient.Services
 
         public LocationService()
         {
-            _client = new HttpClient();
+            _client = new HttpClient
+            {
+                BaseAddress = new Uri(_baseUrl)
+            };
         }
 
-        public async Task<int> CreateAsync(CreateLocationDto locationDto)
+        public async Task<int> CreateAsync(CreateLocationDto model)
         {
-            var response = await _client.PostAsJsonAsync(_baseUrl + "location", locationDto);
+            var response = await _client.PostAsJsonAsync("location", model).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
-            var body = await response.Content.ReadAsAsync<dynamic>();
+            var body = await response.Content.ReadAsAsync<dynamic>().ConfigureAwait(false);
             return body.id;
         }
 
-        public async Task<PagingResult<LocationDto>> QueryAsync(LocationQueryDto queryDto)
+        public async Task<PagingResult<LocationDto>> QueryAsync(LocationQueryDto query)
         {
-            var url = _baseUrl + "location/Query?" + queryDto.BuildQuery();
+            var url = "location/Query?" + query.BuildQuery();
 
-            var response = await _client.GetAsync(url);
+            var response = await _client.GetAsync(url).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadAsAsync<PagingResult<LocationDto>>();
+            return await response.Content.ReadAsAsync<PagingResult<LocationDto>>().ConfigureAwait(false);
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            var response = await _client.DeleteAsync(_baseUrl + "location/" + id);
+            var response = await _client.DeleteAsync("location/" + id).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<bool> UpdateAsync(int id, UpdateLocationDto locationDto)
+        public async Task<bool> UpdateAsync(int id, UpdateLocationDto model)
         {
-            var response = await _client.PutAsJsonAsync(_baseUrl + "location/" + id, locationDto);
+            var response = await _client.PutAsJsonAsync("location/" + id, model);
             response.EnsureSuccessStatusCode();
-            var body = await response.Content.ReadAsAsync<dynamic>();
+            var body = await response.Content.ReadAsAsync<dynamic>().ConfigureAwait(false);
             return body.updated;
         }
 

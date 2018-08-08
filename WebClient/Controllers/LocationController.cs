@@ -57,14 +57,14 @@ namespace WebClient.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Address")] LocationDto locationDto)
+        public async Task<IActionResult> Create([Bind("Name,Address")] LocationDto model)
         {
             if (ModelState.IsValid)
             {
-                await _service.CreateAsync(new CreateLocationDto { Name = locationDto.Name, Address = locationDto.Address }).ConfigureAwait(false);
+                await _service.CreateAsync(new CreateLocationDto { Name = model.Name, Address = model.Address }).ConfigureAwait(false);
                 return RedirectToAction(nameof(Index));
             }
-            return View(locationDto);
+            return View(model);
         }
 
         // GET: Location/Edit/5
@@ -88,9 +88,9 @@ namespace WebClient.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address")] LocationDto locationDto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address")] LocationDto model)
         {
-            if (id != locationDto.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -99,11 +99,11 @@ namespace WebClient.Controllers
             {
                 try
                 {
-                    await _service.UpdateAsync(id, new UpdateLocationDto { Name = locationDto.Name, Address = locationDto.Address }).ConfigureAwait(false);
+                    await _service.UpdateAsync(id, new UpdateLocationDto { Name = model.Name, Address = model.Address }).ConfigureAwait(false);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LocationExists(locationDto.Id))
+                    if (!LocationExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -114,7 +114,7 @@ namespace WebClient.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(locationDto);
+            return View(model);
         }
 
         // GET: Location/Delete/5
