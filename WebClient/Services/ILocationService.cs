@@ -1,20 +1,17 @@
-﻿using Exebite.Common;
+﻿using System.Threading.Tasks;
+using Exebite.Common;
 using Exebite.DtoModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebClient.Services
 {
     public interface ILocationService
     {
-        Task<int> CreateAsync(CreateLocationDto locationDto);
+        Task<int> CreateAsync(CreateLocationDto model);
 
-        Task<PagingResult<LocationDto>> QueryAsync(LocationQueryDto queryDto);
+        Task<PagingResult<LocationDto>> QueryAsync(LocationQueryDto query);
 
         Task DeleteByIdAsync(int id);
 
-        Task<bool> UpdateAsync(int id, UpdateLocationDto locationDto);
+        Task<bool> UpdateAsync(int id, UpdateLocationDto model);
     }
 }

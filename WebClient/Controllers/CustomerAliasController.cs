@@ -1,35 +1,31 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Exebite.DtoModels;
-using Exebite.Common;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Exebite.DtoModels;
 using WebClient.Services;
 
 namespace WebClient.Controllers
 {
-    public class LocationController : Controller
+    public class CustomerAliasController : Controller
     {
-        private readonly ILocationService _service;
+        private readonly ICustomerAliasService _service;
 
-        public LocationController(ILocationService service)
+        public CustomerAliasController(ICustomerAliasService service)
         {
             _service = service;
         }
 
-        // GET: Location
+        // GET: CustomerAlias
         public async Task<IActionResult> Index()
         {
-            var queryDto = new LocationQueryDto()
-            {
-                Page = 1,
-                Size = QueryConstants.MaxElements - 1
-            };
-            var res = await _service.QueryAsync(queryDto).ConfigureAwait(false);
-            return View(res.Items);
+            return View(await _service.QueryAsync(new CustomerAliasQueryDto()).ConfigureAwait(false));
         }
 
-        // GET: Location/Details/5
+        // GET: CustomerAlias/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,37 +33,37 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var locationDto = await _service.QueryAsync(new LocationQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
-            if (locationDto.Total == 0)
+            var customerAliasDto = await _service.QueryAsync(new CustomerAliasQueryDto { Id = id }).ConfigureAwait(false);
+            if (customerAliasDto == null)
             {
                 return NotFound();
             }
 
-            return View(locationDto.Items.First());
+            return View(customerAliasDto);
         }
 
-        // GET: Location/Create
+        // GET: CustomerAlias/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Location/Create
+        // POST: CustomerAlias/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Address")] LocationDto locationDto)
+        public async Task<IActionResult> Create([Bind("Alias,CustomerId,RestaurantId")] CustomerAliasDto model)
         {
             if (ModelState.IsValid)
             {
-                await _service.CreateAsync(new CreateLocationDto { Name = locationDto.Name, Address = locationDto.Address }).ConfigureAwait(false);
+                await _service.CreateAsync(new CreateCustomerAliasDto { Alias = model.Alias, CustomerId = model.CustomerId, RestaurantId = model.RestaurantId }).ConfigureAwait(false);
                 return RedirectToAction(nameof(Index));
             }
-            return View(locationDto);
+            return View(model);
         }
 
-        // GET: Location/Edit/5
+        // GET: CustomerAlias/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,22 +71,22 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var locationDto = await _service.QueryAsync(new LocationQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
-            if (locationDto.Total == 0)
+            var customerAliasDto = await _service.QueryAsync(new CustomerAliasQueryDto { Id = id }).ConfigureAwait(false);
+            if (customerAliasDto == null)
             {
                 return NotFound();
             }
-            return View(locationDto.Items.First());
+            return View(customerAliasDto);
         }
 
-        // POST: Location/Edit/5
+        // POST: CustomerAlias/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address")] LocationDto locationDto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Alias,CustomerId,RestaurantId")] CustomerAliasDto model)
         {
-            if (id != locationDto.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -99,11 +95,11 @@ namespace WebClient.Controllers
             {
                 try
                 {
-                    await _service.UpdateAsync(id, new UpdateLocationDto { Name = locationDto.Name, Address = locationDto.Address }).ConfigureAwait(false);
+                    await _service.UpdateAsync(id, new UpdateCustomerAliasDto { Alias = model.Alias, CustomerId = model.CustomerId, RestaurantId = model.RestaurantId }).ConfigureAwait(false);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LocationExists(locationDto.Id))
+                    if (!CustomerAliasExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +110,10 @@ namespace WebClient.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(locationDto);
+            return View(model);
         }
 
-        // GET: Location/Delete/5
+        // GET: CustomerAlias/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,16 +121,16 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var locationDto = await _service.QueryAsync(new LocationQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
-            if (locationDto.Total == 0)
+            var customerAliasDto = await _service.QueryAsync(new CustomerAliasQueryDto { Id = id }).ConfigureAwait(false);
+            if (customerAliasDto == null)
             {
                 return NotFound();
             }
 
-            return View(locationDto.Items.First());
+            return View(customerAliasDto);
         }
 
-        // POST: Location/Delete/5
+        // POST: CustomerAlias/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -143,9 +139,9 @@ namespace WebClient.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LocationExists(int id)
+        private bool CustomerAliasExists(int id)
         {
-            return _service.QueryAsync(new LocationQueryDto { Id = id, Page = 1, Size = 1 }).Result.Total != 0;
+            return _service.QueryAsync(new CustomerAliasQueryDto { Id = id }).Result.Total != 0;
         }
     }
 }
