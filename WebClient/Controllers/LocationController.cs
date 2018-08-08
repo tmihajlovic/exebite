@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Exebite.Common;
+using Exebite.DtoModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Exebite.DtoModels;
 using WebClient.Services;
 
 namespace WebClient.Controllers
@@ -22,7 +20,13 @@ namespace WebClient.Controllers
         // GET: Location
         public async Task<IActionResult> Index()
         {
-            return View(await _service.QueryAsync(new LocationQueryDto()).ConfigureAwait(false));
+            var queryDto = new LocationQueryDto()
+            {
+                Page = 1,
+                Size = QueryConstants.MaxElements - 1
+            };
+            var res = await _service.QueryAsync(queryDto).ConfigureAwait(false);
+            return View(res.Items);
         }
 
         // GET: Location/Details/5
@@ -33,7 +37,7 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var locationDto = await _service.QueryAsync(new LocationQueryDto { Id = id }).ConfigureAwait(false);
+            var locationDto = await _service.QueryAsync(new LocationQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
             if (locationDto.Total == 0)
             {
                 return NotFound();
@@ -71,7 +75,7 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var locationDto = await _service.QueryAsync(new LocationQueryDto { Id = id }).ConfigureAwait(false);
+            var locationDto = await _service.QueryAsync(new LocationQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
             if (locationDto.Total == 0)
             {
                 return NotFound();
@@ -121,7 +125,7 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var locationDto = await _service.QueryAsync(new LocationQueryDto { Id = id }).ConfigureAwait(false);
+            var locationDto = await _service.QueryAsync(new LocationQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
             if (locationDto.Total == 0)
             {
                 return NotFound();
@@ -141,7 +145,7 @@ namespace WebClient.Controllers
 
         private bool LocationDtoExists(int id)
         {
-            return _service.QueryAsync(new LocationQueryDto { Id = id }).Result.Total != 0;
+            return _service.QueryAsync(new LocationQueryDto { Id = id, Page = 1, Size = 1 }).Result.Total != 0;
         }
     }
 }

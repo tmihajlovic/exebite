@@ -13,7 +13,7 @@ namespace WebClient.Services
 
         Task<PagingResult<LocationDto>> QueryAsync(LocationQueryDto queryDto);
 
-        Task<bool> DeleteByIdAsync(int id);
+        Task DeleteByIdAsync(int id);
 
         Task<bool> UpdateAsync(int id, UpdateLocationDto locationDto);
     }

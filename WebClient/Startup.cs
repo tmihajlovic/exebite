@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using WebClient.Models;
+using WebClient.Services;
 
 namespace WebClient
 {
@@ -49,6 +50,9 @@ namespace WebClient
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddTransient<ILocationService, LocationService>();
+
 
             services.AddDbContext<TempContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("TempContext")));
