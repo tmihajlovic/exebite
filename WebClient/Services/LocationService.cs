@@ -52,7 +52,5 @@ namespace WebClient.Services
             var body = await response.Content.ReadAsAsync<dynamic>().ConfigureAwait(false);
             return body.updated;
         }
-
-
     }
 }
