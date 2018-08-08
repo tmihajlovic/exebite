@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebClient.Extensions;
 using WebClient.Services;
 using WebClient.Wrappers;
 
@@ -47,9 +48,7 @@ namespace WebClient
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddTransient<IHttpClientWrapper, HttpClientWrapper>();
-            services.AddTransient<ILocationService, LocationService>();
-            services.AddTransient<ICustomerAliasService, CustormerAliasService>();
-            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddRestServices();
 
             services.AddDbContext<TempContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("TempContext")));

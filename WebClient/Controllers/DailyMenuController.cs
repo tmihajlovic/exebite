@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Exebite.Common;
 using Exebite.DtoModels;
 using Microsoft.AspNetCore.Mvc;
@@ -7,19 +8,19 @@ using WebClient.Services;
 
 namespace WebClient.Controllers
 {
-    public class CustomerAliasController : Controller
+    public class DailyMenuController : Controller
     {
-        private readonly ICustomerAliasService _service;
+        private readonly IDailyMenuService _service;
 
-        public CustomerAliasController(ICustomerAliasService service)
+        public DailyMenuController(IDailyMenuService service)
         {
             _service = service;
         }
 
-        // GET: CustomerAlias
+        // GET: DailyMenuDtoes
         public async Task<IActionResult> Index()
         {
-            var queryDto = new CustomerAliasQueryDto()
+            var queryDto = new DailyMenuQueryDto()
             {
                 Page = 1,
                 Size = QueryConstants.MaxElements - 1
@@ -28,7 +29,7 @@ namespace WebClient.Controllers
             return View(res.Items);
         }
 
-        // GET: CustomerAlias/Details/5
+        // GET: DailyMenuDtoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,37 +37,38 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var customerAliasDto = await _service.QueryAsync(new CustomerAliasQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
-            if (customerAliasDto.Total == 0)
+            var dailyMenuDto = await _service.QueryAsync(new DailyMenuQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
+            if (dailyMenuDto == null)
             {
                 return NotFound();
             }
 
-            return View(customerAliasDto);
+            return View(dailyMenuDto);
         }
 
-        // GET: CustomerAlias/Create
+        // GET: DailyMenuDtoes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: CustomerAlias/Create
+        // POST: DailyMenuDtoes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Alias,CustomerId,RestaurantId")] CustomerAliasDto model)
+        public async Task<IActionResult> Create([Bind("Id,RestaurantId")] DailyMenuDto model)
         {
             if (ModelState.IsValid)
             {
-                await _service.CreateAsync(new CreateCustomerAliasDto { Alias = model.Alias, CustomerId = model.CustomerId, RestaurantId = model.RestaurantId }).ConfigureAwait(false);
+                // TODO: this should be change to use CreateMenuDto because Foods is missing
+                await _service.CreateAsync(new CreateDailyMenuDto { RestaurantId = model.RestaurantId }).ConfigureAwait(false);
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
         }
 
-        // GET: CustomerAlias/Edit/5
+        // GET: DailyMenuDtoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,20 +76,20 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var customerAliasDto = await _service.QueryAsync(new CustomerAliasQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
-            if (customerAliasDto == null)
+            var dailyMenuDto = await _service.QueryAsync(new DailyMenuQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
+            if (dailyMenuDto.Total == 0)
             {
                 return NotFound();
             }
-            return View(customerAliasDto);
+            return View(dailyMenuDto);
         }
 
-        // POST: CustomerAlias/Edit/5
+        // POST: DailyMenuDtoes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Alias,CustomerId,RestaurantId")] CustomerAliasDto model)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RestaurantId")] DailyMenuDto model)
         {
             if (id != model.Id)
             {
@@ -98,11 +100,11 @@ namespace WebClient.Controllers
             {
                 try
                 {
-                    await _service.UpdateAsync(id, new UpdateCustomerAliasDto { Alias = model.Alias, CustomerId = model.CustomerId, RestaurantId = model.RestaurantId }).ConfigureAwait(false);
+                    await _service.UpdateAsync(id, new UpdateDailyMenuDto { RestaurantId = model.RestaurantId }).ConfigureAwait(false);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerAliasExists(model.Id))
+                    if (!DailyMenuDtoExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -116,7 +118,7 @@ namespace WebClient.Controllers
             return View(model);
         }
 
-        // GET: CustomerAlias/Delete/5
+        // GET: DailyMenuDtoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,16 +126,16 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            var customerAliasDto = await _service.QueryAsync(new CustomerAliasQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
-            if (customerAliasDto.Total == 0)
+            var dailyMenuDto = await _service.QueryAsync(new DailyMenuQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
+            if (dailyMenuDto.Total == 0)
             {
                 return NotFound();
             }
 
-            return View(customerAliasDto);
+            return View(dailyMenuDto);
         }
 
-        // POST: CustomerAlias/Delete/5
+        // POST: DailyMenuDtoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -142,9 +144,9 @@ namespace WebClient.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerAliasExists(int id)
+        private bool DailyMenuDtoExists(int id)
         {
-            return _service.QueryAsync(new CustomerAliasQueryDto { Id = id, Page = 1, Size = 1 }).Result.Total != 0;
+            return _service.QueryAsync(new DailyMenuQueryDto { Id = id, Page = 1, Size = 1 }).Result.Total != 0;
         }
     }
 }

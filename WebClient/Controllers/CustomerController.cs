@@ -82,7 +82,7 @@ namespace WebClient.Controllers
             }
 
             var customerDto = await _service.QueryAsync(new CustomerQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
-            if (customerDto == null)
+            if (customerDto.Total == 0)
             {
                 return NotFound();
             }
@@ -139,7 +139,7 @@ namespace WebClient.Controllers
             }
 
             var customerDto = await _service.QueryAsync(new CustomerQueryDto { Id = id, Page = 1, Size = 1 }).ConfigureAwait(false);
-            if (customerDto == null)
+            if (customerDto.Total == 0)
             {
                 return NotFound();
             }
