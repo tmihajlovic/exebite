@@ -43,7 +43,7 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            return View(dailyMenuDto);
+            return View(dailyMenuDto.Items.First());
         }
 
         // GET: DailyMenuDtoes/Create
@@ -81,7 +81,7 @@ namespace WebClient.Controllers
             {
                 return NotFound();
             }
-            return View(dailyMenuDto);
+            return View(dailyMenuDto.Items.First());
         }
 
         // POST: DailyMenuDtoes/Edit/5
@@ -132,7 +132,7 @@ namespace WebClient.Controllers
                 return NotFound();
             }
 
-            return View(dailyMenuDto);
+            return View(dailyMenuDto.Items.First());
         }
 
         // POST: DailyMenuDtoes/Delete/5
