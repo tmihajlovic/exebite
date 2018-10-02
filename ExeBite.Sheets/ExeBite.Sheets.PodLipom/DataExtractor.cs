@@ -6,6 +6,13 @@ namespace ExeBite.Sheets.PodLipom
 {
     public class DataExtractor
     {
+        private static readonly Category dailyOffer;
+
+        static DataExtractor()
+        {
+            dailyOffer = new Category(Constants.CATEGORY_DAILY);
+        }
+
         /// <summary>
         /// Used to extract daily offers in specific range.
         /// Uses a lot of magic numbers.
@@ -24,7 +31,8 @@ namespace ExeBite.Sheets.PodLipom
                     foundFood.Add(new DailyOfferFood(
                         foodName,
                         double.Parse(ranges.Values[3][i].ToString()),
-                        Constants.POD_LIPOM_NAME));
+                        Constants.POD_LIPOM_NAME,
+                        dailyOffer));
                 }
             }
 

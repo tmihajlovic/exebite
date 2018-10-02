@@ -20,8 +20,8 @@
         /// <param name="description"></param>
         /// <param name="fasting"></param>
         /// <param name="price"></param>
-        public FoodItem(string name, double price, string restaurant, string subcategory, string description) :
-            base(name, price, restaurant, subcategory)
+        public FoodItem(string name, double price, string restaurant, Category category, string description) :
+            base(name, price, restaurant, category)
         {
             Description = description;
         }
@@ -34,7 +34,7 @@
         /// <returns></returns>
         public override string ToString()
         {
-            return $"{Subcategory} : {Name}: {Price.ToString()} RSD, Description: {Description}";
+            return $"{Name}: {Price.ToString()} RSD, Description: {Description}";
         } 
         #endregion
     }

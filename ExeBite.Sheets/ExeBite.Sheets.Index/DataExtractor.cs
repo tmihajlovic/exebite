@@ -17,7 +17,7 @@ namespace ExeBite.Sheets.Index
         {
             var foundFood = new List<FoodItem>();
 
-            string category = string.Empty;
+            Category category = new Category();
             foreach (var row in ranges.Values)
             {
                 if (row.Count < 3)
@@ -28,7 +28,7 @@ namespace ExeBite.Sheets.Index
                 var newCategory = row[0].ToString();
                 if (!string.IsNullOrWhiteSpace(newCategory))
                 {
-                    category = newCategory;
+                    category = new Category(Constants.CATEGORY_STANDARD, newCategory);
                 }
 
                 foundFood.Add(new FoodItem(

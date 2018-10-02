@@ -9,6 +9,15 @@ namespace ExeBite.Sheets.Hedone
     /// </summary>
     public class DataExtractor
     {
+        private static readonly Category dailyCategory;
+        private static readonly Category standardCategory;
+
+        static DataExtractor()
+        {
+            dailyCategory = new Category(Constants.CATEGORY_DAILY);
+            standardCategory = new Category(Constants.CATEGORY_STANDARD);
+        }
+
         /// <summary>
         /// Used to extract daily offers in specific range.
         /// Uses a lot of magic numbers.
@@ -24,7 +33,8 @@ namespace ExeBite.Sheets.Hedone
                 foundFood.Add(new DailyOfferFood(
                     ranges.Values[0][i].ToString(),                 //Name
                     double.Parse(ranges.Values[3][i].ToString()),   //Price
-                    Constants.HEDONE_NAME));                        //Restaurant
+                    Constants.HEDONE_NAME,                          //Restaurant
+                    dailyCategory));                                //Category
             }
 
             return foundFood;
@@ -49,7 +59,7 @@ namespace ExeBite.Sheets.Hedone
                     row[0].ToString(),                  //Name
                     double.Parse(row[3].ToString()),    //Price
                     Constants.HEDONE_NAME,              //Restaurant
-                    Constants.NO_CATEGORY,              //Subcategory
+                    standardCategory,                   //Subcategory
                     row[1].ToString()));                //Description
             }
 

@@ -16,7 +16,7 @@ namespace ExeBite.Sheets.Teglas
         public static List<FoodItem> ExtractFoodItems(ValueRange ranges)
         {
             var foundFood = new List<FoodItem>();
-            var subcategory = string.Empty;
+            var category = new Category();
 
             foreach (var row in ranges.Values)
             {
@@ -24,7 +24,9 @@ namespace ExeBite.Sheets.Teglas
                 {
                     if (row.Count > 0)
                     {
-                        subcategory = row[0].ToString();
+                        category = new Category(
+                            Constants.CATEGORY_STANDARD,
+                            row[0].ToString());
                     }
                     continue;
                 }
@@ -33,7 +35,7 @@ namespace ExeBite.Sheets.Teglas
                     row[0].ToString(),                  //Name
                     double.Parse(row[2].ToString()),    //Price
                     Constants.TEGLAS_NAME,              //Restaurant
-                    subcategory,                        //Subcategory
+                    category,                           //Subcategory
                     row[1].ToString()));                //Description
             }
 

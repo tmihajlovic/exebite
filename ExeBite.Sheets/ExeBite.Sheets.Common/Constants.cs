@@ -29,6 +29,20 @@ namespace ExeBite.Sheets.Common
         /// </summary>
         public const string TEGLAS_NAME = "Tegla's";
 
-        public const string NO_CATEGORY = "Unspecified";
+        /// <summary>
+        /// Category is not specified.
+        /// </summary>
+        public const string CATEGORY_NONE = "Unspecified";
+
+        /// <summary>
+        /// Offer is standard everyday offer
+        /// </summary>
+        public const string CATEGORY_STANDARD = "Standard Offer";
+
+        /// <summary>
+        /// Offer is in the daily offer category.
+        /// </summary>
+        public const string CATEGORY_DAILY = "Daily Offer";
     }
 }
+

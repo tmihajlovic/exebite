@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ExeBite.Sheets.Common
+﻿namespace ExeBite.Sheets.Common
 {
     public class Food
     {
@@ -24,7 +20,7 @@ namespace ExeBite.Sheets.Common
         /// <summary>
         /// Subcategory of the food item.
         /// </summary>
-        public string Subcategory { get; private set; }
+        public Category Category { get; private set; }
 
         /// <summary>
         /// Standard constructor.
@@ -34,13 +30,12 @@ namespace ExeBite.Sheets.Common
         /// <param name="price"></param>
         /// <param name="restaurant"></param>
         /// <param name="subcategory"></param>
-        protected Food(string name, double price, string restaurant, string subcategory)
+        protected Food(string name, double price, string restaurant, Category scategory)
         {
             Name = name;
             Price = price;
             Restaurant = restaurant;
-            Subcategory = subcategory;
+            Category = scategory;
         }
-
     }
 }
