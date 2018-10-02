@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
+    // [Authorize]
     [Produces("application/json")]
     [Route("api/restaurant")]
-    //[Authorize]
     public class RestaurantController : ControllerBase
     {
         private readonly IRestaurantQueryRepository _queryRepository;
@@ -31,8 +31,8 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
+        // [Authorize(Policy = nameof(AccessPolicy.CreateRestaurantAccessPolicy))]
         [HttpPost]
-        //[Authorize(Policy = nameof(AccessPolicy.CreateRestaurantAccessPolicy))]
         public IActionResult Post([FromBody]RestaurantInsertModelDto restaurant) =>
             _mapper.Map<RestaurantInsertModel>(restaurant)
                    .Map(_commandRepository.Insert)
@@ -40,8 +40,8 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
+        // [Authorize(Policy = nameof(AccessPolicy.UpdateRestaurantAccessPolicy))]
         [HttpPut("{id}")]
-        //[Authorize(Policy = nameof(AccessPolicy.UpdateRestaurantAccessPolicy))]
         public IActionResult Put(int id, [FromBody]RestaurantUpdateModelDto restaurant) =>
             _mapper.Map<RestaurantUpdateModel>(restaurant)
                    .Map(x => _commandRepository.Update(id, x))
@@ -49,16 +49,16 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.LogError(x.ToString()))
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
+        // [Authorize(Policy = nameof(AccessPolicy.DeleteRestaurantAccessPolicy))]
         [HttpDelete("{id}")]
-        //[Authorize(Policy = nameof(AccessPolicy.DeleteRestaurantAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepository.Delete(id)
                               .Map(_ => (IActionResult)NoContent())
                               .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.LogError(x.ToString()))
                               .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
+        // [Authorize(Policy = nameof(AccessPolicy.ReadRestaurantAccessPolicy))]
         [HttpGet("Query")]
-        //[Authorize(Policy = nameof(AccessPolicy.ReadRestaurantAccessPolicy))]
         public IActionResult Query([FromQuery]RestaurantQueryDto query) =>
             _mapper.Map<RestaurantQueryModel>(query)
                    .Map(_queryRepository.Query)

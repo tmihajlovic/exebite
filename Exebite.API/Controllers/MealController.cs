@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
+    // [Authorize]
     [Produces("application/json")]
     [Route("api/meal")]
-    //[Authorize]
     public class MealController : ControllerBase
     {
         private readonly IMealQueryRepository _queryRepo;
@@ -31,8 +31,8 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
+        // [Authorize(Policy = nameof(AccessPolicy.CreateMealAccessPolicy))]
         [HttpPost]
-        //[Authorize(Policy = nameof(AccessPolicy.CreateMealAccessPolicy))]
         public IActionResult Post([FromBody]CreateMealDto model) =>
             _mapper.Map<MealInsertModel>(model)
                    .Map(_commandRepo.Insert)
@@ -40,8 +40,8 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
+        // [Authorize(Policy = nameof(AccessPolicy.UpdateMealAccessPolicy))]
         [HttpPut("{id}")]
-        //[Authorize(Policy = nameof(AccessPolicy.UpdateMealAccessPolicy))]
         public IActionResult Put(int id, [FromBody]UpdateMealDto model) =>
             _mapper.Map<MealUpdateModel>(model)
                    .Map(x => _commandRepo.Update(id, x))
@@ -49,16 +49,16 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => NotFound(), error => error is RecordNotFound)
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
+        // [Authorize(Policy = nameof(AccessPolicy.DeleteMealAccessPolicy))]
         [HttpDelete("{id}")]
-        //[Authorize(Policy = nameof(AccessPolicy.DeleteMealAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepo.Delete(id)
                         .Map(_ => OkNoContent())
                         .Reduce(_ => NotFound(), error => error is RecordNotFound)
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
+        // [Authorize(Policy = nameof(AccessPolicy.ReadMealAccessPolicy))]
         [HttpGet("Query")]
-        //[Authorize(Policy = nameof(AccessPolicy.ReadMealAccessPolicy))]
         public IActionResult Query([FromQuery]MealQueryDto query) =>
             _mapper.Map<MealQueryModel>(query)
                    .Map(_queryRepo.Query)

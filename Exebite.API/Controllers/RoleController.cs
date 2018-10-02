@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
+    // [Authorize]
     [Produces("application/json")]
     [Route("api/Role")]
-    //[Authorize]
     public class RoleController : ControllerBase
     {
         private readonly IRoleCommandRepository _commandRepository;
@@ -31,8 +31,8 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
+        // [Authorize(Policy = nameof(AccessPolicy.CreateRoleAccessPolicy))]
         [HttpPost]
-        //[Authorize(Policy = nameof(AccessPolicy.CreateRoleAccessPolicy))]
         public IActionResult Post([FromBody]CreateRoleDto model) =>
             _mapper.Map<RoleInsertModel>(model)
                    .Map(_commandRepository.Insert)
@@ -40,8 +40,8 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
+        // [Authorize(Policy = nameof(AccessPolicy.UpdateRoleAccessPolicy))]
         [HttpPut("{id}")]
-        //[Authorize(Policy = nameof(AccessPolicy.UpdateRoleAccessPolicy))]
         public IActionResult Put(int id, [FromBody]UpdateRoleDto model) =>
             _mapper.Map<RoleUpdateModel>(model)
                    .Map(x => _commandRepository.Update(id, x))
@@ -50,16 +50,16 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
+        // [Authorize(Policy = nameof(AccessPolicy.DeleteRoleAccessPolicy))]
         [HttpDelete("{id}")]
-        //[Authorize(Policy = nameof(AccessPolicy.DeleteRoleAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepository.Delete(id)
                               .Map(_ => OkNoContent())
                               .Reduce(_ => NotFound(), error => error is RecordNotFound)
                               .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
+        // [Authorize(Policy = nameof(AccessPolicy.ReadRoleAccessPolicy))]
         [HttpGet("Query")]
-        //[Authorize(Policy = nameof(AccessPolicy.ReadRoleAccessPolicy))]
         public IActionResult Query(RoleQueryDto query) =>
             _mapper.Map<RoleQueryModel>(query)
                    .Map(_queryRepository.Query)
