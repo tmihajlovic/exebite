@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ExeBite.Sheets.Common
+namespace Exebite.Sheets.Common
 {
     public class Constants
     {

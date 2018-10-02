@@ -1,10 +1,10 @@
-﻿using ExeBite.Sheets.Common;
+﻿using Exebite.Sheets.Common;
 using Google.Apis.Sheets.v4.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExeBite.Sheets.Index
+namespace Exebite.Sheets.Index
 {
     public class DataExtractor
     {

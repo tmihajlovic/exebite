@@ -1,4 +1,4 @@
-﻿namespace ExeBite.Sheets.Common
+﻿namespace Exebite.Sheets.Common
 {
     /// <summary>
     /// Class representing food offered every day.

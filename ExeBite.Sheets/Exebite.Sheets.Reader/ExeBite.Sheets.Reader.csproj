@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExeBite.Sheets.Common\ExeBite.Sheets.Common.csproj" />
+    <ProjectReference Include="..\ExeBite.Sheets.Common\Exebite.Sheets.Common.csproj" />
   </ItemGroup>
 
 </Project>

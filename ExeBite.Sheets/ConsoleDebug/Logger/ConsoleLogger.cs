@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ExeBite.Sheets.Common.Interfaces;
+using Exebite.Sheets.Common.Interfaces;
 
 namespace ConsoleDebug.Logger
 {

@@ -1,4 +1,4 @@
-﻿namespace ExeBite.Sheets.Common.Interfaces
+﻿namespace Exebite.Sheets.Common.Interfaces
 {
     /// <summary>
     /// Interface for logging state and messages of the software.

@@ -1,11 +1,11 @@
-﻿using ExeBite.Sheets.Common;
-using ExeBite.Sheets.Common.Interfaces;
-using ExeBite.Sheets.Reader;
+﻿using Exebite.Sheets.Common;
+using Exebite.Sheets.Common.Interfaces;
+using Exebite.Sheets.Reader;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExeBite.Sheets.Teglas
+namespace Exebite.Sheets.Teglas
 {
     public class TeglasReader : IRestaurantReader
     {

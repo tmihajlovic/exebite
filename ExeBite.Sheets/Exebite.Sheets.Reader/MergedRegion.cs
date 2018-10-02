@@ -1,8 +1,8 @@
-﻿using ExeBite.Sheets.Common.Util;
+﻿using Exebite.Sheets.Common.Util;
 using Google.Apis.Sheets.v4.Data;
 using System.Text;
 
-namespace ExeBite.Sheets.Reader
+namespace Exebite.Sheets.Reader
 {
     /// <summary>
     /// This class represents a merged region in the Google Sheet

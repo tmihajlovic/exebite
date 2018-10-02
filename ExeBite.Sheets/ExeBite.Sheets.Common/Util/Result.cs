@@ -1,4 +1,4 @@
-﻿namespace ExeBite.Sheets.Common.Util
+﻿namespace Exebite.Sheets.Common.Util
 {
     /// <summary>
     /// Basic Result class - just denotes success rate with no attached objects.

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ExeBite.Sheets.Common.Util
+namespace Exebite.Sheets.Common.Util
 {
     /// <summary>
     /// A1 Notation is the system that Google Sheets use for managing Cell.

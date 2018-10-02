@@ -41,19 +41,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.DtoModels", "Exebit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExeBite.Sheets", "ExeBite.Sheets", "{B7FBF2E6-A8B7-4318-B2FB-004822866738}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExeBite.Sheets.Common", "ExeBite.Sheets\ExeBite.Sheets.Common\ExeBite.Sheets.Common.csproj", "{3D7C63A4-A1E2-41BC-9D13-D48D5EAB0123}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Common", "ExeBite.Sheets\ExeBite.Sheets.Common\Exebite.Sheets.Common.csproj", "{3D7C63A4-A1E2-41BC-9D13-D48D5EAB0123}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExeBite.Sheets.Reader", "ExeBite.Sheets\Exebite.Sheets.Reader\ExeBite.Sheets.Reader.csproj", "{A5AE1530-D5FF-475D-8515-F81122569691}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Reader", "ExeBite.Sheets\Exebite.Sheets.Reader\Exebite.Sheets.Reader.csproj", "{A5AE1530-D5FF-475D-8515-F81122569691}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SheetsConsoleDebug", "ExeBite.Sheets\ConsoleDebug\SheetsConsoleDebug.csproj", "{74C962E8-F000-48D3-A869-51DFC3DD0670}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExeBite.Sheets.Hedone", "ExeBite.Sheets\ExeBite.Sheets.Hedone\ExeBite.Sheets.Hedone.csproj", "{34575257-EDFA-486A-99DB-14951D6DB457}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Hedone", "ExeBite.Sheets\ExeBite.Sheets.Hedone\Exebite.Sheets.Hedone.csproj", "{34575257-EDFA-486A-99DB-14951D6DB457}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExeBite.Sheets.Index", "ExeBite.Sheets\ExeBite.Sheets.Index\ExeBite.Sheets.Index.csproj", "{740243D3-BA7A-45E3-AEC9-6E531ADC374B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Index", "ExeBite.Sheets\ExeBite.Sheets.Index\Exebite.Sheets.Index.csproj", "{740243D3-BA7A-45E3-AEC9-6E531ADC374B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExeBite.Sheets.PodLipom", "ExeBite.Sheets\ExeBite.Sheets.PodLipom\ExeBite.Sheets.PodLipom.csproj", "{28746679-0A13-4F12-9CCB-5F3CBC31A90B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.PodLipom", "ExeBite.Sheets\ExeBite.Sheets.PodLipom\Exebite.Sheets.PodLipom.csproj", "{28746679-0A13-4F12-9CCB-5F3CBC31A90B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExeBite.Sheets.Teglas", "ExeBite.Sheets\ExeBite.Sheets.Teglas\ExeBite.Sheets.Teglas.csproj", "{EF25B8F4-E03B-4E15-9305-7552AC1C663E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Teglas", "ExeBite.Sheets\ExeBite.Sheets.Teglas\Exebite.Sheets.Teglas.csproj", "{EF25B8F4-E03B-4E15-9305-7552AC1C663E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

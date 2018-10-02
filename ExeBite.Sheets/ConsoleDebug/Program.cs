@@ -1,8 +1,8 @@
 ﻿using ConsoleDebug.Logger;
-using ExeBite.Sheets.Hedone;
-using ExeBite.Sheets.Index;
-using ExeBite.Sheets.PodLipom;
-using ExeBite.Sheets.Teglas;
+using Exebite.Sheets.Hedone;
+using Exebite.Sheets.Index;
+using Exebite.Sheets.PodLipom;
+using Exebite.Sheets.Teglas;
 using System;
 using System.Globalization;
 using System.Linq;

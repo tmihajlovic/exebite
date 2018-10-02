@@ -1,4 +1,4 @@
-﻿namespace ExeBite.Sheets.Common
+﻿namespace Exebite.Sheets.Common
 {
     /// <summary>
     /// Food that is found in Daily Offers

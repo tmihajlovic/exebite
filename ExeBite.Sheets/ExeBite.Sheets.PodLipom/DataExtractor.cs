@@ -1,8 +1,8 @@
-﻿using ExeBite.Sheets.Common;
+﻿using Exebite.Sheets.Common;
 using Google.Apis.Sheets.v4.Data;
 using System.Collections.Generic;
 
-namespace ExeBite.Sheets.PodLipom
+namespace Exebite.Sheets.PodLipom
 {
     public class DataExtractor
     {

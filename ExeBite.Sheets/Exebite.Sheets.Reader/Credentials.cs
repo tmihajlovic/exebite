@@ -1,12 +1,12 @@
-﻿using ExeBite.Sheets.Common;
-using ExeBite.Sheets.Common.Interfaces;
+﻿using Exebite.Sheets.Common;
+using Exebite.Sheets.Common.Interfaces;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Util.Store;
 using System;
 using System.IO;
 using System.Threading;
 
-namespace ExeBite.Sheets.Reader
+namespace Exebite.Sheets.Reader
 {
     /// <summary>
     /// Provides User credentials for google authentication services

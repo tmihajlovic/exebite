@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ExeBite.Sheets.Common.Interfaces
+namespace Exebite.Sheets.Common.Interfaces
 {
     /// <summary>
     /// Interface that defines what methods must be implemented

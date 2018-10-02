@@ -1,14 +1,14 @@
-﻿using ExeBite.Sheets.Common;
-using ExeBite.Sheets.Common.Interfaces;
-using ExeBite.Sheets.Common.Util;
-using ExeBite.Sheets.Reader;
+﻿using Exebite.Sheets.Common;
+using Exebite.Sheets.Common.Interfaces;
+using Exebite.Sheets.Common.Util;
+using Exebite.Sheets.Reader;
 using Google.Apis.Sheets.v4.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace ExeBite.Sheets.Hedone
+namespace Exebite.Sheets.Hedone
 {
     public class HedoneReader : IRestaurantReader
     {

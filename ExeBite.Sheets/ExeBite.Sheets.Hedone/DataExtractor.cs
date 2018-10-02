@@ -1,8 +1,8 @@
-﻿using ExeBite.Sheets.Common;
+﻿using Exebite.Sheets.Common;
 using Google.Apis.Sheets.v4.Data;
 using System.Collections.Generic;
 
-namespace ExeBite.Sheets.Hedone
+namespace Exebite.Sheets.Hedone
 {
     /// <summary>
     /// Used to extract data from Hedone restaurant list.
