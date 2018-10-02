@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExeBite.Sheets.Hedone\ExeBite.Sheets.Hedone.csproj" />
+    <ProjectReference Include="..\ExeBite.Sheets.Index\ExeBite.Sheets.Index.csproj" />
+    <ProjectReference Include="..\ExeBite.Sheets.PodLipom\ExeBite.Sheets.PodLipom.csproj" />
+    <ProjectReference Include="..\ExeBite.Sheets.Teglas\ExeBite.Sheets.Teglas.csproj" />
+  </ItemGroup>
+
+</Project>
