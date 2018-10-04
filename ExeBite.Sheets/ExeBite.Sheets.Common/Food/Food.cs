@@ -1,4 +1,4 @@
-﻿namespace Exebite.Sheets.Common
+﻿namespace Exebite.Sheets.Common.Models
 {
     public class Food
     {

@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Exebite.Business\Exebite.Business.csproj" />
+    <ProjectReference Include="..\Exebite.Sheets.API\Exebite.Sheets.API.csproj" />
   </ItemGroup>
 
 </Project>

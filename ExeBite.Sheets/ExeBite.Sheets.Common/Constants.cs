@@ -22,12 +22,12 @@ namespace Exebite.Sheets.Common
         /// <summary>
         /// Name of the Pod Lipom Restaurant
         /// </summary>
-        public const string POD_LIPOM_NAME = "Pod Lipom";
+        public const string POD_LIPOM_NAME = "Restoran pod Lipom";
 
         /// <summary>
         /// Name of the Teglas restaurant
         /// </summary>
-        public const string TEGLAS_NAME = "Tegla's";
+        public const string TEGLAS_NAME = "Teglas";
 
         /// <summary>
         /// Category is not specified.

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Exebite.Sheets.Common.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Exebite.Sheets.Common.Interfaces
