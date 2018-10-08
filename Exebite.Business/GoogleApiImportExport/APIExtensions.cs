@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
-using Either;
-using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Exebite.Sheets.API;
-using Exebite.Sheets.Common;
 
 namespace Exebite.Business.GoogleApiImportExport
 {
-
     public static class APIExtensions
     {
-        public static (bool Found, List<Food> StandardOffer, List<Food> DailyOffer)
+        public static(bool Found, List<Food> StandardOffer, List<Food> DailyOffer)
             GetRestaurantOffersForDate(this List<RestaurantOffer> offers, Restaurant restaurant, DateTime date)
         {
             var restaurantList = offers.Where(item => item.RestaurantName.Equals(restaurant.Name));

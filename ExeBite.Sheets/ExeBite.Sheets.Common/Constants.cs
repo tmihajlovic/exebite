@@ -43,6 +43,11 @@ namespace Exebite.Sheets.Common
         /// Offer is in the daily offer category.
         /// </summary>
         public const string CATEGORY_DAILY = "Daily Offer";
+
+        /// <summary>
+        /// Sleep time between two requests, in miliseconds.
+        /// </summary>
+        public const int SLEEP_TIME = 50;
     }
 }
 

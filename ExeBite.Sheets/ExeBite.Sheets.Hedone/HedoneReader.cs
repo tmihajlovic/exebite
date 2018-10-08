@@ -138,7 +138,10 @@ namespace Exebite.Sheets.Hedone
                     if (providedDate.Date.Equals(parsedDate.Date))
                         return Result<MergedRegion>.Success(merge);
                 }
-                Thread.Sleep(50);
+
+                // There is a limitation on Google Side for 100 calls per second.
+                // We have added this thread sleep to avoid such issues.
+                Thread.Sleep(Constants.SLEEP_TIME);
             }
 
             return Result<MergedRegion>.Fail(null, "Sheet doesn't contain this date.");

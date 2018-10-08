@@ -37,7 +37,6 @@ namespace Exebite.Business.GoogleApiImportExport
 
             // connectors to a new sheets
             _sheetsApi = sheetsApi;
-      
             _dailyMenuQueryRepository = dailyMenuQueryRepository;
             _foodQueryRepository = foodQueryRepository;
             _foodCommandRepository = foodCommandRepository;
@@ -82,14 +81,13 @@ namespace Exebite.Business.GoogleApiImportExport
             UpdateRestaurant(restaurantOffers, hedoneRestaurant, hedoneDailyMenu, updateDate);
             UpdateRestaurant(restaurantOffers, teglasRestaurant, teglasDailyMenu, updateDate);
             UpdateRestaurant(restaurantOffers, lipaRestaurant, lipaDailyMenu, updateDate);
-
         }
 
         /// <summary>
         /// Updates <see cref="Food"/> info in database, if food doesn't exist creates new one
         /// </summary>
-        /// <param name="restaurant"></param>
-        /// <param name="sheetFoods"></param>
+        /// <param name="restaurant">Restaurant object</param>
+        /// <param name="sheetFoods">List of foods to add and update</param>
         private void AddAndUpdateFood(Restaurant restaurant, List<Food> sheetFoods)
         {
             foreach (var food in sheetFoods)
@@ -148,7 +146,7 @@ namespace Exebite.Business.GoogleApiImportExport
 
         private void UpdateRestaurant(List<RestaurantOffer> offers, Restaurant restaurant, DailyMenu dailyMenu, DateTime date)
         {
-            var (Found, StandardOffer, DailyOffer) = offers.GetRestaurantOffersForDate(restaurant, date);
+            var(Found, StandardOffer, DailyOffer) = offers.GetRestaurantOffersForDate(restaurant, date);
             if (Found)
             {
                 AddAndUpdateFood(restaurant, StandardOffer);

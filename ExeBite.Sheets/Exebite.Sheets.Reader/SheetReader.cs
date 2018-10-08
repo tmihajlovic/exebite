@@ -1,7 +1,5 @@
-﻿using Exebite.Sheets.Common;
-using Exebite.Sheets.Common.Interfaces;
+﻿using Exebite.Sheets.Common.Interfaces;
 using Exebite.Sheets.Common.Util;
-using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using System;
