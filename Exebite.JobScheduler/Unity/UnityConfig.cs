@@ -49,11 +49,7 @@ namespace Exebite.JobScheduler.Unity
             container.RegisterType<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>();
             container.RegisterType<IGoogleSheetService, GoogleSheetService>();
 
-            container.RegisterType<IRestaurantConector, RestaurantConector>();
             container.RegisterType<ISheetsAPI, SheetsAPI>();
-            container.RegisterType<IHedoneConector, HedoneConector>(); // Probably deprecated
-            container.RegisterType<ILipaConector, LipaConector>(); // Probably deprecated
-            container.RegisterType<ITeglasConector, TeglasConector>(); // Probably deprecated
             container.RegisterType<IKasaConector, KasaConector>();
         }
     }
