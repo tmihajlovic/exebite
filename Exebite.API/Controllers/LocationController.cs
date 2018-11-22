@@ -11,7 +11,7 @@ namespace Exebite.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/location")]
-    //[Authorize]
+    [Authorize]
     public class LocationController : ControllerBase
     {
         private readonly ILocationCommandRepository _commandRepository;
@@ -32,7 +32,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Policy = nameof(AccessPolicy.CreateLocationAccessPolicy))]
+        [Authorize(Policy = nameof(AccessPolicy.CreateLocationAccessPolicy))]
         public IActionResult Post([FromBody]CreateLocationDto model) =>
             _mapper.Map<LocationInsertModel>(model)
                    .Map(_commandRepository.Insert)
@@ -41,7 +41,7 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
-        //[Authorize(Policy = nameof(AccessPolicy.UpdateLocationAccessPolicy))]
+        [Authorize(Policy = nameof(AccessPolicy.UpdateLocationAccessPolicy))]
         public IActionResult Put(int id, [FromBody]UpdateLocationDto model) =>
             _mapper.Map<LocationUpdateModel>(model)
                    .Map(x => _commandRepository.Update(id, x))
@@ -51,7 +51,7 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
-        //[Authorize(Policy = nameof(AccessPolicy.DeleteLocationAccessPolicy))]
+        [Authorize(Policy = nameof(AccessPolicy.DeleteLocationAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepository.Delete(id)
                               .Map(_ => OkNoContent())
@@ -59,7 +59,7 @@ namespace Exebite.API.Controllers
                               .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("Query")]
-        //[Authorize(Policy = nameof(AccessPolicy.ReadLocationAccessPolicy))]
+        [Authorize(Policy = nameof(AccessPolicy.ReadLocationAccessPolicy))]
         public IActionResult Query(LocationQueryDto query) =>
             _mapper.Map<LocationQueryModel>(query)
                    .Map(_queryRepository.Query)

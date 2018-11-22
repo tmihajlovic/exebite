@@ -90,7 +90,7 @@ namespace Exebite.API
                 app.UseExceptionHandler("/error");
             }
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
 
             app.UseStatusCodePages();
 

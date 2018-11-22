@@ -11,7 +11,7 @@ namespace Exebite.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/food")]
-    //[Authorize]
+    [Authorize]
     public class FoodController : ControllerBase
     {
         private readonly IFoodQueryRepository _foodQueryRepository;
@@ -32,7 +32,7 @@ namespace Exebite.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Policy = nameof(AccessPolicy.CreateFoodAccessPolicy))]
+        [Authorize(Policy = nameof(AccessPolicy.CreateFoodAccessPolicy))]
         public IActionResult Post([FromBody]CreateFoodDto model) =>
             _mapper.Map<FoodInsertModel>(model)
                    .Map(_foodCommandRepository.Insert)
@@ -41,7 +41,7 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
-        //[Authorize(Policy = nameof(AccessPolicy.UpdateFoodAccessPolicy))]
+        [Authorize(Policy = nameof(AccessPolicy.UpdateFoodAccessPolicy))]
         public IActionResult Put(int id, [FromBody]UpdateFoodDto model) =>
             _mapper.Map<FoodUpdateModel>(model)
                    .Map(x => _foodCommandRepository.Update(id, x))
@@ -50,7 +50,7 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
-        //[Authorize(Policy = nameof(AccessPolicy.DeleteFoodAccessPolicy))]
+        [Authorize(Policy = nameof(AccessPolicy.DeleteFoodAccessPolicy))]
         public IActionResult Delete(int id) =>
             _foodCommandRepository.Delete(id)
                                   .Map(x => AllOk(new { removed = x }))
@@ -58,7 +58,7 @@ namespace Exebite.API.Controllers
                                   .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpGet("Query")]
-        //[Authorize(Policy = nameof(AccessPolicy.ReadFoodAccessPolicy))]
+        [Authorize(Policy = nameof(AccessPolicy.ReadFoodAccessPolicy))]
         public IActionResult Query(FoodQueryModelDto query) =>
             _mapper.Map<FoodQueryModel>(query)
                    .Map(_foodQueryRepository.Query)
