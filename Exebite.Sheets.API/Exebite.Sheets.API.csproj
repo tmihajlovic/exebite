@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Exebite.DomainModel\Exebite.DomainModel.csproj" />
     <ProjectReference Include="..\ExeBite.Sheets\ExeBite.Sheets.Common\Exebite.Sheets.Common.csproj" />
@@ -12,5 +10,4 @@
     <ProjectReference Include="..\ExeBite.Sheets\ExeBite.Sheets.PodLipom\Exebite.Sheets.PodLipom.csproj" />
     <ProjectReference Include="..\ExeBite.Sheets\ExeBite.Sheets.Teglas\Exebite.Sheets.Teglas.csproj" />
   </ItemGroup>
-
 </Project>
