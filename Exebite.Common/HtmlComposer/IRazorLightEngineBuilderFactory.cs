@@ -4,6 +4,6 @@ namespace Exebite.Common
 {
     public interface IRazorLightEngineBuilderFactory
     {
-        RazorLightEngine Create();
+        IRazorLightEngine Create();
     }
 }
