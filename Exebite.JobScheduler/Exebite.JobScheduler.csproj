@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.34.0.1240" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.35.2.1363" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.8.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.5" />
@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Exebite.Business\Exebite.Business.csproj" />
+    <ProjectReference Include="..\Exebite.Sheets.API\Exebite.Sheets.API.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,6 +8,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+appsettings.Development.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -288,3 +289,4 @@ __pycache__/
 *.xsd.cs
 *.ncrunchproject
 *.ncrunchsolution
+/Exebite.GoogleSheetAPI/Resources/client_secret.json

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Exebite.Converters.Attributes;
 using Exebite.Converters.Delimiters;
+using Microsoft.SqlServer.Server;
 using Xunit;
 
 namespace Exebite.Converters.Test

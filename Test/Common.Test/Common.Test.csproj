@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Exebite.Common\Exebite.Common.csproj" />
+    <ProjectReference Include="..\..\Exebite.Common\Exebite.Common.csproj" />
   </ItemGroup>
 
 </Project>
