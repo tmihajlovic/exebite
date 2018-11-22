@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
-    // [Authorize]
     [Produces("application/json")]
     [Route("api/orders")]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderQueryRepository _queryRepo;
@@ -31,8 +31,8 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
-        // [Authorize(Policy = nameof(AccessPolicy.CreateOrdersAccessPolicy))]
         [HttpPost]
+        [Authorize(Policy = nameof(AccessPolicy.CreateOrdersAccessPolicy))]
         public IActionResult Post([FromBody] CreateOrderDto model) =>
             _mapper.Map<OrderInsertModel>(model)
                    .Map(_commandRepo.Insert)
@@ -40,8 +40,8 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.UpdateOrdersAccessPolicy))]
         [HttpPut("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.UpdateOrdersAccessPolicy))]
         public IActionResult Put(int id, [FromBody] UpdateOrderDto model) =>
             _mapper.Map<OrderUpdateModel>(model)
                    .Map(x => _commandRepo.Update(id, x))
@@ -49,16 +49,16 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => NotFound(), error => error is RecordNotFound)
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.DeleteOrdersAccessPolicy))]
         [HttpDelete("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.DeleteOrdersAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepo.Delete(id)
                         .Map(_ => OkNoContent())
                         .Reduce(_ => NotFound(), error => error is RecordNotFound)
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.ReadOrdersAccessPolicy))]
         [HttpGet("Query")]
+        [Authorize(Policy = nameof(AccessPolicy.ReadOrdersAccessPolicy))]
         public IActionResult Query([FromQuery]OrderQueryDto query) =>
             _mapper.Map<OrderQueryModel>(query)
                    .Map(_queryRepo.Query)
@@ -67,8 +67,8 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.ReadOrdersAccessPolicy))]
         [HttpGet("GetAllOrdersForRestaurant")]
+        [Authorize(Policy = nameof(AccessPolicy.ReadOrdersAccessPolicy))]
         public IActionResult GetAllOrdersForRestaurant(int restaurantId, int page, int size) =>
             _queryRepo.GetAllOrdersForRestaurant(restaurantId, page, size)
                       .Map(_mapper.Map<PagingResult<OrderDto>>)

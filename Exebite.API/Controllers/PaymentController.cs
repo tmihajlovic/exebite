@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
-    // [Authorize]
     [Produces("application/json")]
     [Route("api/Payment")]
+    [Authorize]
     public class PaymentController : ControllerBase
     {
         private readonly IPaymentQueryRepository _queryRepo;
@@ -31,8 +31,8 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
-        // [Authorize(Policy = nameof(AccessPolicy.CreatePaymentAccessPolicy))]
         [HttpPost]
+        [Authorize(Policy = nameof(AccessPolicy.CreatePaymentAccessPolicy))]
         public IActionResult Post([FromBody]CreatePaymentDto createModel) =>
             _mapper.Map<PaymentInsertModel>(createModel)
                    .Map(_commandRepo.Insert)
@@ -49,16 +49,16 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => NotFound(), error => error is RecordNotFound)
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.DeletePaymentAccessPolicy))]
         [HttpDelete("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.DeletePaymentAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepo.Delete(id)
                         .Map(_ => OkNoContent())
                         .Reduce(_ => NotFound(), error => error is RecordNotFound)
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.ReadPaymentAccessPolicy))]
         [HttpGet("Query")]
+        [Authorize(Policy = nameof(AccessPolicy.ReadPaymentAccessPolicy))]
         public IActionResult Query([FromQuery]PaymentQueryDto query) =>
             _mapper.Map<PaymentQueryModel>(query)
                       .Map(_queryRepo.Query)

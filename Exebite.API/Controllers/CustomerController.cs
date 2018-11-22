@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
-    // [Authorize]
     [Produces("application/json")]
     [Route("api/Customer")]
+    [Authorize]
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerQueryRepository _queryRepo;
@@ -31,8 +31,8 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
-        // [Authorize(Policy = nameof(AccessPolicy.CreateCustomerAccessPolicy))]
         [HttpPost]
+        [Authorize(Policy = nameof(AccessPolicy.CreateCustomerAccessPolicy))]
         public IActionResult Post([FromBody]CreateCustomerDto createModel) =>
             _mapper.Map<CustomerInsertModel>(createModel)
                     .Map(_commandRepo.Insert)
@@ -40,8 +40,8 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.UpdateCustomerAccessPolicy))]
         [HttpPut("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.UpdateCustomerAccessPolicy))]
         public IActionResult Put(int id, [FromBody] UpdateCustomerDto model) =>
             _mapper.Map<CustomerUpdateModel>(model)
                         .Map(x => _commandRepo.Update(id, x))
@@ -49,18 +49,18 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => NotFound(), error => error is RecordNotFound)
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.DeleteCustomerAccessPolicy))]
         [HttpDelete("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.DeleteCustomerAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepo.Delete(id)
                         .Map(_ => OkNoContent())
                         .Reduce(_ => NotFound(), error => error is RecordNotFound)
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.ReadCustomerAccessPolicy))]
         [HttpGet("Query")]
         [ProducesResponseType(200, Type = typeof(PagingResult<CustomerDto>))]
         [ProducesResponseType(500, Type = typeof(PagingResult<CustomerDto>))]
+        [Authorize(Policy = nameof(AccessPolicy.ReadCustomerAccessPolicy))]
         public IActionResult Query([FromQuery]CustomerQueryDto query) =>
             _mapper.Map<CustomerQueryModel>(query)
                       .Map(_queryRepo.Query, x => _logger.LogTrace("Query called"))

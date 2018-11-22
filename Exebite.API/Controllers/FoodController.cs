@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
-    // [Authorize]
     [Produces("application/json")]
     [Route("api/food")]
+    [Authorize]
     public class FoodController : ControllerBase
     {
         private readonly IFoodQueryRepository _foodQueryRepository;
@@ -31,8 +31,8 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
-        // [Authorize(Policy = nameof(AccessPolicy.CreateFoodAccessPolicy))]
         [HttpPost]
+        [Authorize(Policy = nameof(AccessPolicy.CreateFoodAccessPolicy))]
         public IActionResult Post([FromBody]CreateFoodDto model) =>
             _mapper.Map<FoodInsertModel>(model)
                    .Map(_foodCommandRepository.Insert)
@@ -40,8 +40,8 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.UpdateFoodAccessPolicy))]
         [HttpPut("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.UpdateFoodAccessPolicy))]
         public IActionResult Put(int id, [FromBody]UpdateFoodDto model) =>
             _mapper.Map<FoodUpdateModel>(model)
                    .Map(x => _foodCommandRepository.Update(id, x))
@@ -49,16 +49,16 @@ namespace Exebite.API.Controllers
                    .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.DeleteFoodAccessPolicy))]
         [HttpDelete("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.DeleteFoodAccessPolicy))]
         public IActionResult Delete(int id) =>
             _foodCommandRepository.Delete(id)
                                   .Map(x => AllOk(new { removed = x }))
                                   .Reduce(_ => BadRequest(), error => error is ArgumentNotSet, x => _logger.LogError(x.ToString()))
                                   .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.ReadFoodAccessPolicy))]
         [HttpGet("Query")]
+        [Authorize(Policy = nameof(AccessPolicy.ReadFoodAccessPolicy))]
         public IActionResult Query(FoodQueryModelDto query) =>
             _mapper.Map<FoodQueryModel>(query)
                    .Map(_foodQueryRepository.Query)

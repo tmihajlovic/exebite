@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Exebite.API.Controllers
 {
-    // [Authorize]
     [Produces("application/json")]
     [Route("api/dailymenu")]
+    [Authorize]
     public class DailyMenuController : ControllerBase
     {
         private readonly IDailyMenuQueryRepository _queryRepo;
@@ -31,8 +31,8 @@ namespace Exebite.API.Controllers
             _logger = logger;
         }
 
-        // [Authorize(Policy = nameof(AccessPolicy.CreateDailyMenuAccessPolicy))]
         [HttpPost]
+        [Authorize(Policy = nameof(AccessPolicy.CreateDailyMenuAccessPolicy))]
         public IActionResult Post([FromBody]CreateDailyMenuDto model) =>
             _mapper.Map<DailyMenuInsertModel>(model)
                         .Map(_commandRepo.Insert)
@@ -40,8 +40,8 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.UpdateDailyMenuAccessPolicy))]
         [HttpPut("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.UpdateDailyMenuAccessPolicy))]
         public IActionResult Put(int id, [FromBody]UpdateDailyMenuDto model) =>
             _mapper.Map<DailyMenuUpdateModel>(model)
                         .Map(x => _commandRepo.Update(id, x))
@@ -49,16 +49,16 @@ namespace Exebite.API.Controllers
                         .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.LogError(x.ToString()))
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.DeleteDailyMenuAccessPolicy))]
         [HttpDelete("{id}")]
+        [Authorize(Policy = nameof(AccessPolicy.DeleteDailyMenuAccessPolicy))]
         public IActionResult Delete(int id) =>
             _commandRepo.Delete(id)
                         .Map(_ => OkNoContent())
                         .Reduce(_ => NotFound(), error => error is RecordNotFound, x => _logger.LogError(x.ToString()))
                         .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
-        // [Authorize(Policy = nameof(AccessPolicy.ReadDailyMenuAccessPolicy))]
         [HttpGet("Query")]
+        [Authorize(Policy = nameof(AccessPolicy.ReadDailyMenuAccessPolicy))]
         public IActionResult Query([FromQuery]DailyMenuQueryDto query) =>
             _mapper.Map<DailyMenuQueryModel>(query)
                       .Map(_queryRepo.Query)
