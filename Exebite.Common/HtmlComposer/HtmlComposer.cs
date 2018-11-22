@@ -15,7 +15,7 @@ namespace Exebite.Common
         {
             var engine = _razorLightEngineBuilderFactory.Create();
             //key is not essential it takes a long time for firs run, after compilation speed is acceptable            
-            string result = await engine.(path, model);
+            string result = await engine.CompileRenderAsync(path, model);
             return result;
         }
 
