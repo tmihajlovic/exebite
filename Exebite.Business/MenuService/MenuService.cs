@@ -1,46 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Exebite.DataAccess;
-using Exebite.DataAccess.Foods;
-using Exebite.DataAccess.Orders;
-using Exebite.DataAccess.Recipes;
-using Exebite.DataAccess.Restaurants;
-using Exebite.Model;
+using Either;
+using Exebite.Common;
+using Exebite.DataAccess.Repositories;
+using Exebite.DomainModel;
+using Option;
 
 namespace Exebite.Business
 {
     public class MenuService : IMenuService
     {
-        IRestaurantHandler _restaurantHandler;
-        IFoodHandler _foodHandler;
-        IRecipeHandler _recipeHandler;
+        private readonly IRestaurantQueryRepository _restaurantRepository;
+        private readonly IRecipeQueryRepository _recipeQueryRepository;
+        private readonly IFoodQueryRepository _foodQueryRepository;
 
-        public MenuService(IRestaurantHandler restaurantHandler, IFoodHandler foodHandler, IRecipeHandler recipeHandler)
+        public MenuService(IRestaurantQueryRepository restaurantRepository, IFoodQueryRepository foodQueryRepository, IRecipeQueryRepository recipeQueryRepository)
         {
-            _restaurantHandler = restaurantHandler;
-            _foodHandler = foodHandler;
-            _recipeHandler = recipeHandler;
+            _restaurantRepository = restaurantRepository;
+            _foodQueryRepository = foodQueryRepository;
+            _recipeQueryRepository = recipeQueryRepository;
         }
 
-        public List<Restaurant> GetRestorantsWithMenus()
+        public Either<Error, PagingResult<Restaurant>> GetRestorantsWithMenus()
         {
-            return _restaurantHandler.Get().ToList();
+            return _restaurantRepository.Query(new RestaurantQueryModel());
         }
 
-        public int CheckPrice(Meal meal)
+        public decimal CheckPrice(Meal meal)
         {
-            //TODO: when special offers are done implement check 
+            // TODO: when special offers are done implement check
             throw new NotImplementedException();
         }
 
-        public List<Food> CheckAvailableSideDishes(int foodId)
+        public IList<Food> CheckAvailableSideDishes(int foodId)
         {
-            var food = _foodHandler.GetByID(foodId);
-            var AllRecipe = _recipeHandler.Get();
-            return AllRecipe.SingleOrDefault(r => r.MainCourse == food).SideDish;
+            var recepies = _foodQueryRepository.Query(new FoodQueryModel() { Id = foodId })
+                .Map(x => x.Items.FirstOrNone())
+                .Map(z =>
+                    z.Map(x => _recipeQueryRepository.Query(new RecipeQueryModel() { MainCourseId = x.Id }))
+                     .Reduce(PagingResult<Recipe>.Empty()))
+                .Map(x => x.Items)
+                .Reduce(_ => new List<Recipe>());
+
+            return recepies.SelectMany(x => x.SideDish).ToList();
         }
     }
 }

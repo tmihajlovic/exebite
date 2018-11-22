@@ -1,69 +1,119 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Exebite.DataAccess.Restaurants;
-using Exebite.Model;
-using GoogleSpreadsheetApi;
-using GoogleSpreadsheetApi.GoogleSSFactory;
-using GoogleSpreadsheetApi.Strategies;
+using Either;
+using Exebite.DataAccess.Repositories;
+using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
 
-namespace Exebite.Business
+namespace Exebite.Business.GoogleApiImportExport
 {
-    public class GoogleApiExport : IGoogleDateExporter
+    public class GoogleApiExport : IGoogleDataExporter
     {
-        IGoogleSheetServiceFactory _googleSheetServiceFactory;
-        IGoogleSpreadsheetIdFactory _googleSpreadsheetIdFactory;
-        IRestaurantHandler _restaurantHandler;
-        IRestaurantStrategy _lipa;
-        IRestaurantStrategy _hedone;
-        IRestaurantStrategy _indexHouse;
-        IRestaurantStrategy _teglas;
-        IRestaurantStrategy _extraFood;
+        // Services
+        private readonly IOrderQueryRepository _orderQueryRepo;
+        private readonly ICustomerQueryRepository _customerQueryRepo;
+        private readonly IRestaurantQueryRepository _restaurantQueryRepo;
 
-        public GoogleApiExport(IGoogleSheetServiceFactory googleSheetServiceFactory, IGoogleSpreadsheetIdFactory googleSpreadsheetIdFactory, IRestaurantHandler restaurantHandler)
+        // Connectors
+        private readonly ILipaConector _lipaConector;
+        private readonly IHedoneConector _hedoneConector;
+        private readonly ITeglasConector _teglasConector;
+
+        public GoogleApiExport(
+            ITeglasConector teglasConector,
+            IHedoneConector hedoneConector,
+            ILipaConector lipaConector,
+            IOrderQueryRepository orderQueryRepo,
+            ICustomerQueryRepository customerQueryRepo,
+            IRestaurantQueryRepository restaurantQueryRepo)
         {
-            _googleSheetServiceFactory = googleSheetServiceFactory;
-            _googleSpreadsheetIdFactory = googleSpreadsheetIdFactory;
+            // Connectors
+            _lipaConector = lipaConector;
+            _hedoneConector = hedoneConector;
+            _teglasConector = teglasConector;
 
-            _lipa = new LipaStrategy(_googleSheetServiceFactory, _googleSpreadsheetIdFactory);
-            _hedone = new HedoneStrategy(_googleSheetServiceFactory, _googleSpreadsheetIdFactory);
-            _indexHouse = new IndexHouseStrategy(_googleSheetServiceFactory, _googleSpreadsheetIdFactory);
-            _teglas = new TeglasStrategy(_googleSheetServiceFactory, _googleSpreadsheetIdFactory);
-            _extraFood = new ExtraFoodStrategy(_googleSheetServiceFactory, _googleSpreadsheetIdFactory);
-            _restaurantHandler = restaurantHandler;
+            // Services
+            _orderQueryRepo = orderQueryRepo;
+            _customerQueryRepo = customerQueryRepo;
+            _restaurantQueryRepo = restaurantQueryRepo;
         }
+
         /// <summary>
-        /// Place orders
+        /// Place orders for restaurant
         /// </summary>
-        /// <param name="orderList">List of orders to place</param>
-        public void PlaceOrders(List<Order> orderList)
+        /// <param name="restaurantName">Name of restaurant</param>
+        public void PlaceOrdersForRestaurant(string restaurantName)
         {
-            foreach (var order in orderList)
+            switch (restaurantName)
             {
-                switch (order.Meal.Foods[0].Restaurant.Name)
-                {
-                    case "Restoran pod Lipom":
-                        _lipa.PlaceOrder(order);
-                        break;
-                    case "Teglas":
-                        _teglas.PlaceOrder(order);
-                        break;
-                    case "Index House":
-                        _indexHouse.PlaceOrder(order);
-                        break;
-                    case "Hedone":
-                        _hedone.PlaceOrder(order);
-                        break;
-                    case "Extra food":
-                        _extraFood.PlaceOrder(order);
-                        break;
-                    default:
-                        break;
-                }
+                case "Restoran pod Lipom":
+                    var lipa = _restaurantQueryRepo.Query(new RestaurantQueryModel { Name = restaurantName })
+                                                         .Map(x => x.Items.FirstOrDefault())
+                                                         .Reduce(_ => throw new Exception());
+                    if (lipa != null)
+                    {
+                        var lipaOrders = _orderQueryRepo.GetAllOrdersForRestaurant(lipa.Id, 1, int.MaxValue)
+                                                        .Map(x => x.Items.Where(o => o.Date == DateTime.Today.Date).ToList())
+                                                        .Reduce(_ => throw new Exception());
+                        _lipaConector.PlaceOrders(lipaOrders);
+                    }
+
+                    break;
+
+                case "Hedone":
+                    var hedone = _restaurantQueryRepo.Query(new RestaurantQueryModel { Name = restaurantName })
+                                                           .Map(x => x.Items.FirstOrDefault())
+                                                           .Reduce(_ => throw new Exception());
+                    if (hedone != null)
+                    {
+                        var hedoneOrders = _orderQueryRepo.GetAllOrdersForRestaurant(hedone.Id, 1, int.MaxValue)
+                                                          .Map(x => x.Items.Where(o => o.Date == DateTime.Today.Date).ToList())
+                                                          .Reduce(_ => throw new Exception());
+                        _hedoneConector.PlaceOrders(hedoneOrders);
+                    }
+
+                    break;
+
+                case "Teglas":
+                    var teglas = _restaurantQueryRepo.Query(new RestaurantQueryModel { Name = restaurantName })
+                                                           .Map(x => x.Items.FirstOrDefault())
+                                                           .Reduce(_ => throw new Exception());
+                    if (teglas != null)
+                    {
+                        var teglasOrders = _orderQueryRepo.GetAllOrdersForRestaurant(teglas.Id, 1, int.MaxValue)
+                                                          .Map(x => x.Items.Where(o => o.Date == DateTime.Today.Date).ToList())
+                                                          .Reduce(_ => throw new Exception());
+                        _teglasConector.PlaceOrders(teglasOrders);
+                    }
+
+                    break;
+
+                default:
+                    throw new ArgumentException("Invalid restaurant");
             }
         }
 
+        /// <summary>
+        /// Rotates daily menu so today is in first column
+        /// </summary>
+        public void SetupDailyMenuDayOrder()
+        {
+            _lipaConector.DnevniMenuSheetSetup();
+            _hedoneConector.DnevniMenuSheetSetup();
+        }
+
+        /// <summary>
+        /// Updates tab "kasa"
+        /// </summary>
+        public void UpdateKasaTab()
+        {
+            var customerList = _customerQueryRepo.Query(new CustomerQueryModel())
+                                                 .Map(x => x.Items.ToList())
+                                                 .Reduce(_ => throw new Exception());
+            _teglasConector.WriteKasaTab(customerList);
+
+            _lipaConector.WriteKasaTab(customerList);
+
+            _hedoneConector.WriteKasaTab(customerList);
+        }
     }
 }

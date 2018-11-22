@@ -2,9 +2,18 @@
 {
     public class FoodOrderingContextFactory : IFoodOrderingContextFactory
     {
+        private readonly IExebiteDbContextOptionsFactory _optionsFactory;
+
+        public FoodOrderingContextFactory(IExebiteDbContextOptionsFactory optionsFactory)
+        {
+            _optionsFactory = optionsFactory;
+        }
+
         public FoodOrderingContext Create()
         {
-            return new FoodOrderingContext();
+            var options = _optionsFactory.Create();
+
+            return new FoodOrderingContext(options);
         }
     }
 }
