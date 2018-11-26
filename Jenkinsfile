@@ -1,6 +1,6 @@
 pipeline {
  agent {
-     label = 'Windows_server_standard_2016'
+     label 'Windows_server_standard_2016'
  }
  environment {
   dotnet = 'dotnet'
