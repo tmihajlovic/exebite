@@ -6,7 +6,7 @@ pipeline {
   dotnet = 'dotnet'
  }
  triggers {
-    pollSCM('H */4 * * 1-5')
+    pollSCM('0/1 7-18 1-5 * *')
  }
  stages {
   stage('Checkout') {
