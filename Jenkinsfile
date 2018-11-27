@@ -6,7 +6,7 @@ pipeline {
   dotnet = 'dotnet'
  }
  triggers {
-        cron('H 08 * * 1-5')
+        cron('H 13 * * 1-5')
  }
  stages {
   stage('Checkout') {
