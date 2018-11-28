@@ -6,12 +6,14 @@ namespace Common.Test
 {
     public class HtmlComposerTest
     {
-        private readonly IHtmlComposer _emailComposer;
+        //comendet out until RazorLight is updated
 
-        public HtmlComposerTest()
-        {
-            //_emailComposer = new HtmlComposer(new RazorLightEngineBuilderFactory());
-        }
+        //private readonly IHtmlComposer _emailComposer;
+
+        //public HtmlComposerTest()
+        //{
+        //    _emailComposer = new HtmlComposer(new RazorLightEngineBuilderFactory());
+        //}
 
         //[Fact]
         //public async Task ComposeEmail_SimpleRendering_Calculation()
