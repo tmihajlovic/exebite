@@ -96,11 +96,14 @@ namespace Exebite.API
 
             app.UseMvc();
 
+
+            // todo update the swagger to new definiton
             app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
             {
                 settings.GeneratorSettings.DefaultPropertyNameHandling =
                     PropertyNameHandling.CamelCase;
             });
+
         }
     }
 }

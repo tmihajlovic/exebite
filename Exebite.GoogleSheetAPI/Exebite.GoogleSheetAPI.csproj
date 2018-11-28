@@ -12,9 +12,9 @@
     <None Remove="Resources\client_secret.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="4.0.0" />
-    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.35.2.1363" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.8.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.36.1.1412" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.10.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="Roslyn.Analyzers" Version="1.0.3.4" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />

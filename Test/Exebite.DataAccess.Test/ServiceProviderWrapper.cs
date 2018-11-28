@@ -11,7 +11,8 @@ namespace Exebite.DataAccess.Test
     {
         public static IServiceProvider GetContainer()
         {
-            ServiceCollectionExtensions.UseStaticRegistration = false;
+            // ServiceCollectionExtensions.UseStaticRegistration = false;
+            Mapper.Reset();
             var serviceProvider = new ServiceCollection()
                                         .AddLogging()
                                         .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
