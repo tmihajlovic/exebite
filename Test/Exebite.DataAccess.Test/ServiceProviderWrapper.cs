@@ -11,7 +11,6 @@ namespace Exebite.DataAccess.Test
     {
         public static IServiceProvider GetContainer()
         {
-            // ServiceCollectionExtensions.UseStaticRegistration = false;
             Mapper.Reset();
             var serviceProvider = new ServiceCollection()
                                         .AddLogging()
