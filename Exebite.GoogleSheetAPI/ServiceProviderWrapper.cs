@@ -13,7 +13,7 @@ namespace Exebite.Test
     {
         public static IServiceProvider GetContainer()
         {
-            ServiceCollectionExtensions.UseStaticRegistration = false;
+            Mapper.Reset();
             var serviceProvider = new ServiceCollection()
 
                                         .AddTransient<IGoogleSheetService, GoogleSheetService>()

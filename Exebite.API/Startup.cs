@@ -90,12 +90,13 @@ namespace Exebite.API
                 app.UseExceptionHandler("/error");
             }
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
 
             app.UseStatusCodePages();
 
             app.UseMvc();
 
+            // todo update the swagger to new definiton
             app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
             {
                 settings.GeneratorSettings.DefaultPropertyNameHandling =
