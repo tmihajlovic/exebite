@@ -17,7 +17,6 @@ namespace Exebite.DataAccess.Test
         {
             _dateTime = new GetDateTimeStub();
 
-            // ServiceCollectionExtensions.UseStaticRegistration = false;
             Mapper.Reset();
             var configExpresion = new MapperConfigurationExpression();
             configExpresion.AddProfile<DataAccessMappingProfile>();

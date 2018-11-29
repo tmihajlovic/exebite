@@ -1,9 +1,10 @@
-﻿using RazorLight;
+﻿//using RazorLight;
 
 namespace Exebite.Common
 {
     public interface IRazorLightEngineBuilderFactory
     {
-        IRazorLightEngine Create();
+        //IRazorLightEngine Create();
+        object Create();
     }
 }
