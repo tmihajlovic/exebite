@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExeBite.Sheets.Common", "ExeBite.Sheets.Common\ExeBite.Sheets.Common.csproj", "{D4E846F6-7066-4FD0-B136-7896F0688891}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Common", "Exebite.Sheets.Common\Exebite.Sheets.Common.csproj", "{D4E846F6-7066-4FD0-B136-7896F0688891}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExeBite.Sheets.Reader", "Exebite.Sheets.Reader\ExeBite.Sheets.Reader.csproj", "{3821E579-1C5B-45F1-AAEF-47CD95EBC37D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Reader", "Exebite.Sheets.Reader\Exebite.Sheets.Reader.csproj", "{3821E579-1C5B-45F1-AAEF-47CD95EBC37D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDebug", "ConsoleDebug\ConsoleDebug.csproj", "{2A31BF93-21BC-4744-B022-FFCA1673B847}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExeBite.Sheets.Hedone", "ExeBite.Sheets.Hedone\ExeBite.Sheets.Hedone.csproj", "{F953022D-F5F9-4D1B-A050-42851E65D29C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Hedone", "Exebite.Sheets.Hedone\Exebite.Sheets.Hedone.csproj", "{F953022D-F5F9-4D1B-A050-42851E65D29C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExeBite.Sheets.PodLipom", "ExeBite.Sheets.PodLipom\ExeBite.Sheets.PodLipom.csproj", "{1517DD27-8AA7-4880-8D38-CC8ECE90C965}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.Sheets.PodLipom", "Exebite.Sheets.PodLipom\Exebite.Sheets.PodLipom.csproj", "{1517DD27-8AA7-4880-8D38-CC8ECE90C965}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExeBite.Sheets.Teglas", "ExeBite.Sheets.Teglas\ExeBite.Sheets.Teglas.csproj", "{CD5318A2-D26A-4B94-9E28-F13873737819}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.Sheets.Teglas", "Exebite.Sheets.Teglas\Exebite.Sheets.Teglas.csproj", "{CD5318A2-D26A-4B94-9E28-F13873737819}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExeBite.Sheets.Index", "ExeBite.Sheets.Index\ExeBite.Sheets.Index.csproj", "{AC4C8837-1D38-47BC-8D2D-3D2FFDFECD78}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exebite.Sheets.Index", "Exebite.Sheets.Index\Exebite.Sheets.Index.csproj", "{AC4C8837-1D38-47BC-8D2D-3D2FFDFECD78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
