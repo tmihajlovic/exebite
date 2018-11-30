@@ -9,6 +9,10 @@ pipeline {
             name: 'AGENT_TAG', 
             defaultValue: 'any', 
             description: 'Agent tag selector')
+        string(
+            name: 'OUTPUT_FOLDER', 
+            defaultValue: '\"//data64/Projects/Execom Internal/exebite/builds\"', 
+            description: 'Folder where build will be published')
     }
     agent{
         label params.AGENT
@@ -42,7 +46,7 @@ pipeline {
         }
         stage('Publish') {
             steps {
-                bat "dotnet publish Exebite.API -c Release --no-build -o \"//data64/Projects/Execom Internal/exebite/builds/${env.BUILD_TAG}/\""
+                bat "dotnet publish Exebite.API -c Release --no-build -o ${params.OUTPUT_FOLDER}/${env.BUILD_TAG}/"
             }
         }
     }
