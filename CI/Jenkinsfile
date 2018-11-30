@@ -1,38 +1,49 @@
 pipeline {
- agent {
-     label 'Windows_server_standard_2016'
- }
- environment {
-  dotnet = 'dotnet'
- }
- triggers {
+    parameters {
+        choice(
+            name: 'BRANCH', 
+            choices: 'dev\nmaster',
+            description: 'Git branch to build from'
+            )
+        string(
+            name: 'AGENT_TAG', 
+            defaultValue: 'any', 
+            description: 'Agent tag selector')
+    }
+    agent{
+        label params.AGENT
+    }
+    environment {
+        dotnet = 'dotnet'
+    }
+    triggers {
         cron('H 08,16 * * 1-5')
- }
- stages {
-  stage('Checkout') {
-   steps {
-    git url: 'https://github.com/execom-eu/exebite', branch: 'dev'
-   }
-  }
-  stage('Clean') {
-   steps {
-    bat 'dotnet clean -c Release'
-   }
-  }
-  stage('Build') {
-   steps {
-    bat 'dotnet build --configuration Release '
-   }
-  }
-  stage('Test') {
-   steps {
-    bat ' dotnet test --no-build /p:CollectCoverage=true -c Release'
-   }
-  }
-  stage('Publish') {
-   steps {
-    bat "dotnet publish Exebite.API -c Release --no-build -o \"//data64/Projects/Execom Internal/exebite/builds/${env.BUILD_TAG}/\""
-   }
-  }
- }
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/execom-eu/exebite', branch: params.BRANCH
+            }
+        }
+        stage('Clean') {
+            steps {
+                bat 'dotnet clean -c Release'
+            }
+        }
+        stage('Build') {
+            steps {
+                bat 'dotnet build --configuration Release '
+            }
+        }
+        stage('Test') {
+            steps {
+                bat ' dotnet test --no-build /p:CollectCoverage=true -c Release'
+            }
+        }
+        stage('Publish') {
+            steps {
+                bat "dotnet publish Exebite.API -c Release --no-build -o \"//data64/Projects/Execom Internal/exebite/builds/${env.BUILD_TAG}/\""
+            }
+        }
+    }
 }
