@@ -35,17 +35,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.DtoModels", "Exebit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Exebite.Sheets", "Exebite.Sheets", "{B7FBF2E6-A8B7-4318-B2FB-004822866738}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Common", "ExeBite.Sheets\ExeBite.Sheets.Common\Exebite.Sheets.Common.csproj", "{3D7C63A4-A1E2-41BC-9D13-D48D5EAB0123}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Common", "Exebite.Sheets\Exebite.Sheets.Common\Exebite.Sheets.Common.csproj", "{3D7C63A4-A1E2-41BC-9D13-D48D5EAB0123}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Reader", "ExeBite.Sheets\Exebite.Sheets.Reader\Exebite.Sheets.Reader.csproj", "{A5AE1530-D5FF-475D-8515-F81122569691}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Reader", "Exebite.Sheets\Exebite.Sheets.Reader\Exebite.Sheets.Reader.csproj", "{A5AE1530-D5FF-475D-8515-F81122569691}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Hedone", "ExeBite.Sheets\ExeBite.Sheets.Hedone\Exebite.Sheets.Hedone.csproj", "{34575257-EDFA-486A-99DB-14951D6DB457}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Hedone", "Exebite.Sheets\Exebite.Sheets.Hedone\Exebite.Sheets.Hedone.csproj", "{34575257-EDFA-486A-99DB-14951D6DB457}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Index", "ExeBite.Sheets\ExeBite.Sheets.Index\Exebite.Sheets.Index.csproj", "{740243D3-BA7A-45E3-AEC9-6E531ADC374B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Index", "Exebite.Sheets\Exebite.Sheets.Index\Exebite.Sheets.Index.csproj", "{740243D3-BA7A-45E3-AEC9-6E531ADC374B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.PodLipom", "ExeBite.Sheets\ExeBite.Sheets.PodLipom\Exebite.Sheets.PodLipom.csproj", "{28746679-0A13-4F12-9CCB-5F3CBC31A90B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.PodLipom", "Exebite.Sheets\Exebite.Sheets.PodLipom\Exebite.Sheets.PodLipom.csproj", "{28746679-0A13-4F12-9CCB-5F3CBC31A90B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Teglas", "ExeBite.Sheets\ExeBite.Sheets.Teglas\Exebite.Sheets.Teglas.csproj", "{EF25B8F4-E03B-4E15-9305-7552AC1C663E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.Teglas", "Exebite.Sheets\Exebite.Sheets.Teglas\Exebite.Sheets.Teglas.csproj", "{EF25B8F4-E03B-4E15-9305-7552AC1C663E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exebite.Sheets.API", "Exebite.Sheets.API\Exebite.Sheets.API.csproj", "{5D72BDCF-D77F-4695-BBB2-948D555CA55B}"
 EndProject

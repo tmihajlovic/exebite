@@ -290,3 +290,6 @@ __pycache__/
 *.ncrunchproject
 *.ncrunchsolution
 /Exebite.GoogleSheetAPI/Resources/client_secret.json
+/.vscode/launch.json
+/.vscode/tasks.json
+/Logs

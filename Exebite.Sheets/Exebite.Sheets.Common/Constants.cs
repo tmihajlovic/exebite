@@ -7,7 +7,7 @@ namespace Exebite.Sheets.Common
         /// <summary>
         /// App name used to identify this app to google servers. 
         /// </summary>
-        public const string APP_NAME = "ExeBite Sheet Overseer";
+        public const string APP_NAME = "Exebite Sheet Overseer";
 
         /// <summary>
         /// Name of Hedone restaurant
