@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ProjectGuid>145A0096-1F47-4A72-AFA5-55ADF10A054D</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="xunit.assert" Version="2.4.1" />
