@@ -3,8 +3,8 @@
     public class Configuration
     {
         #region private members
-        private const string credentialsLocation = @"D:\ExeBite\Credentials\credentials.json";
-        private const string tokenLocation = @"D:\ExeBite\Credentials\token.json";
+        private const string credentialsLocation = @"D:\Exebite\Credentials\credentials.json";
+        private const string tokenLocation = @"D:\Exebite\Credentials\token.json";
 
         private const string hedoneSheetID = "1BONWz-sNnFbXVK-0g8DPtJbkxPsgiV-ShaegHR0tHA4";
         private const string hedoneOfferRange = "'Opis jela sa cenama'!A3:D74";

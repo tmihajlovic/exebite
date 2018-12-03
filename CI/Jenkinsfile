@@ -1,0 +1,53 @@
+pipeline {
+    parameters {
+        choice(
+            name: 'BRANCH', 
+            choices: 'dev\nmaster',
+            description: 'Git branch to build from'
+            )
+        string(
+            name: 'AGENT_TAG', 
+            defaultValue: 'any', 
+            description: 'Agent tag selector')
+        string(
+            name: 'OUTPUT_FOLDER', 
+            defaultValue: '\"//data64/Projects/Execom Internal/exebite/builds\"', 
+            description: 'Folder where build will be published')
+    }
+    agent{
+        label params.AGENT
+    }
+    environment {
+        dotnet = 'dotnet'
+    }
+    triggers {
+        cron('H 08,16 * * 1-5')
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/execom-eu/exebite', branch: params.BRANCH
+            }
+        }
+        stage('Clean') {
+            steps {
+                bat 'dotnet clean -c Release'
+            }
+        }
+        stage('Build') {
+            steps {
+                bat 'dotnet build --configuration Release '
+            }
+        }
+        stage('Test') {
+            steps {
+                bat ' dotnet test --no-build /p:CollectCoverage=true -c Release'
+            }
+        }
+        stage('Publish') {
+            steps {
+                bat "dotnet publish Exebite.API -c Release --no-build -o ${params.OUTPUT_FOLDER}/${env.BUILD_TAG}/"
+            }
+        }
+    }
+}

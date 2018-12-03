@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.36.1.1412" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Exebite.Sheets.Common\Exebite.Sheets.Common.csproj" />
+  </ItemGroup>
+</Project>
