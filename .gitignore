@@ -293,3 +293,5 @@ __pycache__/
 /.vscode/launch.json
 /.vscode/tasks.json
 /Logs
+# sonarqube working directory
+/.sonarqube

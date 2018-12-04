@@ -1,8 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <IsPackable>false</IsPackable>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <ProjectGuid>4AEC2892-ABCA-48E2-9AEF-91207B73D569</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="coverlet.msbuild" Version="2.3.2">
