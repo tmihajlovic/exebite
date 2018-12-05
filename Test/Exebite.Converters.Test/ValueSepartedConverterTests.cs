@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Exebite.Converters.Attributes;
 using Exebite.Converters.Delimiters;
-using Microsoft.SqlServer.Server;
 using Xunit;
 
 namespace Exebite.Converters.Test
@@ -40,7 +39,7 @@ namespace Exebite.Converters.Test
             var result = sut.Serialize(_testClasses.Take(numberOfBodyElements), delimiter);
 
             // Assert
-            Assert.Equal(numberOfBodyElements + 2, result.Split("\r\n").Length);
+            Assert.Equal(numberOfBodyElements + 2, result.Split(Environment.NewLine).Length);
             Assert.Equal(expectedSplitCharacters, result.Split(delimiter.Value).Length);
         }
 
