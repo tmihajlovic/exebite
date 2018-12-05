@@ -25,4 +25,4 @@ This system/app will load the data from sheets to internal database and make it 
 5. Happy coding :-)
 
 # Current build status
-https://dev.azure.com/exebite/exebite/_apis/build/status/exebite-ASP.NET%20Core-CI
+[![Build status](https://dev.azure.com/exebite/exebite/_apis/build/status/exebite-ASP.NET%20Core-CI)](https://dev.azure.com/exebite/exebite/_build/latest?definitionId=6)
