@@ -2,8 +2,8 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
-	"environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+    "environmentVariables": {
+      "ASPNETCORE_ENVIRONMENT": "Production"
     },
     "iisExpress": {
       "applicationUrl": "http://localhost:6878/",
@@ -15,14 +15,14 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Production"
       }
     },
     "Exebite.API": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Production"
       },
       "applicationUrl": "http://localhost:6879/"
     }
