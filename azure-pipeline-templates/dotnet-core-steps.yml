@@ -1,0 +1,43 @@
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: restore
+
+    projects: 'Exebite.API'
+
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    projects: 'Exebite.API'
+
+    arguments: '--configuration Release'
+
+
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: test
+
+    projects: ''
+
+    arguments: '--configuration Release'
+
+
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+
+    publishWebProjects: True
+
+    arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
+
+    zipAfterPublish: True
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
