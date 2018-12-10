@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <IsPackable>false</IsPackable>
+    <ProjectGuid>49137C9E-031B-40C6-BB59-C2EDAAEA5BFA</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="BaseTests\NewFolder\**" />

@@ -23,3 +23,6 @@ This system/app will load the data from sheets to internal database and make it 
 3. Run `dotnet run --project Exebite.API`
 4. Access http://localhost:50586/swagger to see availiable endpoints/generate clinet
 5. Happy coding :-)
+
+# Current build status
+[![Build status](https://dev.azure.com/exebite/exebite/_apis/build/status/exebite-ASP.NET%20Core-CI)](https://dev.azure.com/exebite/exebite/_build/latest?definitionId=6)

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,8 +54,17 @@ namespace Exebite.API
                         googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
                         googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
                     });
-
-            services.AddMvc();
+            if (_hostingEnvironment.IsDevelopment())
+            {
+                services.AddMvc(opts =>
+                {
+                    opts.Filters.Add(new AllowAnonymousFilter());
+                });
+            }
+            else
+            {
+                services.AddMvc();
+            }
 
             services.AddAuthorization(options => options.AddCustomPolicies());
             services.AddDefaultIdentity<IdentityUser>();

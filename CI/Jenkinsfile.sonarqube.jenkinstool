@@ -1,0 +1,15 @@
+node{
+    stage('SCM') {
+        git 'https://github.com/execom-eu/exebite.git' branch: dev
+    }
+    stage('Build + SonarQube analysis') {
+        def sqScannerMsBuildHome =  tool 'sonarscanner'
+        def sqScannerMsBuildHomeQuoted =  ('"' +  sqScannerMsBuildHome + '"').toString()
+        withSonarQubeEnv {
+            // Due to SONARMSBRU-307 value of sonar.host.url and credentials should be passed on command line
+            bat "dotnet ${sqScannerMsBuildHomeQuoted}\\SonarScanner.MSBuild.dll begin /k:myKey /n:myName /v:1.0 /d:sonar.host.url=%SONAR_HOST_URL%"
+            bat 'dotnet build'
+            bat "dotnet ${sqScannerMsBuildHomeQuoted}\\SonarScanner.MSBuild.dll end"
+    }
+  }
+}
