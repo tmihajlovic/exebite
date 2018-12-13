@@ -5,6 +5,10 @@
 	"environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
     },
+    "iis": {
+      "applicationUrl": "http://exebite.api",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:6878/",
       "sslPort": 0

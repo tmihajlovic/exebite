@@ -43,17 +43,7 @@ namespace Exebite.API
                 options.Events.OnRedirectToLogin = Helper.ReplaceRedirector(HttpStatusCode.Unauthorized, options.Events.OnRedirectToLogin);
             });
 
-            services.AddAuthentication(
-                    options =>
-                    {
-                        options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-                    })
-                    .AddGoogle(googleOptions =>
-                    {
-                        googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
-                        googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
-                    });
+
             if (_hostingEnvironment.IsDevelopment())
             {
                 services.AddMvc(opts =>
@@ -63,6 +53,17 @@ namespace Exebite.API
             }
             else
             {
+                services.AddAuthentication(
+                   options =>
+                   {
+                       options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                       options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                   })
+                   .AddGoogle(googleOptions =>
+                   {
+                       googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
+                       googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
+                   });
                 services.AddMvc();
             }
 
@@ -80,8 +81,13 @@ namespace Exebite.API
                     cfg.AddProfile<DataAccessMappingProfile>();
                     cfg.AddProfile<UIMappingProfile>();
                 })
+
             .AddDataAccessServices()
             .AddCommonServices();
+            services.Configure<IISOptions>(x =>
+            {
+                x.ForwardClientCertificate = false;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,8 +115,7 @@ namespace Exebite.API
             // todo update the swagger to new definiton
             app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
             {
-                settings.GeneratorSettings.DefaultPropertyNameHandling =
-                    PropertyNameHandling.CamelCase;
+                settings.GeneratorSettings.DefaultPropertyNameHandling = PropertyNameHandling.CamelCase;
             });
         }
     }
