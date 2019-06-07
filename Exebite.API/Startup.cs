@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Reflection;
 using AutoMapper;
 using Exebite.API.Authorization;
 using Exebite.Business;
@@ -15,7 +14,6 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NJsonSchema;
 
 using NSwag.AspNetCore;
 
@@ -42,7 +40,6 @@ namespace Exebite.API
                 options.Events.OnRedirectToAccessDenied = Helper.ReplaceRedirector(HttpStatusCode.Forbidden, options.Events.OnRedirectToAccessDenied);
                 options.Events.OnRedirectToLogin = Helper.ReplaceRedirector(HttpStatusCode.Unauthorized, options.Events.OnRedirectToLogin);
             });
-
 
             if (_hostingEnvironment.IsDevelopment())
             {
@@ -84,10 +81,9 @@ namespace Exebite.API
 
             .AddDataAccessServices()
             .AddCommonServices();
-            services.Configure<IISOptions>(x =>
-            {
-                x.ForwardClientCertificate = false;
-            });
+
+            services.Configure<IISOptions>(x => x.ForwardClientCertificate = false);
+            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -112,11 +108,9 @@ namespace Exebite.API
 
             app.UseMvc();
 
-            // todo update the swagger to new definiton
-            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
-            {
-                settings.GeneratorSettings.DefaultPropertyNameHandling = PropertyNameHandling.CamelCase;
-            });
+            // Swagger OpenAPI 3 with updated UI.
+            app.UseSwagger();
+            app.UseSwaggerUi3();
         }
     }
 }
