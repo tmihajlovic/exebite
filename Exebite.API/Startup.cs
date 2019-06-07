@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
-using System.Reflection;
 using AutoMapper;
 using Exebite.API.Authorization;
+using Exebite.API.Extensions;
 using Exebite.Business;
 using Exebite.Common;
 using Exebite.DataAccess;
@@ -15,8 +15,6 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NJsonSchema;
-
 using NSwag.AspNetCore;
 
 namespace Exebite.API
@@ -43,13 +41,13 @@ namespace Exebite.API
                 options.Events.OnRedirectToLogin = Helper.ReplaceRedirector(HttpStatusCode.Unauthorized, options.Events.OnRedirectToLogin);
             });
 
-
             if (_hostingEnvironment.IsDevelopment())
             {
                 services.AddMvc(opts =>
                 {
                     opts.Filters.Add(new AllowAnonymousFilter());
-                });
+                })
+                .AddNSwagSettings(); // Add NSwag CamelCase settings.
             }
             else
             {
@@ -64,7 +62,9 @@ namespace Exebite.API
                        googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
                        googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
                    });
-                services.AddMvc();
+
+                services.AddMvc()
+                .AddNSwagSettings(); // Add NSwag CamelCase settings.
             }
 
             services.AddAuthorization(options => options.AddCustomPolicies());
@@ -84,10 +84,12 @@ namespace Exebite.API
 
             .AddDataAccessServices()
             .AddCommonServices();
+
             services.Configure<IISOptions>(x =>
             {
                 x.ForwardClientCertificate = false;
             });
+            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -112,11 +114,9 @@ namespace Exebite.API
 
             app.UseMvc();
 
-            // todo update the swagger to new definiton
-            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
-            {
-                settings.GeneratorSettings.DefaultPropertyNameHandling = PropertyNameHandling.CamelCase;
-            });
+            // Nswag3 with updated UI.
+            app.UseSwagger();
+            app.UseSwaggerUi3();
         }
     }
 }
