@@ -2,6 +2,7 @@
 using System.Net;
 using AutoMapper;
 using Exebite.API.Authorization;
+using Exebite.API.Extensions;
 using Exebite.Business;
 using Exebite.Common;
 using Exebite.DataAccess;
@@ -14,7 +15,6 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using NSwag.AspNetCore;
 
 namespace Exebite.API
@@ -43,10 +43,9 @@ namespace Exebite.API
 
             if (_hostingEnvironment.IsDevelopment())
             {
-                services.AddMvc(opts =>
-                {
-                    opts.Filters.Add(new AllowAnonymousFilter());
-                });
+                services
+                    .AddMvc(opts => opts.Filters.Add(new AllowAnonymousFilter()))
+                    .AddNSwagSettings(); // Add NSwag CamelCase settings.
             }
             else
             {
@@ -61,7 +60,10 @@ namespace Exebite.API
                        googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
                        googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
                    });
-                services.AddMvc();
+
+                services
+                    .AddMvc()
+                    .AddNSwagSettings(); // Add NSwag CamelCase settings.
             }
 
             services.AddAuthorization(options => options.AddCustomPolicies());
@@ -108,7 +110,7 @@ namespace Exebite.API
 
             app.UseMvc();
 
-            // Swagger OpenAPI 3 with updated UI.
+            // Nswag3 with updated UI.
             app.UseSwagger();
             app.UseSwaggerUi3();
         }
