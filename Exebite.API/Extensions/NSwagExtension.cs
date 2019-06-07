@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace Exebite.API.Extensions
@@ -14,7 +13,6 @@ namespace Exebite.API.Extensions
             builder.AddJsonOptions(opt =>
                 {
                     opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                    opt.SerializerSettings.Converters.Add(new StringEnumConverter());
                 });
     }
 }

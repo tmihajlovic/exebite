@@ -43,9 +43,11 @@ namespace Exebite.API
 
             if (_hostingEnvironment.IsDevelopment())
             {
-                services
-                    .AddMvc(opts => opts.Filters.Add(new AllowAnonymousFilter()))
-                    .AddNSwagSettings(); // Add NSwag CamelCase settings.
+                services.AddMvc(opts =>
+                {
+                    opts.Filters.Add(new AllowAnonymousFilter());
+                })
+                .AddNSwagSettings(); // Add NSwag CamelCase settings.
             }
             else
             {
@@ -61,9 +63,8 @@ namespace Exebite.API
                        googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
                    });
 
-                services
-                    .AddMvc()
-                    .AddNSwagSettings(); // Add NSwag CamelCase settings.
+                services.AddMvc()
+                .AddNSwagSettings(); // Add NSwag CamelCase settings.
             }
 
             services.AddAuthorization(options => options.AddCustomPolicies());
@@ -84,7 +85,10 @@ namespace Exebite.API
             .AddDataAccessServices()
             .AddCommonServices();
 
-            services.Configure<IISOptions>(x => x.ForwardClientCertificate = false);
+            services.Configure<IISOptions>(x =>
+            {
+                x.ForwardClientCertificate = false;
+            });
             services.AddSwaggerDocument();
         }
 
