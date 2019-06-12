@@ -1,11 +1,32 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
+﻿@{
+    ViewData["Title"] = "Exebite API";
 }
 
-<h2>Index</h2>
+<html>
+<head>
 
-<ul>
-    <li><a href="/swagger">Swagger UI</a></li>
-    <li><a href="/swagger/v1/swagger.json">Swagger file</a></li>
-</ul>
+</head>
+<body>
+
+    <h2>NSwag API: </h2>
+    <ul>
+        <li><a href="/swagger">Swagger UI</a></li>
+        <li><a href="/swagger/v1/swagger.json">Swagger file</a></li>
+    </ul>
+
+    <br />
+
+    <h2>Fetch API: </h2>
+    <ul>
+        <li><a href="/api/sheets/fetch">Fetch Sheet data</a></li>
+    </ul>
+
+    <br />
+
+    <h2>Auth API: </h2>
+    <ul>
+        <li><a href="/signin">/signin</a></li>
+    </ul>
+
+</body>
+</html>

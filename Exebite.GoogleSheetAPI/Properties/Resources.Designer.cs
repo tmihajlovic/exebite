@@ -88,6 +88,15 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to credentials.json.
+        /// </summary>
+        internal static string SACredentialsLocation {
+            get {
+                return ResourceManager.GetString("SACredentialsLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 1Sp_9P9qSWd3ENkjhbs2slzBHPJNIg-QeuL0vG7L2gKA.
         /// </summary>
         internal static string Teglas {

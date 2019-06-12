@@ -126,6 +126,9 @@
   <data name="Lipa" xml:space="preserve">
     <value>1XncnXTvjTuzpjKgCTrQbJAdVn5x4L7YpagbfJlAq_xc</value>
   </data>
+  <data name="SACredentialsLocation" xml:space="preserve">
+    <value>credentials.json</value>
+  </data>
   <data name="Teglas" xml:space="preserve">
     <value>1Sp_9P9qSWd3ENkjhbs2slzBHPJNIg-QeuL0vG7L2gKA</value>
   </data>

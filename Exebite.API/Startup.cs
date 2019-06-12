@@ -6,6 +6,7 @@ using Exebite.API.Extensions;
 using Exebite.Business;
 using Exebite.Common;
 using Exebite.DataAccess;
+using Exebite.GoogleSheetAPI;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -69,8 +70,6 @@ namespace Exebite.API
 
             services.AddAuthorization(options => options.AddCustomPolicies());
             services.AddDefaultIdentity<IdentityUser>();
-
-            services.AddTransient<IRoleService, RoleService>();
             services.AddScoped<IAuthorizationHandler, RoleHandler>();
             services.AddTransient<IAuthorizationHandler, RoleHandler>();
 
@@ -82,8 +81,10 @@ namespace Exebite.API
                     cfg.AddProfile<UIMappingProfile>();
                 })
 
-            .AddDataAccessServices()
-            .AddCommonServices();
+            .AddDataAccessServices() // Exebite.DataAccess services
+            .AddCommonServices() // Exebite.Common services
+            .AddBusinessServices() // Exebite.Business services
+            .AddGoogleSheetApiServices(); // Exebite.GoogleSheetAPI services
 
             services.Configure<IISOptions>(x =>
             {
