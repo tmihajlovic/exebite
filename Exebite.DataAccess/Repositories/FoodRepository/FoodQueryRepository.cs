@@ -43,6 +43,11 @@ namespace Exebite.DataAccess.Repositories
                         query = query.Where(x => x.RestaurantId == queryModel.RestaurantId.Value);
                     }
 
+                    if (!string.IsNullOrWhiteSpace(queryModel.Name))
+                    {
+                        query = query.Where(x => x.Name == queryModel.Name);
+                    }
+
                     var total = query.Count();
                     query = query
                         .Skip((queryModel.Page - 1) * queryModel.Size)
@@ -56,6 +61,29 @@ namespace Exebite.DataAccess.Repositories
             catch (Exception ex)
             {
                 return new Left<Error, PagingResult<Food>>(new UnknownError(ex.ToString()));
+            }
+        }
+
+        public Either<Error, (bool Exists, int Id)> FindByNameAndRestaurantId(FoodQueryModel queryModel)
+        {
+            try
+            {
+                if (queryModel == null)
+                {
+                    return new Left<Error, (bool, int)>(new ArgumentNotSet(nameof(queryModel)));
+                }
+
+                using (var ctx = _factory.Create())
+                {
+                    var record = ctx.Food.FirstOrDefault(c =>
+                        c.Name.Equals(queryModel.Name, StringComparison.OrdinalIgnoreCase) &&
+                        c.RestaurantId == queryModel.RestaurantId);
+                    return new Right<Error, (bool, int)>((record != null, record?.Id ?? 0));
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Left<Error, (bool, int)>(new UnknownError(ex.ToString()));
             }
         }
     }

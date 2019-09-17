@@ -112,7 +112,7 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, bool> DeactivatFoods(IList<int> foodIds)
+        public Either<Error, bool> DeactivateFoods(IList<int> foodIds)
         {
             try
             {
@@ -126,6 +126,43 @@ namespace Exebite.DataAccess.Repositories
 
                     dc.SaveChanges();
                     return new Right<Error, bool>(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Left<Error, bool>(new UnknownError(ex.ToString()));
+            }
+        }
+
+        public Either<Error, bool> UpdateByNameAndRestaurantId(FoodUpdateModel food)
+        {
+            try
+            {
+                if (food == null)
+                {
+                    return new Left<Error, bool>(new RecordNotFound(nameof(food)));
+                }
+
+                using (var context = _factory.Create())
+                {
+                    var dbFood = context.Food.FirstOrDefault(f =>
+                        f.Name.Equals(food.Name, StringComparison.OrdinalIgnoreCase) &&
+                        f.RestaurantId == food.RestaurantId);
+
+                    if (dbFood == null)
+                    {
+                        return new Left<Error, bool>(new RecordNotFound(nameof(dbFood)));
+                    }
+
+                    dbFood.DailyMenuId = food.DailyMenuId;
+                    dbFood.Description = food.Description;
+                    dbFood.IsInactive = food.IsInactive;
+                    dbFood.Name = food.Name;
+                    dbFood.Price = food.Price;
+                    dbFood.RestaurantId = food.RestaurantId;
+                    dbFood.Type = food.Type;
+
+                    return context.SaveChanges() > 0;
                 }
             }
             catch (Exception ex)
