@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AutoMapper;
 using Either;
 using Exebite.Common;
@@ -93,6 +94,43 @@ namespace Exebite.DataAccess.Repositories
                     itemSet.Remove(item);
                     context.SaveChanges();
                     return new Right<Error, bool>(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Left<Error, bool>(new UnknownError(ex.ToString()));
+            }
+        }
+
+        public Either<Error, bool> UpdateByGoogleId(CustomerUpdateModel customer)
+        {
+            try
+            {
+                if (customer == null)
+                {
+                    return new Left<Error, bool>(new ArgumentNotSet(nameof(customer)));
+                }
+
+                if (string.IsNullOrWhiteSpace(customer.GoogleUserId))
+                {
+                    return new Left<Error, bool>(new ArgumentNotSet(nameof(customer.GoogleUserId)));
+                }
+
+                using (var context = _factory.Create())
+                {
+                    var dbCustomer = context.Customer.FirstOrDefault(c => customer.GoogleUserId.Equals(c.GoogleUserId));
+                    if (dbCustomer == null)
+                    {
+                        return new Left<Error, bool>(new RecordNotFound(nameof(customer)));
+                    }
+
+                    dbCustomer.Name = customer.Name;
+                    dbCustomer.GoogleUserId = customer.GoogleUserId;
+                    dbCustomer.Balance = customer.Balance;
+                    dbCustomer.LocationId = customer.LocationId;
+                    dbCustomer.RoleId = customer.RoleId;
+
+                    return context.SaveChanges() > 0;
                 }
             }
             catch (Exception ex)

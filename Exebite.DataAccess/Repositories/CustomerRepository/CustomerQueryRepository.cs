@@ -20,6 +20,30 @@ namespace Exebite.DataAccess.Repositories
             _mapper = mapper;
         }
 
+        public Either<Error, bool> ExistsByGoogleId(string googleId)
+        {
+            try
+            {
+                using (var context = _factory.Create())
+                {
+                    if (string.IsNullOrWhiteSpace(googleId))
+                    {
+                        return new Left<Error, bool>(new ArgumentNotSet(nameof(googleId)));
+                    }
+
+                    using (var ctx = _factory.Create())
+                    {
+                        var exists = ctx.Customer.FirstOrDefault(c => c.GoogleUserId.Equals(googleId)) != null;
+                        return new Right<Error, bool>(exists);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Left<Error, bool>(new UnknownError(ex.ToString()));
+            }
+        }
+
         public Either<Error, string> GetRole(string googleId)
         {
             try

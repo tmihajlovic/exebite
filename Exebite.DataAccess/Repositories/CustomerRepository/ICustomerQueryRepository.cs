@@ -7,5 +7,7 @@ namespace Exebite.DataAccess.Repositories
     public interface ICustomerQueryRepository : IDatabaseQueryRepository<Customer, CustomerQueryModel>
     {
         Either<Error, string> GetRole(string googleId);
+
+        Either<Error, bool> ExistsByGoogleId(string googleId);
     }
 }
