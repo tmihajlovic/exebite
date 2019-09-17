@@ -29,7 +29,7 @@ namespace Exebite.DataAccess.AutoMapper
                     Description = source.Description,
                     IsInactive = source.IsInactive,
                     RestaurantId = source.RestaurantId,
-                    FoodEntityMealEntity = new List<FoodEntityMealEntities>(),
+                    FoodEntityMealEntity = new List<FoodEntityMealEntity>(),
                     FoodEntityRecipeEntities = new List<FoodEntityRecipeEntity>()
                 };
                 destination.Restaurant = dbContext.Restaurant.Find(destination.RestaurantId);

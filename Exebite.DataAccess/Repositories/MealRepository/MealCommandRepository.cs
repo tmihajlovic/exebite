@@ -29,7 +29,7 @@ namespace Exebite.DataAccess.Repositories
                     var mealEntity = new MealEntity
                     {
                         Price = entity.Price,
-                        FoodEntityMealEntities = entity.Foods.Select(x => new FoodEntityMealEntities { FoodEntityId = x }).ToList(),
+                        FoodEntityMealEntities = entity.Foods.Select(x => new FoodEntityMealEntity { FoodEntityId = x }).ToList(),
                     };
                     var addedEntity = context.Add(mealEntity).Entity;
                     context.SaveChanges();
@@ -62,7 +62,7 @@ namespace Exebite.DataAccess.Repositories
                     currentEntity.Price = entity.Price;
 
                     // this will remove old references, and after that new ones will be added
-                    var addedEntities = entity.Foods.Select(foodId => new FoodEntityMealEntities { FoodEntityId = foodId, MealEntityId = id }).ToList();
+                    var addedEntities = entity.Foods.Select(foodId => new FoodEntityMealEntity { FoodEntityId = foodId, MealEntityId = id }).ToList();
 
                     var deletedEntities = currentEntity.FoodEntityMealEntities.Except(addedEntities).ToList();
 

@@ -83,9 +83,9 @@ namespace Exebite.DataAccess.Test
                 {
                     Id = x,
                     Price = x,
-                    FoodEntityMealEntities = new List<FoodEntityMealEntities>
+                    FoodEntityMealEntities = new List<FoodEntityMealEntity>
                     {
-                        new FoodEntityMealEntities { FoodEntityId = x }
+                        new FoodEntityMealEntity { FoodEntityId = x }
                     }
                 });
 

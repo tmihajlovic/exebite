@@ -12,6 +12,6 @@ namespace Exebite.DataAccess.Entities
 
         public decimal Price { get; set; }
 
-        public virtual List<FoodEntityMealEntities> FoodEntityMealEntities { get; set; } = new List<FoodEntityMealEntities>();
+        public virtual List<FoodEntityMealEntity> FoodEntityMealEntities { get; set; } = new List<FoodEntityMealEntity>();
     }
 }

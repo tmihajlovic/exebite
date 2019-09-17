@@ -28,13 +28,13 @@ namespace Exebite.DataAccess.AutoMapper
                     Price = source.Price
                 };
                 destination.Id = source.Id;
-                destination.FoodEntityMealEntities = new List<FoodEntityMealEntities>();
+                destination.FoodEntityMealEntities = new List<FoodEntityMealEntity>();
                 foreach (var food in source.Foods)
                 {
                     var dbFoodMealEntity = dbContext.Meal.FirstOrDefault(m => m.Id == source.Id).FoodEntityMealEntities.SingleOrDefault(fm => fm.FoodEntityId == food.Id);
                     if (dbFoodMealEntity == null)
                     {
-                        destination.FoodEntityMealEntities.Add(new FoodEntityMealEntities
+                        destination.FoodEntityMealEntities.Add(new FoodEntityMealEntity
                         {
                             FoodEntity = _mapper.Map<FoodEntity>(food),
                             FoodEntityId = food.Id,
