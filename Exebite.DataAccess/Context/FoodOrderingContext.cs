@@ -70,18 +70,6 @@ namespace Exebite.DataAccess.Context
             modelBuilder.Entity<FoodEntityMealEntity>()
                 .HasKey(k => new { k.FoodEntityId, k.MealEntityId });
 
-            modelBuilder.Entity<FoodEntityMealEntity>()
-                .HasOne(f => f.FoodEntity)
-                .WithMany(fr => fr.FoodEntityMealEntity)
-                .HasForeignKey(fr => fr.FoodEntityId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<FoodEntityMealEntity>()
-                .HasOne(f => f.MealEntity)
-                .WithMany(fr => fr.FoodEntityMealEntities)
-                .HasForeignKey(fr => fr.MealEntityId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<CustomerAliasesEntities>()
                 .HasOne(c => c.Customer)
                 .WithMany(a => a.Aliases);

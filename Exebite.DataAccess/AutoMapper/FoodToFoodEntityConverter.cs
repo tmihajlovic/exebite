@@ -29,11 +29,11 @@ namespace Exebite.DataAccess.AutoMapper
                     Description = source.Description,
                     IsInactive = source.IsInactive,
                     RestaurantId = source.RestaurantId,
-                    FoodEntityMealEntity = new List<FoodEntityMealEntity>(),
+                    FoodEntityMealEntities = new List<FoodEntityMealEntity>(),
                     FoodEntityRecipeEntities = new List<FoodEntityRecipeEntity>()
                 };
                 destination.Restaurant = dbContext.Restaurant.Find(destination.RestaurantId);
-                destination.FoodEntityMealEntity = dbContext.Food.Where(fme => fme.Id == source.Id).SelectMany(x => x.FoodEntityMealEntity).ToList();
+                destination.FoodEntityMealEntities = dbContext.Food.Where(fme => fme.Id == source.Id).SelectMany(x => x.FoodEntityMealEntities).ToList();
                 destination.FoodEntityRecipeEntities = dbContext.Recipe.Where(fre => fre.Id == source.Id).SelectMany(x => x.FoodEntityRecipeEntities).ToList();
 
                 return destination;
