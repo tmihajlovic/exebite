@@ -38,6 +38,11 @@ namespace Exebite.DataAccess.Repositories
                         query = query.Where(x => x.Id == queryModel.Id.Value);
                     }
 
+                    if (!string.IsNullOrWhiteSpace(queryModel.Name))
+                    {
+                        query = query.Where(x => x.Name.Equals(queryModel.Name, StringComparison.InvariantCultureIgnoreCase));
+                    }
+
                     var total = query.Count();
                     query = query
                         .Skip((queryModel.Page - 1) * queryModel.Size)
