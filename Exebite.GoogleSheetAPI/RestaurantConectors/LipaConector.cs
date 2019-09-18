@@ -20,7 +20,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         public LipaConector(IGoogleSheetService googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
             : base(googleSheetService)
         {
-            _sheetId = googleSSIdFactory.GetLipa();
+            _sheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.LIPA);
             _restaurant = new Restaurant { Name = "Restoran pod Lipom" };
             SheetId = _sheetId;
             base.OrdersSheet = OrdersSheet;

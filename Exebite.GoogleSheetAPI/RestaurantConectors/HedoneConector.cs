@@ -20,7 +20,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         public HedoneConector(IGoogleSheetService googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
             : base(googleSheetService)
         {
-            _sheetId = googleSSIdFactory.GetHedone();
+            _sheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.HEDONE);
             _restaurant = new Restaurant { Name = "Hedone" };
             SheetId = _sheetId;
             base.OrdersSheet = OrdersSheet;

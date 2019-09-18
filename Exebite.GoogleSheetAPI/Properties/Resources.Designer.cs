@@ -61,29 +61,74 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1jEfZsZVmlPQf5aDozLiAmTbEcHXTi_M7-gXmHaJauys.
+        /// </summary>
+        internal static string DE_PAPAJ {
+            get {
+                return ResourceManager.GetString("DE_PAPAJ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 1w5jCZQU0WVEj6o0RzBX5ALYWWoLcd8eRBvK6OebSJxs.
         /// </summary>
-        internal static string Hedone {
+        internal static string HEDONE {
             get {
-                return ResourceManager.GetString("Hedone", resourceCulture);
+                return ResourceManager.GetString("HEDONE", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1wShyMKMdswapEc6y8WMjqG5IwDqj4avYmQugwfM57YE.
+        ///   Looks up a localized string similar to 1ehEqncAQP677e8Fi4oWTOBvLjEUB67ApjFLJnBO3gcY.
         /// </summary>
-        internal static string Kasa {
+        internal static string INDEX_HOUSE {
             get {
-                return ResourceManager.GetString("Kasa", resourceCulture);
+                return ResourceManager.GetString("INDEX_HOUSE", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1XncnXTvjTuzpjKgCTrQbJAdVn5x4L7YpagbfJlAq_xc.
+        ///   Looks up a localized string similar to 1p95HwHCwbx80L3aWXsStkGbmNfYgG5JOvRvONm0JUXI.
         /// </summary>
-        internal static string Lipa {
+        internal static string KASA {
             get {
-                return ResourceManager.GetString("Lipa", resourceCulture);
+                return ResourceManager.GetString("KASA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1FJt865bBn69jsbRpyVTqQAFarUjvsiKsom1c2JfR0Hk.
+        /// </summary>
+        internal static string LIPA {
+            get {
+                return ResourceManager.GetString("LIPA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1YQ6BH2vOmGkxNgDWzct_j3Dznql0OWrwi1nITrtlZHA.
+        /// </summary>
+        internal static string MIMAS {
+            get {
+                return ResourceManager.GetString("MIMAS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to credentials.json.
+        /// </summary>
+        internal static string SACredentialsLocation {
+            get {
+                return ResourceManager.GetString("SACredentialsLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string SERPICA {
+            get {
+                return ResourceManager.GetString("SERPICA", resourceCulture);
             }
         }
         
@@ -99,9 +144,9 @@ namespace Exebite.GoogleSheetAPI.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 1Sp_9P9qSWd3ENkjhbs2slzBHPJNIg-QeuL0vG7L2gKA.
         /// </summary>
-        internal static string Teglas {
+        internal static string TEGLAS {
             get {
-                return ResourceManager.GetString("Teglas", resourceCulture);
+                return ResourceManager.GetString("TEGLAS", resourceCulture);
             }
         }
     }

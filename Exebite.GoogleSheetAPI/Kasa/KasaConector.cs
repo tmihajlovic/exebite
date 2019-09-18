@@ -16,7 +16,7 @@ namespace Exebite.GoogleSheetAPI.Kasa
         public KasaConector(IGoogleSheetServiceFactory googleSheetServiceFactory, IGoogleSpreadsheetIdFactory googleSpreadsheetIdFactory)
         {
             _googleSS = googleSheetServiceFactory.GetService();
-            _sheetId = googleSpreadsheetIdFactory.GetKasa();
+            _sheetId = googleSpreadsheetIdFactory.GetSheetId(Enums.ESheetOwner.KASA);
         }
 
         public List<Customer> GetCustomersFromKasa()

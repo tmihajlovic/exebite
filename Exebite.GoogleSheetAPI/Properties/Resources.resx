@@ -117,19 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Hedone" xml:space="preserve">
+  <data name="DE_PAPAJ" xml:space="preserve">
+    <value>1jEfZsZVmlPQf5aDozLiAmTbEcHXTi_M7-gXmHaJauys</value>
+  </data>
+  <data name="HEDONE" xml:space="preserve">
     <value>1w5jCZQU0WVEj6o0RzBX5ALYWWoLcd8eRBvK6OebSJxs</value>
   </data>
-  <data name="Kasa" xml:space="preserve">
-    <value>1wShyMKMdswapEc6y8WMjqG5IwDqj4avYmQugwfM57YE</value>
+  <data name="INDEX_HOUSE" xml:space="preserve">
+    <value>1ehEqncAQP677e8Fi4oWTOBvLjEUB67ApjFLJnBO3gcY</value>
   </data>
-  <data name="Lipa" xml:space="preserve">
-    <value>1XncnXTvjTuzpjKgCTrQbJAdVn5x4L7YpagbfJlAq_xc</value>
+  <data name="KASA" xml:space="preserve">
+    <value>1p95HwHCwbx80L3aWXsStkGbmNfYgG5JOvRvONm0JUXI</value>
+  </data>
+  <data name="LIPA" xml:space="preserve">
+    <value>1FJt865bBn69jsbRpyVTqQAFarUjvsiKsom1c2JfR0Hk</value>
+  </data>
+  <data name="MIMAS" xml:space="preserve">
+    <value>1YQ6BH2vOmGkxNgDWzct_j3Dznql0OWrwi1nITrtlZHA</value>
   </data>
   <data name="SACredentialsLocation" xml:space="preserve">
     <value>credentials.json</value>
   </data>
-  <data name="Teglas" xml:space="preserve">
+  <data name="SERPICA" xml:space="preserve">
+    <value>--</value>
+  </data>
+  <data name="TEGLAS" xml:space="preserve">
     <value>1Sp_9P9qSWd3ENkjhbs2slzBHPJNIg-QeuL0vG7L2gKA</value>
   </data>
 </root>

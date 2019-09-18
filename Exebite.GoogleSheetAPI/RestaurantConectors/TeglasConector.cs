@@ -19,7 +19,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
         public TeglasConector(IGoogleSheetService googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
             : base(googleSheetService)
         {
-            _sheetId = googleSSIdFactory.GetTeglas();
+            _sheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.TEGLAS);
             _restaurant = new Restaurant { Name = "Teglas" };
             SheetId = _sheetId;
             OrdersSheet = _ordersSheet;

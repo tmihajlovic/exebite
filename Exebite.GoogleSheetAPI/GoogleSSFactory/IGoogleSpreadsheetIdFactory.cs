@@ -1,41 +1,14 @@
-﻿namespace Exebite.GoogleSheetAPI.GoogleSSFactory
+﻿using Exebite.GoogleSheetAPI.Enums;
+
+namespace Exebite.GoogleSheetAPI.GoogleSSFactory
 {
     public interface IGoogleSpreadsheetIdFactory
     {
         /// <summary>
-        /// Returns Hedone Spredsheet ID
+        /// Get Sheet ID for the specified Sheet owner.
         /// </summary>
-        /// <returns>Restourant name</returns>
-        string GetHedone();
-
-        /// <summary>
-        /// Returns Lipa Spredsheet ID
-        /// </summary>
-        /// <returns>Restourant name</returns>
-        string GetLipa();
-
-        /// <summary>
-        /// Returns Index house Spredsheet ID
-        /// </summary>
-        /// <returns>Restourant name</returns>
-        string GetIndexHouse();
-
-        /// <summary>
-        /// Returns Extra food Spredsheet ID
-        /// </summary>
-        /// <returns>Restourant name</returns>
-        string GetExtraFood();
-
-        /// <summary>
-        /// Returns Teglas Spredsheet ID
-        /// </summary>
-        /// <returns>Restourant name</returns>
-        string GetTeglas();
-
-        /// <summary>
-        /// Returns Kasa Spredsheet ID
-        /// </summary>
-        /// <returns>Restourant name</returns>
-        string GetKasa();
+        /// <param name="sheetOwner">ESheetOwner</param>
+        /// <returns>String value of Google Sheet ID</returns>
+        string GetSheetId(ESheetOwner sheetOwner);
     }
 }
