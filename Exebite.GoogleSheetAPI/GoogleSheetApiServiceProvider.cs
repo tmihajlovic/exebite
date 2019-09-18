@@ -1,7 +1,7 @@
-﻿using Exebite.GoogleSheetAPI.GoogleSSFactory;
-using Exebite.GoogleSheetAPI.Kasa;
-using Exebite.GoogleSheetAPI.RestaurantConectors;
-using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
+﻿using Exebite.GoogleSheetAPI.Connectors.Kasa;
+using Exebite.GoogleSheetAPI.Connectors.Restaurants;
+using Exebite.GoogleSheetAPI.GoogleSSFactory;
+using Exebite.GoogleSheetAPI.SheetExtractor;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Exebite.GoogleSheetAPI
@@ -19,11 +19,11 @@ namespace Exebite.GoogleSheetAPI
         public static IServiceCollection AddGoogleSheetApiServices(this IServiceCollection services)
         {
             return services
-                .AddTransient<IGoogleSheetService, GoogleSheetService>()
+                .AddTransient<IGoogleSheetExtractor, GoogleSheetExtractor>()
                 .AddTransient<ITeglasConector, TeglasConector>()
                 .AddTransient<ILipaConector, LipaConector>()
                 .AddTransient<IHedoneConector, HedoneConector>()
-                .AddTransient<IKasaConector, KasaConector>()
+                .AddTransient<IKasaConnector, KasaConnector>()
                 .AddTransient<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>()
                 .AddTransient<IGoogleSheetServiceFactory, GoogleSheetServiceFactory>();
         }

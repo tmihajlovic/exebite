@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Exebite.DomainModel;
-using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
+using Exebite.GoogleSheetAPI.SheetExtractor;
 using Google.Apis.Sheets.v4.Data;
 
-namespace Exebite.GoogleSheetAPI.RestaurantConectors
+namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 {
     public abstract class RestaurantConector : IRestaurantConector
     {
         private readonly string _kasaSheet = "Kasa";
 
-        protected RestaurantConector(IGoogleSheetService googleSheetService)
+        protected RestaurantConector(IGoogleSheetExtractor googleSheetService)
         {
             GoogleSheetService = googleSheetService;
         }
 
-        internal IGoogleSheetService GoogleSheetService { get; set; }
+        internal IGoogleSheetExtractor GoogleSheetService { get; set; }
 
         internal string SheetId { get; set; }
 

@@ -1,8 +1,8 @@
 ﻿using Google.Apis.Sheets.v4.Data;
 
-namespace Exebite.GoogleSheetAPI
+namespace Exebite.GoogleSheetAPI.SheetExtractor
 {
-    public interface IGoogleSheetService
+    public interface IGoogleSheetExtractor
     {
         /// <summary>
         /// Gets data from sheet grouped by rows

@@ -2,14 +2,14 @@
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 
-namespace Exebite.GoogleSheetAPI
+namespace Exebite.GoogleSheetAPI.SheetExtractor
 {
-    public class GoogleSheetService : IGoogleSheetService
+    public class GoogleSheetExtractor : IGoogleSheetExtractor
     {
         private readonly SheetsService _sheetService;
         private readonly IGoogleSheetServiceFactory _googleSSFactory;
 
-        public GoogleSheetService(IGoogleSheetServiceFactory googleSheetServiceFactory)
+        public GoogleSheetExtractor(IGoogleSheetServiceFactory googleSheetServiceFactory)
         {
             _googleSSFactory = googleSheetServiceFactory;
             _sheetService = _googleSSFactory.GetService();

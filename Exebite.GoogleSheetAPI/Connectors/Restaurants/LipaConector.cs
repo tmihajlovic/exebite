@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Exebite.DomainModel;
+using Exebite.GoogleSheetAPI.Connectors.Restaurants.Base;
 using Exebite.GoogleSheetAPI.GoogleSSFactory;
-using Exebite.GoogleSheetAPI.RestaurantConectorsInterfaces;
+using Exebite.GoogleSheetAPI.SheetExtractor;
 using Google.Apis.Sheets.v4.Data;
 
-namespace Exebite.GoogleSheetAPI.RestaurantConectors
+namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
 {
     public class LipaConector : RestaurantConector, ILipaConector
     {
@@ -17,7 +18,7 @@ namespace Exebite.GoogleSheetAPI.RestaurantConectors
 
         private readonly Restaurant _restaurant;
 
-        public LipaConector(IGoogleSheetService googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
+        public LipaConector(IGoogleSheetExtractor googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
             : base(googleSheetService)
         {
             _sheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.LIPA);
