@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Exebite.DataAccess.Context;
@@ -7,6 +8,7 @@ using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.AutoMapper
 {
+    [Obsolete]
     public class MealToMealEntityConverter : IMealToMealEntityConverter
     {
         private readonly IFoodOrderingContextFactory _factory;
