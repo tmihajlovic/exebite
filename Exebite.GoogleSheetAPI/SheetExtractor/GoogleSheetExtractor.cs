@@ -1,4 +1,6 @@
-﻿using Exebite.GoogleSheetAPI.GoogleSSFactory;
+﻿using System;
+using System.Collections.Generic;
+using Exebite.GoogleSheetAPI.GoogleSSFactory;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 
@@ -47,6 +49,27 @@ namespace Exebite.GoogleSheetAPI.SheetExtractor
             ClearValuesRequest body = new ClearValuesRequest();
             SpreadsheetsResource.ValuesResource.ClearRequest clearRequest = _sheetService.Spreadsheets.Values.Clear(body, sheetId, range);
             clearRequest.Execute();
+        }
+
+        public T ExtractCell<T>(IList<object> objectList, int index, T defaultValue)
+        {
+            T retVal;
+
+            try
+            {
+                retVal = (T)Convert.ChangeType(objectList[index], typeof(T));
+
+                if (retVal is string a && string.IsNullOrWhiteSpace(a))
+                {
+                    retVal = defaultValue;
+                }
+            }
+            catch (Exception)
+            {
+                retVal = defaultValue;
+            }
+
+            return retVal;
         }
     }
 }

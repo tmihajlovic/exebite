@@ -1,4 +1,5 @@
-﻿using Google.Apis.Sheets.v4.Data;
+﻿using System.Collections.Generic;
+using Google.Apis.Sheets.v4.Data;
 
 namespace Exebite.GoogleSheetAPI.SheetExtractor
 {
@@ -34,5 +35,16 @@ namespace Exebite.GoogleSheetAPI.SheetExtractor
         /// <param name="sheetId">Id of spreadsheet</param>
         /// <param name="range">Range to be cleard</param>
         void Clear(string sheetId, string range);
+
+        /// <summary>
+        /// Try to extract and convert value from the sheet onto the object. If it fails, it will return the default value.
+        /// This method makes sure there's always a value, even if an exception occurs.
+        /// </summary>
+        /// <typeparam name="T">Data Type of the cell.</typeparam>
+        /// <param name="objectList">List of objects.</param>
+        /// <param name="index">Index to access.</param>
+        /// <param name="defaultValue">Default value to return in case of an error.</param>
+        /// <returns>T</returns>
+        T ExtractCell<T>(IList<object> objectList, int index, T defaultValue);
     }
 }

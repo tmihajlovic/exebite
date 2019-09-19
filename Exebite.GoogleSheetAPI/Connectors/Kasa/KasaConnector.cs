@@ -39,15 +39,23 @@ namespace Exebite.GoogleSheetAPI.Connectors.Kasa
             return _googleSheetExtractor
                  .GetRows(_sheetId, _range)
                  .Values
-                 .Select(col => new Customer()
+                 .Select(col =>
                  {
-                     Name = col.ExtractCell(0, "Missing Name"),
-                     RoleId = 2,
-                     LocationId = locations.FirstOrDefault(l => l.Name.Equals(col.ExtractCell(0, "Missing Name").MapLocationName()))?.Id ?? 0,
-                     GoogleUserId = col.ExtractCell(1, string.Empty),
-                     Balance = col.ExtractCell(3, 0m),
+                     var name = _googleSheetExtractor.ExtractCell(col, 0, "MissingName");
+                     var locationName = name.EndsWith("MM")
+                        ? "Execom MM"
+                        : "Execom VS";
+
+                     return new Customer()
+                     {
+                         Name = name,
+                         RoleId = 2,
+                         LocationId = locations.FirstOrDefault(l => l.Name.Equals(locationName))?.Id ?? 0,
+                         GoogleUserId = _googleSheetExtractor.ExtractCell(col, 1, string.Empty),
+                         Balance = _googleSheetExtractor.ExtractCell(col, 3, 0m),
+                     };
                  })
-                 .Where(c => !string.IsNullOrWhiteSpace(c.GoogleUserId))
+                 .Where(c => !string.IsNullOrWhiteSpace(c.GoogleUserId) && !c.Name.TrimmedAndLowercasedEqualsTo("gost"))
                  .OrderBy(c => c.GoogleUserId);
         }
     }
