@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Exebite.DomainModel;
 using Exebite.GoogleSheetAPI.Connectors.Restaurants.Base;
@@ -8,6 +9,7 @@ using Google.Apis.Sheets.v4.Data;
 
 namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
 {
+    [Obsolete]
     public class TeglasConector : RestaurantConector, ITeglasConector
     {
         private const string _ordersSheet = "Narudzbine";
@@ -20,7 +22,6 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         public TeglasConector(IGoogleSheetExtractor googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
             : base(googleSheetService)
         {
-            _sheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.TEGLAS);
             _restaurant = new Restaurant { Name = "Teglas" };
             SheetId = _sheetId;
             OrdersSheet = _ordersSheet;

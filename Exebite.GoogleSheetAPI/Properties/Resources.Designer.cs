@@ -19,7 +19,7 @@ namespace Exebite.GoogleSheetAPI.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,24 +57,6 @@ namespace Exebite.GoogleSheetAPI.Properties {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 1jEfZsZVmlPQf5aDozLiAmTbEcHXTi_M7-gXmHaJauys.
-        /// </summary>
-        internal static string DE_PAPAJ {
-            get {
-                return ResourceManager.GetString("DE_PAPAJ", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 1w5jCZQU0WVEj6o0RzBX5ALYWWoLcd8eRBvK6OebSJxs.
-        /// </summary>
-        internal static string HEDONE {
-            get {
-                return ResourceManager.GetString("HEDONE", resourceCulture);
             }
         }
         
@@ -124,7 +106,7 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to --.
         /// </summary>
         internal static string SERPICA {
             get {
@@ -133,11 +115,11 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1Sp_9P9qSWd3ENkjhbs2slzBHPJNIg-QeuL0vG7L2gKA.
+        ///   Looks up a localized string similar to 1E3tzbemuhLgNUpVuN11Gr1yeKEIgOFN7q2z7UBLnAt8.
         /// </summary>
-        internal static string TEGLAS {
+        internal static string TOPLI_OBROK {
             get {
-                return ResourceManager.GetString("TEGLAS", resourceCulture);
+                return ResourceManager.GetString("TOPLI_OBROK", resourceCulture);
             }
         }
     }

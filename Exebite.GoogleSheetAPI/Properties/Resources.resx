@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DE_PAPAJ" xml:space="preserve">
-    <value>1jEfZsZVmlPQf5aDozLiAmTbEcHXTi_M7-gXmHaJauys</value>
-  </data>
-  <data name="HEDONE" xml:space="preserve">
-    <value>1w5jCZQU0WVEj6o0RzBX5ALYWWoLcd8eRBvK6OebSJxs</value>
-  </data>
   <data name="INDEX_HOUSE" xml:space="preserve">
     <value>1ehEqncAQP677e8Fi4oWTOBvLjEUB67ApjFLJnBO3gcY</value>
   </data>
@@ -141,7 +135,7 @@
   <data name="SERPICA" xml:space="preserve">
     <value>--</value>
   </data>
-  <data name="TEGLAS" xml:space="preserve">
-    <value>1Sp_9P9qSWd3ENkjhbs2slzBHPJNIg-QeuL0vG7L2gKA</value>
+  <data name="TOPLI_OBROK" xml:space="preserve">
+    <value>1E3tzbemuhLgNUpVuN11Gr1yeKEIgOFN7q2z7UBLnAt8</value>
   </data>
 </root>

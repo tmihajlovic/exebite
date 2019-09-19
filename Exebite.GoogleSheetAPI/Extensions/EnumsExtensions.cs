@@ -47,16 +47,13 @@ namespace Exebite.GoogleSheetAPI.Extensions
                     return "Kuhinjica pod Lipom";
                 case ESheetOwner.INDEX_HOUSE:
                     return "Index House";
-                case ESheetOwner.DE_PAPAJ:
-                    return "De Papaj";
                 case ESheetOwner.MIMAS:
                     return "Mima's";
                 case ESheetOwner.KASA:
                     return "Kasa";
+                case ESheetOwner.TOPLI_OBROK:
+                    return "Topli Obrok";
                 case ESheetOwner.SERPICA:
-                case ESheetOwner.HEDONE:
-                case ESheetOwner.TEGLAS:
-                    throw new ArgumentException("Obsolete.");
                 default:
                     throw new ArgumentException("Chosen sheet owner does not exist.");
             }

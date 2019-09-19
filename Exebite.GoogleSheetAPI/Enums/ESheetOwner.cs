@@ -10,25 +10,19 @@ namespace Exebite.GoogleSheetAPI.Enums
         [Description("Kuhinjica pod Lipom")]
         LIPA,
 
+        [Description("Topli Obrok")]
+        TOPLI_OBROK,
+
         [Description("Index House")]
         INDEX_HOUSE,
 
         [Description("Serpica 021")]
         SERPICA,
 
-        [Description("De Papaj")]
-        DE_PAPAJ,
-
         [Description("Mima's")]
         MIMAS,
 
         [Description("Kasa")]
         KASA,
-
-        [Description("Hedone")]
-        HEDONE,
-
-        [Description("Tegla's")]
-        TEGLAS
     }
 }
