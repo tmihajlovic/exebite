@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Exebite.Business.GoogleApiImportExport;
+using Exebite.GoogleSheetAPI.Connectors.Kasa;
+using Exebite.GoogleSheetAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -10,14 +13,14 @@ namespace Exebite.API.Controllers
     public class SheetsController : ControllerBase
     {
         private readonly ILogger<SheetsController> _logger;
-        private readonly IGoogleDataImporter _googleDataImporter;
+        private readonly IGoogleSheetAPIService _apiService;
 
         public SheetsController(
-            IGoogleDataImporter googleDataImporter,
-            ILogger<SheetsController> logger)
+            ILogger<SheetsController> logger,
+            IGoogleSheetAPIService apiService)
         {
             _logger = logger;
-            _googleDataImporter = googleDataImporter;
+            _apiService = apiService;
         }
 
         [HttpGet("fetch")]
@@ -25,12 +28,12 @@ namespace Exebite.API.Controllers
         {
             try
             {
-                _googleDataImporter.UpdateRestorauntsMenu();
+                _apiService.UpdateCustomers();
 
                 _logger.LogInformation("Successfully fetched and updated DB information from Google Sheets.");
                 return new JsonResult(new
                 {
-                    success = true
+                    success = true,
                 });
             }
             catch (Exception e)

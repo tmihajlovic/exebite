@@ -1,6 +1,7 @@
 ﻿using Exebite.GoogleSheetAPI.Connectors.Kasa;
 using Exebite.GoogleSheetAPI.Connectors.Restaurants;
 using Exebite.GoogleSheetAPI.GoogleSSFactory;
+using Exebite.GoogleSheetAPI.Services;
 using Exebite.GoogleSheetAPI.SheetExtractor;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,7 +26,9 @@ namespace Exebite.GoogleSheetAPI
                 .AddTransient<IHedoneConector, HedoneConector>()
                 .AddTransient<IKasaConnector, KasaConnector>()
                 .AddTransient<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>()
-                .AddTransient<IGoogleSheetServiceFactory, GoogleSheetServiceFactory>();
+                .AddTransient<IGoogleSheetServiceFactory, GoogleSheetServiceFactory>()
+                .AddTransient<IGoogleSheetAPIService, GoogleSheetAPIService>()
+                .AddTransient<IGoogleSheetDataAccessService, GoogleSheetDataAccessService>();
         }
     }
 }
