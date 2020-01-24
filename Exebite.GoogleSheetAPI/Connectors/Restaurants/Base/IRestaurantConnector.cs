@@ -3,7 +3,7 @@ using Exebite.DomainModel;
 
 namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 {
-    public interface IRestaurantConector
+    public interface IRestaurantConnector
     {
         List<Food> GetDailyMenu();
 

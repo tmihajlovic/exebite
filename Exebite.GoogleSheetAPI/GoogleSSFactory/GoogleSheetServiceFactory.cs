@@ -31,9 +31,8 @@ namespace Exebite.GoogleSheetAPI.GoogleSSFactory
                               .FromStream(stream)
                               .CreateScoped(scopes)
                               .UnderlyingCredential as ServiceAccountCredential
-                      }
-                  );
-            };
+                      });
+            }
         }
     }
 }

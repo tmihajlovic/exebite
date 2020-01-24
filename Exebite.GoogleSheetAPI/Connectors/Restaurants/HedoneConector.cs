@@ -10,7 +10,7 @@ using Google.Apis.Sheets.v4.Data;
 namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
 {
     [Obsolete]
-    public class HedoneConector : RestaurantConector, IHedoneConector
+    public sealed class HedoneConector : RestaurantConnector, IHedoneConector
     {
         private new const string DailyMenuSheet = "Dnevni meni";
         private const string AlwaysAvailableSheet = "Uvek dostupno";

@@ -10,7 +10,7 @@ using Google.Apis.Sheets.v4.Data;
 namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
 {
     [Obsolete]
-    public class TeglasConector : RestaurantConector, ITeglasConector
+    public class TeglasConector : RestaurantConnector, ITeglasConector
     {
         private const string _ordersSheet = "Narudzbine";
         private const string _foodListSheet = "Cene i opis";
