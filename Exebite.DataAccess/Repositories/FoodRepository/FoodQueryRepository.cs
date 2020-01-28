@@ -64,13 +64,13 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, (bool Exists, int Id)> FindByNameAndRestaurantId(FoodQueryModel queryModel)
+        public Either<Error, int> FindByNameAndRestaurantId(FoodQueryModel queryModel)
         {
             try
             {
                 if (queryModel == null)
                 {
-                    return new Left<Error, (bool, int)>(new ArgumentNotSet(nameof(queryModel)));
+                    return new Left<Error, int>(new ArgumentNotSet(nameof(queryModel)));
                 }
 
                 using (var ctx = _factory.Create())
@@ -78,12 +78,12 @@ namespace Exebite.DataAccess.Repositories
                     var record = ctx.Food.FirstOrDefault(c =>
                         c.Name.Equals(queryModel.Name, StringComparison.OrdinalIgnoreCase) &&
                         c.RestaurantId == queryModel.RestaurantId);
-                    return new Right<Error, (bool, int)>((record != null, record?.Id ?? 0));
+                    return new Right<Error, int>(record?.Id ?? 0);
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Error, (bool, int)>(new UnknownError(ex.ToString()));
+                return new Left<Error, int>(new UnknownError(ex.ToString()));
             }
         }
     }

@@ -9,5 +9,10 @@
         /// Update all Customers in the db based on data from the spreadsheets.
         /// </summary>
         void UpdateCustomers();
+
+        /// <summary>
+        /// Update daily menu for Lipa restaurant in the db based on data from the spreadsheets.
+        /// </summary>
+        void UpdateDailyMenuLipa();
     }
 }

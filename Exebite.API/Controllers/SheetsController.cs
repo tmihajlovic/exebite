@@ -30,6 +30,8 @@ namespace Exebite.API.Controllers
             {
                 _apiService.UpdateCustomers();
 
+                _apiService.UpdateDailyMenuLipa();
+
                 _logger.LogInformation("Successfully fetched and updated DB information from Google Sheets.");
                 return new JsonResult(new
                 {

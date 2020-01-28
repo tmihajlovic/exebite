@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Either;
+using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Exebite.GoogleSheetAPI.Common;
 using Exebite.GoogleSheetAPI.Connectors.Restaurants.Base;
 using Exebite.GoogleSheetAPI.GoogleSSFactory;
 using Exebite.GoogleSheetAPI.SheetExtractor;
 using Google.Apis.Sheets.v4.Data;
-using Microsoft.Extensions.Logging;
 
 namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
 {
@@ -16,12 +17,17 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
     {
         private readonly string _sheetId;
         private readonly Restaurant _restaurant;
+        private readonly IRestaurantQueryRepository _restaurantQueryRepository;
 
-        public LipaConnector(IGoogleSheetExtractor googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
+        public LipaConnector(
+            IGoogleSheetExtractor googleSheetService,
+            IGoogleSpreadsheetIdFactory googleSSIdFactory,
+            IRestaurantQueryRepository restaurantQueryRepository)
             : base(googleSheetService)
         {
+            _restaurantQueryRepository = restaurantQueryRepository;
             _sheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.LIPA);
-            _restaurant = new Restaurant { Name = "Restoran pod Lipom" };
+            _restaurant = GetRestaurant();
             SheetId = _sheetId;
             DailyMenuSheet = GetLocalMonthName(DateTime.Now.Month) + DateTime.Now.Year;
             Restaurant = _restaurant;
@@ -33,25 +39,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         /// <param name="foods">List of all food to be written</param>
         public override void WriteMenu(List<Food> foods)
         {
-            // Initialize object and add header
-            var header = new List<object> { "Naziv jela", "Opis", "Cena", "Tip" };
-            var foodRange = new ValueRange { Values = new List<IList<object>> { header } };
-
-            // Add food to list
-            foreach (var food in foods)
-            {
-                foodRange.Values.Add(new List<object>
-                {
-                    food.Name,
-                    food.Description,
-                    food.Price,
-                    GetLocalFoodType(food.Type)
-                });
-            }
-
-            // Clear sheet and write new data
-            GoogleSheetService.Clear(_sheetId, FoodListSheet);
-            GoogleSheetService.Update(foodRange, _sheetId, FoodListSheet);
+            // not needed for now. But will probably be needed in the future to write orders
+            // in sheets until everything is moved to be get from DB (reports, orders...)
         }
 
         /// <summary>
@@ -97,7 +86,12 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
                         !string.IsNullOrWhiteSpace(foodPrice) &&
                         decimal.TryParse(foodPrice, out decimal price))
                     {
-                        result.Add(new Food { Name = foodName, Price = price, Restaurant = _restaurant });
+                        result.Add(new Food { Name = foodName, Price = price, RestaurantId = _restaurant.Id });
+                        if (i == foodNames.Count - 1)
+                        {
+                            // currently in Lipa restaurant SOUP is always the last meal in daily sheet
+                            result.Last().Type = FoodType.SOUP;
+                        }
                     }
                 }
 
@@ -107,6 +101,18 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
             {
                 return new List<Food>();
             }
+        }
+
+        /// <summary>
+        /// Get the restaurant from the database
+        /// </summary>
+        /// <returns>Returns restaurant object from database if exists, otherwise null.</returns>
+        private Restaurant GetRestaurant()
+        {
+            return _restaurantQueryRepository
+                    .Query(new RestaurantQueryModel { Name = "Restoran pod Lipom" })
+                    .Map(res => res.Items.FirstOrDefault())
+                    .Reduce(r => null, ex => Console.WriteLine(ex.ToString()));
         }
 
         /// <summary>
