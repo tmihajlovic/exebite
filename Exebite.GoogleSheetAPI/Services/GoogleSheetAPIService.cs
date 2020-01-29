@@ -16,6 +16,8 @@ namespace Exebite.GoogleSheetAPI.Services
 
         private readonly IKasaConnector _kasaConnector;
         private readonly ILipaConnector _lipaConnector;
+        private readonly ITopliObrokConnector _topliObrokConnector;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GoogleSheetAPIService"/> class.
         /// </summary>
@@ -23,12 +25,14 @@ namespace Exebite.GoogleSheetAPI.Services
             IEitherMapper mapper,
             IGoogleSheetDataAccessService googleSheetDataAccessService,
             IKasaConnector kasaConnector,
-            ILipaConnector lipaConnector)
+            ILipaConnector lipaConnector,
+            ITopliObrokConnector topliObrokConnector)
         {
             _mapper = mapper;
             _googleSheetDataAccessService = googleSheetDataAccessService;
             _kasaConnector = kasaConnector;
             _lipaConnector = lipaConnector;
+            _topliObrokConnector = topliObrokConnector;
         }
 
         /// <inheritdoc/>
@@ -51,6 +55,15 @@ namespace Exebite.GoogleSheetAPI.Services
                 .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
         }
 
+        /// <inheritdoc/>
+        public void UpdateDailyMenuTopliObrok()
+        {
+            _mapper
+                .Map<IEnumerable<Food>>(_topliObrokConnector.GetDailyMenu())
+                .Map(_googleSheetDataAccessService.UpdateFoods)
+                .Map(count => LogRowsAffected(count, typeof(Food), nameof(_topliObrokConnector)))
+                .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
+        }
         /// <summary>
         /// Output the result of the operation to the console.
         /// <para>Used for debugging purposes.</para>
