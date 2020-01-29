@@ -21,7 +21,7 @@ namespace Exebite.GoogleSheetAPI
         {
             return services
                 .AddTransient<IGoogleSheetExtractor, GoogleSheetExtractor>()
-                .AddTransient<ITeglasConector, TeglasConector>()
+                .AddTransient<IMimasConnector, MimasConnector>()
                 .AddTransient<ILipaConnector, LipaConnector>()
                 .AddTransient<ITopliObrokConnector, TopliObrokConnector>()
                 .AddTransient<IKasaConnector, KasaConnector>()

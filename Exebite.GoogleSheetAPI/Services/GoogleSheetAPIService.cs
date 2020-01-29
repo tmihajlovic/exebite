@@ -17,22 +17,31 @@ namespace Exebite.GoogleSheetAPI.Services
         private readonly IKasaConnector _kasaConnector;
         private readonly ILipaConnector _lipaConnector;
         private readonly ITopliObrokConnector _topliObrokConnector;
+        private readonly IMimasConnector _mimasConnector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GoogleSheetAPIService"/> class.
         /// </summary>
+        /// <param name="mapper">Mapper that map result.</param>
+        /// <param name="googleSheetDataAccessService">Perform the actual persistence of the <see cref="IGoogleSheetAPIService"/> operations.</param>
+        /// <param name="kasaConnector">Connector for kasa google sheet.</param>
+        /// <param name="lipaConnector">Connector for restaurant Lipa google sheet.</param>
+        /// <param name="topliObrokConnector">Connector for restaurant topli obrok google sheet.</param>
+        /// <param name="mimasConnector">Connector for restaurant mimas google sheet.</param>
         public GoogleSheetAPIService(
             IEitherMapper mapper,
             IGoogleSheetDataAccessService googleSheetDataAccessService,
             IKasaConnector kasaConnector,
             ILipaConnector lipaConnector,
-            ITopliObrokConnector topliObrokConnector)
+            ITopliObrokConnector topliObrokConnector,
+            IMimasConnector mimasConnector)
         {
             _mapper = mapper;
             _googleSheetDataAccessService = googleSheetDataAccessService;
             _kasaConnector = kasaConnector;
             _lipaConnector = lipaConnector;
             _topliObrokConnector = topliObrokConnector;
+            _mimasConnector = mimasConnector;
         }
 
         /// <inheritdoc/>
@@ -64,6 +73,17 @@ namespace Exebite.GoogleSheetAPI.Services
                 .Map(count => LogRowsAffected(count, typeof(Food), nameof(_topliObrokConnector)))
                 .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
         }
+
+        /// <inheritdoc/>
+        public void UpdateDailyMenuMimas()
+        {
+            _mapper
+                .Map<IEnumerable<Food>>(_mimasConnector.GetDailyMenu())
+                .Map(_googleSheetDataAccessService.UpdateFoods)
+                .Map(count => LogRowsAffected(count, typeof(Food), nameof(_mimasConnector)))
+                .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
+        }
+
         /// <summary>
         /// Output the result of the operation to the console.
         /// <para>Used for debugging purposes.</para>
