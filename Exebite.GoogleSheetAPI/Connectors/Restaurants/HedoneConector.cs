@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Exebite.GoogleSheetAPI.Connectors.Restaurants.Base;
 using Exebite.GoogleSheetAPI.GoogleSSFactory;
@@ -9,7 +10,7 @@ using Google.Apis.Sheets.v4.Data;
 
 namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
 {
-    [Obsolete]
+    [Obsolete("Not working any more")]
     public sealed class HedoneConector : RestaurantConnector, IHedoneConector
     {
         private new const string DailyMenuSheet = "Dnevni meni";
@@ -20,8 +21,11 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         private readonly Restaurant _restaurant;
         private readonly string _sheetId;
 
-        public HedoneConector(IGoogleSheetExtractor googleSheetService, IGoogleSpreadsheetIdFactory googleSSIdFactory)
-            : base(googleSheetService)
+        public HedoneConector(
+            IGoogleSheetExtractor googleSheetService,
+            IGoogleSpreadsheetIdFactory googleSSIdFactory,
+            IRestaurantQueryRepository restaurantQueryRepository)
+            : base(googleSheetService, restaurantQueryRepository, "Hedone")
         {
             _restaurant = new Restaurant { Name = "Hedone" };
             SheetId = _sheetId;
