@@ -49,8 +49,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         /// <returns>List of today available food</returns>
         private IEnumerable<Food> DailyMenu()
         {
-            //var date = DateTime.Today;
-            var date = new DateTime(2020, 01, 13);
+            var date = DateTime.Today;
             var foundMerge = FindDateRangeInSheets(date);
 
             if (foundMerge.IsSuccess)
