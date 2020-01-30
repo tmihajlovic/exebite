@@ -4,6 +4,7 @@ using Either;
 using Exebite.Common;
 using Exebite.DomainModel;
 using Exebite.GoogleSheetAPI.Connectors.Kasa;
+using Exebite.GoogleSheetAPI.Connectors.Restaurants;
 
 namespace Exebite.GoogleSheetAPI.Services
 {
@@ -14,18 +15,20 @@ namespace Exebite.GoogleSheetAPI.Services
         private readonly IGoogleSheetDataAccessService _googleSheetDataAccessService;
 
         private readonly IKasaConnector _kasaConnector;
-
+        private readonly ILipaConnector _lipaConnector;
         /// <summary>
         /// Initializes a new instance of the <see cref="GoogleSheetAPIService"/> class.
         /// </summary>
         public GoogleSheetAPIService(
             IEitherMapper mapper,
             IGoogleSheetDataAccessService googleSheetDataAccessService,
-            IKasaConnector kasaConnector)
+            IKasaConnector kasaConnector,
+            ILipaConnector lipaConnector)
         {
             _mapper = mapper;
             _googleSheetDataAccessService = googleSheetDataAccessService;
             _kasaConnector = kasaConnector;
+            _lipaConnector = lipaConnector;
         }
 
         /// <inheritdoc/>
@@ -36,6 +39,16 @@ namespace Exebite.GoogleSheetAPI.Services
                .Map(_googleSheetDataAccessService.UpdateCustomers)
                .Map(count => LogRowsAffected(count, typeof(Customer), nameof(_kasaConnector)))
                .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
+        }
+
+        /// <inheritdoc/>
+        public void UpdateDailyMenuLipa()
+        {
+            _mapper
+                .Map<IEnumerable<Food>>(_lipaConnector.GetDailyMenu())
+                .Map(_googleSheetDataAccessService.UpdateFoods)
+                .Map(count => LogRowsAffected(count, typeof(Food), nameof(_lipaConnector)))
+                .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
         }
 
         /// <summary>

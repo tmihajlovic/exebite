@@ -9,7 +9,7 @@ using Exebite.GoogleSheetAPI.SheetExtractor;
 
 namespace Exebite.GoogleSheetAPI.Connectors.Kasa
 {
-    public class KasaConnector : IKasaConnector
+    public sealed class KasaConnector : IKasaConnector
     {
         private readonly IGoogleSheetExtractor _googleSheetExtractor;
         private readonly string _sheetId;

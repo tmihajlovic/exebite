@@ -14,22 +14,16 @@ namespace Exebite.Business.GoogleApiImportExport
         private readonly IRestaurantQueryRepository _restaurantQueryRepo;
 
         // Connectors
-        private readonly ILipaConector _lipaConector;
-        private readonly IHedoneConector _hedoneConector;
-        private readonly ITeglasConector _teglasConector;
+        private readonly ILipaConnector _lipaConector;
 
         public GoogleApiExport(
-            ITeglasConector teglasConector,
-            IHedoneConector hedoneConector,
-            ILipaConector lipaConector,
+            ILipaConnector lipaConector,
             IOrderQueryRepository orderQueryRepo,
             ICustomerQueryRepository customerQueryRepo,
             IRestaurantQueryRepository restaurantQueryRepo)
         {
             // Connectors
             _lipaConector = lipaConector;
-            _hedoneConector = hedoneConector;
-            _teglasConector = teglasConector;
 
             // Services
             _orderQueryRepo = orderQueryRepo;
@@ -58,35 +52,6 @@ namespace Exebite.Business.GoogleApiImportExport
                     }
 
                     break;
-
-                case "Hedone":
-                    var hedone = _restaurantQueryRepo.Query(new RestaurantQueryModel { Name = restaurantName })
-                                                           .Map(x => x.Items.FirstOrDefault())
-                                                           .Reduce(_ => throw new Exception());
-                    if (hedone != null)
-                    {
-                        var hedoneOrders = _orderQueryRepo.GetAllOrdersForRestaurant(hedone.Id, 1, int.MaxValue)
-                                                          .Map(x => x.Items.Where(o => o.Date == DateTime.Today.Date).ToList())
-                                                          .Reduce(_ => throw new Exception());
-                        _hedoneConector.PlaceOrders(hedoneOrders);
-                    }
-
-                    break;
-
-                case "Teglas":
-                    var teglas = _restaurantQueryRepo.Query(new RestaurantQueryModel { Name = restaurantName })
-                                                           .Map(x => x.Items.FirstOrDefault())
-                                                           .Reduce(_ => throw new Exception());
-                    if (teglas != null)
-                    {
-                        var teglasOrders = _orderQueryRepo.GetAllOrdersForRestaurant(teglas.Id, 1, int.MaxValue)
-                                                          .Map(x => x.Items.Where(o => o.Date == DateTime.Today.Date).ToList())
-                                                          .Reduce(_ => throw new Exception());
-                        _teglasConector.PlaceOrders(teglasOrders);
-                    }
-
-                    break;
-
                 default:
                     throw new ArgumentException("Invalid restaurant");
             }
@@ -98,7 +63,6 @@ namespace Exebite.Business.GoogleApiImportExport
         public void SetupDailyMenuDayOrder()
         {
             _lipaConector.DnevniMenuSheetSetup();
-            _hedoneConector.DnevniMenuSheetSetup();
         }
 
         /// <summary>
@@ -109,11 +73,8 @@ namespace Exebite.Business.GoogleApiImportExport
             var customerList = _customerQueryRepo.Query(new CustomerQueryModel())
                                                  .Map(x => x.Items.ToList())
                                                  .Reduce(_ => throw new Exception());
-            _teglasConector.WriteKasaTab(customerList);
 
             _lipaConector.WriteKasaTab(customerList);
-
-            _hedoneConector.WriteKasaTab(customerList);
         }
     }
 }

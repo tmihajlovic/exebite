@@ -2,7 +2,7 @@
 
 namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
 {
-    public interface ITeglasConector : IRestaurantConector
+    public interface ITeglasConector : IRestaurantConnector
     {
     }
 }

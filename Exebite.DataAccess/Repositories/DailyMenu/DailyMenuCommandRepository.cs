@@ -10,12 +10,10 @@ namespace Exebite.DataAccess.Repositories
 {
     public class DailyMenuCommandRepository : IDailyMenuCommandRepository
     {
-        private readonly IMapper _mapper;
         private readonly IFoodOrderingContextFactory _factory;
 
-        public DailyMenuCommandRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public DailyMenuCommandRepository(IFoodOrderingContextFactory factory)
         {
-            _mapper = mapper;
             _factory = factory;
         }
 

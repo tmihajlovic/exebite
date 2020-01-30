@@ -10,7 +10,7 @@ namespace Exebite.DataAccess.Repositories
         /// Check whether Food object with specified Name and RestaurantId exists.
         /// </summary>
         /// <param name="queryModel">Food query model.</param>
-        /// <returns>Whether the object exists and their id, or false/0 if it doesn't.</returns>
-        Either<Error, (bool Exists, int Id)> FindByNameAndRestaurantId(FoodQueryModel queryModel);
+        /// <returns>Objects Id if exists, or 0 if it doesn't.</returns>
+        Either<Error, int> FindByNameAndRestaurantId(FoodQueryModel queryModel);
     }
 }

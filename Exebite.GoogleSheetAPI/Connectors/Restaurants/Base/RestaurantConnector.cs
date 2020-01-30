@@ -1,19 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Either;
+using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
+using Exebite.GoogleSheetAPI.Common;
 using Exebite.GoogleSheetAPI.SheetExtractor;
 using Google.Apis.Sheets.v4.Data;
 
 namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 {
-    public abstract class RestaurantConector : IRestaurantConector
+    public abstract class RestaurantConnector : IRestaurantConnector
     {
-        private readonly string _kasaSheet = "Kasa";
+        private readonly string _kreditTab = "Kredit";
+        private readonly IRestaurantQueryRepository _restaurantQueryRepository;
 
-        protected RestaurantConector(IGoogleSheetExtractor googleSheetService)
+        protected RestaurantConnector(
+            IGoogleSheetExtractor googleSheetService,
+            IRestaurantQueryRepository restaurantQueryRepository,
+            string restaurantName)
         {
+            _restaurantQueryRepository = restaurantQueryRepository;
             GoogleSheetService = googleSheetService;
+            Restaurant = GetRestaurant(restaurantName);
         }
 
         internal IGoogleSheetExtractor GoogleSheetService { get; set; }
@@ -147,8 +157,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
             // Transpose values
             ValueRange formatedRange = new ValueRange { Values = new List<IList<object>>() };
 
-            bool empty = true;
             int rowNum = 0;
+            bool empty;
             do
             {
                 empty = true;
@@ -209,9 +219,10 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
         }
 
         /// <summary>
-        /// Populate Kasa tab
+        /// Populate Kredit tab
         /// </summary>
         /// <param name="customerList">List of <see cref="Customer"/></param>
+        [Obsolete("In Kredit tab and kasa should not be written")]
         public void WriteKasaTab(List<Customer> customerList)
         {
             if (customerList == null)
@@ -219,12 +230,12 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
                 return;
             }
 
-            List<object> header = new List<object> { "Id", "Ime i prezime", "Suma" };
-            ValueRange kasaData = new ValueRange { Values = new List<IList<object>> { header } };
+            List<object> header = new List<object> { "Id", "Ime i prezime", "SUM" };
+            ValueRange kreditData = new ValueRange { Values = new List<IList<object>> { header } };
 
             foreach (var customer in customerList)
             {
-                kasaData.Values.Add(new List<object>
+                kreditData.Values.Add(new List<object>
                 {
                     customer.Id,
                     customer.Name,
@@ -232,8 +243,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
                 });
             }
 
-            GoogleSheetService.Clear(SheetId, _kasaSheet);
-            GoogleSheetService.Update(kasaData, SheetId, _kasaSheet);
+            GoogleSheetService.Clear(SheetId, _kreditTab);
+            GoogleSheetService.Update(kreditData, SheetId, _kreditTab);
         }
 
         /// <summary>
@@ -349,6 +360,147 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
             }
 
             return FoodType.MAIN_COURSE;
+        }
+
+        /// <summary>
+        /// Translate month number into the local month name.
+        /// </summary>
+        /// <param name="month">Month number</param>
+        /// <returns>If correct month number is sent returns local month name, otherwise returns 'Not existing month'.</returns>
+        internal static string GetLocalMonthName(int month)
+        {
+            var monthLocal = "Not existing month";
+
+            switch (month)
+            {
+                case 1:
+                    monthLocal = "Januar";
+                    break;
+                case 2:
+                    monthLocal = "Februar";
+                    break;
+                case 3:
+                    monthLocal = "Mart";
+                    break;
+                case 4:
+                    monthLocal = "April";
+                    break;
+                case 5:
+                    monthLocal = "Maj";
+                    break;
+                case 6:
+                    monthLocal = "Jun";
+                    break;
+                case 7:
+                    monthLocal = "Jul";
+                    break;
+                case 8:
+                    monthLocal = "Avgust";
+                    break;
+                case 9:
+                    monthLocal = "Septembar";
+                    break;
+                case 10:
+                    monthLocal = "Oktobar";
+                    break;
+                case 11:
+                    monthLocal = "Novembar";
+                    break;
+                case 12:
+                    monthLocal = "Decembar";
+                    break;
+                default:
+                    break;
+            }
+
+            return monthLocal;
+        }
+
+        /// <summary>
+        /// Finds the merge inside all the sheets.
+        /// </summary>
+        /// <param name="providedDate">Date for which needs to be found date range</param>
+        /// <returns>Result with all <seealso cref="MergedRegion"/></returns>
+        internal Result<MergedRegion> FindDateRangeInSheets(
+            DateTime providedDate)
+        {
+            var foundRegion = GoogleSheetService.GetWorkSheets(SheetId)
+                .Select(SheetMerges)
+                .Select(mergeList => GetMergeWithDate(mergeList, providedDate))
+                .Where(result => result.IsSuccess)
+                .FirstOrDefault();
+
+            if (foundRegion != null)
+            {
+                return foundRegion;
+            }
+
+            return Result<MergedRegion>.Fail(null, string.Format("No merge with provided date {0}.", providedDate.ToString()));
+        }
+
+        /// <summary>
+        /// From all the merges, find the one that has provided date.
+        /// </summary>
+        /// <param name="merges">Collection of all <seealso cref="MergedRegion"/></param>
+        /// <param name="providedDate">Date for which <paramref name="merges"/> will be checked.</param>
+        /// <returns>Result with <seealso cref="MergedRegion"/></returns>
+        internal Result<MergedRegion> GetMergeWithDate(
+            IEnumerable<MergedRegion> merges,
+            DateTime providedDate)
+        {
+            foreach (var merge in merges)
+            {
+                var result = GoogleSheetService.ReadDateTime(merge.A1FirstCell, SheetId);
+                if (result.IsSuccess)
+                {
+                    DateTime parsedDate = result.Value;
+
+                    if (providedDate.Year != parsedDate.Year
+                        || providedDate.Month != parsedDate.Month)
+                    {
+                        break;
+                    }
+
+                    if (providedDate.Date.Equals(parsedDate.Date))
+                    {
+                        return Result<MergedRegion>.Success(merge);
+                    }
+                }
+
+                // There is a limitation on Google Side for 100 calls per second.
+                // We have added this thread sleep to avoid such issues.
+                Thread.Sleep(Constants.SLEEP_TIME);
+            }
+
+            return Result<MergedRegion>.Fail(null, "Sheet doesn't contain this date.");
+        }
+
+        /// <summary>
+        /// Returns a list of all merged regions
+        /// </summary>
+        /// <param name="sheet">Google sheet for which will be checked for merged regions.</param>
+        /// <returns>Returns all merged regions from the sheet.</returns>
+        private IEnumerable<MergedRegion> SheetMerges(Sheet sheet)
+        {
+            if (sheet.Merges == null)
+            {
+                return new List<MergedRegion>();
+            }
+
+            return sheet.Merges.Select(merge => new MergedRegion(sheet, merge));
+        }
+
+        /// <summary>
+        /// Get the restaurant from the database
+        /// </summary>
+        /// <param name="name">Name of the restaurant that needs to be returned from database.</param>
+        /// <returns>Returns restaurant object from database if exists, otherwise null.</returns>
+        private Restaurant GetRestaurant(string name)
+        {
+            return _restaurantQueryRepository
+                    .Query(new RestaurantQueryModel { Name = name })
+                    .Map(res => res.Items.FirstOrDefault())
+                    .Reduce(r => null, ex => Console.WriteLine(ex.ToString()));
         }
     }
 }

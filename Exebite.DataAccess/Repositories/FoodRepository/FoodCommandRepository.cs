@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Either;
 using Exebite.Common;
 using Exebite.DataAccess.Context;
@@ -11,12 +10,10 @@ namespace Exebite.DataAccess.Repositories
 {
     public class FoodCommandRepository : IFoodCommandRepository
     {
-        private readonly IMapper _mapper;
         private readonly IFoodOrderingContextFactory _factory;
 
-        public FoodCommandRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public FoodCommandRepository(IFoodOrderingContextFactory factory)
         {
-            _mapper = mapper;
             _factory = factory;
         }
 

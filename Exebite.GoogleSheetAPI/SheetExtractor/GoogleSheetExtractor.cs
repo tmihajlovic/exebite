@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Exebite.GoogleSheetAPI.Common;
 using Exebite.GoogleSheetAPI.GoogleSSFactory;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 
 namespace Exebite.GoogleSheetAPI.SheetExtractor
 {
-    public class GoogleSheetExtractor : IGoogleSheetExtractor
+    public sealed class GoogleSheetExtractor : IGoogleSheetExtractor
     {
         private readonly SheetsService _sheetService;
         private readonly IGoogleSheetServiceFactory _googleSSFactory;
@@ -51,6 +52,86 @@ namespace Exebite.GoogleSheetAPI.SheetExtractor
             clearRequest.Execute();
         }
 
+        /// <summary>
+        /// Returns a list of worksheets in current sheet document.
+        /// </summary>
+        /// <param name="sheetId">Sheet ID that needs to be returned.</param>
+        /// <returns>Google sheet with specified ID.</returns>
+        public IEnumerable<Sheet> GetWorkSheets(string sheetId)
+        {
+            try
+            {
+                return _sheetService
+                        .Spreadsheets
+                        .Get(sheetId)
+                        .Execute()
+                        .Sheets;
+            }
+            catch
+            {
+                return new List<Sheet>();
+            }
+        }
+
+        /// <summary>
+        /// Reads DateTime in OLE Automation format and returns it as DateTime
+        /// Will only read first cell in the range.
+        /// </summary>
+        /// <param name="range">Range from which to be read.</param>
+        /// <param name="sheetId">Sheet ID from which to read range.</param>
+        /// <returns>DateTime if possible to read value.</returns>
+        public Result<DateTime> ReadDateTime(string range, string sheetId)
+        {
+            var readResult = ReadOneValue(range, sheetId);
+
+            if (readResult.IsSuccess)
+            {
+                if (long.TryParse(readResult.Value.ToString(), out long readValue))
+                {
+                    try
+                    {
+                        var resultingDateTime = DateTime.FromOADate(readValue);
+                        return Result<DateTime>.Success(resultingDateTime);
+                    }
+                    catch (Exception ex)
+                    {
+                        return Result<DateTime>.Fail(DateTime.MinValue, ex.Message);
+                    }
+                }
+
+                return Result<DateTime>.Fail(DateTime.MinValue, $"Could not parse {readResult.Value} into long");
+            }
+
+            return Result<DateTime>.Fail(DateTime.MinValue, readResult.ErrorMessage);
+        }
+
+        /// <summary>
+        /// Reads Data from the specified range in the sheet
+        /// Returns empty ValueRange if some error has happen.
+        /// </summary>
+        /// <param name="range">Range to be read</param>
+        /// <param name="sheetId">Sheet ID from which to read range.</param>
+        /// <returns> Value range for specified range.</returns>
+        public ValueRange ReadSheetData(string range, string sheetId)
+        {
+            try
+            {
+                var request = _sheetService
+                                .Spreadsheets
+                                .Values
+                                .Get(sheetId, range);
+
+                // We need to set this in order to get date-time properly.
+                request.ValueRenderOption = SpreadsheetsResource.ValuesResource.GetRequest.ValueRenderOptionEnum.UNFORMATTEDVALUE;
+
+                return request.Execute();
+            }
+            catch
+            {
+                return new ValueRange();
+            }
+        }
+
         public T ExtractCell<T>(IList<object> objectList, int index, T defaultValue)
         {
             T retVal;
@@ -70,6 +151,26 @@ namespace Exebite.GoogleSheetAPI.SheetExtractor
             }
 
             return retVal;
+        }
+
+        /// <summary>
+        /// Will only return first value in the provided range
+        /// </summary>
+        /// <param name="range">Which needs to be read</param>
+        /// <param name="sheetId">Sheet ID from which to read range.</param>
+        /// <returns>Return value from specified range.</returns>
+        private Result<object> ReadOneValue(string range, string sheetId)
+        {
+            var readSheetResult = ReadSheetData(range, sheetId);
+
+            if (readSheetResult.Values != null
+                && readSheetResult.Values[0] != null
+                && readSheetResult.Values[0][0] != null)
+            {
+                return Result<object>.Success(readSheetResult.Values[0][0]);
+            }
+
+            return Result<object>.Fail(new object(), "Could not find value in that range");
         }
     }
 }
