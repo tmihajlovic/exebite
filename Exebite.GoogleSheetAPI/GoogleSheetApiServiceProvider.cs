@@ -23,7 +23,7 @@ namespace Exebite.GoogleSheetAPI
                 .AddTransient<IGoogleSheetExtractor, GoogleSheetExtractor>()
                 .AddTransient<ITeglasConector, TeglasConector>()
                 .AddTransient<ILipaConnector, LipaConnector>()
-                .AddTransient<IHedoneConector, HedoneConector>()
+                .AddTransient<ITopliObrokConnector, TopliObrokConnector>()
                 .AddTransient<IKasaConnector, KasaConnector>()
                 .AddTransient<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>()
                 .AddTransient<IGoogleSheetServiceFactory, GoogleSheetServiceFactory>()

@@ -14,5 +14,10 @@
         /// Update daily menu for Lipa restaurant in the db based on data from the spreadsheets.
         /// </summary>
         void UpdateDailyMenuLipa();
+
+        /// <summary>
+        /// Update daily menu for Topli obrok restaurant in the db based on data from the spreadsheets.
+        /// </summary>
+        void UpdateDailyMenuTopliObrok();
     }
 }
