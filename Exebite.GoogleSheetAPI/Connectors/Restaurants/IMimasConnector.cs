@@ -2,10 +2,10 @@
 
 namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
 {
-    public interface IHedoneConector : IRestaurantConnector
+    public interface IMimasConnector : IRestaurantConnector
     {
         /// <summary>
-        /// Order Daily menu sheet so first column is today and place corect dates
+        /// Order Daily menu sheet so first column is today and place correct dates
         /// </summary>
         void DnevniMenuSheetSetup();
     }
