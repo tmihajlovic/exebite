@@ -25,6 +25,7 @@ namespace Exebite.API
         private readonly IServiceProvider _provider;
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public Startup(IConfiguration configuration, IHostingEnvironment env, IServiceProvider provider)
         {
@@ -49,6 +50,17 @@ namespace Exebite.API
                     opts.Filters.Add(new AllowAnonymousFilter());
                 })
                 .AddNSwagSettings(); // Add NSwag CamelCase settings.
+
+                services.AddCors(options =>
+                {
+                    options.AddPolicy(MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                    });
+                });
             }
             else
             {
@@ -108,6 +120,8 @@ namespace Exebite.API
             {
                 app.UseExceptionHandler("/error");
             }
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthentication();
 
