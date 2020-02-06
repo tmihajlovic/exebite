@@ -12,11 +12,12 @@ namespace Exebite.GoogleSheetAPI.Services
     public sealed class GoogleSheetDataAccessService : IGoogleSheetDataAccessService
     {
         private readonly IEitherMapper _mapper;
-
         private readonly ICustomerCommandRepository _customerCommandRepository;
         private readonly ICustomerQueryRepository _customerQueryRepository;
         private readonly IFoodQueryRepository _foodQueryRepository;
         private readonly IFoodCommandRepository _foodCommandRepository;
+        private readonly IDailyMenuQueryRepository _dailyMenuQueryRepository;
+        private readonly IDailyMenuCommandRepository _dailyMenuCommandRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GoogleSheetDataAccessService"/> class.
@@ -26,12 +27,16 @@ namespace Exebite.GoogleSheetAPI.Services
         /// <param name="customerQueryRepository">Customer query repository.</param>
         /// <param name="foodCommandRepository">Food command repository</param>
         /// <param name="foodQueryRepository">Food query repository.</param>
+        /// <param name="dailyMenuCommandRepository">Daily menu command repository.</param>
+        /// <param name="dailyMenuQueryRepository">Daily menu query repository.</param>
         public GoogleSheetDataAccessService(
             IEitherMapper mapper,
             ICustomerCommandRepository customerCommandRepository,
             ICustomerQueryRepository customerQueryRepository,
             IFoodCommandRepository foodCommandRepository,
-            IFoodQueryRepository foodQueryRepository)
+            IFoodQueryRepository foodQueryRepository,
+            IDailyMenuCommandRepository dailyMenuCommandRepository,
+            IDailyMenuQueryRepository dailyMenuQueryRepository)
         {
             _mapper = mapper;
 
@@ -39,6 +44,8 @@ namespace Exebite.GoogleSheetAPI.Services
             _customerQueryRepository = customerQueryRepository;
             _foodCommandRepository = foodCommandRepository;
             _foodQueryRepository = foodQueryRepository;
+            _dailyMenuCommandRepository = dailyMenuCommandRepository;
+            _dailyMenuQueryRepository = dailyMenuQueryRepository;
         }
 
         /// <inheritdoc/>
@@ -88,6 +95,12 @@ namespace Exebite.GoogleSheetAPI.Services
                 return new Left<Error, (int, int)>(new ArgumentNotSet(nameof(foods)));
             }
 
+            int dailyMenuId = GetDailyMenu(foods.First().RestaurantId);
+            if (dailyMenuId == 0)
+            {
+                return new Left<Error, (int, int)>(new ArgumentNotSet(nameof(dailyMenuId)));
+            }
+
             foreach (var food in foods)
             {
                 var exists = _foodQueryRepository
@@ -103,6 +116,7 @@ namespace Exebite.GoogleSheetAPI.Services
                         Name = food.Name,
                         Price = food.Price,
                         RestaurantId = food.RestaurantId,
+                        DailyMenuId = dailyMenuId,
                         Type = food.Type
                     };
 
@@ -121,6 +135,29 @@ namespace Exebite.GoogleSheetAPI.Services
             }
 
             return new Right<Error, (int, int)>((added, updated));
+        }
+
+        /// <summary>
+        /// Gets the daily menu id from database.
+        /// </summary>
+        /// <param name="restaurantId">Restaurant ID for which we are look for daily menu.</param>
+        /// <returns>The ID of the daily menu.</returns>
+        private int GetDailyMenu(int restaurantId)
+        {
+            var dailyMenus = _dailyMenuQueryRepository
+                                .Query(new DailyMenuQueryModel { RestaurantId = restaurantId })
+                                .Map(d => d.Items)
+                                .Reduce(r => new List<DailyMenu>(), ex => Console.WriteLine(ex.ToString()));
+
+            if (dailyMenus.Any())
+            {
+                return dailyMenus.First().Id;
+            }
+
+            return _dailyMenuCommandRepository
+                        .Insert(new DailyMenuInsertModel { RestaurantId = restaurantId })
+                        .Map(d => d)
+                        .Reduce(r => 0, ex => Console.WriteLine(ex.ToString()));
         }
     }
 }
