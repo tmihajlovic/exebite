@@ -1,53 +1,51 @@
 import React, { Component } from 'react'
 import './index.css'
-import Table from './Table'
-import Form from './Form'
+import DailyMenus from './components/dailyMenus';
+import Orders from './components/orders';
 
 class App extends Component {
+
   state = {
-    data: [],
-  }
-
-  removeRow = index => {
-    const { data } = this.state
-
-    this.setState({
-      data: data.filter((row, i) => {
-        return i !== index
-      }),
-    })
-  }
+    dailyMenus: [],
+    orders: []
+  };
 
   componentDidMount() {
     const url =
-      'http://localhost:6879/api/food/Query?Page=1&Size=100';
+      'http://localhost:6879/api/dailymenu/Query?Page=1&Size=100';
 
-    fetch(url, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    fetch(url)
       .then(result => result.json())
       .then(result => {
         this.setState({
-          data: result.items
+          dailyMenus: result.items
         })
       })
       .catch(err => console.log(err))
   }
 
+  handleAddToOrder = food => {
+    this.setState({ orders: this.state.orders.concat(food) })
+  }
+
+  handlerRemoveFromOrder = foodId => {
+    this.setState({ orders: this.state.orders.filter(f => f.id !== foodId) })
+  }
 
   render() {
-    const { data } = this.state
+    const { dailyMenus, orders } = this.state
 
     return (
-      <div className="App">
-        <h1>Hello, Exebite!</h1>
-        <div className="container">
-          <h2>Foods:</h2>
-          <Table data={data} removeRow={this.removeRow} />
-        </div>
-      </div>
+      <React.Fragment>
+        <h1>Welcome to ExeBite!</h1>
+        <main className="container">
+          <Orders orders={orders} onRemoveFromOrder={this.handlerRemoveFromOrder} />
+          <DailyMenus
+            dailyMenus={dailyMenus}
+            onAddToOrder={this.handleAddToOrder}
+            onRemoveFromOrder={this.handlerRemoveFromOrder} />
+        </main>
+      </React.Fragment >
     )
   }
 }
