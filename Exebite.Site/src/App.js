@@ -11,10 +11,10 @@ class App extends Component {
   };
 
   componentDidMount() {
-    const url =
+    const dailyMenuUrl =
       'http://localhost:6879/api/dailymenu/Query?Page=1&Size=100';
 
-    fetch(url)
+    fetch(dailyMenuUrl)
       .then(result => result.json())
       .then(result => {
         this.setState({
@@ -32,6 +32,10 @@ class App extends Component {
     this.setState({ orders: this.state.orders.filter(f => f.id !== foodId) })
   }
 
+  orderSubmitted = () => {
+    this.setState({ orders: [] })
+  }
+
   render() {
     const { dailyMenus, orders } = this.state
 
@@ -39,7 +43,7 @@ class App extends Component {
       <React.Fragment>
         <h1>Welcome to ExeBite!</h1>
         <main className="container">
-          <Orders orders={orders} onRemoveFromOrder={this.handlerRemoveFromOrder} />
+          <Orders orders={orders} onRemoveFromOrder={this.handlerRemoveFromOrder} onOrderSubmitted={this.orderSubmitted} />
           <DailyMenus
             dailyMenus={dailyMenus}
             onAddToOrder={this.handleAddToOrder}

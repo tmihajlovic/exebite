@@ -89,7 +89,7 @@ namespace Exebite.DataAccess.Test
 
         internal static DailyMenuCommandRepository CreateDailyMenuCommandRepositoryInstance(IFoodOrderingContextFactory factory)
         {
-            return new DailyMenuCommandRepository(factory, _mapper);
+            return new DailyMenuCommandRepository(factory);
         }
 
         #endregion DailyMenu
