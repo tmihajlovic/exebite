@@ -49,6 +49,7 @@ namespace Exebite.API
                 services.AddMvc(opts =>
                 {
                     opts.Filters.Add(new AllowAnonymousFilter());
+                    opts.EnableEndpointRouting = false;
                 })
                 .AddNewtonsoftJson()
                 .AddNSwagSettings(); // Add NSwag CamelCase settings.
