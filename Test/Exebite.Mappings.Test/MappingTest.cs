@@ -26,7 +26,7 @@ namespace Mappings.Test
         public void MappingProfile_VerifyUIMappings()
         {
             var configExpresion = new MapperConfigurationExpression();
-            configExpresion.AddProfile<UIMappingProfile>();
+            configExpresion.AddProfile<Exebite.API.UIMappingProfile>();
 
             var config = new MapperConfiguration(configExpresion);
 

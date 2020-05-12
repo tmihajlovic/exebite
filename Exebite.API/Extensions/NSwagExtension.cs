@@ -8,11 +8,12 @@ namespace Exebite.API.Extensions
         /// <summary>
         /// Add NSwag settings in regards to CamelCase (de)serialization of objects.
         /// </summary>
+        /// <param name="builder">builder</param>
         /// <returns>IMvcBuilder</returns>
         public static IMvcBuilder AddNSwagSettings(this IMvcBuilder builder) =>
-            builder.AddJsonOptions(opt =>
+            builder.AddNewtonsoftJson(opt =>
                 {
-                    opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                   opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 });
     }
 }
