@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <ProjectGuid>37FB83A2-23C2-4ECF-A42D-F18714AF27AE</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>

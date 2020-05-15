@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NSwag.AspNetCore;
 
 namespace Exebite.API
@@ -24,10 +25,10 @@ namespace Exebite.API
     {
         private readonly IServiceProvider _provider;
         private readonly IConfiguration _configuration;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly string _myAllowSpecificOrigins = "myAllowSpecificOrigins";
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env, IServiceProvider provider)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env, IServiceProvider provider)
         {
             _configuration = configuration;
             _hostingEnvironment = env;
@@ -48,7 +49,9 @@ namespace Exebite.API
                 services.AddMvc(opts =>
                 {
                     opts.Filters.Add(new AllowAnonymousFilter());
+                    opts.EnableEndpointRouting = false;
                 })
+                .AddNewtonsoftJson()
                 .AddNSwagSettings(); // Add NSwag CamelCase settings.
 
                 services.AddCors(options =>
@@ -82,7 +85,7 @@ namespace Exebite.API
             }
 
             services.AddAuthorization(options => options.AddCustomPolicies());
-            services.AddDefaultIdentity<IdentityUser>();
+            services.AddIdentityCore<IdentityUser>();
             services.AddScoped<IAuthorizationHandler, RoleHandler>();
             services.AddTransient<IAuthorizationHandler, RoleHandler>();
 
@@ -107,7 +110,7 @@ namespace Exebite.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRewriter(new RewriteOptions()
                 .AddRedirect("swager", "swagger")
