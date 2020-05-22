@@ -16,7 +16,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
             IGoogleSheetExtractor googleSheetService,
             IGoogleSpreadsheetIdFactory googleSSIdFactory,
             IRestaurantQueryRepository restaurantQueryRepository)
-            : base(googleSheetService, restaurantQueryRepository, "Mimas")
+            : base(googleSheetService, restaurantQueryRepository, Constants.MIMAS_NAME)
         {
             SheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.MIMAS);
             DailyMenuSheet = GetLocalMonthName(DateTime.Now.Month) + DateTime.Now.Year;
