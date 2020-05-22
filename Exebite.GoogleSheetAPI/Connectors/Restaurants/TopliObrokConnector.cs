@@ -16,7 +16,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
             IGoogleSheetExtractor googleSheetService,
             IGoogleSpreadsheetIdFactory googleSSIdFactory,
             IRestaurantQueryRepository restaurantQueryRepository)
-            : base(googleSheetService, restaurantQueryRepository, "Topli Obrok")
+            : base(googleSheetService, restaurantQueryRepository, Constants.TOPLI_OPBROK_NAME)
         {
             SheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.TOPLI_OBROK);
             DailyMenuSheet = GetLocalMonthName(DateTime.Now.Month) + DateTime.Now.Year;
@@ -69,7 +69,12 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
                 for (int i = 0; i < foodNames.Count; i++)
                 {
                     var foodName = foodNames.ElementAt(i).ToString();
-                    var foodPrice = foodPrices.ElementAt(i).ToString();
+                    var foodPrice = string.Empty;
+
+                    if (i < foodPrices.Count)
+                    {
+                        foodPrice = foodPrices.ElementAt(i).ToString();
+                    }
 
                     if (string.IsNullOrWhiteSpace(foodPrice))
                     {
