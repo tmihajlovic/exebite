@@ -1,4 +1,5 @@
-﻿using Exebite.DataAccess.Context;
+﻿using Exebite.Common;
+using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Repositories;
 
 namespace FeatureTestingConsole
@@ -52,13 +53,13 @@ namespace FeatureTestingConsole
             _locationCommandRepo.Insert(new LocationInsertModel()
             {
                 Name = "Execom VS",
-                Address = "Vojvode stepe 50"
+                Address = "Vojvode Stepe 50"
             });
 
             _locationCommandRepo.Insert(new LocationInsertModel()
             {
-                Name = "Execom JD",
-                Address = "Jovana ducica 50"
+                Name = "Execom MM",
+                Address = "Đorđa Rajkovica 2"
             });
         }
 
@@ -66,37 +67,37 @@ namespace FeatureTestingConsole
         {
             _restaurantCommandRepository.Insert(new RestaurantInsertModel()
             {
-                Name = "Pod Lipom"
+                Name = RestaurantConstants.POD_LIPOM_NAME
             });
 
             _restaurantCommandRepository.Insert(new RestaurantInsertModel()
             {
-                Name = "Topli Obrok"
+                Name = RestaurantConstants.TOPLI_OBROK_NAME
             });
 
             _restaurantCommandRepository.Insert(new RestaurantInsertModel()
             {
-                Name = "Mimas"
+                Name = RestaurantConstants.MIMAS_NAME
             });
 
             _restaurantCommandRepository.Insert(new RestaurantInsertModel()
             {
-                Name = "Index House"
+                Name = RestaurantConstants.INDEX_NAME
             });
 
             _restaurantCommandRepository.Insert(new RestaurantInsertModel()
             {
-                Name = "Serpica"
+                Name = RestaurantConstants.SERPICA_NAME
             });
 
             _restaurantCommandRepository.Insert(new RestaurantInsertModel()
             {
-                Name = "Hey Day"
+                Name = RestaurantConstants.HEY_DAY_NAME
             });
 
             _restaurantCommandRepository.Insert(new RestaurantInsertModel()
             {
-                Name = "Parrilla"
+                Name = RestaurantConstants.PARRILLA_NAME
             });
         }
     }

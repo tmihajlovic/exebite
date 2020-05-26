@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Exebite.Business\Exebite.Business.csproj" />
+    <ProjectReference Include="..\Exebite.Common\Exebite.Common.csproj" />
     <ProjectReference Include="..\Exebite.DataAccess\Exebite.DataAccess.csproj" />
   </ItemGroup>
 </Project>
