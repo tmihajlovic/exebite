@@ -59,7 +59,7 @@ namespace FeatureTestingConsole
             _locationCommandRepo.Insert(new LocationInsertModel()
             {
                 Name = "Execom MM",
-                Address = "Đorđa Rajkovica 2"
+                Address = "Đorđa Rajkovića 2"
             });
         }
 

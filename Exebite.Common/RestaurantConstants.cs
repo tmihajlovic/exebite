@@ -35,7 +35,7 @@
         /// <summary>
         /// Name of the Serpica restaurant
         /// </summary>
-        public const string SERPICA_NAME = "Serpica";
+        public const string SERPICA_NAME = "Šerpica";
 
         /// <summary>
         /// Category is not specified.
