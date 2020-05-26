@@ -19,7 +19,7 @@ namespace Exebite.DataAccess.Repositories
             _factory = factory;
         }
 
-        public Either<Error, int> Insert(CustomerInsertModel entity)
+        public Either<Error, long> Insert(CustomerInsertModel entity)
         {
             try
             {
@@ -30,22 +30,22 @@ namespace Exebite.DataAccess.Repositories
                         Name = entity.Name,
                         GoogleUserId = entity.GoogleUserId,
                         Balance = entity.Balance,
-                        LocationId = entity.LocationId,
-                        RoleId = entity.RoleId
+                        DefaultLocationId = entity.DefaultLocationId,
+                        Role = entity.Role
                     };
 
                     var addedEntity = context.Customer.Add(customerEntity).Entity;
                     context.SaveChanges();
-                    return new Right<Error, int>(addedEntity.Id);
+                    return new Right<Error, long>(addedEntity.Id);
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Error, int>(new UnknownError(ex.ToString()));
+                return new Left<Error, long>(new UnknownError(ex.ToString()));
             }
         }
 
-        public Either<Error, bool> Update(int id, CustomerUpdateModel entity)
+        public Either<Error, bool> Update(long id, CustomerUpdateModel entity)
         {
             try
             {
@@ -65,8 +65,8 @@ namespace Exebite.DataAccess.Repositories
                     currentEntity.Name = entity.Name;
                     currentEntity.GoogleUserId = entity.GoogleUserId;
                     currentEntity.Balance = entity.Balance;
-                    currentEntity.LocationId = entity.LocationId;
-                    currentEntity.RoleId = entity.RoleId;
+                    currentEntity.DefaultLocationId = entity.DefaultLocationId;
+                    currentEntity.Role = entity.Role;
                     context.SaveChanges();
                 }
 
@@ -78,7 +78,7 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, bool> Delete(int id)
+        public Either<Error, bool> Delete(long id)
         {
             try
             {
@@ -127,8 +127,8 @@ namespace Exebite.DataAccess.Repositories
                     dbCustomer.Name = customer.Name;
                     dbCustomer.GoogleUserId = customer.GoogleUserId;
                     dbCustomer.Balance = customer.Balance;
-                    dbCustomer.LocationId = customer.LocationId;
-                    dbCustomer.RoleId = customer.RoleId;
+                    dbCustomer.DefaultLocationId = customer.DefaultLocationId;
+                    dbCustomer.Role = customer.Role;
 
                     return context.SaveChanges() > 0;
                 }

@@ -56,7 +56,7 @@ namespace Exebite.DataAccess.Repositories
                         return new Left<Error, string>(new RecordNotFound($"Record with GoogleUserId='{googleId}' is not found."));
                     }
 
-                    return new Right<Error, string>(customer.Role != null ? customer.Role.Name : string.Empty);
+                    return new Right<Error, string>(Enum.GetName(typeof(RoleType), customer.Role));
                 }
             }
             catch (Exception ex)

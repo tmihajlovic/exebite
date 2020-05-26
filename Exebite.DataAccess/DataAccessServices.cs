@@ -1,5 +1,4 @@
-﻿using Exebite.DataAccess.AutoMapper;
-using Exebite.DataAccess.Context;
+﻿using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,8 +25,6 @@ namespace Exebite.DataAccess
             collection.AddTransient<IOrderCommandRepository, OrderCommandRepository>();
             collection.AddTransient<IMealQueryRepository, MealQueryRepository>();
             collection.AddTransient<IMealCommandRepository, MealCommandRepository>();
-            collection.AddTransient<IRoleQueryRepository, RoleQueryRepository>();
-            collection.AddTransient<IRoleCommandRepository, RoleCommandRepository>();
 
             return collection;
         }
