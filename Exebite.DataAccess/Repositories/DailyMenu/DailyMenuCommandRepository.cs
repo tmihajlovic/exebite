@@ -10,9 +10,9 @@ namespace Exebite.DataAccess.Repositories
 {
     public class DailyMenuCommandRepository : IDailyMenuCommandRepository
     {
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
-        public DailyMenuCommandRepository(IFoodOrderingContextFactory factory)
+        public DailyMenuCommandRepository(IMealOrderingContextFactory factory)
         {
             _factory = factory;
         }
@@ -26,7 +26,8 @@ namespace Exebite.DataAccess.Repositories
                     var dailyMenuEntity = new DailyMenuEntity
                     {
                         RestaurantId = entity.RestaurantId,
-                        Foods = entity.Foods.Select(food => context.Food.Find(food.Id)).ToList()
+                        Date = entity.Date,
+                        Note = entity.Note,
                     };
 
                     var addedEntity = context.DailyMenu.Add(dailyMenuEntity).Entity;

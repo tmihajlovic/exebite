@@ -1,17 +1,17 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace Exebite.DataAccess.Entities
 {
-    [Table("Payment")]
-    public class PaymentEntity
+    [Table("CustomerToFavouriteMeal")]
+    public class CustomerToFavouriteMealEntity
     {
-        public long Id { get; set; }
+        [ForeignKey(nameof(Meal))]
+        public long MealId { get; set; }
 
-        public DateTime Date { get; set; }
-
-        public decimal Amount { get; set; }
+        public virtual MealEntity Meal { get; set; }
 
         [ForeignKey(nameof(Customer))]
         public long CustomerId { get; set; }

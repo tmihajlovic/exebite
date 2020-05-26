@@ -7,8 +7,7 @@ namespace Exebite.DataAccess.Entities
     [Table("Customer")]
     public class CustomerEntity
     {
-        [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Name { get; set; }
 
@@ -16,18 +15,15 @@ namespace Exebite.DataAccess.Entities
 
         public string GoogleUserId { get; set; }
 
-        [ForeignKey(nameof(Location))]
-        public int? LocationId { get; set; }
+        public int Role { get; set; }
 
-        public virtual LocationEntity Location { get; set; }
+        [ForeignKey(nameof(DefaultLocation))]
+        public long DefaultLocationId { get; set; }
 
-        [ForeignKey(nameof(Role))]
-        public int? RoleId { get; set; }
-
-        public virtual RoleEntity Role { get; set; }
+        public virtual LocationEntity DefaultLocation { get; set; }
 
         public virtual List<OrderEntity> Orders { get; set; }
 
-        public virtual List<CustomerAliasesEntities> Aliases { get; set; }
+        public virtual List<MealEntity> FavouriteMeals { get; set; }
     }
 }

@@ -11,47 +11,35 @@ namespace Exebite.DataAccess.AutoMapper
     [Obsolete]
     public class MealToMealEntityConverter : IMealToMealEntityConverter
     {
-        private readonly IFoodOrderingContextFactory _factory;
-        private readonly IMapper _mapper;
+        //private readonly IFoodOrderingContextFactory _factory;
 
-        public MealToMealEntityConverter(IFoodOrderingContextFactory factory, IMapper mapper)
-        {
-            _factory = factory;
-            _mapper = mapper;
-        }
+        //public MealToMealEntityConverter(IFoodOrderingContextFactory factory)
+        //{
+        //    _factory = factory;
+        //}
 
-        public MealEntity Convert(Meal source, MealEntity destination, ResolutionContext context)
-        {
-            using (var dbContext = _factory.Create())
-            {
-                destination = new MealEntity
-                {
-                    Id = source.Id,
-                    Price = source.Price
-                };
-                destination.Id = source.Id;
-                destination.FoodEntityMealEntities = new List<FoodEntityMealEntity>();
-                foreach (var food in source.Foods)
-                {
-                    var dbFoodMealEntity = dbContext.Meal.FirstOrDefault(m => m.Id == source.Id).FoodEntityMealEntities.SingleOrDefault(fm => fm.FoodEntityId == food.Id);
-                    if (dbFoodMealEntity == null)
-                    {
-                        destination.FoodEntityMealEntities.Add(new FoodEntityMealEntity
-                        {
-                            FoodEntity = _mapper.Map<FoodEntity>(food),
-                            FoodEntityId = food.Id,
-                            MealEntityId = source.Id,
-                            MealEntity = destination
-                        });
-                    }
-                    else
-                    {
-                        destination.FoodEntityMealEntities.Add(dbFoodMealEntity);
-                    }
-                }
+        //public MealEntity Convert(Food source, MealEntity destination, ResolutionContext context)
+        //{
+        //    using (var dbContext = _factory.Create())
+        //    {
+        //        destination = new MealEntity
+        //        {
+        //            Id = source.Id,
+        //            Name = source.Name,
+        //            Type = source.Type,
+        //            Price = source.Price,
+        //            Description = source.Description,
+        //            IsInactive = source.IsInactive,
+        //            RestaurantId = source.RestaurantId,
+        //            FoodEntityMealEntities = new List<FoodEntityMealEntity>(),
+        //            FoodEntityRecipeEntities = new List<FoodEntityRecipeEntity>()
+        //        };
+        //        destination.Restaurant = dbContext.Restaurant.Find(destination.RestaurantId);
+        //        destination.FoodEntityMealEntities = dbContext.Food.Where(fme => fme.Id == source.Id).SelectMany(x => x.FoodEntityMealEntities).ToList();
+        //        destination.FoodEntityRecipeEntities = dbContext.Recipe.Where(fre => fre.Id == source.Id).SelectMany(x => x.FoodEntityRecipeEntities).ToList();
 
-                return destination;
-            }
-        }
+        //        return destination;
+        //    }
+        //}
     }
 }

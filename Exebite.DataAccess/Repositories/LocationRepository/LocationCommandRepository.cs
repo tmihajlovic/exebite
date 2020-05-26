@@ -10,9 +10,9 @@ namespace Exebite.DataAccess.Repositories
     public class LocationCommandRepository : ILocationCommandRepository
     {
         private readonly IMapper _mapper;
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
-        public LocationCommandRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public LocationCommandRepository(IMealOrderingContextFactory factory, IMapper mapper)
         {
             _mapper = mapper;
             _factory = factory;

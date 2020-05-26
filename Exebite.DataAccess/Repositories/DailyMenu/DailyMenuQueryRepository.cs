@@ -12,9 +12,9 @@ namespace Exebite.DataAccess.Repositories
     public class DailyMenuQueryRepository : IDailyMenuQueryRepository
     {
         private readonly IMapper _mapper;
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
-        public DailyMenuQueryRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public DailyMenuQueryRepository(IMealOrderingContextFactory factory, IMapper mapper)
         {
             _factory = factory;
             _mapper = mapper;

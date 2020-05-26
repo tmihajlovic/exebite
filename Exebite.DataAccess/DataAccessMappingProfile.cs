@@ -12,7 +12,7 @@ namespace Exebite.DataAccess
             CreateMap<CustomerEntity, Customer>();
             CreateMap<CustomerAliasesEntities, CustomerAliases>();
             CreateMap<OrderEntity, Order>();
-            CreateMap<FoodEntity, Food>();
+            CreateMap<MealEntity, Food>();
             CreateMap<RestaurantEntity, Restaurant>();
             CreateMap<LocationEntity, Location>();
             CreateMap<RecipeEntity, Recipe>()

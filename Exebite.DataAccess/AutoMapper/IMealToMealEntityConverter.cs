@@ -6,7 +6,7 @@ using Exebite.DomainModel;
 namespace Exebite.DataAccess.AutoMapper
 {
     [Obsolete]
-    public interface IMealToMealEntityConverter : ITypeConverter<Meal, MealEntity>
+    public interface IMealToMealEntityConverter : ITypeConverter<Food, MealEntity>
     {
     }
 }

@@ -6,7 +6,7 @@ namespace Exebite.DataAccess.Repositories
     {
         public string Name { get; set; }
 
-        public FoodType Type { get; set; }
+        public MealType Type { get; set; }
 
         public decimal Price { get; set; }
 

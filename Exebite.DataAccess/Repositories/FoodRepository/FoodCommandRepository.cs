@@ -10,9 +10,9 @@ namespace Exebite.DataAccess.Repositories
 {
     public class FoodCommandRepository : IFoodCommandRepository
     {
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
-        public FoodCommandRepository(IFoodOrderingContextFactory factory)
+        public FoodCommandRepository(IMealOrderingContextFactory factory)
         {
             _factory = factory;
         }
@@ -28,7 +28,7 @@ namespace Exebite.DataAccess.Repositories
 
                 using (var context = _factory.Create())
                 {
-                    var foodEntity = new FoodEntity()
+                    var foodEntity = new MealEntity()
                     {
                         Name = entity.Name,
                         Type = entity.Type,
@@ -91,7 +91,7 @@ namespace Exebite.DataAccess.Repositories
             {
                 using (var context = _factory.Create())
                 {
-                    var itemSet = context.Set<FoodEntity>();
+                    var itemSet = context.Set<MealEntity>();
                     var item = itemSet.Find(id);
                     if (item == null)
                     {

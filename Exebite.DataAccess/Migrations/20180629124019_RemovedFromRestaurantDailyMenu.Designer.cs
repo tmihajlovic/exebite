@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Exebite.DataAccess.Migrations
 {
-    [DbContext(typeof(FoodOrderingContext))]
+    [DbContext(typeof(MealOrderingContext))]
     [Migration("20180629124019_RemovedFromRestaurantDailyMenu")]
     partial class RemovedFromRestaurantDailyMenu
     {
