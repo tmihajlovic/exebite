@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Exebite.Common;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Exebite.GoogleSheetAPI.Common;
@@ -16,7 +17,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
             IGoogleSheetExtractor googleSheetService,
             IGoogleSpreadsheetIdFactory googleSSIdFactory,
             IRestaurantQueryRepository restaurantQueryRepository)
-            : base(googleSheetService, restaurantQueryRepository, "Restoran pod Lipom")
+            : base(googleSheetService, restaurantQueryRepository, RestaurantConstants.POD_LIPOM_NAME)
         {
             SheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.LIPA);
             DailyMenuSheet = GetLocalMonthName(DateTime.Now.Month) + DateTime.Now.Year;
