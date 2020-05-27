@@ -45,7 +45,7 @@ namespace Exebite.DataAccess.Repositories
 
                     if (queryModel.Date.HasValue)
                     {
-                        query = query.Where(x => x.Date == queryModel.Date.Value);
+                        query = query.Where(x => x.Date.Date == queryModel.Date.Value.Date);
                     }
 
                     var size = queryModel.Size <= QueryConstants.MaxElements ? queryModel.Size : QueryConstants.MaxElements;

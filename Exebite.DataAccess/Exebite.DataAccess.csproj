@@ -20,6 +20,9 @@
     <Compile Remove="Migrations\20180615133331_AddedRestaurantNavFromRecipe.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Repositories\DailyMenu\DailyMenuCommandRepository.cs~RF432b1ad6.TMP" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="coverlet.msbuild" Version="2.3.2">

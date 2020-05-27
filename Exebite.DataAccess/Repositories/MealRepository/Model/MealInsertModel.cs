@@ -2,7 +2,7 @@
 
 namespace Exebite.DataAccess.Repositories
 {
-    public class FoodInsertModel
+    public class MealInsertModel
     {
         public string Name { get; set; }
 
@@ -12,9 +12,9 @@ namespace Exebite.DataAccess.Repositories
 
         public string Description { get; set; }
 
-        public bool IsInactive { get; set; }
+        public string Note { get; set; }
 
-        public int? DailyMenuId { get; set; }
+        public bool IsActive { get; set; }
 
         public int RestaurantId { get; set; }
     }
