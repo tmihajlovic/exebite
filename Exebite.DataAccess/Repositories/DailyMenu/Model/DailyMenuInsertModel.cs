@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Repositories
@@ -7,6 +8,8 @@ namespace Exebite.DataAccess.Repositories
     {
         public int RestaurantId { get; set; }
 
-        public List<Food> Foods { get; set; } = new List<Food>();
+        public DateTime Date { get; set; }
+
+        public string Note { get; set; }
     }
 }

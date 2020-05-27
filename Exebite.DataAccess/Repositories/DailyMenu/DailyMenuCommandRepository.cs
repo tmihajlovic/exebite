@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using AutoMapper;
 using Either;
 using Exebite.Common;
 using Exebite.DataAccess.Context;
@@ -17,7 +15,7 @@ namespace Exebite.DataAccess.Repositories
             _factory = factory;
         }
 
-        public Either<Error, int> Insert(DailyMenuInsertModel entity)
+        public Either<Error, long> Insert(DailyMenuInsertModel entity)
         {
             try
             {
@@ -32,16 +30,16 @@ namespace Exebite.DataAccess.Repositories
 
                     var addedEntity = context.DailyMenu.Add(dailyMenuEntity).Entity;
                     context.SaveChanges();
-                    return new Right<Error, int>(addedEntity.Id);
+                    return new Right<Error, long>(addedEntity.Id);
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Error, int>(new UnknownError(ex.ToString()));
+                return new Left<Error, long>(new UnknownError(ex.ToString()));
             }
         }
 
-        public Either<Error, bool> Update(int id, DailyMenuUpdateModel entity)
+        public Either<Error, bool> Update(long id, DailyMenuUpdateModel entity)
         {
             try
             {
@@ -59,13 +57,8 @@ namespace Exebite.DataAccess.Repositories
                     }
 
                     currentEntity.RestaurantId = entity.RestaurantId;
-
-                    var addedEntities = entity.Foods.Select(food => context.Food.Find(food.Id)).ToList();
-
-                    // this will remove old references, and after that new ones will be added
-                    currentEntity.Foods.Clear();
-
-                    addedEntities.ForEach(a => currentEntity.Foods.Add(a));
+                    currentEntity.Date = entity.Date;
+                    currentEntity.Note = entity.Note;
 
                     context.SaveChanges();
                 }
@@ -78,7 +71,7 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, bool> Delete(int id)
+        public Either<Error, bool> Delete(long id)
         {
             try
             {
