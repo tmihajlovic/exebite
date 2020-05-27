@@ -1,0 +1,61 @@
+2020-05-20 14:44:55.5097 Info Message Template Auto Format enabled
+2020-05-20 14:44:55.5302 Info Loading assembly: NLog.Web.AspNetCore
+2020-05-20 14:44:55.6460 Info Adding target File Target[allfile]
+2020-05-20 14:44:55.6815 Info Adding target File Target[ownFile-web]
+2020-05-20 14:44:55.7000 Info Configured from an XML element in C:\Users\Bulic\exebite\Exebite.API\bin\Debug\netcoreapp3.1\nlog.config...
+2020-05-20 14:44:55.7296 Info Found 45 configuration items
+2020-05-20 14:48:22.8873 Info Logger closing down...
+2020-05-20 14:48:22.8873 Info Closing old configuration.
+2020-05-20 14:48:22.9039 Info Logger has been closed down.
+2020-05-20 14:48:22.9039 Info Shutting down logging...
+2020-05-20 14:48:22.9167 Info Logger has been shut down.
+2020-05-20 15:00:30.3046 Info Message Template Auto Format enabled
+2020-05-20 15:00:30.3212 Info Loading assembly: NLog.Web.AspNetCore
+2020-05-20 15:00:30.3760 Info Adding target File Target[allfile]
+2020-05-20 15:00:30.3825 Info Adding target File Target[ownFile-web]
+2020-05-20 15:00:30.3825 Info Configured from an XML element in C:\Users\Bulic\exebite\Exebite.API\bin\Debug\netcoreapp3.1\nlog.config...
+2020-05-20 15:00:30.4104 Info Found 45 configuration items
+2020-05-20 15:35:01.0303 Info Logger closing down...
+2020-05-20 15:35:01.0303 Info Closing old configuration.
+2020-05-20 15:35:01.0464 Info Logger has been closed down.
+2020-05-20 15:35:01.0464 Info Shutting down logging...
+2020-05-20 15:35:01.0559 Info Logger has been shut down.
+2020-05-21 08:53:01.7737 Info Message Template Auto Format enabled
+2020-05-21 08:53:01.7934 Info Loading assembly: NLog.Web.AspNetCore
+2020-05-21 08:53:01.8345 Info Adding target File Target[allfile]
+2020-05-21 08:53:01.8408 Info Adding target File Target[ownFile-web]
+2020-05-21 08:53:01.8512 Info Configured from an XML element in C:\Users\Bulic\exebite\Exebite.API\bin\Debug\netcoreapp3.1\nlog.config...
+2020-05-21 08:53:01.8684 Info Found 45 configuration items
+2020-05-21 15:34:09.8213 Info Logger closing down...
+2020-05-21 15:34:09.8213 Info Closing old configuration.
+2020-05-21 15:34:09.8568 Info Logger has been closed down.
+2020-05-21 15:34:09.8687 Info Shutting down logging...
+2020-05-21 15:34:09.8687 Info Logger has been shut down.
+2020-05-22 12:01:12.4878 Info Message Template Auto Format enabled
+2020-05-22 12:01:12.4994 Info Loading assembly: NLog.Web.AspNetCore
+2020-05-22 12:01:12.5844 Info Adding target File Target[allfile]
+2020-05-22 12:01:12.6033 Info Adding target File Target[ownFile-web]
+2020-05-22 12:01:12.6033 Info Configured from an XML element in C:\Users\Bulic\exebite\Exebite.API\bin\Debug\netcoreapp3.1\nlog.config...
+2020-05-22 12:01:12.6264 Info Found 45 configuration items
+2020-05-22 12:25:04.6324 Info Logger closing down...
+2020-05-22 12:25:04.6324 Info Closing old configuration.
+2020-05-22 12:25:04.6324 Info Logger has been closed down.
+2020-05-22 12:25:04.6508 Info Shutting down logging...
+2020-05-22 12:25:04.6508 Info Logger has been shut down.
+2020-05-25 08:21:09.0432 Info Message Template Auto Format enabled
+2020-05-25 08:21:09.0570 Info Loading assembly: NLog.Web.AspNetCore
+2020-05-25 08:21:09.1508 Info Adding target File Target[allfile]
+2020-05-25 08:21:09.1680 Info Adding target File Target[ownFile-web]
+2020-05-25 08:21:09.1680 Info Configured from an XML element in C:\Users\Bulic\exebite\Exebite.API\bin\Debug\netcoreapp3.1\nlog.config...
+2020-05-25 08:21:09.1931 Info Found 45 configuration items
+2020-05-25 09:17:07.8210 Info Logger closing down...
+2020-05-25 09:17:07.8210 Info Closing old configuration.
+2020-05-25 09:17:07.8364 Info Logger has been closed down.
+2020-05-25 09:17:07.8364 Info Shutting down logging...
+2020-05-25 09:17:07.8364 Info Logger has been shut down.
+2020-05-26 09:42:01.6687 Info Message Template Auto Format enabled
+2020-05-26 09:42:01.6820 Info Loading assembly: NLog.Web.AspNetCore
+2020-05-26 09:42:01.7626 Info Adding target File Target[allfile]
+2020-05-26 09:42:01.7816 Info Adding target File Target[ownFile-web]
+2020-05-26 09:42:01.7926 Info Configured from an XML element in C:\Users\Bulic\exebite\Exebite.API\bin\Debug\netcoreapp3.1\nlog.config...
+2020-05-26 09:42:01.8077 Info Found 45 configuration items
