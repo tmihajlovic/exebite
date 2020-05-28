@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Exebite.DataAccess.Entities
@@ -21,5 +22,7 @@ namespace Exebite.DataAccess.Entities
         public long LocationId { get; set; }
 
         public virtual LocationEntity Location { get; set; }
+
+        public virtual List<OrderToMealEntity> OrdersToMeals { get; set; } = new List<OrderToMealEntity>();
     }
 }

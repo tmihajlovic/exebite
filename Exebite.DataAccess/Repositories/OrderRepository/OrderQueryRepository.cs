@@ -20,21 +20,20 @@ namespace Exebite.DataAccess.Repositories
             _mapper = mapper;
         }
 
-        public Either<Error, PagingResult<Order>> GetAllOrdersForRestaurant(int restaruntId, int page, int size)
+        public Either<Error, PagingResult<Order>> GetAllOrdersForRestaurant(long restaurantId, int page, int size)
         {
             try
             {
                 using (var context = _factory.Create())
                 {
-                    var restarurantMeals = context.Meal.SelectMany(x => x.FoodEntityMealEntities.Where(a => a.FoodEntity.RestaurantId == restaruntId)
-                                                                                                 .Select(a => a.MealEntityId));
+                    var query = context.Order.SelectMany(o => o.OrdersToMeals.Where(om => om.Meal.RestaurantId == restaurantId)).Select(om => om.Order);
 
-                    var query = context.Order.Where(o => restarurantMeals.Contains(o.MealId));
                     var total = query.Count();
                     var results = query.Skip((page - 1) * size)
                                        .Take(size);
 
                     var mapped = _mapper.Map<IList<Order>>(results).ToList();
+
                     return new Right<Error, PagingResult<Order>>(new PagingResult<Order>(mapped, total));
                 }
             }

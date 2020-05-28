@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Exebite.DataAccess.Entities
@@ -22,8 +21,8 @@ namespace Exebite.DataAccess.Entities
 
         public virtual LocationEntity DefaultLocation { get; set; }
 
-        public virtual List<OrderEntity> Orders { get; set; }
+        public virtual List<OrderEntity> Orders { get; set; } = new List<OrderEntity>();
 
-        public virtual List<MealEntity> FavouriteMeals { get; set; }
+        public virtual List<MealEntity> FavouriteMeals { get; set; } = new List<MealEntity>();
     }
 }

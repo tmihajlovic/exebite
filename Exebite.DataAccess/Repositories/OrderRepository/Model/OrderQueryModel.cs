@@ -13,11 +13,10 @@ namespace Exebite.DataAccess.Repositories
         {
         }
 
-        public int? Id { get; set; }
+        public long? Id { get; set; }
 
-        // TODO: change this to be our class with data only
         public DateTime? Date { get; set; }
 
-        public int? CustomerId { get; set; }
+        public long? CustomerId { get; set; }
     }
 }

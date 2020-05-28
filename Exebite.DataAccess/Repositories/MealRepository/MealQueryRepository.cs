@@ -55,7 +55,7 @@ namespace Exebite.DataAccess.Repositories
 
                     var results = query.ToList();
                     var mapped = _mapper.Map<IList<Meal>>(results).ToList();
-                    
+
                     return new Right<Error, PagingResult<Meal>>(new PagingResult<Meal>(mapped, total));
                 }
             }

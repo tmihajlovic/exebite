@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Entities
 {
@@ -26,5 +24,7 @@ namespace Exebite.DataAccess.Entities
         public long RestaurantId { get; set; }
 
         public virtual RestaurantEntity Restaurant { get; set; }
+
+        public virtual List<OrderToMealEntity> OrdersToMeals { get; set; } = new List<OrderToMealEntity>();
     }
 }

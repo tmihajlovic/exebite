@@ -34,6 +34,7 @@ namespace Exebite.DataAccess.Repositories
 
                     var addedEntity = context.Order.Add(orderEntity).Entity;
                     context.SaveChanges();
+
                     return new Right<Error, long>(addedEntity.Id);
                 }
             }
@@ -77,7 +78,7 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, bool> Delete(int id)
+        public Either<Error, bool> Delete(long id)
         {
             try
             {
@@ -85,6 +86,7 @@ namespace Exebite.DataAccess.Repositories
                 {
                     var itemSet = context.Set<OrderEntity>();
                     var item = itemSet.Find(id);
+
                     if (item == null)
                     {
                         return new Left<Error, bool>(new RecordNotFound($"Record with Id='{id}' is not found."));
@@ -92,6 +94,7 @@ namespace Exebite.DataAccess.Repositories
 
                     itemSet.Remove(item);
                     context.SaveChanges();
+
                     return new Right<Error, bool>(true);
                 }
             }
