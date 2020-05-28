@@ -1,4 +1,6 @@
-﻿namespace Exebite.DataAccess.Repositories
+﻿using System;
+
+namespace Exebite.DataAccess.Repositories
 {
     public class RestaurantUpdateModel
     {

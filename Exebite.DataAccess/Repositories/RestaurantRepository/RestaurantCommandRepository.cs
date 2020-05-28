@@ -18,7 +18,7 @@ namespace Exebite.DataAccess.Repositories
             _factory = factory;
         }
 
-        public Either<Error, int> Insert(RestaurantInsertModel entity)
+        public Either<Error, long> Insert(RestaurantInsertModel entity)
         {
             try
             {
@@ -31,16 +31,16 @@ namespace Exebite.DataAccess.Repositories
 
                     var addedEntity = context.Restaurant.Add(restaurantEntity).Entity;
                     context.SaveChanges();
-                    return new Right<Error, int>(addedEntity.Id);
+                    return new Right<Error, long>(addedEntity.Id);
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Error, int>(new UnknownError(ex.ToString()));
+                return new Left<Error, long>(new UnknownError(ex.ToString()));
             }
         }
 
-        public Either<Error, bool> Update(int id, RestaurantUpdateModel entity)
+        public Either<Error, bool> Update(long id, RestaurantUpdateModel entity)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, bool> Delete(int id)
+        public Either<Error, bool> Delete(long id)
         {
             try
             {
