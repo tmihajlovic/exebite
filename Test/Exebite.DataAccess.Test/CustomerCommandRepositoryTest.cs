@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Either;
 using Exebite.Common;
@@ -11,7 +12,7 @@ using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
 namespace Exebite.DataAccess.Test
 {
-    public sealed class CustomerCommandRepositoryTest : CommandRepositoryTests<CustomerCommandRepositoryTest.Data, int, CustomerInsertModel, CustomerUpdateModel>
+    public sealed class CustomerCommandRepositoryTest : CommandRepositoryTests<CustomerCommandRepositoryTest.Data, long, CustomerInsertModel, CustomerUpdateModel>
     {
         protected override IEnumerable<Data> SampleData =>
              Enumerable.Range(1, int.MaxValue).Select(content => new Data
@@ -20,21 +21,21 @@ namespace Exebite.DataAccess.Test
                  Name = $"Name {content}",
                  AppUserId = $"AppUserId {1003 + content}",
                  Balance = 3.3m * content,
-                 LocationId = content,
-                 RoleId = content
+                 DefaultLocationId = content,
+                 Role = content
              });
 
-        protected override IDatabaseCommandRepository<int, CustomerInsertModel, CustomerUpdateModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseCommandRepository<long, CustomerInsertModel, CustomerUpdateModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateOnlyCustomerCommandRepositoryInstanceNoData(factory);
         }
 
-        protected override int GetId(Either<Error, int> newObj)
+        protected override long GetId(Either<Error, long> newObj)
         {
             return newObj.RightContent();
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
@@ -46,13 +47,7 @@ namespace Exebite.DataAccess.Test
                    });
                 context.Location.AddRange(locations);
 
-                var roles = Enumerable.Range(1, count + 6)
-                   .Select(x => new RoleEntity()
-                   {
-                       Id = x,
-                       Name = $"Name {x}",
-                   });
-                context.Role.AddRange(roles);
+                var random = new Random();
 
                 var customers = Enumerable.Range(1, count)
                    .Select(x => new CustomerEntity()
@@ -60,9 +55,9 @@ namespace Exebite.DataAccess.Test
                        Id = x,
                        Balance = x,
                        GoogleUserId = (1000 + x).ToString(),
-                       LocationId = x,
+                       DefaultLocationId = x,
                        Name = $"Name {x}",
-                       RoleId = x
+                       Role = random.Next(0, 1)
                    });
                 context.Customer.AddRange(customers);
                 context.SaveChanges();
@@ -76,8 +71,8 @@ namespace Exebite.DataAccess.Test
                 Name = data.Name,
                 GoogleUserId = data.AppUserId,
                 Balance = data.Balance,
-                LocationId = data.LocationId,
-                RoleId = data.RoleId
+                DefaultLocationId = data.DefaultLocationId,
+                Role = data.Role
             };
         }
 
@@ -86,10 +81,10 @@ namespace Exebite.DataAccess.Test
             return new CustomerUpdateModel
             {
                 Name = data.Name,
-                LocationId = data.LocationId,
+                DefaultLocationId = data.DefaultLocationId,
                 Balance = data.Balance,
                 GoogleUserId = data.AppUserId,
-                RoleId = data.RoleId
+                Role = data.Role
             };
         }
 
@@ -107,24 +102,24 @@ namespace Exebite.DataAccess.Test
 #pragma warning restore RETURN0001 // Do not return null
         }
 
-        protected override int GetUnExistingId()
+        protected override long GetUnExistingId()
         {
             return 99999;
         }
 
         public sealed class Data
         {
-            public int? Id { get; set; }
+            public long? Id { get; set; }
 
             public string Name { get; set; }
 
             public decimal Balance { get; set; }
 
-            public int LocationId { get; set; }
+            public long DefaultLocationId { get; set; }
 
             public string AppUserId { get; set; }
 
-            public int RoleId { get; set; }
+            public int Role { get; set; }
         }
     }
 }

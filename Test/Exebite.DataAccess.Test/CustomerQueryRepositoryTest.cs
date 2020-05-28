@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Exebite.DataAccess.Context;
@@ -44,7 +45,7 @@ namespace Exebite.DataAccess.Test
             return new CustomerQueryModel(page, size);
         }
 
-        protected override IDatabaseQueryRepository<Customer, CustomerQueryModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseQueryRepository<Customer, CustomerQueryModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateOnlyCustomerQueryRepositoryInstanceNoData(factory);
         }
@@ -54,21 +55,22 @@ namespace Exebite.DataAccess.Test
             return result.Id;
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
+                var random = new Random();
+
                 var customers = Enumerable.Range(1, count)
                    .Select(x => new CustomerEntity()
                    {
                        Id = x,
                        Balance = x,
                        GoogleUserId = (1000 + x).ToString(),
-                       LocationId = x,
-                       Location = new LocationEntity { Id = x, Address = $"Address {x}", Name = $"Name {x}" },
+                       DefaultLocationId = x,
+                       DefaultLocation = new LocationEntity { Id = x, Address = $"Address {x}", Name = $"Name {x}" },
                        Name = $"Name {x}",
-                       RoleId = x,
-                       Role = new RoleEntity { Id = x, Name = $"Role {x}" }
+                       Role = random.Next()
                    });
                 context.Customer.AddRange(customers);
                 context.SaveChanges();

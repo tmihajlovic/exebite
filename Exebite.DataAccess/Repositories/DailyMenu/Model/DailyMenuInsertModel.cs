@@ -6,10 +6,12 @@ namespace Exebite.DataAccess.Repositories
 {
     public class DailyMenuInsertModel
     {
-        public int RestaurantId { get; set; }
+        public long RestaurantId { get; set; }
 
         public DateTime Date { get; set; }
 
         public string Note { get; set; }
+
+        public List<Meal> Meals { get; set; }
     }
 }
