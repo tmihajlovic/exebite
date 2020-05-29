@@ -13,7 +13,7 @@ namespace Exebite.DataAccess.Test.BaseTests
 {
     public abstract class CommandRepositoryTests<TModel, TId, TInput, TUpdate>
     {
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
         private readonly SqliteConnection _connection;
 
         protected CommandRepositoryTests()
@@ -212,9 +212,9 @@ namespace Exebite.DataAccess.Test.BaseTests
             Assert.Equal(typeof(UnknownError), result.LeftContent().GetType());
         }
 
-        protected abstract IDatabaseCommandRepository<TId, TInput, TUpdate> CreateSut(IFoodOrderingContextFactory factory);
+        protected abstract IDatabaseCommandRepository<TId, TInput, TUpdate> CreateSut(IMealOrderingContextFactory factory);
 
-        protected abstract void InitializeStorage(IFoodOrderingContextFactory factory, int count);
+        protected abstract void InitializeStorage(IMealOrderingContextFactory factory, int count);
 
         protected abstract TInput ConvertToInput(TModel data);
 
@@ -224,7 +224,7 @@ namespace Exebite.DataAccess.Test.BaseTests
 
         protected abstract TUpdate ConvertToUpdate(TModel data);
 
-        protected abstract int GetId(Either<Error, TId> newObj);
+        protected abstract TId GetId(Either<Error, TId> newObj);
 
         protected abstract TId GetUnExistingId();
     }
