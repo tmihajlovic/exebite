@@ -35,7 +35,7 @@ namespace Exebite.DataAccess.Test
             return new CustomerQueryModel { Id = data.Id };
         }
 
-        protected override CustomerQueryModel ConvertToQuery(int id)
+        protected override CustomerQueryModel ConvertToQuery(long id)
         {
             return new CustomerQueryModel { Id = id };
         }
@@ -50,7 +50,7 @@ namespace Exebite.DataAccess.Test
             return CreateOnlyCustomerQueryRepositoryInstanceNoData(factory);
         }
 
-        protected override int GetId(Customer result)
+        protected override long GetId(Customer result)
         {
             return result.Id;
         }
@@ -79,7 +79,7 @@ namespace Exebite.DataAccess.Test
 
         public sealed class Data
         {
-            public int? Id { get; set; }
+            public long? Id { get; set; }
         }
     }
 }

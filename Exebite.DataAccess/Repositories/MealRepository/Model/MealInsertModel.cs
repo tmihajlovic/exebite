@@ -1,4 +1,5 @@
 ﻿using Exebite.DomainModel;
+using System.Collections.Generic;
 
 namespace Exebite.DataAccess.Repositories
 {
@@ -16,6 +17,8 @@ namespace Exebite.DataAccess.Repositories
 
         public bool IsActive { get; set; }
 
-        public int RestaurantId { get; set; }
+        public long RestaurantId { get; set; }
+
+        public List<Meal> Condiments { get; set; }
     }
 }

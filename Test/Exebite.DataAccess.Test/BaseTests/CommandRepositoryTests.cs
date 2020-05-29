@@ -44,7 +44,7 @@ namespace Exebite.DataAccess.Test.BaseTests
 
             // Assert
             EAssert.IsRight(insertedId);
-            Assert.True(this.GetId(insertedId) > 0);
+            Assert.True(this.GetId(insertedId) as long? > 0);
         }
 
         [Theory]

@@ -36,7 +36,7 @@ namespace Exebite.DataAccess.Test
             return new LocationQueryModel { Id = data.Id };
         }
 
-        protected override LocationQueryModel ConvertToQuery(int id)
+        protected override LocationQueryModel ConvertToQuery(long id)
         {
             return new LocationQueryModel { Id = id };
         }
@@ -46,17 +46,17 @@ namespace Exebite.DataAccess.Test
             return new LocationQueryModel(page, size);
         }
 
-        protected override IDatabaseQueryRepository<Location, LocationQueryModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseQueryRepository<Location, LocationQueryModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateOnlyLocationQueryRepositoryInstanceNoData(factory);
         }
 
-        protected override int GetId(Location result)
+        protected override long GetId(Location result)
         {
             return result.Id;
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
@@ -74,7 +74,7 @@ namespace Exebite.DataAccess.Test
 
         public sealed class Data
         {
-            public int? Id { get; set; }
+            public long? Id { get; set; }
 
             public string Name { get; set; }
 

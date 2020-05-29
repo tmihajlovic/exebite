@@ -12,27 +12,33 @@ using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
 namespace Exebite.DataAccess.Test
 {
-    public sealed class MealCommandRepositoryTest : CommandRepositoryTests<MealCommandRepositoryTest.Data, int, MealInsertModel, MealUpdateModel>
+    public sealed class MealCommandRepositoryTest : CommandRepositoryTests<MealCommandRepositoryTest.Data, long, MealInsertModel, MealUpdateModel>
     {
         protected override IEnumerable<Data> SampleData =>
                       Enumerable.Range(1, int.MaxValue).Select(content => new Data
                       {
                           Id = content,
                           Price = 2.3m * content,
-                          Foods = new List<int> { content }
+                          Name = $"Name {content}",
+                          Description = $"Description {content}",
+                          Type = (int)MealType.MAIN_COURSE,
+                          RestaurantId = 1,
+                          Condiments = new List<long> { content },
+                          IsActive = true,
+                          Note = $"Note {content}"
                       });
 
-        protected override IDatabaseCommandRepository<int, MealInsertModel, MealUpdateModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseCommandRepository<long, MealInsertModel, MealUpdateModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateMealCommandRepositoryInstance(factory);
         }
 
-        protected override int GetId(Either<Error, int> newObj)
+        protected override long GetId(Either<Error, long> newObj)
         {
             return newObj.RightContent();
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
@@ -42,26 +48,29 @@ namespace Exebite.DataAccess.Test
                     Name = "Test restaurant"
                 });
 
-                var foods = Enumerable.Range(1, count + 6).Select(x => new FoodEntity()
+                var condiments = Enumerable.Range(1, count).Select(x => new MealEntity()
+                {
+                    Id = x,
+                    Name = $"Condiment Name {x}",
+                    Description = $"Condiment Description {x}",
+                    Price = x,
+                    Type = (int)MealType.CONDIMENT,
+                    RestaurantId = 1,
+                    IsActive = true,
+                    Note = $"Condiment Note {x}"
+                });
+
+                var meals = Enumerable.Range(1, count).Select(x => new MealEntity()
                 {
                     Id = x,
                     Name = $"Name {x}",
                     Description = $"Description {x}",
                     Price = x,
-                    Type = FoodType.MAIN_COURSE,
-                    RestaurantId = 1
-                });
-
-                context.Food.AddRange(foods);
-
-                var meals = Enumerable.Range(1, count).Select(x => new MealEntity
-                {
-                    Id = x,
-                    Price = x,
-                    FoodEntityMealEntities = new List<FoodEntityMealEntity>
-                    {
-                        new FoodEntityMealEntity { FoodEntityId = x }
-                    }
+                    Type = (int)MealType.MAIN_COURSE,
+                    RestaurantId = 1,
+                    Condiments = condiments.ToList(),
+                    IsActive = true,
+                    Note = $"Note {x}"
                 });
 
                 context.Meal.AddRange(meals);
@@ -73,8 +82,14 @@ namespace Exebite.DataAccess.Test
         {
             return new MealInsertModel
             {
-                Price = data.Price,
-                Foods = data.Foods
+                Name = data.Name,
+                Description = data.Description,
+                Type = (MealType)data.Type,
+                RestaurantId = data.RestaurantId,
+                Condiments = data.Condiments.Select(c => new Meal { Id = c, Type = MealType.CONDIMENT }).ToList(),
+                IsActive = data.IsActive,
+                Note = data.Note,
+                Price = data.Price
             };
         }
 
@@ -82,8 +97,14 @@ namespace Exebite.DataAccess.Test
         {
             return new MealUpdateModel
             {
-                Price = data.Price,
-                Foods = data.Foods
+                Name = data.Name,
+                Description = data.Description,
+                Type = (MealType)data.Type,
+                RestaurantId = data.RestaurantId,
+                Condiments = data.Condiments.Select(c => new Meal { Id = c, Type = MealType.CONDIMENT }).ToList(),
+                IsActive = data.IsActive,
+                Note = data.Note,
+                Price = data.Price
             };
         }
 
@@ -101,18 +122,30 @@ namespace Exebite.DataAccess.Test
 #pragma warning restore RETURN0001 // Do not return null
         }
 
-        protected override int GetUnExistingId()
+        protected override long GetUnExistingId()
         {
             return 99999;
         }
 
         public sealed class Data
         {
-            public int? Id { get; set; }
+            public long? Id { get; set; }
 
-            public List<int> Foods { get; set; } = new List<int>();
+            public string Name { get; set; }
+
+            public int Type { get; set; }
 
             public decimal Price { get; set; }
+
+            public string Description { get; set; }
+
+            public string Note { get; set; }
+
+            public bool IsActive { get; set; }
+
+            public long RestaurantId { get; set; }
+
+            public List<long> Condiments { get; set; }
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Exebite.DataAccess.Test
             };
         }
 
-        protected override DailyMenuQueryModel ConvertToQuery(int id)
+        protected override DailyMenuQueryModel ConvertToQuery(long id)
         {
             return new DailyMenuQueryModel { Id = id };
         }
@@ -53,7 +53,7 @@ namespace Exebite.DataAccess.Test
             return CreateDailyMenuQueryRepositoryInstance(factory);
         }
 
-        protected override int GetId(DailyMenu result)
+        protected override long GetId(DailyMenu result)
         {
             return result.Id;
         }
@@ -87,7 +87,7 @@ namespace Exebite.DataAccess.Test
 
         public sealed class Data
         {
-            public int? Id { get; set; }
+            public long? Id { get; set; }
         }
     }
 }
