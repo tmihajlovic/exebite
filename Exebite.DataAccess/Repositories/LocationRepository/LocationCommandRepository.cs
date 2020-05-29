@@ -18,7 +18,7 @@ namespace Exebite.DataAccess.Repositories
             _factory = factory;
         }
 
-        public Either<Error, int> Insert(LocationInsertModel entity)
+        public Either<Error, long> Insert(LocationInsertModel entity)
         {
             try
             {
@@ -32,16 +32,16 @@ namespace Exebite.DataAccess.Repositories
 
                     var addedEntity = context.Location.Add(locationEntity).Entity;
                     context.SaveChanges();
-                    return new Right<Error, int>(addedEntity.Id);
+                    return new Right<Error, long>(addedEntity.Id);
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Error, int>(new UnknownError(ex.ToString()));
+                return new Left<Error, long>(new UnknownError(ex.ToString()));
             }
         }
 
-        public Either<Error, bool> Update(int id, LocationUpdateModel entity)
+        public Either<Error, bool> Update(long id, LocationUpdateModel entity)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, bool> Delete(int id)
+        public Either<Error, bool> Delete(long id)
         {
             try
             {
