@@ -9,7 +9,7 @@ export class UserService {
 
   constructor(private authService: AuthService) {}
 
-  getUserName() {
+  getUser() {
     return this.authService.authState.pipe(
       map((data) => {
         let userData;
@@ -23,5 +23,9 @@ export class UserService {
         return userData;
       })
     );
+  }
+
+  signOut(): void {
+    this.authService.signOut();
   }
 }

@@ -13,20 +13,16 @@ import { IUser } from "src/app/user";
 export class HomeComponent implements OnInit {
   user: IUser;
 
-  constructor(
-    private userService: UserService,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit() {
-    this.userService.getUserName().subscribe((data) => {
+    this.userService.getUser().subscribe((data) => {
       this.user = data;
     });
   }
 
-  signOut(): void {
-    this.authService.signOut();
+  signOutNavigate(): void {
+    this.userService.signOut();
     this.router.navigate(["/"]);
   }
 }
