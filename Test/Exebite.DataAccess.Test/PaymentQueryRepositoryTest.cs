@@ -38,7 +38,7 @@ namespace Exebite.DataAccess.Test
             };
         }
 
-        protected override PaymentQueryModel ConvertToQuery(int id)
+        protected override PaymentQueryModel ConvertToQuery(long id)
         {
             return new PaymentQueryModel { Id = id };
         }
@@ -48,26 +48,20 @@ namespace Exebite.DataAccess.Test
             return new PaymentQueryModel(page, size);
         }
 
-        protected override IDatabaseQueryRepository<Payment, PaymentQueryModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseQueryRepository<Payment, PaymentQueryModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateOnlyPaymentQueryRepositoryInstanceNoData(factory);
         }
 
-        protected override int GetId(Payment result)
+        protected override long GetId(Payment result)
         {
             return result.Id;
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
-                context.Role.Add(new RoleEntity()
-                {
-                    Id = 1,
-                    Name = "Test Role"
-                });
-
                 context.Location.Add(new LocationEntity()
                 {
                     Id = 1,
@@ -78,8 +72,8 @@ namespace Exebite.DataAccess.Test
                 {
                     Id = x,
                     Name = $"Name {x}",
-                    LocationId = 1,
-                    RoleId = 1
+                    DefaultLocationId = 1,
+                    Role = 1
                 });
 
                 context.Customer.AddRange(customers);

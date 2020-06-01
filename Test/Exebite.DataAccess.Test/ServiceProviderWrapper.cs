@@ -16,7 +16,6 @@ namespace Exebite.DataAccess.Test
                                         .AddLogging()
                                         .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
                                         .AddTransient<IExebiteDbContextOptionsFactory, ExebiteDbContextOptionsFactory>()
-                                        .AddTransient<IMealOrderingContextFactory, InMemoryDBFactory>()
                                         .AddTransient<IRestaurantCommandRepository, RestaurantCommandRepository>()
                                         .AddTransient<IRestaurantQueryRepository, RestaurantQueryRepository>()
                                         .AddTransient<IMealQueryRepository, MealQueryRepository>()
