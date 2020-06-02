@@ -53,6 +53,26 @@ namespace Exebite.DataAccess.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<OrderEntity>()
+                .HasOne(o => o.Location)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<DailyMenuToMealEntity>()
+                .HasOne(e => e.DailyMenu)
+                .WithMany(dm => dm.DailyMenuToMeals)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<MealToCondimentEntity>()
+                .HasOne(e => e.Meal)
+                .WithMany(m => m.Condiments)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OrderToMealEntity>()
+                .HasOne(e => e.Meal)
+                .WithMany(m => m.OrdersToMeals)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<DailyMenuToMealEntity>()
                 .HasKey(k => new { k.DailyMenuId, k.MealId });
 
@@ -64,12 +84,6 @@ namespace Exebite.DataAccess.Context
 
             modelBuilder.Entity<RestaurantEntity>()
                 .HasIndex(x => x.SheetId);
-
-            modelBuilder.Entity<DailyMenuEntity>()
-                .HasOne(x => x.Restaurant);
-
-            modelBuilder.Entity<PaymentEntity>()
-                .HasOne(x => x.Customer);
 
             modelBuilder.Entity<OrderEntity>()
                 .HasIndex(x => x.Date);

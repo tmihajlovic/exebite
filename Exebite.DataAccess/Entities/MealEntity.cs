@@ -25,7 +25,7 @@ namespace Exebite.DataAccess.Entities
 
         public virtual RestaurantEntity Restaurant { get; set; }
 
-        public virtual List<MealEntity> Condiments { get; set; } = new List<MealEntity>();
+        public virtual List<MealToCondimentEntity> Condiments { get; set; } = new List<MealToCondimentEntity>();
 
         public virtual List<OrderToMealEntity> OrdersToMeals { get; set; } = new List<OrderToMealEntity>();
     }

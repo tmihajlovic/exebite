@@ -75,18 +75,6 @@ namespace Exebite.DataAccess.Test
                     Name = "Test restaurant"
                 });
 
-                var condiments = Enumerable.Range(1, count).Select(x => new MealEntity()
-                {
-                    Id = x,
-                    Name = $"Condiment Name {x}",
-                    Description = $"Condiment Description {x}",
-                    Price = x,
-                    Type = (int)MealType.CONDIMENT,
-                    RestaurantId = 1,
-                    IsActive = true,
-                    Note = $"Condiment Note {x}"
-                });
-
                 var meals = Enumerable.Range(1, count).Select(x => new MealEntity()
                 {
                     Id = x,
@@ -95,7 +83,6 @@ namespace Exebite.DataAccess.Test
                     Price = x,
                     Type = (int)MealType.MAIN_COURSE,
                     RestaurantId = 1,
-                    Condiments = condiments.ToList(),
                     IsActive = true,
                     Note = $"Note {x}"
                 });

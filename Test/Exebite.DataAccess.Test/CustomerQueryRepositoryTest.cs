@@ -70,7 +70,8 @@ namespace Exebite.DataAccess.Test
                        DefaultLocationId = x,
                        DefaultLocation = new LocationEntity { Id = x, Address = $"Address {x}", Name = $"Name {x}" },
                        Name = $"Name {x}",
-                       Role = random.Next()
+                       Role = random.Next(),
+                       IsActive = true
                    });
                 context.Customer.AddRange(customers);
                 context.SaveChanges();

@@ -19,10 +19,11 @@ namespace Exebite.DataAccess.Test
              {
                  Id = content,
                  Name = $"Name {content}",
-                 AppUserId = $"AppUserId {1003 + content}",
+                 GoogleUserId = $"GoogleUserId {1003 + content}",
                  Balance = 3.3m * content,
                  DefaultLocationId = content,
-                 Role = content
+                 Role = content,
+                 IsActive = true
              });
 
         protected override IDatabaseCommandRepository<long, CustomerInsertModel, CustomerUpdateModel> CreateSut(IMealOrderingContextFactory factory)
@@ -69,7 +70,7 @@ namespace Exebite.DataAccess.Test
             return new CustomerInsertModel
             {
                 Name = data.Name,
-                GoogleUserId = data.AppUserId,
+                GoogleUserId = data.GoogleUserId,
                 Balance = data.Balance,
                 DefaultLocationId = data.DefaultLocationId,
                 Role = data.Role
@@ -83,7 +84,7 @@ namespace Exebite.DataAccess.Test
                 Name = data.Name,
                 DefaultLocationId = data.DefaultLocationId,
                 Balance = data.Balance,
-                GoogleUserId = data.AppUserId,
+                GoogleUserId = data.GoogleUserId,
                 Role = data.Role
             };
         }
@@ -117,9 +118,11 @@ namespace Exebite.DataAccess.Test
 
             public long DefaultLocationId { get; set; }
 
-            public string AppUserId { get; set; }
+            public string GoogleUserId { get; set; }
 
             public int Role { get; set; }
+
+            public bool IsActive { get; set; }
         }
     }
 }

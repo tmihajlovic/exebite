@@ -23,7 +23,6 @@ namespace Exebite.DataAccess.Test
                           Description = $"Description {content}",
                           Type = (int)MealType.MAIN_COURSE,
                           RestaurantId = 1,
-                          Condiments = new List<long> { content },
                           IsActive = true,
                           Note = $"Note {content}"
                       });
@@ -48,18 +47,6 @@ namespace Exebite.DataAccess.Test
                     Name = "Test restaurant"
                 });
 
-                var condiments = Enumerable.Range(1, count).Select(x => new MealEntity()
-                {
-                    Id = x,
-                    Name = $"Condiment Name {x}",
-                    Description = $"Condiment Description {x}",
-                    Price = x,
-                    Type = (int)MealType.CONDIMENT,
-                    RestaurantId = 1,
-                    IsActive = true,
-                    Note = $"Condiment Note {x}"
-                });
-
                 var meals = Enumerable.Range(1, count).Select(x => new MealEntity()
                 {
                     Id = x,
@@ -68,7 +55,6 @@ namespace Exebite.DataAccess.Test
                     Price = x,
                     Type = (int)MealType.MAIN_COURSE,
                     RestaurantId = 1,
-                    Condiments = condiments.ToList(),
                     IsActive = true,
                     Note = $"Note {x}"
                 });
@@ -86,7 +72,6 @@ namespace Exebite.DataAccess.Test
                 Description = data.Description,
                 Type = (MealType)data.Type,
                 RestaurantId = data.RestaurantId,
-                Condiments = data.Condiments.Select(c => new Meal { Id = c, Type = MealType.CONDIMENT }).ToList(),
                 IsActive = data.IsActive,
                 Note = data.Note,
                 Price = data.Price
@@ -101,7 +86,6 @@ namespace Exebite.DataAccess.Test
                 Description = data.Description,
                 Type = (MealType)data.Type,
                 RestaurantId = data.RestaurantId,
-                Condiments = data.Condiments.Select(c => new Meal { Id = c, Type = MealType.CONDIMENT }).ToList(),
                 IsActive = data.IsActive,
                 Note = data.Note,
                 Price = data.Price
@@ -144,8 +128,6 @@ namespace Exebite.DataAccess.Test
             public bool IsActive { get; set; }
 
             public long RestaurantId { get; set; }
-
-            public List<long> Condiments { get; set; }
         }
     }
 }
