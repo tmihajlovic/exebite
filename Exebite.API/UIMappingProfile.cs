@@ -32,9 +32,6 @@ namespace Exebite.API
             #endregion Order
             #region MealModel
             CreateMap<Meal, MealDto>();
-            //.ForMember(m => m.Foods, m => m.MapFrom(x => x.Foods.Select(a => a.Id)));
-
-            // TODO: create mappings when dtos are updated.
             CreateMap<MealQueryDto, MealQueryModel>();
             #endregion MealModel
             #region RecipeModel
