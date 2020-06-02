@@ -14,21 +14,21 @@ namespace Exebite.GoogleSheetAPI.Extensions
         /// </summary>
         /// <param name="type">FoodType</param>
         /// <returns>string value of FoodType</returns>
-        public static string ConvertToString(this FoodType type)
+        public static string ConvertToString(this MealType type)
         {
             switch (type)
             {
-                case FoodType.SIDE_DISH:
+                case MealType.SIDE_DISH:
                     return "Prilog";
-                case FoodType.SALAD:
+                case MealType.SALAD:
                     return "Salata";
-                case FoodType.DESERT:
+                case MealType.DESSERT:
                     return "Desert";
-                case FoodType.SOUP:
+                case MealType.SOUP:
                     return "Supa";
-                case FoodType.CONDIMENTS:
+                case MealType.CONDIMENT:
                     return "Dodatak";
-                case FoodType.MAIN_COURSE:
+                case MealType.MAIN_COURSE:
                 default:
                     return "Glavno jelo";
             }
@@ -64,23 +64,23 @@ namespace Exebite.GoogleSheetAPI.Extensions
         /// </summary>
         /// <param name="value">string value of FoodType</param>
         /// <returns>FoodType enum</returns>
-        public static FoodType ConvertToFoodType(this string value)
+        public static MealType ConvertToFoodType(this string value)
         {
             switch (value)
             {
                 case "Prilog":
-                    return FoodType.SIDE_DISH;
+                    return MealType.SIDE_DISH;
                 case "Salata":
-                    return FoodType.SALAD;
+                    return MealType.SALAD;
                 case "Desert":
-                    return FoodType.DESERT;
+                    return MealType.DESSERT;
                 case "Supa":
-                    return FoodType.SOUP;
+                    return MealType.SOUP;
                 case "Dodatak":
-                    return FoodType.CONDIMENTS;
+                    return MealType.CONDIMENT;
                 case "Glavno jelo":
                 default:
-                    return FoodType.MAIN_COURSE;
+                    return MealType.MAIN_COURSE;
             }
         }
 
@@ -89,9 +89,9 @@ namespace Exebite.GoogleSheetAPI.Extensions
         /// </summary>
         /// <param name="price">Price of the food.</param>
         /// <returns>FoodType</returns>
-        public static FoodType IndexHouseFoodTypeFromPrice(this decimal price)
+        public static MealType IndexHouseFoodTypeFromPrice(this decimal price)
         {
-            return price > 0m ? FoodType.MAIN_COURSE : FoodType.CONDIMENTS;
+            return price > 0m ? MealType.MAIN_COURSE : MealType.CONDIMENT;
         }
     }
 }

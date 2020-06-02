@@ -17,11 +17,10 @@ namespace Exebite.API
             #endregion CustomerModel
             #region CustomerAliasesModel
             CreateMap<CustomerAliases, CustomerAliasDto>();
-            CreateMap<CustomerAliasQueryDto, CustomerAliasQueryModel>();
             #endregion CustomerAliasesModel
             #region FoodModel
             CreateMap<Food, FoodDto>();
-            CreateMap<FoodQueryModelDto, FoodQueryModel>();
+            CreateMap<FoodQueryModelDto, MealQueryModel>();
             #endregion  FoodModel
             #region LocationModel
             CreateMap<Location, LocationDto>();
@@ -32,14 +31,14 @@ namespace Exebite.API
             CreateMap<OrderQueryDto, OrderQueryModel>();
             #endregion Order
             #region MealModel
-            CreateMap<Meal, MealDto>()
-                .ForMember(m => m.Foods, m => m.MapFrom(x => x.Foods.Select(a => a.Id)));
+            CreateMap<Meal, MealDto>();
+            //.ForMember(m => m.Foods, m => m.MapFrom(x => x.Foods.Select(a => a.Id)));
 
+            // TODO: create mappings when dtos are updated.
             CreateMap<MealQueryDto, MealQueryModel>();
             #endregion MealModel
             #region RecipeModel
             CreateMap<Recipe, RecipeDto>();
-            CreateMap<RecipeQueryModel, RecipeQueryDto>();
             #endregion RecipeModel
             #region RestaurantModel
             CreateMap<Restaurant, RestaurantDto>();
@@ -51,7 +50,6 @@ namespace Exebite.API
             #endregion
             #region Role
             CreateMap<Role, RoleDto>();
-            CreateMap<RoleQueryDto, RoleQueryModel>();
             #endregion Role
         }
     }
