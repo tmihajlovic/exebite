@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 
-import { AuthService } from "angularx-social-login";
 import { Router } from "@angular/router";
 import { UserService } from "src/app/user.service";
 import { IUser } from "src/app/user";
+import { ICustomer } from "src/app/customer";
 
 @Component({
   selector: "app-home",
@@ -12,12 +12,22 @@ import { IUser } from "src/app/user";
 })
 export class HomeComponent implements OnInit {
   user: IUser;
+  customers: ICustomer[];
+  customer: ICustomer;
 
   constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit() {
     this.userService.getUser().subscribe((data) => {
       this.user = data;
+    });
+    this.userService.fetchCustomerData().subscribe((data) => {
+      this.customers = data.customers;
+      data.customers.map((data) => {
+        if (data.googleUserId == this.user.email) {
+          this.customer = data;
+        }
+      });
     });
   }
 

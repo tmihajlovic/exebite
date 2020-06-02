@@ -2,6 +2,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";
+import { HttpClientModule } from "@angular/common/http";
 import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
 import { GoogleLoginProvider } from "angularx-social-login";
 import { AppComponent } from "./app.component";
@@ -24,7 +25,12 @@ export function provideConfig() {
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HomeComponent],
-  imports: [BrowserModule, AppRoutingModule, SocialLoginModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    SocialLoginModule,
+    HttpClientModule,
+  ],
   providers: [
     UserService,
     {
