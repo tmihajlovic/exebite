@@ -14,7 +14,11 @@ namespace Exebite.DataAccess.Test
         protected override IEnumerable<Data> SampleData =>
             Enumerable.Range(1, int.MaxValue).Select(content => new Data
             {
-                Id = content
+                Id = content,
+                IsActive = true,
+                Name = $"Name {content}",
+                Price = content,
+                RestaurantId = 1
             });
 
         protected override MealQueryModel ConvertEmptyToQuery()
@@ -33,11 +37,15 @@ namespace Exebite.DataAccess.Test
         {
             return new MealQueryModel
             {
-                Id = data.Id
+                Id = data.Id,
+                IsActive = data.IsActive,
+                Name = data.Name,
+                Price = data.Price,
+                RestaurantId = data.RestaurantId
             };
         }
 
-        protected override MealQueryModel ConvertToQuery(int id)
+        protected override MealQueryModel ConvertToQuery(long id)
         {
             return new MealQueryModel { Id = id };
         }
@@ -47,17 +55,17 @@ namespace Exebite.DataAccess.Test
             return new MealQueryModel(page, size);
         }
 
-        protected override IDatabaseQueryRepository<Meal, MealQueryModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseQueryRepository<Meal, MealQueryModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateMealQueryRepositoryInstance(factory);
         }
 
-        protected override int GetId(Meal result)
+        protected override long GetId(Meal result)
         {
             return result.Id;
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
@@ -67,26 +75,16 @@ namespace Exebite.DataAccess.Test
                     Name = "Test restaurant"
                 });
 
-                var foods = Enumerable.Range(1, count).Select(x => new FoodEntity()
+                var meals = Enumerable.Range(1, count).Select(x => new MealEntity()
                 {
                     Id = x,
                     Name = $"Name {x}",
                     Description = $"Description {x}",
                     Price = x,
-                    Type = FoodType.MAIN_COURSE,
-                    RestaurantId = 1
-                });
-
-                context.Food.AddRange(foods);
-
-                var meals = Enumerable.Range(1, count).Select(x => new MealEntity
-                {
-                    Id = x,
-                    Price = x,
-                    FoodEntityMealEntities = new List<FoodEntityMealEntity>
-                    {
-                        new FoodEntityMealEntity { FoodEntityId = x }
-                    }
+                    Type = (int)MealType.MAIN_COURSE,
+                    RestaurantId = 1,
+                    IsActive = true,
+                    Note = $"Note {x}"
                 });
 
                 context.Meal.AddRange(meals);
@@ -96,11 +94,15 @@ namespace Exebite.DataAccess.Test
 
         public sealed class Data
         {
-            public int? Id { get; set; }
+            public long? Id { get; set; }
 
-            public List<Food> Foods { get; set; } = new List<Food>();
+            public long? RestaurantId { get; set; }
 
-            public decimal Price { get; set; }
+            public string Name { get; set; }
+
+            public decimal? Price { get; set; }
+
+            public bool? IsActive { get; set; }
         }
     }
 }

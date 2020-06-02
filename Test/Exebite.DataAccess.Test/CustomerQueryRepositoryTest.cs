@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Exebite.DataAccess.Context;
@@ -34,7 +35,7 @@ namespace Exebite.DataAccess.Test
             return new CustomerQueryModel { Id = data.Id };
         }
 
-        protected override CustomerQueryModel ConvertToQuery(int id)
+        protected override CustomerQueryModel ConvertToQuery(long id)
         {
             return new CustomerQueryModel { Id = id };
         }
@@ -44,31 +45,33 @@ namespace Exebite.DataAccess.Test
             return new CustomerQueryModel(page, size);
         }
 
-        protected override IDatabaseQueryRepository<Customer, CustomerQueryModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseQueryRepository<Customer, CustomerQueryModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateOnlyCustomerQueryRepositoryInstanceNoData(factory);
         }
 
-        protected override int GetId(Customer result)
+        protected override long GetId(Customer result)
         {
             return result.Id;
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
+                var random = new Random();
+
                 var customers = Enumerable.Range(1, count)
                    .Select(x => new CustomerEntity()
                    {
                        Id = x,
                        Balance = x,
                        GoogleUserId = (1000 + x).ToString(),
-                       LocationId = x,
-                       Location = new LocationEntity { Id = x, Address = $"Address {x}", Name = $"Name {x}" },
+                       DefaultLocationId = x,
+                       DefaultLocation = new LocationEntity { Id = x, Address = $"Address {x}", Name = $"Name {x}" },
                        Name = $"Name {x}",
-                       RoleId = x,
-                       Role = new RoleEntity { Id = x, Name = $"Role {x}" }
+                       Role = random.Next(),
+                       IsActive = true
                    });
                 context.Customer.AddRange(customers);
                 context.SaveChanges();
@@ -77,7 +80,7 @@ namespace Exebite.DataAccess.Test
 
         public sealed class Data
         {
-            public int? Id { get; set; }
+            public long? Id { get; set; }
         }
     }
 }

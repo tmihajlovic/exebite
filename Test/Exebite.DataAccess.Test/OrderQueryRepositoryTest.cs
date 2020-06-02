@@ -46,7 +46,7 @@ namespace Exebite.DataAccess.Test
             };
         }
 
-        protected override OrderQueryModel ConvertToQuery(int id)
+        protected override OrderQueryModel ConvertToQuery(long id)
         {
             return new OrderQueryModel { Id = id };
         }
@@ -56,17 +56,17 @@ namespace Exebite.DataAccess.Test
             return new OrderQueryModel(page, size);
         }
 
-        protected override IDatabaseQueryRepository<Order, OrderQueryModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseQueryRepository<Order, OrderQueryModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateOrderQueryRepositoryInstance(factory);
         }
 
-        protected override int GetId(Order result)
+        protected override long GetId(Order result)
         {
             return result.Id;
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
@@ -78,21 +78,14 @@ namespace Exebite.DataAccess.Test
                 };
                 context.Location.Add(location);
 
-                var roles = Enumerable.Range(1, count + 6).Select(x => new RoleEntity
-                {
-                    Id = x,
-                    Name = $"role name {x}"
-                });
-                context.Role.AddRange(roles);
-
                 var customers = Enumerable.Range(1, count).Select(x => new CustomerEntity
                 {
                     Id = x,
                     Name = "Customer name ",
                     GoogleUserId = "GoogleUserId",
                     Balance = 99.99m,
-                    LocationId = 1,
-                    RoleId = x
+                    DefaultLocationId = 1,
+                    Role = 1
                 });
                 context.Customer.AddRange(customers);
 
@@ -108,8 +101,6 @@ namespace Exebite.DataAccess.Test
                     Id = x,
                     CustomerId = x,
                     Date = _dateTime.Now().AddHours(x),
-                    MealId = x,
-                    Note = "note ",
                     Price = 10.5m * x
                 });
                 context.Order.AddRange(orders);

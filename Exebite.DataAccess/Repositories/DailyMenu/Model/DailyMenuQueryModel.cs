@@ -1,4 +1,6 @@
-﻿namespace Exebite.DataAccess.Repositories
+﻿using System;
+
+namespace Exebite.DataAccess.Repositories
 {
     public class DailyMenuQueryModel : QueryBase
     {
@@ -11,8 +13,10 @@
         {
         }
 
-        public int? Id { get; set; }
+        public long? Id { get; set; }
 
-        public int? RestaurantId { get; set; }
+        public long? RestaurantId { get; set; }
+
+        public DateTime? Date { get; set; }
     }
 }

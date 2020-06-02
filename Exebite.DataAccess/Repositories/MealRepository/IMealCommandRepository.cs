@@ -1,6 +1,13 @@
-﻿namespace Exebite.DataAccess.Repositories
+﻿using System.Collections.Generic;
+using Either;
+using Exebite.Common;
+
+namespace Exebite.DataAccess.Repositories
 {
-    public interface IMealCommandRepository : IDatabaseCommandRepository<int, MealInsertModel, MealUpdateModel>
+    public interface IMealCommandRepository : IDatabaseCommandRepository<long, MealInsertModel, MealUpdateModel>
     {
+        Either<Error, bool> DeactivateMeals(IList<long> ids);
+
+        Either<Error, bool> UpdateByNameAndRestaurantId(MealUpdateModel meal);
     }
 }

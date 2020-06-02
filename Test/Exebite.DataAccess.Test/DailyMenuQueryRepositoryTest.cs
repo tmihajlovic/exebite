@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
@@ -37,7 +38,7 @@ namespace Exebite.DataAccess.Test
             };
         }
 
-        protected override DailyMenuQueryModel ConvertToQuery(int id)
+        protected override DailyMenuQueryModel ConvertToQuery(long id)
         {
             return new DailyMenuQueryModel { Id = id };
         }
@@ -47,31 +48,37 @@ namespace Exebite.DataAccess.Test
             return new DailyMenuQueryModel(page, size);
         }
 
-        protected override IDatabaseQueryRepository<DailyMenu, DailyMenuQueryModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseQueryRepository<DailyMenu, DailyMenuQueryModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateDailyMenuQueryRepositoryInstance(factory);
         }
 
-        protected override int GetId(DailyMenu result)
+        protected override long GetId(DailyMenu result)
         {
             return result.Id;
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
                 var dailyMenus = Enumerable.Range(1, count).Select(x => new DailyMenuEntity
                 {
                     Id = x,
-                    RestaurantId = x
+                    RestaurantId = x,
+                    Date = DateTime.UtcNow
                 });
                 context.DailyMenu.AddRange(dailyMenus);
 
                 var restaurant = Enumerable.Range(1, count).Select(x => new RestaurantEntity
                 {
                     Id = x,
-                    Name = $"Name {x}"
+                    Name = $"Name {x}",
+                    Email = $"Email {x}",
+                    Contact = $"Contact {x}",
+                    SheetId = $"SheetId {x}",
+                    Description = $"Description {x}",
+                    LogoUrl = $"LogoUrl {x}"
                 });
                 context.Restaurant.AddRange(restaurant);
                 context.SaveChanges();
@@ -80,7 +87,7 @@ namespace Exebite.DataAccess.Test
 
         public sealed class Data
         {
-            public int? Id { get; set; }
+            public long? Id { get; set; }
         }
     }
 }

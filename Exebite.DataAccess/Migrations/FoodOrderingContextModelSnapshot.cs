@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Exebite.DataAccess.Migrations
 {
-    [DbContext(typeof(FoodOrderingContext))]
+    [DbContext(typeof(MealOrderingContext))]
     partial class FoodOrderingContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

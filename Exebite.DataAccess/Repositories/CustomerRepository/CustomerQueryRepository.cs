@@ -12,9 +12,9 @@ namespace Exebite.DataAccess.Repositories
     public class CustomerQueryRepository : ICustomerQueryRepository
     {
         private readonly IMapper _mapper;
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
-        public CustomerQueryRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public CustomerQueryRepository(IMealOrderingContextFactory factory, IMapper mapper)
         {
             _factory = factory;
             _mapper = mapper;
@@ -56,7 +56,7 @@ namespace Exebite.DataAccess.Repositories
                         return new Left<Error, string>(new RecordNotFound($"Record with GoogleUserId='{googleId}' is not found."));
                     }
 
-                    return new Right<Error, string>(customer.Role != null ? customer.Role.Name : string.Empty);
+                    return new Right<Error, string>(Enum.GetName(typeof(RoleType), customer.Role));
                 }
             }
             catch (Exception ex)
@@ -86,6 +86,11 @@ namespace Exebite.DataAccess.Repositories
                     if (!string.IsNullOrWhiteSpace(queryModel.GoogleUserId))
                     {
                         query = query.Where(x => x.GoogleUserId == queryModel.GoogleUserId);
+                    }
+
+                    if (queryModel.IsActive != null)
+                    {
+                        query = query.Where(x => x.IsActive == queryModel.IsActive);
                     }
 
                     var size = queryModel.Size <= QueryConstants.MaxElements ? queryModel.Size : QueryConstants.MaxElements;

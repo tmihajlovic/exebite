@@ -12,9 +12,9 @@ namespace Exebite.DataAccess.Repositories
     public class DailyMenuQueryRepository : IDailyMenuQueryRepository
     {
         private readonly IMapper _mapper;
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
-        public DailyMenuQueryRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public DailyMenuQueryRepository(IMealOrderingContextFactory factory, IMapper mapper)
         {
             _factory = factory;
             _mapper = mapper;
@@ -41,6 +41,11 @@ namespace Exebite.DataAccess.Repositories
                     if (queryModel.RestaurantId != null)
                     {
                         query = query.Where(x => x.RestaurantId == queryModel.RestaurantId.Value);
+                    }
+
+                    if (queryModel.Date.HasValue)
+                    {
+                        query = query.Where(x => x.Date.Date == queryModel.Date.Value.Date);
                     }
 
                     var size = queryModel.Size <= QueryConstants.MaxElements ? queryModel.Size : QueryConstants.MaxElements;

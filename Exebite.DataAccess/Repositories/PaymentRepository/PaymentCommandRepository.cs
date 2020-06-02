@@ -10,15 +10,15 @@ namespace Exebite.DataAccess.Repositories
     public class PaymentCommandRepository : IPaymentCommandRepository
     {
         private readonly IMapper _mapper;
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
-        public PaymentCommandRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public PaymentCommandRepository(IMealOrderingContextFactory factory, IMapper mapper)
         {
             _mapper = mapper;
             _factory = factory;
         }
 
-        public Either<Error, int> Insert(PaymentInsertModel entity)
+        public Either<Error, long> Insert(PaymentInsertModel entity)
         {
             try
             {
@@ -32,16 +32,16 @@ namespace Exebite.DataAccess.Repositories
 
                     var addedEntity = context.Payment.Add(paymentEntity).Entity;
                     context.SaveChanges();
-                    return new Right<Error, int>(addedEntity.Id);
+                    return new Right<Error, long>(addedEntity.Id);
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Error, int>(new UnknownError(ex.ToString()));
+                return new Left<Error, long>(new UnknownError(ex.ToString()));
             }
         }
 
-        public Either<Error, bool> Update(int id, PaymentUpdateModel entity)
+        public Either<Error, bool> Update(long id, PaymentUpdateModel entity)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, bool> Delete(int id)
+        public Either<Error, bool> Delete(long id)
         {
             try
             {

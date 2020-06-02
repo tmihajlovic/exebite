@@ -1,19 +1,19 @@
 ﻿namespace Exebite.DataAccess.Context
 {
-    public class FoodOrderingContextFactory : IFoodOrderingContextFactory
+    public class MealOrderingContextFactory : IMealOrderingContextFactory
     {
         private readonly IExebiteDbContextOptionsFactory _optionsFactory;
 
-        public FoodOrderingContextFactory(IExebiteDbContextOptionsFactory optionsFactory)
+        public MealOrderingContextFactory(IExebiteDbContextOptionsFactory optionsFactory)
         {
             _optionsFactory = optionsFactory;
         }
 
-        public FoodOrderingContext Create()
+        public MealOrderingContext Create()
         {
             var options = _optionsFactory.Create();
 
-            return new FoodOrderingContext(options);
+            return new MealOrderingContext(options);
         }
     }
 }

@@ -6,15 +6,15 @@ namespace Exebite.DataAccess.Context
     /// <summary>
     /// Used only for migrations
     /// </summary>
-    public class MigrationsFactory : IDesignTimeDbContextFactory<FoodOrderingContext>
+    public class MigrationsFactory : IDesignTimeDbContextFactory<MealOrderingContext>
     {
-        public FoodOrderingContext CreateDbContext(string[] args)
+        public MealOrderingContext CreateDbContext(string[] args)
         {
-            var dbContextOptions = new DbContextOptionsBuilder<FoodOrderingContext>()
+            var dbContextOptions = new DbContextOptionsBuilder<MealOrderingContext>()
                 .UseSqlServer("Server=(Local);Database=Exebite;Trusted_Connection=True;")
                 .UseLazyLoadingProxies().Options;
 
-            return new FoodOrderingContext(dbContextOptions);
+            return new MealOrderingContext(dbContextOptions);
         }
     }
 }

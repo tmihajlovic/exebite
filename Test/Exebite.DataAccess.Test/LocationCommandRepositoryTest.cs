@@ -11,7 +11,7 @@ using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
 namespace Exebite.DataAccess.Test
 {
-    public sealed class LocationCommandRepositoryTest : CommandRepositoryTests<LocationCommandRepositoryTest.Data, int, LocationInsertModel, LocationUpdateModel>
+    public sealed class LocationCommandRepositoryTest : CommandRepositoryTests<LocationCommandRepositoryTest.Data, long, LocationInsertModel, LocationUpdateModel>
     {
         protected override IEnumerable<Data> SampleData =>
             Enumerable.Range(1, int.MaxValue).Select(content => new Data
@@ -45,22 +45,22 @@ namespace Exebite.DataAccess.Test
             return new LocationUpdateModel { Name = data.Name, Address = data.Address };
         }
 
-        protected override IDatabaseCommandRepository<int, LocationInsertModel, LocationUpdateModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseCommandRepository<long, LocationInsertModel, LocationUpdateModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateOnlyLocationCommandRepositoryInstanceNoData(factory);
         }
 
-        protected override int GetId(Either<Error, int> newObj)
+        protected override long GetId(Either<Error, long> newObj)
         {
             return newObj.RightContent();
         }
 
-        protected override int GetUnExistingId()
+        protected override long GetUnExistingId()
         {
             return 99999;
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
@@ -78,7 +78,7 @@ namespace Exebite.DataAccess.Test
 
         public sealed class Data
         {
-            public int? Id { get; set; }
+            public long? Id { get; set; }
 
             public string Name { get; set; }
 

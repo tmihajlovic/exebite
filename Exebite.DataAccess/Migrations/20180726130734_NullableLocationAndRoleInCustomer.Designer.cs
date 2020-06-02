@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Exebite.DataAccess.Migrations
 {
-    [DbContext(typeof(FoodOrderingContext))]
+    [DbContext(typeof(MealOrderingContext))]
     [Migration("20180726130734_NullableLocationAndRoleInCustomer")]
     partial class NullableLocationAndRoleInCustomer
     {
