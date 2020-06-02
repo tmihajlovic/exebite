@@ -14,6 +14,8 @@ namespace Exebite.DataAccess.Entities
 
         public string GoogleUserId { get; set; }
 
+        public bool IsActive { get; set; }
+
         public int Role { get; set; }
 
         [ForeignKey(nameof(DefaultLocation))]

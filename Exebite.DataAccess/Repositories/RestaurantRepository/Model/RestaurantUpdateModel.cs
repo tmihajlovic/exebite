@@ -15,5 +15,7 @@ namespace Exebite.DataAccess.Repositories
         public string Contact { get; set; }
 
         public DateTime? OrderDue { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

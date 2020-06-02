@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Exebite.DataAccess.Entities
@@ -21,6 +20,8 @@ namespace Exebite.DataAccess.Entities
         public string Description { get; set; }
 
         public string Contact { get; set; }
+
+        public bool IsActive { get; set; }
 
         public DateTime? OrderDue { get; set; }
 

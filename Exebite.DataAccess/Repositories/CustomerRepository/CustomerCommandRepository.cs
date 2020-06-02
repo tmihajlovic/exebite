@@ -31,7 +31,8 @@ namespace Exebite.DataAccess.Repositories
                         GoogleUserId = entity.GoogleUserId,
                         Balance = entity.Balance,
                         DefaultLocationId = entity.DefaultLocationId,
-                        Role = entity.Role
+                        Role = entity.Role,
+                        IsActive = entity.IsActive
                     };
 
                     var addedEntity = context.Customer.Add(customerEntity).Entity;
@@ -67,6 +68,8 @@ namespace Exebite.DataAccess.Repositories
                     currentEntity.Balance = entity.Balance;
                     currentEntity.DefaultLocationId = entity.DefaultLocationId;
                     currentEntity.Role = entity.Role;
+                    currentEntity.IsActive = entity.IsActive;
+
                     context.SaveChanges();
                 }
 
@@ -129,6 +132,7 @@ namespace Exebite.DataAccess.Repositories
                     dbCustomer.Balance = customer.Balance;
                     dbCustomer.DefaultLocationId = customer.DefaultLocationId;
                     dbCustomer.Role = customer.Role;
+                    dbCustomer.IsActive = customer.IsActive;
 
                     return context.SaveChanges() > 0;
                 }

@@ -43,6 +43,11 @@ namespace Exebite.DataAccess.Repositories
                         query = query.Where(x => x.Name == queryModel.Name);
                     }
 
+                    if (queryModel.IsActive != null)
+                    {
+                        query = query.Where(x => x.IsActive == queryModel.IsActive);
+                    }
+
                     var size = queryModel.Size <= QueryConstants.MaxElements ? queryModel.Size : QueryConstants.MaxElements;
 
                     var total = query.Count();

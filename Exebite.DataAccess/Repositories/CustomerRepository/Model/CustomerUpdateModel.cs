@@ -11,5 +11,8 @@
         public int Role { get; set; }
 
         public long DefaultLocationId { get; set; }
+
+        public bool IsActive { get; set; }
+
     }
 }

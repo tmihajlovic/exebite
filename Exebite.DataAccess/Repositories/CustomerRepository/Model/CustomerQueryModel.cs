@@ -14,5 +14,7 @@
         public long? Id { get; set; }
 
         public string GoogleUserId { get; set; }
+
+        public bool? IsActive { get; set; }
     }
 }

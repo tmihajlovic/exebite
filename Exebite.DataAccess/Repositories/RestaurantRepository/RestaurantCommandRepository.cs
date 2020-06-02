@@ -27,6 +27,11 @@ namespace Exebite.DataAccess.Repositories
                     var restaurantEntity = new RestaurantEntity()
                     {
                         Name = entity.Name,
+                        IsActive = entity.IsActive,
+                        LogoUrl = entity.LogoUrl,
+                        OrderDue = entity.OrderDue,
+                        SheetId = entity.SheetId,
+                        Contact = entity.Contact
                     };
 
                     var addedEntity = context.Restaurant.Add(restaurantEntity).Entity;
@@ -58,6 +63,12 @@ namespace Exebite.DataAccess.Repositories
                     }
 
                     currentEntity.Name = entity.Name;
+                    currentEntity.IsActive = entity.IsActive;
+                    currentEntity.LogoUrl = entity.LogoUrl;
+                    currentEntity.OrderDue = entity.OrderDue;
+                    currentEntity.SheetId = entity.SheetId;
+                    currentEntity.Contact = entity.Contact;
+
                     context.SaveChanges();
                 }
 
