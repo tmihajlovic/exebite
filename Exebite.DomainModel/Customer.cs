@@ -4,7 +4,7 @@ namespace Exebite.DomainModel
 {
     public class Customer
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Name { get; set; }
 
@@ -12,17 +12,15 @@ namespace Exebite.DomainModel
 
         public string GoogleUserId { get; set; }
 
-        public int? LocationId { get; set; }
+        public int Role { get; set; }
 
-        public Location Location { get; set; }
+        public long? DefaultLocationId { get; set; }
 
-        public int? RoleId { get; set; }
+        public Location DefaultLocation { get; set; }
 
-        public Role Role { get; set; }
+        public List<Order> Orders { get; set; } = new List<Order>();
 
-        public List<Order> Orders { get; set; }
-
-        public List<CustomerAliases> Aliases { get; set; }
+        public List<Meal> FavouriteMeals { get; set; } = new List<Meal>();
 
 
     }
