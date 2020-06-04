@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 
 import { Router } from "@angular/router";
-import { UserService } from "src/app/user.service";
-import { IUser } from "src/app/user";
-import { ICustomer } from "src/app/customer";
+import { UserService } from "src/app/services/user.service";
+import { IUser } from "src/app/models/user";
+import { ICustomer } from "src/app/models/customer";
 
 @Component({
   selector: "app-home",

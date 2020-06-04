@@ -3,7 +3,7 @@ import { Component } from "@angular/core";
 import { AuthService } from "angularx-social-login";
 import { GoogleLoginProvider } from "angularx-social-login";
 import { Router } from "@angular/router";
-import { IUser } from "src/app/user";
+import { IUser } from "src/app/models/user";
 
 @Component({
   selector: "app-login",

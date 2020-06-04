@@ -8,7 +8,7 @@ import { GoogleLoginProvider } from "angularx-social-login";
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./components/login/login.component";
 import { HomeComponent } from "./components/home/home.component";
-import { UserService } from "./user.service";
+import { UserService } from "./services/user.service";
 
 let config = new AuthServiceConfig([
   {

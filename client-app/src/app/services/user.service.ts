@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AuthService } from "angularx-social-login";
-import { IUser } from "./user";
-import { ICustomer } from "./customer";
+import { IUser } from "../models/user";
+import { ICustomer } from "../models/customer";
 import { map, switchMap } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 
