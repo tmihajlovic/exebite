@@ -19,15 +19,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getUser().subscribe((data) => {
-      this.user = data;
-    });
-    this.userService.fetchCustomerData().subscribe((data) => {
-      this.customers = data.customers;
-      data.customers.map((data) => {
-        if (data.googleUserId == this.user.email) {
-          this.customer = data;
-        }
-      });
+      this.customer = data;
+      console.log(this.customer);
     });
   }
 
