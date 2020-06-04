@@ -12,11 +12,7 @@ namespace Exebite.DomainModel
 
         public string Note { get; set; }
 
-        public long? OrderId { get; set; }
-
         public Order Order { get; set; }
-
-        public long? MealId { get; set; }
 
         public Meal Meal { get; set; }
     }

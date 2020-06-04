@@ -18,8 +18,6 @@ namespace Exebite.DomainModel
 
         public bool IsActive { get; set; }
 
-        public long? RestaurantId { get; set; }
-
         public Restaurant Restaurant { get; set; }
 
         public List<Meal> Condiments { get; set; } = new List<Meal>();

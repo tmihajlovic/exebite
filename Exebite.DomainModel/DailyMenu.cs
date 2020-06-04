@@ -11,8 +11,6 @@ namespace Exebite.DomainModel
 
         public string Note { get; set; }
 
-        public long? RestaurantId { get; set; }
-
         public Restaurant Restaurant { get; set; }
 
         public List<Meal> Meals { get; set; } = new List<Meal>();
