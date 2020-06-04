@@ -1,30 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Exebite.DtoModels
 {
-    public class RestaurantDto
+    public class UpdateRestaurantDto
     {
-        public long Id { get; set; }
-
+        [Required]
         public string SheetId { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Email { get; set; }
 
+        [Required]
         public string LogoUrl { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public string Contact { get; set; }
 
+        [Required]
         public bool IsActive { get; set; }
 
+        [Required]
         public DateTime? OrderDue { get; set; }
-
-        public List<MealDto> Meals { get; set; }
-
-        public List<DailyMenuDto> DailyMenus { get; set; }
     }
 }

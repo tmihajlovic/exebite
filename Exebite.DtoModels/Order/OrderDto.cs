@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Exebite.DtoModels
 {
@@ -10,10 +11,10 @@ namespace Exebite.DtoModels
 
         public DateTime Date { get; set; }
 
-        public int MealId { get; set; }
+        public CustomerDto Customer { get; set; }
 
-        public int CustomerId { get; set; }
+        public LocationDto Location { get; set; }
 
-        public string Note { get; set; }
+        public List<OrderToMealDto> Meals { get; set; }
     }
 }

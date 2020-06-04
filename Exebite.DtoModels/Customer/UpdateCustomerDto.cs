@@ -7,16 +7,20 @@ namespace Exebite.DtoModels
         [Required]
         public string Name { get; set; }
 
+        [Required]
         [Range(0, double.MaxValue)]
-        public decimal Balance { get; set; }
+        public decimal? Balance { get; set; }
 
         [Required]
-        public int LocationId { get; set; }
+        public long DefaultLocationId { get; set; }
 
         [Required]
         public string GoogleUserId { get; set; }
+        
+        [Required]
+        public int Role { get; set; }
 
         [Required]
-        public int RoleId { get; set; }
+        public bool IsActive { get; set; }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Exebite.DtoModels
 {
     public class CreateOrderDto
     {
+        [Required]
         [Range(0, double.MaxValue)]
         public decimal Price { get; set; }
 
@@ -12,12 +14,12 @@ namespace Exebite.DtoModels
         public DateTime Date { get; set; }
 
         [Required]
-        public int MealId { get; set; }
+        public int LocationId { get; set; }
 
         [Required]
         public int CustomerId { get; set; }
 
         [Required]
-        public string Note { get; set; }
+        public List<CreateOrderToMealDto> Meals { get; set; }
     }
 }
