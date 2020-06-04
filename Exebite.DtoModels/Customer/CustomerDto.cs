@@ -1,17 +1,21 @@
-﻿namespace Exebite.DtoModels
+﻿using System.Collections.Generic;
+
+namespace Exebite.DtoModels
 {
     public class CustomerDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Name { get; set; }
 
         public decimal Balance { get; set; }
 
-        public int? LocationId { get; set; }
+        public LocationDto DefaultLocation { get; set; }
 
         public string GoogleUserId { get; set; }
 
-        public int? RoleId { get; set; }
+        public List<OrderDto> Orders { get; set; }
+
+        public List<MealDto> FavouriteMeals { get; set; }
     }
 }
