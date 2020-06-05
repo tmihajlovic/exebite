@@ -64,7 +64,7 @@ namespace Exebite.GoogleSheetAPI.Extensions
         /// </summary>
         /// <param name="value">string value of FoodType</param>
         /// <returns>FoodType enum</returns>
-        public static MealType ConvertToMealType(this string value)
+        public static MealType ConvertToFoodType(this string value)
         {
             switch (value)
             {
@@ -89,7 +89,7 @@ namespace Exebite.GoogleSheetAPI.Extensions
         /// </summary>
         /// <param name="price">Price of the food.</param>
         /// <returns>FoodType</returns>
-        public static MealType IndexHouseMealTypeFromPrice(this decimal price)
+        public static MealType IndexHouseFoodTypeFromPrice(this decimal price)
         {
             return price > 0m ? MealType.MAIN_COURSE : MealType.CONDIMENT;
         }

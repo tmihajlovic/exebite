@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Either;
 using Exebite.Common;
 using Exebite.DataAccess.Repositories;
@@ -13,12 +12,14 @@ namespace Exebite.Business
     public class MenuService : IMenuService
     {
         private readonly IRestaurantQueryRepository _restaurantRepository;
-        private readonly IMealQueryRepository _mealQueryRepository;
+        private readonly IRecipeQueryRepository _recipeQueryRepository;
+        private readonly IFoodQueryRepository _foodQueryRepository;
 
-        public MenuService(IRestaurantQueryRepository restaurantRepository, IMealQueryRepository mealQueryRepository)
+        public MenuService(IRestaurantQueryRepository restaurantRepository, IFoodQueryRepository foodQueryRepository, IRecipeQueryRepository recipeQueryRepository)
         {
             _restaurantRepository = restaurantRepository;
-            _mealQueryRepository = mealQueryRepository;
+            _foodQueryRepository = foodQueryRepository;
+            _recipeQueryRepository = recipeQueryRepository;
         }
 
         public Either<Error, PagingResult<Restaurant>> GetRestorantsWithMenus()
@@ -32,11 +33,17 @@ namespace Exebite.Business
             throw new NotImplementedException();
         }
 
-        public IList<Meal> GetCondimentsForMeal(long mealId)
+        public IList<Food> CheckAvailableSideDishes(int foodId)
         {
-            return _mealQueryRepository.GetCondimentsForMeal(new MealQueryModel { Id = mealId })
-                .Map(c => c.Items.ToList())
-                .Reduce(_ => throw new Exception());
+            var recepies = _foodQueryRepository.Query(new FoodQueryModel() { Id = foodId })
+                .Map(x => x.Items.FirstOrNone())
+                .Map(z =>
+                    z.Map(x => _recipeQueryRepository.Query(new RecipeQueryModel() { MainCourseId = x.Id }))
+                     .Reduce(PagingResult<Recipe>.Empty()))
+                .Map(x => x.Items)
+                .Reduce(_ => new List<Recipe>());
+
+            return recepies.SelectMany(x => x.SideDish).ToList();
         }
     }
 }

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ProjectGuid>2BBB43F4-1784-4131-8A32-B285EB48E5F1</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Exebite.Sheets.Common\Exebite.Sheets.Common.csproj" />
+    <ProjectReference Include="..\Exebite.Sheets.Reader\Exebite.Sheets.Reader.csproj" />
+  </ItemGroup>
+</Project>

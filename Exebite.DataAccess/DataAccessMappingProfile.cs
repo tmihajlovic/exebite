@@ -9,16 +9,13 @@ namespace Exebite.DataAccess
     {
         public DataAccessMappingProfile()
         {
-            CreateMap<CustomerEntity, Customer>()
-                .ForMember(c => c.FavouriteMeals, e => e.MapFrom(p => p.FavouriteMeals.Select(m => m.Meal)));
-            CreateMap<DailyMenuEntity, DailyMenu>()
-                .ForMember(dm => dm.Meals, e => e.MapFrom(p => p.DailyMenuToMeals.Select(dm => dm.Meal)));
-            CreateMap<LocationEntity, Location>();
-            CreateMap<MealEntity, Meal>()
-                .ForMember(m => m.Condiments, e => e.MapFrom(p => p.Condiments.Select(c => c.Condiment)));
+            CreateMap<CustomerEntity, Customer>();
             CreateMap<OrderEntity, Order>();
+            CreateMap<MealEntity, Food>();
             CreateMap<RestaurantEntity, Restaurant>();
-            CreateMap<PaymentEntity, Payment>();
+            CreateMap<LocationEntity, Location>();
+
+            // TODO: add mappings when domain models are updated.
         }
 
         public override string ProfileName => "DataAccessMappingProfile";
