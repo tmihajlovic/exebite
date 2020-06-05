@@ -18,8 +18,8 @@ export class UserService {
   getUser() {
     return this.authService.authState.pipe(
       map((data) => ({
-        email: data.email,
-        photoUrl: data.photoUrl,
+        email: data && data.email,
+        photoUrl: data && data.photoUrl,
       })),
       switchMap((data: any) =>
         this.fetchCustomerData(data.email, data.photoUrl)
