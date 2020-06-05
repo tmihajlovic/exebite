@@ -5,6 +5,6 @@
         /// <summary>
         /// Update restaurant menu
         /// </summary>
-        void UpdateRestorauntsMenu();
+        void UpdateRestaurantMenu();
     }
 }

@@ -1,9 +1,7 @@
 ﻿
-using Exebite.Sheets.Common;
 using Exebite.Sheets.Common.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Exebite.Sheets.API
 {
@@ -22,12 +20,12 @@ namespace Exebite.Sheets.API
         /// <summary>
         /// Food offered for this day specificaly
         /// </summary>
-        public List<DailyOfferFood> DailyOffers { get; private set; }
+        public List<DailyOfferMeal> DailyOffers { get; private set; }
 
         /// <summary>
         /// Food offered any day
         /// </summary>
-        public List<FoodItem> StandardOffers { get; private set; }
+        public List<MealItem> StandardOffers { get; private set; }
 
         /// <summary>
         /// Constructor providing 
@@ -39,8 +37,8 @@ namespace Exebite.Sheets.API
         public RestaurantOffer(
             DateTime date,
             string restaurantName,
-            List<DailyOfferFood> dailyOffers,
-            List<FoodItem> standardOffers)
+            List<DailyOfferMeal> dailyOffers,
+            List<MealItem> standardOffers)
         {
             Date = date;
             RestaurantName = restaurantName;

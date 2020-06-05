@@ -1,5 +1,5 @@
 ﻿using Exebite.Business.GoogleApiImportExport;
-using Exebite.Sheets.API;
+using Exebite.GoogleSheetAPI.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Exebite.Business
@@ -30,7 +30,7 @@ namespace Exebite.Business
         {
             return services.AddTransient<IGoogleDataExporter, GoogleApiExport>()
                            .AddTransient<IGoogleDataImporter, GoogleApiImport>()
-                           .AddTransient<ISheetsAPI, SheetsAPI>();
+                           .AddTransient<IGoogleSheetAPIService, GoogleSheetAPIService>();
         }
     }
 }
