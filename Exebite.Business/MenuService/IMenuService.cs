@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Either;
 using Exebite.Common;
-using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 
 namespace Exebite.Business
@@ -22,10 +21,10 @@ namespace Exebite.Business
         decimal CheckPrice(Meal meal);
 
         /// <summary>
-        /// Find if <see cref="Food"/> has sidedishes, condament and salads that pair with it
+        /// Find if <see cref="Meal"/> has sidedishes, condament and salads that pair with it
         /// </summary>
-        /// <param name="foodId">Id of food</param>
-        /// <returns>List of side dishes, condament and salads that pair with given food</returns>
-        IList<Food> CheckAvailableSideDishes(int foodId);
+        /// <param name="mealId">Id of meal</param>
+        /// <returns>List of side dishes, condament and salads that pair with given meal</returns>
+        IList<Meal> GetCondimentsForMeal(long mealId);
     }
 }
