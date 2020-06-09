@@ -88,5 +88,28 @@ namespace Exebite.DataAccess.Repositories
                 return new Left<Error, long>(new UnknownError(ex.ToString()));
             }
         }
+
+        public Either<Error, PagingResult<Meal>> GetCondimentsForMeal(MealQueryModel queryModel)
+        {
+            try
+            {
+                if (queryModel == null)
+                {
+                    return new Left<Error, PagingResult<Meal>>(new ArgumentNotSet(nameof(queryModel)));
+                }
+
+                using (var ctx = _factory.Create())
+                {
+                    var condiments = ctx.Meal.FirstOrDefault(m => m.Id == queryModel.Id).Condiments.Select(c => c.Condiment);
+                    var result = _mapper.Map<IList<Meal>>(condiments);
+
+                    return new Right<Error, PagingResult<Meal>>(new PagingResult<Meal>(result, result.Count()));
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Left<Error, PagingResult<Meal>>(new UnknownError(ex.ToString()));
+            }
+        }
     }
 }

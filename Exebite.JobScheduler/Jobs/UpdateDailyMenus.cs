@@ -16,7 +16,7 @@ namespace Exebite.JobScheduler.Jobs
 #pragma warning disable ASYNC0001 // Asynchronous method names should end with Async This is from library implementation
         public Task Execute(IJobExecutionContext context)
         {
-            return Task.Run(() => _googleDataImporter.UpdateRestorauntsMenu());
+            return Task.Run(() => _googleDataImporter.UpdateRestaurantMenu());
         }
 #pragma warning restore ASYNC0001 // Asynchronous method names should end with Async
     }

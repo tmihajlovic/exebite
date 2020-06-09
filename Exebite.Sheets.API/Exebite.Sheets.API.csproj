@@ -5,10 +5,5 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Exebite.DomainModel\Exebite.DomainModel.csproj" />
-    <ProjectReference Include="..\Exebite.Sheets\Exebite.Sheets.Common\Exebite.Sheets.Common.csproj" />
-    <ProjectReference Include="..\Exebite.Sheets\Exebite.Sheets.Hedone\Exebite.Sheets.Hedone.csproj" />
-    <ProjectReference Include="..\Exebite.Sheets\Exebite.Sheets.Index\Exebite.Sheets.Index.csproj" />
-    <ProjectReference Include="..\Exebite.Sheets\Exebite.Sheets.PodLipom\Exebite.Sheets.PodLipom.csproj" />
-    <ProjectReference Include="..\Exebite.Sheets\Exebite.Sheets.Teglas\Exebite.Sheets.Teglas.csproj" />
   </ItemGroup>
 </Project>
