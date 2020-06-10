@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Exebite.GoogleSheetAPI.Common;
 using Exebite.GoogleSheetAPI.GoogleSSFactory;
 using Google.Apis.Sheets.v4;
@@ -138,7 +139,7 @@ namespace Exebite.GoogleSheetAPI.SheetExtractor
 
             try
             {
-                retVal = (T)Convert.ChangeType(objectList[index], typeof(T));
+                retVal = (T)Convert.ChangeType(objectList[index], typeof(T), CultureInfo.InvariantCulture);
 
                 if (retVal is string a && string.IsNullOrWhiteSpace(a))
                 {

@@ -487,7 +487,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
                 return new List<MergedRegion>();
             }
 
-            return sheet.Merges.Select(merge => new MergedRegion(sheet, merge));
+            return sheet.Merges.Select(merge => new MergedRegion(sheet, merge)).Where(merge => merge.Range.StartRowIndex == 1);
         }
 
         /// <summary>
