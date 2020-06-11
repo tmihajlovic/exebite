@@ -14,6 +14,7 @@ import { RestaurantListComponent } from "./components/restaurant-list/restaurant
 import { RestaurantDetailComponent } from "./components/restaurant-detail/restaurant-detail.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { DropdownDirective } from "./shared/dropdown.directive";
+import { FilterViewByComponent } from './components/filter-view-by/filter-view-by.component';
 
 let config = new AuthServiceConfig([
   {
@@ -37,6 +38,7 @@ export function provideConfig() {
     RestaurantDetailComponent,
     HeaderComponent,
     DropdownDirective,
+    FilterViewByComponent,
   ],
   imports: [
     BrowserModule,
