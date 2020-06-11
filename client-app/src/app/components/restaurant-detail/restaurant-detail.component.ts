@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { IRestaurant } from "src/app/models/restaurant";
 import { RestaurantService } from "src/app/services/restaurant.service";
-import { ActivatedRoute, Router, Params } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -26,10 +26,8 @@ export class RestaurantDetailComponent implements OnInit, OnDestroy {
         .fetchDataForRestaurant(this.id)
         .subscribe((data) => {
           this.restaurant = data;
-          console.log(data);
         });
     });
-    console.log;
   }
 
   ngOnDestroy() {

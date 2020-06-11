@@ -10,8 +10,10 @@ import { LoginComponent } from "./components/login/login.component";
 import { HomeComponent } from "./components/home/home.component";
 import { UserService } from "./services/user.service";
 import { RestaurantService } from "./services/restaurant.service";
-import { RestaurantListComponent } from './components/restaurant-list/restaurant-list.component';
-import { RestaurantDetailComponent } from './components/restaurant-detail/restaurant-detail.component';
+import { RestaurantListComponent } from "./components/restaurant-list/restaurant-list.component";
+import { RestaurantDetailComponent } from "./components/restaurant-detail/restaurant-detail.component";
+import { HeaderComponent } from "./components/header/header.component";
+import { DropdownDirective } from "./shared/dropdown.directive";
 
 let config = new AuthServiceConfig([
   {
@@ -27,7 +29,15 @@ export function provideConfig() {
 }
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, RestaurantListComponent, RestaurantDetailComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    HomeComponent,
+    RestaurantListComponent,
+    RestaurantDetailComponent,
+    HeaderComponent,
+    DropdownDirective,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

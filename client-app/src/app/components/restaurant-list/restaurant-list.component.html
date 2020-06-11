@@ -1,11 +1,10 @@
-<p>restaurant-list works!</p>
-<div>
-    <ul>
-        <a style="cursor: pointer;" *ngFor="let item of dataRestaurants" [routerLink]="[item.id]"
+<ul class="nav nav-tabs ">
+    <li class="nav-item row">
+        <a class="nav-link" style="cursor: pointer;" *ngFor="let item of dataRestaurants" [routerLink]="[item.id]"
             routerLinkActive="active">
             <div>
-                <h4>{{item.name}}</h4>
+                <h5>{{item.name}}</h5>
             </div>
         </a>
-    </ul>
-</div>
+    </li>
+</ul>
