@@ -7,11 +7,13 @@ import { Router } from "@angular/router";
   styleUrls: ["./filter-view-by.component.scss"],
 })
 export class FilterViewByComponent implements OnInit {
+  isValue: number = 1;
   constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
   showRestorauntList() {
-    this.router.navigate(["/home"]);
+    this.isValue = 1;
+    this.router.navigate(["/home/1"]);
   }
 }

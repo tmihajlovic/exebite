@@ -1,5 +1,5 @@
-<div *ngIf="restaurant">
+<div *ngIf="foodsData">
     <div>
-        <h4>{{restaurant.name}}</h4>
+        <div *ngFor="let food of foodsData">{{food.name}}</div>
     </div>
 </div>

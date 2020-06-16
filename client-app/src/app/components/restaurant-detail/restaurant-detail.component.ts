@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { IRestaurant } from "src/app/models/restaurant";
-import { RestaurantService } from "src/app/services/restaurant.service";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Subscription } from "rxjs";
+import { FoodService } from "src/app/services/food.service";
+import { IFood } from "src/app/models/food";
 
 @Component({
   selector: "app-restaurant-detail",
@@ -11,22 +12,26 @@ import { Subscription } from "rxjs";
 })
 export class RestaurantDetailComponent implements OnInit, OnDestroy {
   restaurant: IRestaurant;
+  foodsData: IFood[] = [];
   id: number;
+  totalData = {
+    id: 0,
+    name: "",
+    price: 0,
+    restaurantId: 0,
+  };
   private sub: Subscription;
 
   constructor(
-    private restaurantService: RestaurantService,
+    private foodService: FoodService,
     private route: ActivatedRoute
   ) {}
-
   ngOnInit() {
     this.sub = this.route.params.subscribe((params: Params) => {
       this.id = +params["id"];
-      this.restaurantService
-        .fetchDataForRestaurant(this.id)
-        .subscribe((data) => {
-          this.restaurant = data;
-        });
+      this.foodService.fetchFoodForRestaurant(this.id).subscribe((foods) => {
+        this.foodsData = foods;
+      });
     });
   }
 

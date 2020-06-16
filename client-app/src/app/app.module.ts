@@ -14,7 +14,8 @@ import { RestaurantListComponent } from "./components/restaurant-list/restaurant
 import { RestaurantDetailComponent } from "./components/restaurant-detail/restaurant-detail.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { DropdownDirective } from "./shared/dropdown.directive";
-import { FilterViewByComponent } from './components/filter-view-by/filter-view-by.component';
+import { FilterViewByComponent } from "./components/filter-view-by/filter-view-by.component";
+import { FoodService } from "./services/food.service";
 
 let config = new AuthServiceConfig([
   {
@@ -49,6 +50,7 @@ export function provideConfig() {
   providers: [
     UserService,
     RestaurantService,
+    FoodService,
     {
       provide: AuthServiceConfig,
       useFactory: provideConfig,

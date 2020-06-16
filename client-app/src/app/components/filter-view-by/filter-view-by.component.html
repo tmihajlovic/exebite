@@ -6,8 +6,8 @@
     </div>
     <div class="col-11">
         <div class="btn-group btn-group-sm" role="group" aria-label="First group">
-            <button type="button" class="btn btn-outline-dark mr-3 rounded-pill text-uppercase active"
-                (click)="showRestorauntList()">restaurant</button>
+            <button type="button" class="btn btn-outline-dark mr-3 rounded-pill text-uppercase"
+                [ngClass]="{ 'active' : isValue == 1 }" (click)="showRestorauntList()">restaurant</button>
             <button type="button" class="btn btn-outline-dark rounded-pill text-uppercase">price</button>
         </div>
     </div>

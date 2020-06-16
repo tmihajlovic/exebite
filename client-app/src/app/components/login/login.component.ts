@@ -19,7 +19,7 @@ export class LoginComponent {
     this.authService
       .signIn(GoogleLoginProvider.PROVIDER_ID)
       .then(() => {
-        this.router.navigate(["home"]);
+        this.router.navigate(["home/1"]);
       })
       .catch((error) => {
         console.log(error);

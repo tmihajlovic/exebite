@@ -61,7 +61,7 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1ehEqncAQP677e8Fi4oWTOBvLjEUB67ApjFLJnBO3gcY.
+        ///   Looks up a localized string similar to 1Eb3QSsvk3jHcULkl2gyM8_Y56ElaQLWVon6A37oy7Jc.
         /// </summary>
         internal static string INDEX_HOUSE {
             get {
@@ -70,7 +70,7 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1p95HwHCwbx80L3aWXsStkGbmNfYgG5JOvRvONm0JUXI.
+        ///   Looks up a localized string similar to 1J9Q5MbLg66aT22QCjjX7InlKK8b-OXeZHWXjmUenrrc.
         /// </summary>
         internal static string KASA {
             get {
@@ -79,7 +79,7 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1FJt865bBn69jsbRpyVTqQAFarUjvsiKsom1c2JfR0Hk.
+        ///   Looks up a localized string similar to 1GjiSV7n-wivAUaiGQl0SOjDkKMY29SvgFTLfzfPVHiQ.
         /// </summary>
         internal static string LIPA {
             get {
@@ -88,7 +88,7 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1YQ6BH2vOmGkxNgDWzct_j3Dznql0OWrwi1nITrtlZHA.
+        ///   Looks up a localized string similar to 1kaB79osJftUkw5s8RchsJrB2PUqcrOwyxS2PXFIlap0.
         /// </summary>
         internal static string MIMAS {
             get {
@@ -115,7 +115,7 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1E3tzbemuhLgNUpVuN11Gr1yeKEIgOFN7q2z7UBLnAt8.
+        ///   Looks up a localized string similar to 1Oo7AcHQS3rs-PSRaZyAbm_bH8s8dmkHcGg3Ji2dqkS4.
         /// </summary>
         internal static string TOPLI_OBROK {
             get {

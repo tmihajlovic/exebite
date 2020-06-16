@@ -2,18 +2,14 @@
     <a class="navbar-brand" href="#">
         <img src="../../../assets/ExeBite logo placeholder 2.png" height="30" alt="">
     </a>
-    <div class="navbar-default">
+    <div class="navbar-default" *ngIf="customer">
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown" appDropdown>
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button">My
-                    account<span class="caret"></span></a>
+
+                <img class="mr-2 rounded-circle" src="{{customer.photoUrl}}" height="30" alt="">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button">{{ customer.googleUserId }}<span
+                        class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <div *ngIf="customer">
-                        <div class="text-center">
-                            <p>{{ customer.googleUserId }}</p>
-                        </div>
-                        <hr>
-                    </div>
                     <li class="dropdown-item text-center"><a (click)="signOutNavigate()"
                             style="cursor: pointer;">Logout</a>
                     </li>
