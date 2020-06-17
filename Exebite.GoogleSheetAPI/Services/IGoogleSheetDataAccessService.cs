@@ -18,10 +18,10 @@ namespace Exebite.GoogleSheetAPI.Services
         Either<Error, (int Added, int Updated)> UpdateCustomers(IEnumerable<Customer> customers);
 
         /// <summary>
-        /// Update database Foods based on google sheets data.
+        /// Update database Meals based on google sheets data.
         /// </summary>
-        /// <param name="foods">Food from google sheets.</param>
+        /// <param name="meals">Food from google sheets.</param>
         /// <returns>Number of added and updated records.</returns>
-        Either<Error, (int Added, int Updated)> UpdateFoods(IEnumerable<Food> foods);
+        Either<Error, (int Added, int Updated)> UpdateFoods(IEnumerable<Meal> meals);
     }
 }

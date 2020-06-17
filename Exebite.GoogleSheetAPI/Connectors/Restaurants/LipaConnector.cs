@@ -24,10 +24,10 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         }
 
         /// <summary>
-        /// Write menu with all foods in DB to sheet. Used for initial writing of old menu
+        /// Write menu with all meals in DB to sheet. Used for initial writing of old menu
         /// </summary>
-        /// <param name="foods">List of all food to be written</param>
-        public override void WriteMenu(List<Food> foods)
+        /// <param name="meals">List of all meals to be written</param>
+        public override void WriteMenu(List<Meal> meals)
         {
             // not needed for now. But will probably be needed in the future to write orders
             // in sheets until everything is moved to be get from DB (reports, orders...)
@@ -37,9 +37,9 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         /// Gets food available for today
         /// </summary>
         /// <returns>List of foods</returns>
-        public override List<Food> GetDailyMenu()
+        public override List<Meal> GetDailyMenu()
         {
-            var allFood = new List<Food>();
+            var allFood = new List<Meal>();
             allFood.AddRange(DailyMenu());
             return allFood;
         }
@@ -48,9 +48,9 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         /// Get food from daily menu for today
         /// </summary>
         /// <returns>List of today available food</returns>
-        private IEnumerable<Food> DailyMenu()
+        private IEnumerable<Meal> DailyMenu()
         {
-            var date = DateTime.Today;
+            var date = new DateTime(2020, 03, 03);
             var foundMerge = FindDateRangeInSheets(date);
 
             if (foundMerge.IsSuccess)
@@ -63,7 +63,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
 
                 var offersList = GoogleSheetService.ReadSheetData(string.Format("'{0}'!{1}", foundMerge.Value.SheetName, namesRange), SheetId);
 
-                var result = new List<Food>();
+                var result = new List<Meal>();
                 var foodNames = offersList.Values.First().ToList();
                 var foodPrices = offersList.Values.Last().ToList();
 
@@ -76,11 +76,11 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
                         !string.IsNullOrWhiteSpace(foodPrice) &&
                         decimal.TryParse(foodPrice, out decimal price))
                     {
-                        result.Add(new Food { Name = foodName, Price = price, RestaurantId = Restaurant.Id });
+                        result.Add(new Meal { Name = foodName, Price = price, Restaurant = Restaurant });
                         if (i == foodNames.Count - 1)
                         {
                             // currently in Lipa restaurant SOUP is always the last meal in daily sheet
-                            result.Last().Type = FoodType.SOUP;
+                            result.Last().Type = (int)MealType.SOUP;
                         }
                     }
                 }
@@ -89,7 +89,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
             }
             else
             {
-                return new List<Food>();
+                return new List<Meal>();
             }
         }
     }

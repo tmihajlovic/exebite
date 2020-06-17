@@ -58,9 +58,9 @@ namespace Exebite.GoogleSheetAPI.Services
         public void UpdateDailyMenuLipa()
         {
             _mapper
-                .Map<IEnumerable<Food>>(_lipaConnector.GetDailyMenu())
+                .Map<IEnumerable<Meal>>(_lipaConnector.GetDailyMenu())
                 .Map(_googleSheetDataAccessService.UpdateFoods)
-                .Map(count => LogRowsAffected(count, typeof(Food), nameof(_lipaConnector)))
+                .Map(count => LogRowsAffected(count, typeof(Meal), nameof(_lipaConnector)))
                 .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
         }
 
@@ -68,9 +68,9 @@ namespace Exebite.GoogleSheetAPI.Services
         public void UpdateDailyMenuTopliObrok()
         {
             _mapper
-                .Map<IEnumerable<Food>>(_topliObrokConnector.GetDailyMenu())
+                .Map<IEnumerable<Meal>>(_topliObrokConnector.GetDailyMenu())
                 .Map(_googleSheetDataAccessService.UpdateFoods)
-                .Map(count => LogRowsAffected(count, typeof(Food), nameof(_topliObrokConnector)))
+                .Map(count => LogRowsAffected(count, typeof(Meal), nameof(_topliObrokConnector)))
                 .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
         }
 
@@ -78,9 +78,9 @@ namespace Exebite.GoogleSheetAPI.Services
         public void UpdateDailyMenuMimas()
         {
             _mapper
-                .Map<IEnumerable<Food>>(_mimasConnector.GetDailyMenu())
+                .Map<IEnumerable<Meal>>(_mimasConnector.GetDailyMenu())
                 .Map(_googleSheetDataAccessService.UpdateFoods)
-                .Map(count => LogRowsAffected(count, typeof(Food), nameof(_mimasConnector)))
+                .Map(count => LogRowsAffected(count, typeof(Meal), nameof(_mimasConnector)))
                 .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
         }
 

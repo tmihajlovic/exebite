@@ -38,9 +38,9 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 
         internal Restaurant Restaurant { get; set; }
 
-        public abstract void WriteMenu(List<Food> foods);
+        public abstract void WriteMenu(List<Meal> foods);
 
-        public abstract List<Food> GetDailyMenu();
+        public abstract List<Meal> GetDailyMenu();
 
         /// <summary>
         /// Populate Orders tab in sheet with new order data
@@ -56,10 +56,10 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
             var header = new List<object> { "Jelo", "Komada", "Cena", "Cena Ukupno", "Narucili" };
             var orderRange = new ValueRange { Values = new List<IList<object>> { header } };
 
-            List<Food> listOFOrderdFood = new List<Food>();
+            List<Meal> listOFOrderdFood = new List<Meal>();
             foreach (var order in orders)
             {
-                foreach (var food in order.Meal.Foods)
+                foreach (var food in order.OrdersToMeals.Select(x => x.Meal))
                 {
                     listOFOrderdFood.Add(food);
                 }
@@ -74,8 +74,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 
                 foreach (var order in orders)
                 {
-                    if (order.Meal.Foods.FirstOrDefault(f => f.Name == food.Name) != null)
-                    {
+                    if (order.OrdersToMeals.Select(x => x.Meal).FirstOrDefault(f => f.Name == food.Name) != null)
+                        {
                         if (!string.IsNullOrEmpty(order.Note))
                         {
                             customerList.Add(order.Customer.Name + "(" + order.Note + ")");
@@ -192,10 +192,10 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
         /// Loads values from sheet, with all info
         /// </summary>
         /// <returns>List of all food from sheet</returns>
-        public List<Food> LoadAllFoods()
+        public List<Meal> LoadAllFoods()
         {
             ValueRange sheetData = GoogleSheetService.GetRows(SheetId, FoodListSheet);
-            IEnumerable<Food> foods = new List<Food>();
+            IEnumerable<Meal> foods = new List<Meal>();
 
             // Null and empty check
             if (!(sheetData?.Values?.Any() == true))
@@ -205,14 +205,14 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 
             var foodData = sheetData.Values.Skip(1);
 
-            foods = foodData.Select(item => new Food()
+            foods = foodData.Select(item => new Meal()
             {
                 Name = item[0].ToString(),
                 Description = item[1].ToString(),
                 Price = decimal.Parse(item[2].ToString()),
-                Type = GetFoodType(item[3].ToString()),
+                Type = (int)GetFoodType(item[3].ToString()),
                 Restaurant = Restaurant,
-                IsInactive = false
+                IsActive = true
             });
 
             return foods.ToList();
@@ -239,7 +239,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
                 {
                     customer.Id,
                     customer.Name,
-                    customer.Orders.Where(o => o.Meal.Foods[0].Restaurant.Name == Restaurant.Name).Sum(o => o.Price)
+                    customer.Orders.Where(o => o.OrdersToMeals.Select(x => x.Meal).FirstOrDefault().Restaurant.Name == Restaurant.Name).Sum(o => o.Price)
                 });
             }
 
@@ -290,33 +290,33 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
         /// </summary>
         /// <param name="foodType">Value of food enum</param>
         /// <returns>Name</returns>
-        internal static string GetLocalFoodType(FoodType foodType)
+        internal static string GetLocalFoodType(MealType foodType)
         {
             string typeLocal = "Glavno jelo";
 
             switch (foodType)
             {
-                case FoodType.MAIN_COURSE:
+                case MealType.MAIN_COURSE:
                     typeLocal = "Glavno jelo";
                     break;
 
-                case FoodType.SIDE_DISH:
+                case MealType.SIDE_DISH:
                     typeLocal = "Prilog";
                     break;
 
-                case FoodType.SALAD:
+                case MealType.SALAD:
                     typeLocal = "Salata";
                     break;
 
-                case FoodType.DESERT:
+                case MealType.DESSERT:
                     typeLocal = "Desert";
                     break;
 
-                case FoodType.SOUP:
+                case MealType.SOUP:
                     typeLocal = "Supa";
                     break;
 
-                case FoodType.CONDIMENTS:
+                case MealType.CONDIMENT:
                     typeLocal = "Dodatak";
                     break;
                 default:
@@ -331,7 +331,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
         /// </summary>
         /// <param name="type">Type of food</param>
         /// <returns>Enum value</returns>
-        internal static FoodType GetFoodType(string type)
+        internal static MealType GetFoodType(string type)
         {
             if (type == null)
             {
@@ -341,25 +341,25 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
             switch (type)
             {
                 case "Glavno jelo":
-                    return FoodType.MAIN_COURSE;
+                    return MealType.MAIN_COURSE;
 
                 case "Prilog":
-                    return FoodType.SIDE_DISH;
+                    return MealType.SIDE_DISH;
 
                 case "Salata":
-                    return FoodType.SALAD;
+                    return MealType.SALAD;
 
                 case "Desert":
-                    return FoodType.DESERT;
+                    return MealType.DESSERT;
 
                 case "Supa":
-                    return FoodType.SOUP;
+                    return MealType.SOUP;
 
                 case "Dodatak":
-                    return FoodType.CONDIMENTS;
+                    return MealType.CONDIMENT;
             }
 
-            return FoodType.MAIN_COURSE;
+            return MealType.MAIN_COURSE;
         }
 
         /// <summary>

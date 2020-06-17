@@ -49,8 +49,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Kasa
                      return new Customer()
                      {
                          Name = name,
-                         RoleId = 2,
-                         LocationId = locations.FirstOrDefault(l => l.Name.Equals(locationName))?.Id ?? 0,
+                         Role = 1,
+                         DefaultLocation = locations.FirstOrDefault(l => l.Name.Equals(locationName)),
                          GoogleUserId = _googleSheetExtractor.ExtractCell(col, 1, string.Empty),
                          Balance = _googleSheetExtractor.ExtractCell(col, 3, 0m),
                      };
