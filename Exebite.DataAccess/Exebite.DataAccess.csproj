@@ -10,16 +10,6 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Migrations\20180615102605_test.cs" />
-    <Compile Remove="Migrations\20180615102927_EntityCleanUp.cs" />
-    <Compile Remove="Migrations\20180615103413_EntityCleanUp.cs" />
-    <Compile Remove="Migrations\20180615103723_EntityCleanUp.cs" />
-    <Compile Remove="Migrations\20180615104856_EntityCleanUp.cs" />
-    <Compile Remove="Migrations\20180615112526_EntityCleanUp1.cs" />
-    <Compile Remove="Migrations\20180615133107_AddedRestaurantNavFromRecipe.cs" />
-    <Compile Remove="Migrations\20180615133331_AddedRestaurantNavFromRecipe.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Repositories\DailyMenu\DailyMenuCommandRepository.cs~RF432b1ad6.TMP" />
   </ItemGroup>
   <ItemGroup>
