@@ -14,6 +14,8 @@ namespace Exebite.DomainModel
 
         public int Role { get; set; }
 
+        public bool IsActive { get; set; }
+
         public Location DefaultLocation { get; set; }
 
         public List<Order> Orders { get; set; } = new List<Order>();
