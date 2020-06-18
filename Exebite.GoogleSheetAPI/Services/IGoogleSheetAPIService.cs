@@ -24,5 +24,30 @@
         /// Update daily menu for Mimas restaurant in the db based on data from the spreadsheets.
         /// </summary>
         void UpdateDailyMenuMimas();
+
+        /// <summary>
+        /// Update daily menu for Serpica restaurant in the db based on data from the API.
+        /// </summary>
+        void UpdateDailyMenuSerpica();
+
+        /// <summary>
+        /// Update daily menu for Parrilla restaurant in the db based on data from the spreadsheets.
+        /// </summary>
+        void UpdateDailyMenuParrilla();
+
+        /// <summary>
+        /// Update main menu for Parrilla restaurant in the db based on data from the spreadsheets.
+        /// </summary>
+        void UpdateMainMenuParrilla();
+
+        /// <summary>
+        /// Update main menu for Index restaurant in the db based on data from the spreadsheets.
+        /// </summary>
+        void UpdateMainMenuIndex();
+
+        /// <summary>
+        /// Update main menu for Hey Day restaurant in the db based on data from the spreadsheets.
+        /// </summary>
+        void UpdateMainMenuHeyDay();
     }
 }

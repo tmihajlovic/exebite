@@ -40,7 +40,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 
         public abstract void WriteMenu(List<Meal> foods);
 
-        public abstract List<Meal> GetDailyMenu();
+        // public abstract List<Meal> GetDailyMenu();
 
         /// <summary>
         /// Populate Orders tab in sheet with new order data
@@ -428,7 +428,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
                 .Select(SheetMerges)
                 .Select(mergeList => GetMergeWithDate(mergeList, providedDate))
                 .Where(result => result.IsSuccess)
-                .FirstOrDefault();
+                .LastOrDefault();
 
             if (foundRegion != null)
             {
@@ -487,7 +487,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
                 return new List<MergedRegion>();
             }
 
-            return sheet.Merges.Select(merge => new MergedRegion(sheet, merge)).Where(merge => merge.Range.StartRowIndex == 1);
+            return sheet.Merges.Select(merge => new MergedRegion(sheet, merge))
+                .Where(merge => merge.Range.StartRowIndex == 1 && merge.Range.EndColumnIndex - merge.Range.StartColumnIndex > 2);
         }
 
         /// <summary>

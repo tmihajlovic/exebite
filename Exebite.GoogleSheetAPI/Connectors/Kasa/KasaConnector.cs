@@ -50,6 +50,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Kasa
                      {
                          Name = name,
                          Role = 1,
+                         IsActive = true,
                          DefaultLocation = locations.FirstOrDefault(l => l.Name.Equals(locationName)),
                          GoogleUserId = _googleSheetExtractor.ExtractCell(col, 1, string.Empty),
                          Balance = _googleSheetExtractor.ExtractCell(col, 3, 0m),

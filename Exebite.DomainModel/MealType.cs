@@ -7,6 +7,13 @@
         SALAD,
         SIDE_DISH,
         SOUP,
-        CONDIMENT
+        CONDIMENT,
+        SANDWICH,
+        BURGER,
+        CHICKEN,
+        PASTA,
+        TORTILLA,
+        VEGETARIAN,
+        DRINK
     }
 }

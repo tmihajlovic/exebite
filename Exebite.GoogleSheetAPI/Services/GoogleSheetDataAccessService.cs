@@ -85,7 +85,7 @@ namespace Exebite.GoogleSheetAPI.Services
         }
 
         /// <inheritdoc/>
-        public Either<Error, (int Added, int Updated)> UpdateFoods(IEnumerable<Meal> meals)
+        public Either<Error, (int Added, int Updated)> UpdateDailyMeals(IEnumerable<Meal> meals)
         {
             var added = 0;
             var updated = 0;
@@ -142,6 +142,60 @@ namespace Exebite.GoogleSheetAPI.Services
             }
 
             _dailyMenuCommandRepository.Update(dailyMenu.Id, new DailyMenuUpdateModel() { RestaurantId = dailyMenu.Restaurant.Id, Date = dailyMenu.Date, Meals = meals.ToList() });
+
+            return new Right<Error, (int, int)>((added, updated));
+        }
+
+        public Either<Error, (int Added, int Updated)> UpdateMeals(IEnumerable<Meal> meals)
+        {
+            var added = 0;
+            var updated = 0;
+
+            var updatedFood = new List<Meal>();
+
+            if (!meals.Any())
+            {
+                return new Left<Error, (int, int)>(new ArgumentNotSet(nameof(meals)));
+            }
+
+            foreach (var food in meals)
+            {
+                var mealId = _mealQueryRepository
+                            .FindByNameAndRestaurantId(new MealQueryModel { Name = food.Name, RestaurantId = food.Restaurant.Id })
+                            .Reduce(r => 0, ex => Console.WriteLine(ex.ToString()));
+
+                var exists = mealId > 0 ? true : false;
+
+                if (!exists)
+                {
+                    var insertFood = new MealInsertModel
+                    {
+                        Description = food.Description,
+                        IsActive = food.IsActive,
+                        Name = food.Name,
+                        Price = food.Price,
+                        RestaurantId = food.Restaurant.Id,
+                        Type = (MealType)food.Type,
+                        Condiments = food.Condiments
+                    };
+
+                    mealId = _mapper
+                        .Map<MealInsertModel>(insertFood)
+                        .Map(_mealCommandRepository.Insert)
+                        .Reduce(r => 0, ex => Console.WriteLine(ex.ToString()));
+
+                    added += mealId > 0 ? 1 : 0;
+                }
+                else
+                {
+                    updated += _mapper
+                        .Map<MealUpdateModel>(food)
+                        .Map(_mealCommandRepository.UpdateByNameAndRestaurantId)
+                        .Reduce(r => false, ex => Console.WriteLine(ex.ToString())) ? 1 : 0;
+                }
+
+                food.Id = mealId;
+            }
 
             return new Right<Error, (int, int)>((added, updated));
         }

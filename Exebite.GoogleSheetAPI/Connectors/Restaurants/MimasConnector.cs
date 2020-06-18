@@ -37,7 +37,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         /// Gets food available for today
         /// </summary>
         /// <returns>List of meals</returns>
-        public override List<Meal> GetDailyMenu()
+        public List<Meal> GetDailyMenu()
         {
             var allFood = new List<Meal>();
             allFood.AddRange(DailyMenu());
@@ -50,7 +50,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         /// <returns>List of today available food</returns>
         private IEnumerable<Meal> DailyMenu()
         {
-            var date = new DateTime(2020, 03, 03);
+            var date = DateTime.Today;
             var foundMerge = FindDateRangeInSheets(date);
 
             if (foundMerge.IsSuccess)

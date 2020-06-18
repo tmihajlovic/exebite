@@ -20,7 +20,11 @@ namespace Exebite.GoogleSheetAPI.GoogleSSFactory
                 case ESheetOwner.KASA:
                     return Properties.Resources.KASA;
                 case ESheetOwner.SERPICA:
-                    throw new NotImplementedException("Serpica has its own thing.");
+                    return Properties.Resources.SERPICA;
+                case ESheetOwner.HEY_DAY:
+                    return Properties.Resources.HEY_DAY;
+                case ESheetOwner.PARRILLA:
+                    return Properties.Resources.PARRILLA;
                 default:
                     throw new ArgumentException("Chosen sheet owner does not exist.");
             }

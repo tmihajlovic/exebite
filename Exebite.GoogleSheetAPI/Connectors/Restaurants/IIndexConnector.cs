@@ -4,7 +4,7 @@ using Exebite.GoogleSheetAPI.Connectors.Restaurants.Base;
 
 namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
 {
-    public interface IMimasConnector : IRestaurantConnector
+    public interface IIndexConnector : IRestaurantConnector
     {
         /// <summary>
         /// Order Daily menu sheet so first column is today and place correct dates
@@ -12,9 +12,9 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         void DnevniMenuSheetSetup();
 
         /// <summary>
-        /// Gets meals available for today
+        /// Get all meals from the main menu
         /// </summary>
         /// <returns>List of meals</returns>
-        List<Meal> GetDailyMenu();
+        List<Meal> GetMainMenu();
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Linq;
-using Exebite.Business.GoogleApiImportExport;
-using Exebite.GoogleSheetAPI.Connectors.Kasa;
 using Exebite.GoogleSheetAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -29,11 +26,13 @@ namespace Exebite.API.Controllers
             try
             {
                 _apiService.UpdateCustomers();
-
                 _apiService.UpdateDailyMenuLipa();
-
                 _apiService.UpdateDailyMenuTopliObrok();
-
+                _apiService.UpdateDailyMenuParrilla();
+                _apiService.UpdateMainMenuIndex();
+                _apiService.UpdateDailyMenuSerpica();
+                _apiService.UpdateMainMenuHeyDay();
+                _apiService.UpdateMainMenuParrilla();
                 _apiService.UpdateDailyMenuMimas();
 
                 _logger.LogInformation("Successfully fetched and updated DB information from Google Sheets.");
