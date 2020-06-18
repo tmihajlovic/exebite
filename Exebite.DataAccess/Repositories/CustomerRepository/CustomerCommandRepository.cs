@@ -10,12 +10,10 @@ namespace Exebite.DataAccess.Repositories
 {
     public class CustomerCommandRepository : ICustomerCommandRepository
     {
-        private readonly IMapper _mapper;
         private readonly IMealOrderingContextFactory _factory;
 
-        public CustomerCommandRepository(IMealOrderingContextFactory factory, IMapper mapper)
+        public CustomerCommandRepository(IMealOrderingContextFactory factory)
         {
-            _mapper = mapper;
             _factory = factory;
         }
 

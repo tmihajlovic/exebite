@@ -5,6 +5,7 @@ using Either;
 using Exebite.Common;
 using Exebite.DataAccess.Context;
 using Exebite.DataAccess.Entities;
+using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Repositories
 {
@@ -40,6 +41,41 @@ namespace Exebite.DataAccess.Repositories
                     };
 
                     var addedEntity = context.Meal.Add(mealEntity).Entity;
+
+                    if (entity.Condiments != null)
+                    {
+                        foreach (var condiment in entity.Condiments)
+                        {
+                            var record = context.Meal.FirstOrDefault(c =>
+                                c.Name.Equals(condiment.Name, StringComparison.OrdinalIgnoreCase) &&
+                                c.RestaurantId == condiment.Restaurant.Id);
+
+                            if (record == null)
+                            {
+                                var condimentId = Insert(new MealInsertModel()
+                                {
+                                    Name = condiment.Name,
+                                    Description = condiment.Description,
+                                    IsActive = condiment.IsActive,
+                                    Note = condiment.Note,
+                                    Price = condiment.Price,
+                                    RestaurantId = condiment.Restaurant.Id,
+                                    Type = (MealType)condiment.Type
+                                })
+                                    .Map(x => x)
+                                    .Reduce(r => 0, ex => Console.WriteLine(ex.ToString()));
+
+                                condiment.Id = condimentId;
+                            }
+                            else
+                            {
+                                condiment.Id = record.Id;
+                            }
+
+                            addedEntity.Condiments.Add(new MealToCondimentEntity() { CondimentId = condiment.Id, MealId = addedEntity.Id });
+                        }
+                    }
+
                     context.SaveChanges();
 
                     return new Right<Error, long>(addedEntity.Id);
@@ -76,6 +112,40 @@ namespace Exebite.DataAccess.Repositories
                     currentEntity.RestaurantId = entity.RestaurantId;
                     currentEntity.Type = (int)entity.Type;
                     currentEntity.Note = entity.Note;
+
+                    if (entity.Condiments != null)
+                    {
+                        foreach (var condiment in entity.Condiments)
+                        {
+                            var record = context.Meal.FirstOrDefault(c =>
+                                c.Name.Equals(condiment.Name, StringComparison.OrdinalIgnoreCase) &&
+                                c.RestaurantId == condiment.Restaurant.Id);
+
+                            if (record == null)
+                            {
+                                var condimentId = Insert(new MealInsertModel()
+                                {
+                                    Name = condiment.Name,
+                                    Description = condiment.Description,
+                                    IsActive = condiment.IsActive,
+                                    Note = condiment.Note,
+                                    Price = condiment.Price,
+                                    RestaurantId = condiment.Restaurant.Id,
+                                    Type = (MealType)condiment.Type
+                                })
+                                    .Map(x => x)
+                                    .Reduce(r => 0, ex => Console.WriteLine(ex.ToString()));
+
+                                condiment.Id = condimentId;
+                            }
+                            else
+                            {
+                                condiment.Id = record.Id;
+                            }
+
+                            currentEntity.Condiments.Add(new MealToCondimentEntity() { CondimentId = condiment.Id, MealId = currentEntity.Id });
+                        }
+                    }
 
                     context.SaveChanges();
                 }

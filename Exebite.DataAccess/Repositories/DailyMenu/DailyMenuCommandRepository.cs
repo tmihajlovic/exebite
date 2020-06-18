@@ -30,9 +30,12 @@ namespace Exebite.DataAccess.Repositories
 
                     var addedEntity = context.DailyMenu.Add(dailyMenuEntity).Entity;
 
-                    foreach (var meal in entity.Meals)
+                    if (entity.Meals != null)
                     {
-                        addedEntity.DailyMenuToMeals.Add(new DailyMenuToMealEntity() { DailyMenuId = addedEntity.Id, MealId = meal.Id });
+                        foreach (var meal in entity.Meals)
+                        {
+                            addedEntity.DailyMenuToMeals.Add(new DailyMenuToMealEntity() { DailyMenuId = addedEntity.Id, MealId = meal.Id });
+                        }
                     }
 
                     context.SaveChanges();
@@ -66,9 +69,12 @@ namespace Exebite.DataAccess.Repositories
                     currentEntity.Date = entity.Date;
                     currentEntity.Note = entity.Note;
 
-                    foreach (var meal in entity.Meals)
+                    if (entity.Meals != null)
                     {
-                        currentEntity.DailyMenuToMeals.Add(new DailyMenuToMealEntity() { DailyMenuId = currentEntity.Id, MealId = meal.Id });
+                        foreach (var meal in entity.Meals)
+                        {
+                            currentEntity.DailyMenuToMeals.Add(new DailyMenuToMealEntity() { DailyMenuId = currentEntity.Id, MealId = meal.Id });
+                        }
                     }
 
                     context.SaveChanges();
