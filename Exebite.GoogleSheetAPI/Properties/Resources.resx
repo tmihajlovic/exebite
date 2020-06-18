@@ -117,25 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="HEY_DAY" xml:space="preserve">
+    <value>1kfebqHeFkcrO_Tj0stG9NDbFxb_4nM3K8U2uMQ66dtc</value>
+  </data>
   <data name="INDEX_HOUSE" xml:space="preserve">
-    <value>1ehEqncAQP677e8Fi4oWTOBvLjEUB67ApjFLJnBO3gcY</value>
+    <value>1qD4_ZykJByF2ThoGIjUh1vX5QmzXn3VstNUbdphM3Pc</value>
   </data>
   <data name="KASA" xml:space="preserve">
-    <value>1p95HwHCwbx80L3aWXsStkGbmNfYgG5JOvRvONm0JUXI</value>
+    <value>1y-PZeeCjK4hGi6Z3i_C4UITfuRIsDEGIzo45V0evGZY</value>
   </data>
   <data name="LIPA" xml:space="preserve">
-    <value>1FJt865bBn69jsbRpyVTqQAFarUjvsiKsom1c2JfR0Hk</value>
+    <value>1TiRdknQjMqB9tOdIKgxQ-8bkMC4c_dYrJXcUzC-QoyM</value>
   </data>
   <data name="MIMAS" xml:space="preserve">
-    <value>1YQ6BH2vOmGkxNgDWzct_j3Dznql0OWrwi1nITrtlZHA</value>
+    <value>1xjzijk2qAzCzvzQlWHuZsxkH4xYOD92TPJ0PmL1hyXE</value>
+  </data>
+  <data name="PARRILLA" xml:space="preserve">
+    <value>15wr86t5w2QJ29mZ37F-U0uF7mamipbmlNI_OvKPyH10</value>
   </data>
   <data name="SACredentialsLocation" xml:space="preserve">
     <value>credentials.json</value>
   </data>
   <data name="SERPICA" xml:space="preserve">
-    <value>--</value>
+    <value>1y3CHHotB9lPif2-yaRffM3yTr9GhfwpGfvO4PJkFCZQ</value>
+  </data>
+  <data name="SERPICA_DAILY_MENU_URL" xml:space="preserve">
+    <value>https://app.serpica021.rs/funkcije/getJelaZaDan.php</value>
+  </data>
+  <data name="SERPICA_LOGIN_URL" xml:space="preserve">
+    <value>https://app.serpica021.rs/funkcije/logovanje.php</value>
+  </data>
+  <data name="SERPICA_PASSWORD" xml:space="preserve">
+    <value>123456</value>
+  </data>
+  <data name="SERPICA_USERNAME" xml:space="preserve">
+    <value>060123456</value>
   </data>
   <data name="TOPLI_OBROK" xml:space="preserve">
-    <value>1E3tzbemuhLgNUpVuN11Gr1yeKEIgOFN7q2z7UBLnAt8</value>
+    <value>1ILH3zHu47nMjOvqbF2nRpq-lJjaAciCCIXt7far3xk4</value>
   </data>
 </root>

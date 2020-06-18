@@ -1,0 +1,10 @@
+<div *ngIf="customer">
+    <img src="{{customer.photoUrl }}">
+    <div>
+        <h4>{{ customer.name }}</h4>
+        <p>{{ customer.googleUserId }}</p>
+    </div>
+    <div>
+        <button (click)=" signOutNavigate()">Logout</button>
+    </div>
+</div>

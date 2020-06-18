@@ -14,8 +14,8 @@ namespace Exebite.GoogleSheetAPI.Services
         private readonly IEitherMapper _mapper;
         private readonly ICustomerCommandRepository _customerCommandRepository;
         private readonly ICustomerQueryRepository _customerQueryRepository;
-        private readonly IFoodQueryRepository _foodQueryRepository;
-        private readonly IFoodCommandRepository _foodCommandRepository;
+        private readonly IMealQueryRepository _mealQueryRepository;
+        private readonly IMealCommandRepository _mealCommandRepository;
         private readonly IDailyMenuQueryRepository _dailyMenuQueryRepository;
         private readonly IDailyMenuCommandRepository _dailyMenuCommandRepository;
 
@@ -33,8 +33,8 @@ namespace Exebite.GoogleSheetAPI.Services
             IEitherMapper mapper,
             ICustomerCommandRepository customerCommandRepository,
             ICustomerQueryRepository customerQueryRepository,
-            IFoodCommandRepository foodCommandRepository,
-            IFoodQueryRepository foodQueryRepository,
+            IMealCommandRepository foodCommandRepository,
+            IMealQueryRepository foodQueryRepository,
             IDailyMenuCommandRepository dailyMenuCommandRepository,
             IDailyMenuQueryRepository dailyMenuQueryRepository)
         {
@@ -42,8 +42,8 @@ namespace Exebite.GoogleSheetAPI.Services
 
             _customerCommandRepository = customerCommandRepository;
             _customerQueryRepository = customerQueryRepository;
-            _foodCommandRepository = foodCommandRepository;
-            _foodQueryRepository = foodQueryRepository;
+            _mealCommandRepository = foodCommandRepository;
+            _mealQueryRepository = foodQueryRepository;
             _dailyMenuCommandRepository = dailyMenuCommandRepository;
             _dailyMenuQueryRepository = dailyMenuQueryRepository;
         }
@@ -85,53 +85,116 @@ namespace Exebite.GoogleSheetAPI.Services
         }
 
         /// <inheritdoc/>
-        public Either<Error, (int Added, int Updated)> UpdateFoods(IEnumerable<Food> foods)
+        public Either<Error, (int Added, int Updated)> UpdateDailyMeals(IEnumerable<Meal> meals)
         {
             var added = 0;
             var updated = 0;
 
-            if (!foods.Any())
+            var updatedFood = new List<Meal>();
+
+            if (!meals.Any())
             {
-                return new Left<Error, (int, int)>(new ArgumentNotSet(nameof(foods)));
+                return new Left<Error, (int, int)>(new ArgumentNotSet(nameof(meals)));
             }
 
-            int dailyMenuId = GetDailyMenu(foods.First().RestaurantId);
-            if (dailyMenuId == 0)
+            DailyMenu dailyMenu = GetDailyMenu(meals.First().Restaurant.Id);
+            if (dailyMenu == null)
             {
-                return new Left<Error, (int, int)>(new ArgumentNotSet(nameof(dailyMenuId)));
+                return new Left<Error, (int, int)>(new ArgumentNotSet(nameof(dailyMenu)));
             }
 
-            foreach (var food in foods)
+            foreach (var food in meals)
             {
-                var exists = _foodQueryRepository
-                            .FindByNameAndRestaurantId(new FoodQueryModel { Name = food.Name, RestaurantId = food.RestaurantId })
-                            .Reduce(r => 0, ex => Console.WriteLine(ex.ToString())) > 0;
+                var mealId = _mealQueryRepository
+                            .FindByNameAndRestaurantId(new MealQueryModel { Name = food.Name, RestaurantId = food.Restaurant.Id })
+                            .Reduce(r => 0, ex => Console.WriteLine(ex.ToString()));
+
+                var exists = mealId > 0 ? true : false;
 
                 if (!exists)
                 {
-                    var insertFood = new FoodInsertModel
+                    var insertFood = new MealInsertModel
                     {
                         Description = food.Description,
-                        IsInactive = food.IsInactive,
+                        IsActive = food.IsActive,
                         Name = food.Name,
                         Price = food.Price,
-                        RestaurantId = food.RestaurantId,
-                        DailyMenuId = dailyMenuId,
-                        Type = food.Type
+                        RestaurantId = food.Restaurant.Id,
+                        Type = (MealType)food.Type
                     };
 
-                    added += _mapper
-                        .Map<FoodInsertModel>(insertFood)
-                        .Map(_foodCommandRepository.Insert)
-                        .Reduce(r => 0, ex => Console.WriteLine(ex.ToString())) > 0 ? 1 : 0;
+                    mealId = _mapper
+                        .Map<MealInsertModel>(insertFood)
+                        .Map(_mealCommandRepository.Insert)
+                        .Reduce(r => 0, ex => Console.WriteLine(ex.ToString()));
+
+                    added += mealId > 0 ? 1 : 0;
                 }
                 else
                 {
                     updated += _mapper
-                        .Map<FoodUpdateModel>(food)
-                        .Map(_foodCommandRepository.UpdateByNameAndRestaurantId)
+                        .Map<MealUpdateModel>(food)
+                        .Map(_mealCommandRepository.UpdateByNameAndRestaurantId)
                         .Reduce(r => false, ex => Console.WriteLine(ex.ToString())) ? 1 : 0;
                 }
+
+                food.Id = mealId;
+            }
+
+            _dailyMenuCommandRepository.Update(dailyMenu.Id, new DailyMenuUpdateModel() { RestaurantId = dailyMenu.Restaurant.Id, Date = dailyMenu.Date, Meals = meals.ToList() });
+
+            return new Right<Error, (int, int)>((added, updated));
+        }
+
+        public Either<Error, (int Added, int Updated)> UpdateMeals(IEnumerable<Meal> meals)
+        {
+            var added = 0;
+            var updated = 0;
+
+            var updatedFood = new List<Meal>();
+
+            if (!meals.Any())
+            {
+                return new Left<Error, (int, int)>(new ArgumentNotSet(nameof(meals)));
+            }
+
+            foreach (var food in meals)
+            {
+                var mealId = _mealQueryRepository
+                            .FindByNameAndRestaurantId(new MealQueryModel { Name = food.Name, RestaurantId = food.Restaurant.Id })
+                            .Reduce(r => 0, ex => Console.WriteLine(ex.ToString()));
+
+                var exists = mealId > 0 ? true : false;
+
+                if (!exists)
+                {
+                    var insertFood = new MealInsertModel
+                    {
+                        Description = food.Description,
+                        IsActive = food.IsActive,
+                        Name = food.Name,
+                        Price = food.Price,
+                        RestaurantId = food.Restaurant.Id,
+                        Type = (MealType)food.Type,
+                        Condiments = food.Condiments
+                    };
+
+                    mealId = _mapper
+                        .Map<MealInsertModel>(insertFood)
+                        .Map(_mealCommandRepository.Insert)
+                        .Reduce(r => 0, ex => Console.WriteLine(ex.ToString()));
+
+                    added += mealId > 0 ? 1 : 0;
+                }
+                else
+                {
+                    updated += _mapper
+                        .Map<MealUpdateModel>(food)
+                        .Map(_mealCommandRepository.UpdateByNameAndRestaurantId)
+                        .Reduce(r => false, ex => Console.WriteLine(ex.ToString())) ? 1 : 0;
+                }
+
+                food.Id = mealId;
             }
 
             return new Right<Error, (int, int)>((added, updated));
@@ -142,7 +205,7 @@ namespace Exebite.GoogleSheetAPI.Services
         /// </summary>
         /// <param name="restaurantId">Restaurant ID for which we are look for daily menu.</param>
         /// <returns>The ID of the daily menu.</returns>
-        private int GetDailyMenu(int restaurantId)
+        private DailyMenu GetDailyMenu(long restaurantId)
         {
             var dailyMenus = _dailyMenuQueryRepository
                                 .Query(new DailyMenuQueryModel { RestaurantId = restaurantId })
@@ -151,13 +214,20 @@ namespace Exebite.GoogleSheetAPI.Services
 
             if (dailyMenus.Any())
             {
-                return dailyMenus.First().Id;
+                return dailyMenus.First();
             }
 
-            return _dailyMenuCommandRepository
-                        .Insert(new DailyMenuInsertModel { RestaurantId = restaurantId })
-                        .Map(d => d)
-                        .Reduce(r => 0, ex => Console.WriteLine(ex.ToString()));
+            var dailyMenuId = _dailyMenuCommandRepository
+                                .Insert(new DailyMenuInsertModel { RestaurantId = restaurantId, Date = DateTime.Today })
+                                .Map(d => d)
+                                .Reduce(r => 0, ex => Console.WriteLine(ex.ToString()));
+
+            dailyMenus = _dailyMenuQueryRepository
+                                .Query(new DailyMenuQueryModel { Id = dailyMenuId })
+                                .Map(d => d.Items)
+                                .Reduce(r => new List<DailyMenu>(), ex => Console.WriteLine(ex.ToString()));
+
+            return dailyMenus.First();
         }
     }
 }

@@ -29,6 +29,15 @@ namespace Exebite.DataAccess.Repositories
                     };
 
                     var addedEntity = context.DailyMenu.Add(dailyMenuEntity).Entity;
+
+                    if (entity.Meals != null)
+                    {
+                        foreach (var meal in entity.Meals)
+                        {
+                            addedEntity.DailyMenuToMeals.Add(new DailyMenuToMealEntity() { DailyMenuId = addedEntity.Id, MealId = meal.Id });
+                        }
+                    }
+
                     context.SaveChanges();
                     return new Right<Error, long>(addedEntity.Id);
                 }
@@ -59,6 +68,14 @@ namespace Exebite.DataAccess.Repositories
                     currentEntity.RestaurantId = entity.RestaurantId;
                     currentEntity.Date = entity.Date;
                     currentEntity.Note = entity.Note;
+
+                    if (entity.Meals != null)
+                    {
+                        foreach (var meal in entity.Meals)
+                        {
+                            currentEntity.DailyMenuToMeals.Add(new DailyMenuToMealEntity() { DailyMenuId = currentEntity.Id, MealId = meal.Id });
+                        }
+                    }
 
                     context.SaveChanges();
                 }

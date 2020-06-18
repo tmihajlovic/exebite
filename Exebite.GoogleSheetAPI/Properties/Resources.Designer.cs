@@ -61,7 +61,16 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1ehEqncAQP677e8Fi4oWTOBvLjEUB67ApjFLJnBO3gcY.
+        ///   Looks up a localized string similar to 1kfebqHeFkcrO_Tj0stG9NDbFxb_4nM3K8U2uMQ66dtc.
+        /// </summary>
+        internal static string HEY_DAY {
+            get {
+                return ResourceManager.GetString("HEY_DAY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1qD4_ZykJByF2ThoGIjUh1vX5QmzXn3VstNUbdphM3Pc.
         /// </summary>
         internal static string INDEX_HOUSE {
             get {
@@ -70,7 +79,7 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1p95HwHCwbx80L3aWXsStkGbmNfYgG5JOvRvONm0JUXI.
+        ///   Looks up a localized string similar to 1y-PZeeCjK4hGi6Z3i_C4UITfuRIsDEGIzo45V0evGZY.
         /// </summary>
         internal static string KASA {
             get {
@@ -79,7 +88,7 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1FJt865bBn69jsbRpyVTqQAFarUjvsiKsom1c2JfR0Hk.
+        ///   Looks up a localized string similar to 1TiRdknQjMqB9tOdIKgxQ-8bkMC4c_dYrJXcUzC-QoyM.
         /// </summary>
         internal static string LIPA {
             get {
@@ -88,11 +97,20 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1YQ6BH2vOmGkxNgDWzct_j3Dznql0OWrwi1nITrtlZHA.
+        ///   Looks up a localized string similar to 1xjzijk2qAzCzvzQlWHuZsxkH4xYOD92TPJ0PmL1hyXE.
         /// </summary>
         internal static string MIMAS {
             get {
                 return ResourceManager.GetString("MIMAS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 15wr86t5w2QJ29mZ37F-U0uF7mamipbmlNI_OvKPyH10.
+        /// </summary>
+        internal static string PARRILLA {
+            get {
+                return ResourceManager.GetString("PARRILLA", resourceCulture);
             }
         }
         
@@ -106,7 +124,7 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to --.
+        ///   Looks up a localized string similar to 1y3CHHotB9lPif2-yaRffM3yTr9GhfwpGfvO4PJkFCZQ.
         /// </summary>
         internal static string SERPICA {
             get {
@@ -115,7 +133,43 @@ namespace Exebite.GoogleSheetAPI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1E3tzbemuhLgNUpVuN11Gr1yeKEIgOFN7q2z7UBLnAt8.
+        ///   Looks up a localized string similar to https://app.serpica021.rs/funkcije/getJelaZaDan.php.
+        /// </summary>
+        internal static string SERPICA_DAILY_MENU_URL {
+            get {
+                return ResourceManager.GetString("SERPICA_DAILY_MENU_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://app.serpica021.rs/funkcije/logovanje.php.
+        /// </summary>
+        internal static string SERPICA_LOGIN_URL {
+            get {
+                return ResourceManager.GetString("SERPICA_LOGIN_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 123456.
+        /// </summary>
+        internal static string SERPICA_PASSWORD {
+            get {
+                return ResourceManager.GetString("SERPICA_PASSWORD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 060123456.
+        /// </summary>
+        internal static string SERPICA_USERNAME {
+            get {
+                return ResourceManager.GetString("SERPICA_USERNAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1ILH3zHu47nMjOvqbF2nRpq-lJjaAciCCIXt7far3xk4.
         /// </summary>
         internal static string TOPLI_OBROK {
             get {

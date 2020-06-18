@@ -17,7 +17,11 @@ namespace Exebite.GoogleSheetAPI.Services
         private readonly IKasaConnector _kasaConnector;
         private readonly ILipaConnector _lipaConnector;
         private readonly ITopliObrokConnector _topliObrokConnector;
+        private readonly IIndexConnector _indexConnector;
         private readonly IMimasConnector _mimasConnector;
+        private readonly ISerpicaConnector _serpicaConnector;
+        private readonly IHeyDayConnector _heyDayConnector;
+        private readonly IParrillaConnector _parrillaConnector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GoogleSheetAPIService"/> class.
@@ -27,21 +31,33 @@ namespace Exebite.GoogleSheetAPI.Services
         /// <param name="kasaConnector">Connector for kasa google sheet.</param>
         /// <param name="lipaConnector">Connector for restaurant Lipa google sheet.</param>
         /// <param name="topliObrokConnector">Connector for restaurant topli obrok google sheet.</param>
+        /// <param name="indexConnector">Connector for restaurant Index google sheet.</param>
         /// <param name="mimasConnector">Connector for restaurant mimas google sheet.</param>
+        /// <param name="serpicaConnector">Connector for restaurant serpica API.</param>
+        /// <param name="heyDayConnector">Connector for restaurant Hey Day google sheet.</param>
+        /// <param name="parrillaConnector">Connector for restaurant Parrilla google sheet.</param>
         public GoogleSheetAPIService(
             IEitherMapper mapper,
             IGoogleSheetDataAccessService googleSheetDataAccessService,
             IKasaConnector kasaConnector,
             ILipaConnector lipaConnector,
             ITopliObrokConnector topliObrokConnector,
-            IMimasConnector mimasConnector)
+            IIndexConnector indexConnector,
+            IMimasConnector mimasConnector,
+            ISerpicaConnector serpicaConnector,
+            IHeyDayConnector heyDayConnector,
+            IParrillaConnector parrillaConnector)
         {
             _mapper = mapper;
             _googleSheetDataAccessService = googleSheetDataAccessService;
             _kasaConnector = kasaConnector;
             _lipaConnector = lipaConnector;
             _topliObrokConnector = topliObrokConnector;
+            _indexConnector = indexConnector;
             _mimasConnector = mimasConnector;
+            _serpicaConnector = serpicaConnector;
+            _heyDayConnector = heyDayConnector;
+            _parrillaConnector = parrillaConnector;
         }
 
         /// <inheritdoc/>
@@ -58,9 +74,9 @@ namespace Exebite.GoogleSheetAPI.Services
         public void UpdateDailyMenuLipa()
         {
             _mapper
-                .Map<IEnumerable<Food>>(_lipaConnector.GetDailyMenu())
-                .Map(_googleSheetDataAccessService.UpdateFoods)
-                .Map(count => LogRowsAffected(count, typeof(Food), nameof(_lipaConnector)))
+                .Map<IEnumerable<Meal>>(_lipaConnector.GetDailyMenu())
+                .Map(_googleSheetDataAccessService.UpdateDailyMeals)
+                .Map(count => LogRowsAffected(count, typeof(Meal), nameof(_lipaConnector)))
                 .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
         }
 
@@ -68,9 +84,9 @@ namespace Exebite.GoogleSheetAPI.Services
         public void UpdateDailyMenuTopliObrok()
         {
             _mapper
-                .Map<IEnumerable<Food>>(_topliObrokConnector.GetDailyMenu())
-                .Map(_googleSheetDataAccessService.UpdateFoods)
-                .Map(count => LogRowsAffected(count, typeof(Food), nameof(_topliObrokConnector)))
+                .Map<IEnumerable<Meal>>(_topliObrokConnector.GetDailyMenu())
+                .Map(_googleSheetDataAccessService.UpdateDailyMeals)
+                .Map(count => LogRowsAffected(count, typeof(Meal), nameof(_topliObrokConnector)))
                 .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
         }
 
@@ -78,9 +94,59 @@ namespace Exebite.GoogleSheetAPI.Services
         public void UpdateDailyMenuMimas()
         {
             _mapper
-                .Map<IEnumerable<Food>>(_mimasConnector.GetDailyMenu())
-                .Map(_googleSheetDataAccessService.UpdateFoods)
-                .Map(count => LogRowsAffected(count, typeof(Food), nameof(_mimasConnector)))
+                .Map<IEnumerable<Meal>>(_mimasConnector.GetDailyMenu())
+                .Map(_googleSheetDataAccessService.UpdateDailyMeals)
+                .Map(count => LogRowsAffected(count, typeof(Meal), nameof(_mimasConnector)))
+                .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
+        }
+
+        /// <inheritdoc/>
+        public void UpdateDailyMenuSerpica()
+        {
+            _mapper
+                .Map<IEnumerable<Meal>>(_serpicaConnector.GetDailyMenu())
+                .Map(_googleSheetDataAccessService.UpdateDailyMeals)
+                .Map(count => LogRowsAffected(count, typeof(Meal), nameof(_serpicaConnector)))
+                .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
+        }
+
+        /// <inheritdoc/>
+        public void UpdateDailyMenuParrilla()
+        {
+            _mapper
+                .Map<IEnumerable<Meal>>(_parrillaConnector.GetDailyMenu())
+                .Map(_googleSheetDataAccessService.UpdateDailyMeals)
+                .Map(count => LogRowsAffected(count, typeof(Meal), nameof(_parrillaConnector)))
+                .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
+        }
+
+        /// <inheritdoc/>
+        public void UpdateMainMenuIndex()
+        {
+            _mapper
+                .Map<IEnumerable<Meal>>(_indexConnector.GetMainMenu())
+                .Map(_googleSheetDataAccessService.UpdateMeals)
+                .Map(count => LogRowsAffected(count, typeof(Meal), nameof(_indexConnector)))
+                .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
+        }
+
+        /// <inheritdoc/>
+        public void UpdateMainMenuParrilla()
+        {
+            _mapper
+                .Map<IEnumerable<Meal>>(_parrillaConnector.GetMainMenu())
+                .Map(_googleSheetDataAccessService.UpdateMeals)
+                .Map(count => LogRowsAffected(count, typeof(Meal), nameof(_parrillaConnector)))
+                .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
+        }
+
+        /// <inheritdoc/>
+        public void UpdateMainMenuHeyDay()
+        {
+            _mapper
+                .Map<IEnumerable<Meal>>(_heyDayConnector.GetMainMenu())
+                .Map(_googleSheetDataAccessService.UpdateMeals)
+                .Map(count => LogRowsAffected(count, typeof(Meal), nameof(_heyDayConnector)))
                 .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
         }
 
@@ -102,5 +168,7 @@ namespace Exebite.GoogleSheetAPI.Services
                 connectorName);
             return rows;
         }
+
+       
     }
 }

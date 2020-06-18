@@ -5,7 +5,6 @@ using Exebite.DataAccess.Repositories;
 using Exebite.GoogleSheetAPI.Connectors.Kasa;
 using Exebite.GoogleSheetAPI.GoogleSSFactory;
 using Exebite.GoogleSheetAPI.SheetExtractor;
-using Exebite.Sheets.API;
 using Unity;
 
 namespace Exebite.JobScheduler.Unity
@@ -47,7 +46,6 @@ namespace Exebite.JobScheduler.Unity
             container.RegisterType<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>();
             container.RegisterType<IGoogleSheetExtractor, GoogleSheetExtractor>();
 
-            container.RegisterType<ISheetsAPI, SheetsAPI>();
             container.RegisterType<IKasaConnector, KasaConnector>();
         }
     }
