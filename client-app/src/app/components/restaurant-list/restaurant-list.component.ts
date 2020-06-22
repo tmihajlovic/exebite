@@ -9,7 +9,6 @@ import { Subscription } from "rxjs";
   styleUrls: ["./restaurant-list.component.scss"],
 })
 export class RestaurantListComponent implements OnInit, OnDestroy {
-  // @Input() id: number;
   dataRestaurants: IRestaurant[];
   private sub: Subscription;
 

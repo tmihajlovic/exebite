@@ -8,6 +8,4 @@ export class IRestaurant {
   isActive?: boolean;
   dateTime?: string;
   sheetId?: string;
-  // public List<MealDto> Meals { get; set; }
-  // public List<DailyMenuDto> DailyMenus { get; set; }
 }

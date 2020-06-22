@@ -295,3 +295,4 @@ __pycache__/
 /Logs
 # sonarqube working directory
 /.sonarqube
+/Exebite.API/Logs/internal-nlog.txt
