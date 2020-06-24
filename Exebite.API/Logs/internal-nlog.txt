@@ -1,0 +1,33 @@
+2020-06-05 15:35:35.5415 Info Logger closing down...
+2020-06-05 15:35:35.5636 Info Closing old configuration.
+2020-06-05 15:35:35.6092 Info Logger has been closed down.
+2020-06-05 15:35:35.6277 Info Shutting down logging...
+2020-06-05 15:35:35.6486 Info Logger has been shut down.
+2020-06-08 10:05:08.3801 Info Message Template Auto Format enabled
+2020-06-08 10:05:08.3956 Info Loading assembly: NLog.Web.AspNetCore
+2020-06-08 10:05:08.4710 Info Adding target File Target[allfile]
+2020-06-08 10:05:08.4922 Info Adding target File Target[ownFile-web]
+2020-06-08 10:05:08.5043 Info Configured from an XML element in C:\Users\Bulic\exebite\Exebite.API\bin\Debug\netcoreapp3.1\nlog.config...
+2020-06-08 10:05:08.5213 Info Found 45 configuration items
+2020-06-11 12:02:17.3494 Info Logger closing down...
+2020-06-11 12:02:17.3588 Info Closing old configuration.
+2020-06-11 12:02:17.3588 Info Logger has been closed down.
+2020-06-11 12:02:17.3803 Info Shutting down logging...
+2020-06-11 12:02:17.3879 Info Logger has been shut down.
+2020-06-11 12:05:31.9439 Info Message Template Auto Format enabled
+2020-06-11 12:05:31.9598 Info Loading assembly: NLog.Web.AspNetCore
+2020-06-11 12:05:32.0379 Info Adding target File Target[allfile]
+2020-06-11 12:05:32.0592 Info Adding target File Target[ownFile-web]
+2020-06-11 12:05:32.0844 Info Configured from an XML element in C:\Users\Bulic\exebite\Exebite.API\bin\Debug\netcoreapp3.1\nlog.config...
+2020-06-11 12:05:32.1052 Info Found 45 configuration items
+2020-06-11 12:08:34.1766 Info Logger closing down...
+2020-06-11 12:08:34.1766 Info Closing old configuration.
+2020-06-11 12:08:34.1995 Info Logger has been closed down.
+2020-06-11 12:08:34.2082 Info Shutting down logging...
+2020-06-11 12:08:34.2082 Info Logger has been shut down.
+2020-06-11 12:09:38.2777 Info Message Template Auto Format enabled
+2020-06-11 12:09:38.2949 Info Loading assembly: NLog.Web.AspNetCore
+2020-06-11 12:09:38.3304 Info Adding target File Target[allfile]
+2020-06-11 12:09:38.3393 Info Adding target File Target[ownFile-web]
+2020-06-11 12:09:38.3518 Info Configured from an XML element in C:\Users\Bulic\exebite\Exebite.API\bin\Debug\netcoreapp3.1\nlog.config...
+2020-06-11 12:09:38.3683 Info Found 45 configuration items

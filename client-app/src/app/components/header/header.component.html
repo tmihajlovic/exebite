@@ -1,0 +1,19 @@
+<nav class="navbar  bg-light navbar-default">
+    <a class="navbar-brand" href="#">
+        <img src="../../../assets/ExeBite logo placeholder 2.png" alt="">
+    </a>
+    <div class="navbar-default" *ngIf="customer">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown" appDropdown>
+
+                <img class="mr-2 rounded-circle" src="{{customer.photoUrl}}" alt="">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button">{{ customer.googleUserId }}<span
+                        class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item text-center cursor"><a (click)="signOutNavigate()">Logout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

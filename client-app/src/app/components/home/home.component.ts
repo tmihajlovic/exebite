@@ -1,31 +1,30 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 
-import { Router } from "@angular/router";
 import { UserService } from "src/app/services/user.service";
-import { IUser } from "src/app/models/user";
 import { ICustomer } from "src/app/models/customer";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.scss"],
 })
-export class HomeComponent implements OnInit {
-  user: IUser;
-  customers: ICustomer[];
+export class HomeComponent implements OnInit, OnDestroy {
   customer: ICustomer;
+  isLoading: boolean = false;
+  private sub: Subscription;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.userService.getUser().subscribe((data) => {
+    this.isLoading = true;
+    this.sub = this.userService.getUser().subscribe((data) => {
       this.customer = data;
-      console.log(this.customer);
+      this.isLoading = false;
     });
   }
 
-  signOutNavigate(): void {
-    this.userService.signOut();
-    this.router.navigate(["/"]);
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

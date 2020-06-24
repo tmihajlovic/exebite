@@ -1,5 +1,12 @@
-<div *ngIf="!user">
-    <div>
-        <button class="btn btn-social-icon btn-google mx-1" (click)="signInWithGoogle()">Login</button>
+<div class="container" *ngIf="!user">
+    <div class="row vh-100 align-items-center">
+        <div class="col-12 text-center">
+            <img src="../../../assets/ExeBite logo placeholder 2.png" class="rounded" alt="Exebite">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button class="btn btn-danger rounded-pill pl-5 pr-5" (click)="signInWithGoogle()">Login</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

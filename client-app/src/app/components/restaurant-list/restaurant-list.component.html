@@ -1,0 +1,13 @@
+<ul class="nav nav-tabs ">
+    <li class="nav-item row">
+        <a class="nav-link" style="cursor: pointer;" *ngFor="let item of dataRestaurants" [routerLink]="[item.id]"
+            routerLinkActive="active">
+            <div>
+                <h5>{{item.name}}</h5>
+            </div>
+        </a>
+    </li>
+</ul>
+<div>
+    <router-outlet></router-outlet>
+</div>
