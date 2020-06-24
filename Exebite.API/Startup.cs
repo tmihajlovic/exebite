@@ -51,7 +51,8 @@ namespace Exebite.API
                     opts.Filters.Add(new AllowAnonymousFilter());
                     opts.EnableEndpointRouting = false;
                 })
-                .AddNewtonsoftJson()
+                .AddNewtonsoftJson(
+                    options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .AddNSwagSettings(); // Add NSwag CamelCase settings.
 
                 services.AddCors(options =>

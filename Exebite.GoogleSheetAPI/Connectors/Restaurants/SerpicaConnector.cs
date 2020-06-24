@@ -78,7 +78,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
                         Name = meal[1],
                         Description = meal[2],
                         Price = int.Parse(meal[7]),
-                        Type = (int)GetMealCategoryName(int.Parse(meal[8])),
+                        Type = (int)GetMealType(meal),
                         Restaurant = Restaurant
                     });
                 }
@@ -89,7 +89,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
                         Name = meal[1] + " - Jedan paket",
                         Description = meal[2],
                         Price = int.Parse(meal[5]),
-                        Type = (int)GetMealCategoryName(int.Parse(meal[8])),
+                        Type = (int)GetMealType(meal),
                         Restaurant = Restaurant
                     });
 
@@ -98,7 +98,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
                         Name = meal[1] + " - Dva paketa",
                         Description = meal[2],
                         Price = int.Parse(meal[6]),
-                        Type = (int)GetMealCategoryName(int.Parse(meal[8])),
+                        Type = (int)GetMealType(meal),
                         Restaurant = Restaurant
                     });
                 }
@@ -109,7 +109,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
                         Name = meal[1] + " - Mala porcija",
                         Description = meal[2],
                         Price = int.Parse(meal[5]),
-                        Type = (int)GetMealCategoryName(int.Parse(meal[8])),
+                        Type = (int)GetMealType(meal),
                         Restaurant = Restaurant
                     });
 
@@ -118,7 +118,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
                         Name = meal[1] + " - Velika porcija",
                         Description = meal[2],
                         Price = int.Parse(meal[6]),
-                        Type = (int)GetMealCategoryName(int.Parse(meal[8])),
+                        Type = (int)GetMealType(meal),
                         Restaurant = Restaurant
                     });
 
@@ -127,7 +127,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
                         Name = meal[1] + " - XL porcija",
                         Description = meal[2],
                         Price = int.Parse(meal[9]),
-                        Type = (int)GetMealCategoryName(int.Parse(meal[8])),
+                        Type = (int)GetMealType(meal),
                         Restaurant = Restaurant
                     });
                 }
@@ -136,20 +136,27 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
             return dailyMenu;
         }
 
-        private MealType GetMealCategoryName(int index)
+        private MealType GetMealType(List<string> meal)
         {
-            switch (index)
+            if (meal[11] == "da")
             {
-                case 5:
-                case 8:
-                case 10:
-                    return MealType.SALAD;
-                case 6:
-                    return MealType.SIDE_DISH;
-                case 11:
-                    return MealType.DESSERT;
-                default:
-                    return MealType.MAIN_COURSE;
+                return MealType.VEGETARIAN;
+            }
+            else
+            {
+                switch (int.Parse(meal[8]))
+                {
+                    case 5:
+                    case 8:
+                    case 10:
+                        return MealType.SALAD;
+                    case 6:
+                        return MealType.SIDE_DISH;
+                    case 11:
+                        return MealType.DESSERT;
+                    default:
+                        return MealType.MAIN_COURSE;
+                }
             }
         }
     }
