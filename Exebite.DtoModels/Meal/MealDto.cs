@@ -18,8 +18,8 @@ namespace Exebite.DtoModels
 
         public bool IsActive { get; set; }
 
-        public virtual RestaurantDto Restaurant { get; set; }
+        public long RestaurantId { get; set; }
 
-        public virtual List<long> Condiments { get; set; }
+        public virtual List<MealDto> Condiments { get; set; }
     }
 }

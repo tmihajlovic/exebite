@@ -7,12 +7,12 @@ namespace Exebite.DtoModels
     {
         public int Id { get; set; }
 
-        public RestaurantDto Restaurant { get; set; }
+        public long RestaurantId { get; set; }
 
         public DateTime Date { get; set; }
 
         public string Note { get; set; }
 
-        public List<MealDto> Foods { get; set; }
+        public List<MealDto> Meals { get; set; }
     }
 }
