@@ -20,6 +20,8 @@ namespace Exebite.DataAccess.Entities
 
         public bool IsActive { get; set; }
 
+        public bool IsFromStandardMenu { get; set; }
+
         [ForeignKey(nameof(Restaurant))]
         public long RestaurantId { get; set; }
 

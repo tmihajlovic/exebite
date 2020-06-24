@@ -17,6 +17,8 @@ namespace Exebite.DataAccess.Repositories
 
         public bool IsActive { get; set; }
 
+        public bool IsFromStandardMenu { get; set; }
+
         public long RestaurantId { get; set; }
 
         public List<Meal> Condiments { get; set; }

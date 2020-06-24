@@ -18,6 +18,8 @@ namespace Exebite.DtoModels
 
         public bool IsActive { get; set; }
 
+        public bool IsFromStandardMenu { get; set; }
+
         public virtual RestaurantDto Restaurant { get; set; }
 
         public virtual List<long> Condiments { get; set; }

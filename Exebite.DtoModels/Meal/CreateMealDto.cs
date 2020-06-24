@@ -22,5 +22,8 @@ namespace Exebite.DtoModels
 
         [Required]
         public bool IsActive { get; set; }
+
+        [Required]
+        public bool IsFromStandardMenu { get; set; }
     }
 }
