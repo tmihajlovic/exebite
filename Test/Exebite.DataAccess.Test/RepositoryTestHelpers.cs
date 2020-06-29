@@ -32,7 +32,7 @@ namespace Exebite.DataAccess.Test
 
         internal static CustomerCommandRepository CreateOnlyCustomerCommandRepositoryInstanceNoData(IMealOrderingContextFactory factory)
         {
-            return new CustomerCommandRepository(factory, _mapper);
+            return new CustomerCommandRepository(factory);
         }
         #endregion
 

@@ -136,7 +136,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
                         price = 0;
                     }
 
-                    result.Add(new Meal { Name = row[0].ToString(), Description = row[1].ToString(), Price = price, Restaurant = Restaurant, Type = (int)foodType });
+                    result.Add(new Meal { Name = row[0].ToString(), Description = row[1].ToString(), Price = price, Restaurant = Restaurant, IsFromStandardMenu = true, Type = (int)foodType });
                 }
             }
 

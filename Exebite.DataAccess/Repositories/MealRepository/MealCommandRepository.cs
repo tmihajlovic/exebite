@@ -38,6 +38,7 @@ namespace Exebite.DataAccess.Repositories
                         Note = entity.Note,
                         IsActive = entity.IsActive,
                         RestaurantId = entity.RestaurantId,
+                        IsFromStandardMenu = entity.IsFromStandardMenu
                     };
 
                     var addedEntity = context.Meal.Add(mealEntity).Entity;
@@ -60,6 +61,7 @@ namespace Exebite.DataAccess.Repositories
                                     Note = condiment.Note,
                                     Price = condiment.Price,
                                     RestaurantId = condiment.Restaurant.Id,
+                                    IsFromStandardMenu = condiment.IsFromStandardMenu,
                                     Type = (MealType)condiment.Type
                                 })
                                     .Map(x => x)
@@ -112,6 +114,7 @@ namespace Exebite.DataAccess.Repositories
                     currentEntity.RestaurantId = entity.RestaurantId;
                     currentEntity.Type = (int)entity.Type;
                     currentEntity.Note = entity.Note;
+                    currentEntity.IsFromStandardMenu = entity.IsFromStandardMenu;
 
                     if (entity.Condiments != null)
                     {
@@ -131,6 +134,7 @@ namespace Exebite.DataAccess.Repositories
                                     Note = condiment.Note,
                                     Price = condiment.Price,
                                     RestaurantId = condiment.Restaurant.Id,
+                                    IsFromStandardMenu = condiment.IsFromStandardMenu,
                                     Type = (MealType)condiment.Type
                                 })
                                     .Map(x => x)
@@ -234,6 +238,7 @@ namespace Exebite.DataAccess.Repositories
                     dbFood.Name = meal.Name;
                     dbFood.Price = meal.Price;
                     dbFood.RestaurantId = meal.RestaurantId;
+                    dbFood.IsFromStandardMenu = meal.IsFromStandardMenu;
                     dbFood.Type = (int)meal.Type;
 
                     return context.SaveChanges() > 0;

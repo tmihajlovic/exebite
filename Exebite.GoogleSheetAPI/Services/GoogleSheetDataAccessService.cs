@@ -176,7 +176,8 @@ namespace Exebite.GoogleSheetAPI.Services
                         Price = food.Price,
                         RestaurantId = food.Restaurant.Id,
                         Type = (MealType)food.Type,
-                        Condiments = food.Condiments
+                        Condiments = food.Condiments,
+                        IsFromStandardMenu = food.IsFromStandardMenu
                     };
 
                     mealId = _mapper

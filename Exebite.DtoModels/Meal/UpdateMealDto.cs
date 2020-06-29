@@ -25,6 +25,9 @@ namespace Exebite.DtoModels
         public bool IsActive { get; set; }
 
         [Required]
+        public bool IsFromStandardMenu { get; set; }
+
+        [Required]
         public List<long> Condiments { get; set; }
     }
 }
