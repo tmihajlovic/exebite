@@ -18,7 +18,8 @@ namespace Exebite.DataAccess.Test
                 IsActive = true,
                 Name = $"Name {content}",
                 Price = content,
-                RestaurantId = 1
+                RestaurantId = 1,
+                Type = (int)MealType.MAIN_COURSE
             });
 
         protected override MealQueryModel ConvertEmptyToQuery()
@@ -41,7 +42,8 @@ namespace Exebite.DataAccess.Test
                 IsActive = data.IsActive,
                 Name = data.Name,
                 Price = data.Price,
-                RestaurantId = data.RestaurantId
+                RestaurantId = data.RestaurantId,
+                Type = data.Type
             };
         }
 
@@ -103,6 +105,8 @@ namespace Exebite.DataAccess.Test
             public decimal? Price { get; set; }
 
             public bool? IsActive { get; set; }
+
+            public int? Type { get; set; }
         }
     }
 }
