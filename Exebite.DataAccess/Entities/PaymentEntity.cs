@@ -7,14 +7,15 @@ namespace Exebite.DataAccess.Entities
     [Table("Payment")]
     public class PaymentEntity
     {
-        [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        [ForeignKey(nameof(Customer))]
-        public int CustomerId { get; set; }
-
-        public virtual CustomerEntity Customer { get; set; }
+        public DateTime Date { get; set; }
 
         public decimal Amount { get; set; }
+
+        [ForeignKey(nameof(Customer))]
+        public long CustomerId { get; set; }
+
+        public virtual CustomerEntity Customer { get; set; }
     }
 }

@@ -9,23 +9,16 @@ namespace Exebite.DataAccess
     {
         public DataAccessMappingProfile()
         {
-            CreateMap<CustomerEntity, Customer>();
-            CreateMap<CustomerAliasesEntities, CustomerAliases>();
-            CreateMap<OrderEntity, Order>();
-            CreateMap<FoodEntity, Food>();
-            CreateMap<RestaurantEntity, Restaurant>();
+            CreateMap<CustomerEntity, Customer>()
+                .ForMember(c => c.FavouriteMeals, e => e.MapFrom(p => p.FavouriteMeals.Select(m => m.Meal)));
+            CreateMap<DailyMenuEntity, DailyMenu>()
+                .ForMember(dm => dm.Meals, e => e.MapFrom(p => p.DailyMenuToMeals.Select(dm => dm.Meal)));
             CreateMap<LocationEntity, Location>();
-            CreateMap<RecipeEntity, Recipe>()
-
-                // many to many relationship mapping
-                .ForMember(r => r.SideDish, v => v.MapFrom(c => c.FoodEntityRecipeEntities.Select(re => re.FoodEntity).ToList()));
-            CreateMap<DailyMenuEntity, DailyMenu>();
             CreateMap<MealEntity, Meal>()
-
-                // many to many relationship mapping
-                .ForMember(f => f.Foods, v => v.MapFrom(c => c.FoodEntityMealEntities.Select(fl => fl.FoodEntity).ToList()));
-
-            CreateMap<RoleEntity, Role>();
+                .ForMember(m => m.Condiments, e => e.MapFrom(p => p.Condiments.Select(c => c.Condiment)));
+            CreateMap<OrderEntity, Order>();
+            CreateMap<RestaurantEntity, Restaurant>();
+            CreateMap<PaymentEntity, Payment>();
         }
 
         public override string ProfileName => "DataAccessMappingProfile";

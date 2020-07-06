@@ -1,9 +1,13 @@
-﻿namespace Exebite.DtoModels
+﻿using System;
+
+namespace Exebite.DtoModels
 {
     public class DailyMenuQueryDto : QueryBaseDto
     {
-        public int? Id { get; set; }
+        public long? Id { get; set; }
 
-        public int? RestaurantId { get; set; }
+        public long? RestaurantId { get; set; }
+
+        public DateTime? Date { get; set; }
     }
 }

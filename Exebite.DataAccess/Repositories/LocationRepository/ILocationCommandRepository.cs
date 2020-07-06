@@ -1,6 +1,6 @@
 ﻿namespace Exebite.DataAccess.Repositories
 {
-    public interface ILocationCommandRepository : IDatabaseCommandRepository<int, LocationInsertModel, LocationUpdateModel>
+    public interface ILocationCommandRepository : IDatabaseCommandRepository<long, LocationInsertModel, LocationUpdateModel>
     {
     }
 }

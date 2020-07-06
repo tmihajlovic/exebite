@@ -1,10 +1,14 @@
-﻿namespace Exebite.DtoModels
+﻿using System;
+
+namespace Exebite.DtoModels
 {
     public class PaymentDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        public int CustomerId { get; set; }
+        public DateTime Date { get; set; }
+
+        public CustomerDto Customer { get; set; }
 
         public decimal Amount { get; set; }
     }

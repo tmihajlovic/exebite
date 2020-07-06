@@ -13,7 +13,7 @@ using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
 namespace Exebite.DataAccess.Test
 {
-    public sealed class OrderCommandRepositoryTest : CommandRepositoryTests<OrderCommandRepositoryTest.Data, int, OrderInsertModel, OrderUpdateModel>
+    public sealed class OrderCommandRepositoryTest : CommandRepositoryTests<OrderCommandRepositoryTest.Data, long, OrderInsertModel, OrderUpdateModel>
     {
         private readonly IGetDateTime _dateTime;
 
@@ -34,17 +34,17 @@ namespace Exebite.DataAccess.Test
                           RoleId = content
                       });
 
-        protected override IDatabaseCommandRepository<int, OrderInsertModel, OrderUpdateModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseCommandRepository<long, OrderInsertModel, OrderUpdateModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateOrderCommandRepositoryInstance(factory);
         }
 
-        protected override int GetId(Either<Error, int> newObj)
+        protected override long GetId(Either<Error, long> newObj)
         {
             return newObj.RightContent();
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
@@ -57,22 +57,14 @@ namespace Exebite.DataAccess.Test
 
                 context.Location.Add(location);
 
-                var role = new RoleEntity
-                {
-                    Id = 1,
-                    Name = "role name",
-                };
-
-                context.Role.Add(role);
-
                 var customers = Enumerable.Range(1, count + 6).Select(x => new CustomerEntity
                 {
                     Id = x,
                     Name = "Customer name ",
                     GoogleUserId = "GoogleUserId",
                     Balance = 99.99m,
-                    LocationId = 1,
-                    RoleId = 1
+                    DefaultLocationId = 1,
+                    Role = 1
                 });
                 context.Customer.AddRange(customers);
 
@@ -88,8 +80,6 @@ namespace Exebite.DataAccess.Test
                     Id = x,
                     CustomerId = x,
                     Date = _dateTime.Now().AddHours(x),
-                    MealId = x,
-                    Note = "note ",
                     Price = 10.5m * x
                 });
                 context.Order.AddRange(orders);
@@ -103,8 +93,6 @@ namespace Exebite.DataAccess.Test
             return new OrderInsertModel
             {
                 CustomerId = data.CustomerId,
-                MealId = data.MealId,
-                Note = data.Note,
                 Price = data.Price,
                 Date = data.Date
             };
@@ -115,8 +103,6 @@ namespace Exebite.DataAccess.Test
             return new OrderUpdateModel
             {
                 CustomerId = data.CustomerId,
-                MealId = data.MealId,
-                Note = data.Note,
                 Price = data.Price,
                 Date = data.Date
             };
@@ -136,7 +122,7 @@ namespace Exebite.DataAccess.Test
 #pragma warning restore RETURN0001 // Do not return null
         }
 
-        protected override int GetUnExistingId()
+        protected override long GetUnExistingId()
         {
             return 99999;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Exebite.DtoModels
 {
@@ -6,8 +7,12 @@ namespace Exebite.DtoModels
     {
         public int Id { get; set; }
 
-        public int RestaurantId { get; set; }
+        public long RestaurantId { get; set; }
 
-        public List<FoodDto> Foods { get; set; }
+        public DateTime Date { get; set; }
+
+        public string Note { get; set; }
+
+        public List<MealDto> Meals { get; set; }
     }
 }

@@ -11,7 +11,7 @@ using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
 namespace Exebite.DataAccess.Test
 {
-    public sealed class PaymentCommandRepositoryTest : CommandRepositoryTests<PaymentCommandRepositoryTest.Data, int, PaymentInsertModel, PaymentUpdateModel>
+    public sealed class PaymentCommandRepositoryTest : CommandRepositoryTests<PaymentCommandRepositoryTest.Data, long, PaymentInsertModel, PaymentUpdateModel>
     {
         protected override IEnumerable<Data> SampleData =>
                       Enumerable.Range(1, int.MaxValue).Select(content => new Data
@@ -20,26 +20,20 @@ namespace Exebite.DataAccess.Test
                           CustomerId = content
                       });
 
-        protected override IDatabaseCommandRepository<int, PaymentInsertModel, PaymentUpdateModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseCommandRepository<long, PaymentInsertModel, PaymentUpdateModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateOnlyPaymentCommandRepositoryInstanceNoData(factory);
         }
 
-        protected override int GetId(Either<Error, int> newObj)
+        protected override long GetId(Either<Error, long> newObj)
         {
             return newObj.RightContent();
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
-                context.Role.Add(new RoleEntity()
-                {
-                    Id = 1,
-                    Name = "Test Role"
-                });
-
                 context.Location.Add(new LocationEntity()
                 {
                     Id = 1,
@@ -50,8 +44,8 @@ namespace Exebite.DataAccess.Test
                 {
                     Id = x,
                     Name = $"Name {x}",
-                    LocationId = 1,
-                    RoleId = 1
+                    DefaultLocationId = 1,
+                    Role = 1
                 });
 
                 context.Customer.AddRange(customers);
@@ -100,7 +94,7 @@ namespace Exebite.DataAccess.Test
 #pragma warning restore RETURN0001 // Do not return null
         }
 
-        protected override int GetUnExistingId()
+        protected override long GetUnExistingId()
         {
             return 99999;
         }

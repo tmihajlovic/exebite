@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Exebite.DtoModels
@@ -6,9 +7,15 @@ namespace Exebite.DtoModels
     public class UpdateDailyMenuDto
     {
         [Required]
-        public int RestaurantId { get; set; }
+        public long RestaurantId { get; set; }
 
         [Required]
-        public List<FoodDto> Foods { get; set; }
+        public List<long> Meals { get; set; }
+
+        [Required]
+        public DateTime? Date { get; set; }
+
+        [Required]
+        public string Note { get; set; }
     }
 }

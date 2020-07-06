@@ -7,27 +7,23 @@ namespace FeatureTestingConsole
     public sealed class App : IApp
     {
         private readonly IRestaurantCommandRepository _restaurantCommandRepository;
-        private readonly IRoleCommandRepository _roleCommandRepo;
         private readonly ILocationCommandRepository _locationCommandRepo;
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
         public App(
             IRestaurantCommandRepository restaurantCommandRepo,
             ILocationCommandRepository locationCommandRepo,
-            IFoodOrderingContextFactory factory,
-            IRoleCommandRepository roleCommandRepo)
+            IMealOrderingContextFactory factory)
         {
             _restaurantCommandRepository = restaurantCommandRepo;
             _locationCommandRepo = locationCommandRepo;
             _factory = factory;
-            _roleCommandRepo = roleCommandRepo;
         }
 
         public void Run(string[] args)
         {
             ResetDatabase();
 
-            SeedRole();
             SeedLocation();
 
             SeedRestaurant();
@@ -40,12 +36,6 @@ namespace FeatureTestingConsole
                 dc.Database.EnsureDeleted();
                 dc.Database.EnsureCreated();
             }
-        }
-
-        private void SeedRole()
-        {
-            _roleCommandRepo.Insert(new RoleInsertModel { Name = "Admin" });
-            _roleCommandRepo.Insert(new RoleInsertModel { Name = "User" });
         }
 
         private void SeedLocation()

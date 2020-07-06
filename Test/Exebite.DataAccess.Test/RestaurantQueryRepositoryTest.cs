@@ -39,7 +39,7 @@ namespace Exebite.DataAccess.Test
             };
         }
 
-        protected override RestaurantQueryModel ConvertToQuery(int id)
+        protected override RestaurantQueryModel ConvertToQuery(long id)
         {
             return new RestaurantQueryModel { Id = id };
         }
@@ -49,17 +49,17 @@ namespace Exebite.DataAccess.Test
             return new RestaurantQueryModel(page, size);
         }
 
-        protected override IDatabaseQueryRepository<Restaurant, RestaurantQueryModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseQueryRepository<Restaurant, RestaurantQueryModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateOnlyRestaurantQueryRepositoryInstanceNoData(factory);
         }
 
-        protected override int GetId(Restaurant result)
+        protected override long GetId(Restaurant result)
         {
             return result.Id;
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {

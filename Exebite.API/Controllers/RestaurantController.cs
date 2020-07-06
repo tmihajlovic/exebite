@@ -33,7 +33,7 @@ namespace Exebite.API.Controllers
 
         [HttpPost]
         [Authorize(Policy = nameof(AccessPolicy.CreateRestaurantAccessPolicy))]
-        public IActionResult Post([FromBody]RestaurantInsertModelDto restaurant) =>
+        public IActionResult Post([FromBody]CreateRestaurantDto restaurant) =>
             _mapper.Map<RestaurantInsertModel>(restaurant)
                    .Map(_commandRepository.Insert)
                    .Map(x => Created(new { id = x }))
@@ -42,7 +42,7 @@ namespace Exebite.API.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = nameof(AccessPolicy.UpdateRestaurantAccessPolicy))]
-        public IActionResult Put(int id, [FromBody]RestaurantUpdateModelDto restaurant) =>
+        public IActionResult Put(int id, [FromBody]UpdateRestaurantDto restaurant) =>
             _mapper.Map<RestaurantUpdateModel>(restaurant)
                    .Map(x => _commandRepository.Update(id, x))
                    .Map(x => AllOk(new { updated = x }))

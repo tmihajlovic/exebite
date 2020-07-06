@@ -8,10 +8,8 @@ namespace Exebite.DataAccess.Repositories
 
         public DateTime Date { get; set; }
 
-        public string Note { get; set; }
+        public long LocationId { get; set; }
 
-        public int MealId { get; set; }
-
-        public int CustomerId { get; set; }
+        public long CustomerId { get; set; }
     }
 }

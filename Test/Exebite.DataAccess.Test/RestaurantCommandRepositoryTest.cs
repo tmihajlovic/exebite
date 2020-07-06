@@ -11,7 +11,7 @@ using static Exebite.DataAccess.Test.RepositoryTestHelpers;
 
 namespace Exebite.DataAccess.Test
 {
-    public sealed class RestaurantCommandRepositoryTest : CommandRepositoryTests<RestaurantCommandRepositoryTest.Data, int, RestaurantInsertModel, RestaurantUpdateModel>
+    public sealed class RestaurantCommandRepositoryTest : CommandRepositoryTests<RestaurantCommandRepositoryTest.Data, long, RestaurantInsertModel, RestaurantUpdateModel>
     {
         protected override IEnumerable<Data> SampleData =>
                       Enumerable.Range(1, int.MaxValue).Select(content => new Data
@@ -19,17 +19,17 @@ namespace Exebite.DataAccess.Test
                           Name = "Restaurant name" + content,
                       });
 
-        protected override IDatabaseCommandRepository<int, RestaurantInsertModel, RestaurantUpdateModel> CreateSut(IFoodOrderingContextFactory factory)
+        protected override IDatabaseCommandRepository<long, RestaurantInsertModel, RestaurantUpdateModel> CreateSut(IMealOrderingContextFactory factory)
         {
             return CreateOnlyRestaurantCommandRepositoryInstanceNoData(factory);
         }
 
-        protected override int GetId(Either<Error, int> newObj)
+        protected override long GetId(Either<Error, long> newObj)
         {
             return newObj.RightContent();
         }
 
-        protected override void InitializeStorage(IFoodOrderingContextFactory factory, int count)
+        protected override void InitializeStorage(IMealOrderingContextFactory factory, int count)
         {
             using (var context = factory.Create())
             {
@@ -68,7 +68,7 @@ namespace Exebite.DataAccess.Test
 #pragma warning restore RETURN0001 // Do not return null
         }
 
-        protected override int GetUnExistingId()
+        protected override long GetUnExistingId()
         {
             return 99999;
         }

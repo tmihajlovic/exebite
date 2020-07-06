@@ -13,7 +13,7 @@ namespace Exebite.DataAccess.Context
             _configRoot = configRoot;
         }
 
-        public DbContextOptions<FoodOrderingContext> Create()
+        public DbContextOptions<MealOrderingContext> Create()
         {
             var environmentConnectionString = Environment.GetEnvironmentVariable("ExeBiteConnectionString", EnvironmentVariableTarget.User);
 
@@ -21,7 +21,7 @@ namespace Exebite.DataAccess.Context
                                     ? environmentConnectionString
                                     : _configRoot.GetConnectionString("ExeBiteConnectionString");
 
-            var dbContextOptions = new DbContextOptionsBuilder<FoodOrderingContext>().UseSqlServer(connectionString)
+            var dbContextOptions = new DbContextOptionsBuilder<MealOrderingContext>().UseSqlServer(connectionString)
                                                                                      .UseLazyLoadingProxies()
                                                                                      .Options;
             return dbContextOptions;

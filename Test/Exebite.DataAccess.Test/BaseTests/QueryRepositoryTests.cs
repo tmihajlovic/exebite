@@ -13,7 +13,7 @@ namespace Exebite.DataAccess.Test.BaseTests
     public abstract class QueryRepositoryTests<TModel, TResult, TQuery>
     {
         private readonly SqliteConnection _connection;
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
         protected QueryRepositoryTests()
         {
@@ -29,12 +29,12 @@ namespace Exebite.DataAccess.Test.BaseTests
         [InlineData(2, 2)]
         [InlineData(3, 2)]
         [InlineData(50, 2)]
-        public void GetById_ValidId_ValidResult(int count, int id)
+        public void GetById_ValidId_ValidResult(int count, long id)
         {
             // Arrange
             IEnumerable<TModel> data = this.SampleData.Take(count + 1).ToList();
             this.InitializeStorage(_factory, count);
-            TModel queryData = data.ElementAt(id);
+            TModel queryData = data.ElementAt((int)id);
 
             var sut = this.CreateSut(_factory);
 
@@ -104,7 +104,7 @@ namespace Exebite.DataAccess.Test.BaseTests
         public void Query_QueryByIDId_ValidId()
         {
             // Arrange
-            const int validId = 1;
+            const long validId = 1;
             IEnumerable<TModel> data = this.SampleData.Take(1).ToList();
             this.InitializeStorage(_factory, 1);
             TModel queryData = data.ElementAt(0);
@@ -126,7 +126,7 @@ namespace Exebite.DataAccess.Test.BaseTests
         [InlineData(0)]
         [InlineData(2)]
         [InlineData(int.MaxValue)]
-        public void Query_QueryByIDId_NonExistingID(int id)
+        public void Query_QueryByIDId_NonExistingID(long id)
         {
             // Arrange
             this.InitializeStorage(_factory, 1);
@@ -178,15 +178,15 @@ namespace Exebite.DataAccess.Test.BaseTests
             Assert.Equal(typeof(UnknownError), result.LeftContent().GetType());
         }
 
-        protected abstract IDatabaseQueryRepository<TResult, TQuery> CreateSut(IFoodOrderingContextFactory factory);
+        protected abstract IDatabaseQueryRepository<TResult, TQuery> CreateSut(IMealOrderingContextFactory factory);
 
-        protected abstract void InitializeStorage(IFoodOrderingContextFactory factory, int count);
+        protected abstract void InitializeStorage(IMealOrderingContextFactory factory, int count);
 
-        protected abstract int GetId(TResult result);
+        protected abstract long GetId(TResult result);
 
         protected abstract TQuery ConvertToQuery(TModel data);
 
-        protected abstract TQuery ConvertToQuery(int id);
+        protected abstract TQuery ConvertToQuery(long id);
 
         protected abstract TQuery ConvertNullToQuery();
 

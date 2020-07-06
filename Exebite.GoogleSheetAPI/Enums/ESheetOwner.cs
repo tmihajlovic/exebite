@@ -22,6 +22,12 @@ namespace Exebite.GoogleSheetAPI.Enums
         [Description("Mima's")]
         MIMAS,
 
+        [Description("Parrilla")]
+        PARRILLA,
+
+        [Description("Hey Day")]
+        HEY_DAY,
+
         [Description("Kasa")]
         KASA,
     }
