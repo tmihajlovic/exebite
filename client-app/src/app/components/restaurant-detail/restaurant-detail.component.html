@@ -1,5 +1,36 @@
 <div *ngIf="foodsData">
     <div>
-        <div *ngFor="let food of foodsData">{{food.name}}</div>
+        <div *ngFor="let food of foodsData">
+            <mat-accordion>
+                <mat-expansion-panel >
+                <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <div class="w-100">
+                        <div class="float-left">
+                            {{food.name}}
+                        </div>
+                        <div class="float-right">
+                            {{food.price}},00
+                        </div>
+                    </div>
+                </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="description-div w-100">
+                    <br>
+                    <p>
+                        {{food.description}}
+                    </p>
+                    <div class="w-50">
+                        <div class="float-left">Like</div>
+                        <div class="float-right">Dislike</div>
+                    </div>
+                    <br> <br>
+                    <div>
+                        Comments
+                    </div>
+                </div>
+                </mat-expansion-panel>
+                </mat-accordion>
+        </div>
     </div>
 </div>

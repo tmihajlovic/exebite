@@ -16,6 +16,9 @@ import { HeaderComponent } from "./components/header/header.component";
 import { DropdownDirective } from "./shared/dropdown.directive";
 import { FilterViewByComponent } from "./components/filter-view-by/filter-view-by.component";
 import { FoodService } from "./services/food.service";
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 let config = new AuthServiceConfig([
   {
@@ -46,6 +49,8 @@ export function provideConfig() {
     AppRoutingModule,
     SocialLoginModule,
     HttpClientModule,
+    NoopAnimationsModule,
+    MatExpansionModule
   ],
   providers: [
     UserService,

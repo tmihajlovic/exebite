@@ -1,13 +1,11 @@
-<ul class="nav nav-tabs ">
-    <li class="nav-item row">
-        <a class="nav-link" style="cursor: pointer;" *ngFor="let item of dataRestaurants" [routerLink]="[item.id]"
-            routerLinkActive="active">
-            <div>
-                <h5>{{item.name}}</h5>
-            </div>
-        </a>
-    </li>
-</ul>
-<div>
-    <router-outlet></router-outlet>
+<div class="main-container" >
+    <div class="inside-element" *ngFor="let item of dataRestaurants" [routerLink]="[item.id]" routerLinkActive="active">
+        <div class="inside-element-header">
+            <div class="resturant-title">{{item.name}}</div>
+            <div class="time-work">Due 10:00 am</div>
+        </div>
+        <div>
+            <app-restaurant-detail [resturantId]="item.id"></app-restaurant-detail>
+        </div>
+    </div>
 </div>

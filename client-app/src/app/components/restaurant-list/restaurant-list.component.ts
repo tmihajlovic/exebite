@@ -2,6 +2,8 @@ import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { IRestaurant } from "src/app/models/restaurant";
 import { RestaurantService } from "src/app/services/restaurant.service";
 import { Subscription } from "rxjs";
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 @Component({
   selector: "app-restaurant-list",
@@ -15,6 +17,7 @@ export class RestaurantListComponent implements OnInit, OnDestroy {
   constructor(private restaurantService: RestaurantService) {}
 
   ngOnInit() {
+
     this.sub = this.restaurantService
       .fetchRestaurants()
       .subscribe(({ restaurants }) => {

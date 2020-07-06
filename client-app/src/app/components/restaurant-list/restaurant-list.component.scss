@@ -1,0 +1,33 @@
+.main-container{
+    width: 80%;
+    margin: auto;
+    display: flex;                  /* establish flex container */
+    flex-direction: row;            /* default value; can be omitted */
+    flex-wrap: nowrap;              /* default value; can be omitted */
+    justify-content: space-between; /* switched from default (flex-start, see below) */
+}
+
+.inside-element{
+    width: 33%;
+    display: inline-block;
+}
+
+.inside-element-header{
+    height: 70px;
+    border-radius: 20px 20px 0px 0px;
+    background-color: #FB4B4F;
+}
+
+.resturant-title{
+    font-size: 20px;
+    font-weight: 600;
+    padding: 10px 10px 5px 10px;
+    color: white;
+}
+
+.time-work{
+    font-size: small;
+    font-weight: 500;
+    padding: 0px 10px 0px 10px;
+    color: white;
+}
