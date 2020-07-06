@@ -1,15 +1,21 @@
 .description-div {
-   background-color: #E9E8EB;
-}
-
-.mat-expansion-panel{
     background-color: #E9E8EB;
-}
+ }
+ 
+ .mat-expansion-panel{
+     background-color: #E9E8EB;
+ }
+ 
+ .mat-expansion-panel-header{
+     background-color: white !important;
+     height: 100% !important;
+     min-height: 40px;
+ }
+ 
+ .mat-panel-title{
+     background-color: white !important;
+ }
 
-.mat-expansion-panel-header{
-    background-color: white !important;
-}
-
-.mat-panel-title{
-    background-color: white !important;
-}
+ .mr-5{
+     margin-right: 5px !important;
+ }

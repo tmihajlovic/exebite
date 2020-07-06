@@ -7,10 +7,10 @@ import { map } from "rxjs/operators";
 export class FoodService {
   constructor(private http: HttpClient) {}
 
-  private foodsDataUrl = "http://localhost:6879/api/food/Query?Page=1&Size=30";
+  private foodsDataUrl = "http://localhost:6879/api/meal/Query?Page=1&Size=30";
 
   private restFoodDataUrl = (id) =>
-    `http://localhost:6879/api/food/Query?RestaurantId=${id}&Page=1&Size=30`;
+    `http://localhost:6879/api/meal/Query?RestaurantId=${id}&Page=1&Size=30`;
 
   fetchFoods() {
     return this.http.get<{ items: IFood[] }>(this.foodsDataUrl).pipe(
