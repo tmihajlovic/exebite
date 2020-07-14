@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Text;
 using AutoMapper;
 using Exebite.API.Authorization;
 using Exebite.API.Extensions;
@@ -8,6 +9,7 @@ using Exebite.Common;
 using Exebite.DataAccess;
 using Exebite.GoogleSheetAPI;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +19,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using NSwag.AspNetCore;
 
 namespace Exebite.API
@@ -44,7 +47,7 @@ namespace Exebite.API
                 options.Events.OnRedirectToLogin = Helper.ReplaceRedirector(HttpStatusCode.Unauthorized, options.Events.OnRedirectToLogin);
             });
 
-            if (_hostingEnvironment.IsDevelopment())
+            if (!_hostingEnvironment.IsDevelopment())
             {
                 services.AddMvc(opts =>
                 {
@@ -69,20 +72,55 @@ namespace Exebite.API
             }
             else
             {
-                services.AddAuthentication(
-                   options =>
-                   {
-                       options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
-                       options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-                   })
-                   .AddGoogle(googleOptions =>
-                   {
-                       googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
-                       googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
-                   });
+                services
+                    /*.AddAuthentication(options =>
+                    {
+                        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                    })
+                    .AddCookie()*/
+                    .AddAuthentication(x =>
+                    {
+                        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    }).AddJwtBearer(x =>
+                    {
+                        x.RequireHttpsMetadata = false; // TODO - Change later for production
+                        x.SaveToken = true;
+                        x.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Authentication:Exebite.API:ClientSecret"])),
+                            ValidIssuer = _configuration["Authentication:Exebite.API:ClientId"],
+                            ValidateIssuer = true,
+                            ValidAudience = _configuration["Authentication:Exebite.ClientApp:ClientId"],
+                            ValidateAudience = true,
+                        };
+                    })
+                    .AddGoogle(googleOptions =>
+                    {
+                        googleOptions.ClientId = _configuration["Authentication:Exebite.API:ClientId"];
+                        googleOptions.ClientSecret = _configuration["Authentication:Exebite.API:ClientSecret"];
+                    });
 
-                services.AddMvc()
+                services.AddMvc(opts =>
+                {
+                    opts.EnableEndpointRouting = false;
+                })
                 .AddNSwagSettings(); // Add NSwag CamelCase settings.
+
+                services.AddCors(options =>
+                {
+                    options.AddPolicy(
+                        _myAllowSpecificOrigins,
+                        builder =>
+                        {
+                            builder.AllowAnyOrigin()
+                                   .AllowAnyHeader()
+                                   .AllowAnyMethod();
+                        });
+                });
             }
 
             services.AddAuthorization(options => options.AddCustomPolicies());
@@ -129,6 +167,8 @@ namespace Exebite.API
             app.UseCors(_myAllowSpecificOrigins);
 
             app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseStatusCodePages();
 

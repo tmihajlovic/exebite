@@ -4,6 +4,7 @@ import { AuthService } from "angularx-social-login";
 import { GoogleLoginProvider } from "angularx-social-login";
 import { Router } from "@angular/router";
 import { IUser } from "src/app/models/user";
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: "app-login",
@@ -13,13 +14,18 @@ import { IUser } from "src/app/models/user";
 export class LoginComponent {
   user: IUser;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private userService: UserService) { }
 
   signInWithGoogle(): void {
     this.authService
       .signIn(GoogleLoginProvider.PROVIDER_ID)
-      .then(() => {
-        this.router.navigate(["home"]);
+      .then(googleUser => {
+        this.userService.googleLogin(googleUser).subscribe(
+          userToken => {
+            sessionStorage.setItem("userToken", userToken.token);
+            this.router.navigate(["home"]);
+          }
+        );
       })
       .catch((error) => {
         console.log(error);

@@ -19,7 +19,7 @@ namespace Exebite.Business
 
         public Task<Either<Error, string>> GetRoleForGoogleUserAsync(IEnumerable<Claim> claims)
         {
-            string userId = claims.FirstOrDefault(x => x.Type.EndsWith("nameidentifier"))?.Value;
+            string userId = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             return Task.FromResult(_queryRepository.GetRole(userId));
         }
     }
