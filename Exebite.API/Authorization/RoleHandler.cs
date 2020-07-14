@@ -14,11 +14,10 @@ namespace Exebite.API.Authorization
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, RequireRoleRequirment requirement)
         {
             new Right<Error, string>(context.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role)?.Value)
-                .Map(r => Enum.GetName(typeof(RoleType), int.Parse(r)))
-                .Map(x => CheckTheRole(x, requirement, context));
+                .Map(role => CheckTheRole(role, context, requirement));
         }
 
-        private bool CheckTheRole(string role, RequireRoleRequirment requirement, AuthorizationHandlerContext context)
+        private bool CheckTheRole(string role, AuthorizationHandlerContext context, RequireRoleRequirment requirement)
         {
             if (requirement.Roles.Any(str => role.IndexOf(str, StringComparison.OrdinalIgnoreCase) > -1))
             {

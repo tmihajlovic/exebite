@@ -48,6 +48,6 @@ export class UserService {
     /*let headers = new HttpHeaders();
     console.log(localStorage.getItem('userToken'))
     headers = headers.set('Authorization', `Bearer ${localStorage.getItem('userToken')}`);*/
-    return this.http.post<UserToken>(`${environment.baseAPIUrl}/google-login`, { idToken: googleUser.idToken });
+    return this.http.post<UserToken>(`${environment.baseAPIUrl}/googlelogin`, { idToken: googleUser.idToken });
   }
 }
