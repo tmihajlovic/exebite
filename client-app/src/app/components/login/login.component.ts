@@ -22,7 +22,7 @@ export class LoginComponent {
       .then(googleUser => {
         this.userService.googleLogin(googleUser).subscribe(
           userToken => {
-            sessionStorage.setItem("userToken", userToken.accessToken);
+            sessionStorage.setItem("access_token", userToken.accessToken);
             this.router.navigate(["home"]);
           }
         );

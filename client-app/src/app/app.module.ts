@@ -10,6 +10,7 @@ import { LoginComponent } from "./components/login/login.component";
 import { HomeComponent } from "./components/home/home.component";
 import { UserService } from "./services/user.service";
 import { environment } from 'src/environments/environment';
+import { JwtModule } from "@auth0/angular-jwt";
 
 let config = new AuthServiceConfig([
   {
@@ -22,6 +23,10 @@ export function provideConfig() {
   return config;
 }
 
+export function tokenGetter() {
+  return sessionStorage.getItem("access_token");
+}
+
 @NgModule({
   declarations: [AppComponent, LoginComponent, HomeComponent],
   imports: [
@@ -29,6 +34,12 @@ export function provideConfig() {
     AppRoutingModule,
     SocialLoginModule,
     HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: [environment.backendDomain],
+      },
+    }),
   ],
   providers: [
     UserService,

@@ -3,7 +3,7 @@ import { AuthService, SocialUser } from "angularx-social-login";
 import { IUser } from "../models/user";
 import { ICustomer } from "../models/customer";
 import { map, switchMap } from "rxjs/operators";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { UserToken } from '../models/usertoken';
 import { environment } from 'src/environments/environment';
@@ -14,7 +14,7 @@ export class UserService {
   customers: ICustomer[];
 
   private customerDataUrl = (googleUserId) =>
-    `${environment.baseAPIUrl}/Customer/Query?GoogleUserId=${googleUserId}&Page=1&Size=100`;
+    `${environment.backendBaseAPIUrl}/Customer/Query?GoogleUserId=${googleUserId}&Page=1&Size=100`;
 
   constructor(private authService: AuthService, private http: HttpClient) { }
 
@@ -35,13 +35,12 @@ export class UserService {
   }
 
   fetchCustomerData(googleId, photoUrl) {
-    let headers = new HttpHeaders({ Authorization: `Bearer ${sessionStorage.getItem('userToken')}` });
     return this.http
-      .get<{ items: ICustomer[] }>(this.customerDataUrl(googleId), { headers })
+      .get<{ items: ICustomer[] }>(this.customerDataUrl(googleId))
       .pipe(map((items) => ({ ...items.items[0], photoUrl: photoUrl })));
   }
 
   googleLogin(googleUser: SocialUser): Observable<UserToken> {
-    return this.http.post<UserToken>(`${environment.baseAPIUrl}/googlelogin`, { idToken: googleUser.idToken });
+    return this.http.post<UserToken>(`${environment.backendBaseAPIUrl}/googlelogin`, { idToken: googleUser.idToken });
   }
 }

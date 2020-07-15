@@ -75,7 +75,7 @@ namespace Exebite.API.Controllers
                                 Balance = 0,
                                 GoogleUserId = payload.Email,
                                 Name = name,
-                                Role = (int)role, // TODO - add role? add other things?
+                                Role = (int)role,
                                 DefaultLocationId = 1,
                                 IsActive = true
                             });
