@@ -2,9 +2,6 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Either;
-using Exebite.Common;
-using Exebite.DomainModel;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Exebite.API.Authorization
@@ -13,13 +10,13 @@ namespace Exebite.API.Authorization
     {
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, RequireRoleRequirment requirement)
         {
-            new Right<Error, string>(context.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role)?.Value)
-                .Map(role => CheckTheRole(role, context, requirement));
+            var role = context.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role)?.Value;
+            CheckTheRole(role, context, requirement);
         }
 
-        private bool CheckTheRole(string role, AuthorizationHandlerContext context, RequireRoleRequirment requirement)
+        private void CheckTheRole(string role, AuthorizationHandlerContext context, RequireRoleRequirment requirement)
         {
-            if (requirement.Roles.Any(str => role.IndexOf(str, StringComparison.OrdinalIgnoreCase) > -1))
+            if (requirement.Roles.Any(req => req.Equals(role, StringComparison.InvariantCultureIgnoreCase)))
             {
                 context.Succeed(requirement);
             }
@@ -27,8 +24,6 @@ namespace Exebite.API.Authorization
             {
                 context.Fail();
             }
-
-            return true;
         }
     }
 }

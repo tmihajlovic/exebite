@@ -8,7 +8,6 @@ using Exebite.Business;
 using Exebite.Common;
 using Exebite.DataAccess;
 using Exebite.GoogleSheetAPI;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -73,12 +72,6 @@ namespace Exebite.API
             else
             {
                 services
-                    /*.AddAuthentication(options =>
-                    {
-                        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-                    })
-                    .AddCookie()*/
                     .AddAuthentication(x =>
                     {
                         x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -97,11 +90,6 @@ namespace Exebite.API
                             ValidAudience = _configuration["Authentication:Exebite.ClientApp:ClientId"],
                             ValidateAudience = true,
                         };
-                    })
-                    .AddGoogle(googleOptions =>
-                    {
-                        googleOptions.ClientId = _configuration["Authentication:Exebite.API:ClientId"];
-                        googleOptions.ClientSecret = _configuration["Authentication:Exebite.API:ClientSecret"];
                     });
 
                 services.AddMvc(opts =>
@@ -116,7 +104,7 @@ namespace Exebite.API
                         _myAllowSpecificOrigins,
                         builder =>
                         {
-                            builder.AllowAnyOrigin()
+                            builder.AllowAnyOrigin() // TODO - Change later for production
                                    .AllowAnyHeader()
                                    .AllowAnyMethod();
                         });
