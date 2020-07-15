@@ -36,18 +36,12 @@ export class UserService {
 
   fetchCustomerData(googleId, photoUrl) {
     let headers = new HttpHeaders({ Authorization: `Bearer ${sessionStorage.getItem('userToken')}` });
-    /*console.log(localStorage.getItem('userToken'))
-    headers = headers.set('Authorization', `Bearer ${localStorage.getItem('userToken')}`);*/
-
     return this.http
       .get<{ items: ICustomer[] }>(this.customerDataUrl(googleId), { headers })
       .pipe(map((items) => ({ ...items.items[0], photoUrl: photoUrl })));
   }
 
   googleLogin(googleUser: SocialUser): Observable<UserToken> {
-    /*let headers = new HttpHeaders();
-    console.log(localStorage.getItem('userToken'))
-    headers = headers.set('Authorization', `Bearer ${localStorage.getItem('userToken')}`);*/
     return this.http.post<UserToken>(`${environment.baseAPIUrl}/googlelogin`, { idToken: googleUser.idToken });
   }
 }

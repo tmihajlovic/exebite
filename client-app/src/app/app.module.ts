@@ -9,13 +9,12 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./components/login/login.component";
 import { HomeComponent } from "./components/home/home.component";
 import { UserService } from "./services/user.service";
+import { environment } from 'src/environments/environment';
 
 let config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
-    provider: new GoogleLoginProvider(
-      "705654214740-hn4155dbddmj2puk52i2s7cjscvcs9db.apps.googleusercontent.com"
-    ),
+    provider: new GoogleLoginProvider(environment.clientId),
   },
 ]);
 

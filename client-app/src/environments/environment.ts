@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseAPIUrl: 'http://localhost:6879/api'
+  baseAPIUrl: 'http://localhost:6879/api',
+  clientId: '705654214740-hn4155dbddmj2puk52i2s7cjscvcs9db.apps.googleusercontent.com'
 };
 
 /*
