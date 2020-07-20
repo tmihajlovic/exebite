@@ -24,7 +24,6 @@ namespace Exebite.IdentityServer
                     PostLogoutRedirectUris = new List<string> { "http://localhost:4200/" },
                     AllowedCorsOrigins = new List<string> { "http://localhost:4200" },
                     AllowAccessTokensViaBrowser = true,
-                    
                 }
             };
     }
