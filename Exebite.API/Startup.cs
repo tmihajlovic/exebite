@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using AutoMapper;
@@ -71,24 +72,20 @@ namespace Exebite.API
             }
             else
             {
-                services
-                    .AddAuthentication(x =>
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
                     {
-                        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    }).AddJwtBearer(x =>
-                    {
-                        x.RequireHttpsMetadata = false; // TODO - Change later for production
-                        x.SaveToken = true;
-                        x.TokenValidationParameters = new TokenValidationParameters
+                        options.Authority = _configuration["Apps:Exebite.IdentityServer:Url"];
+
+                        options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            ValidateLifetime = true,
-                            ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Authentication:Exebite.API:ClientSecret"])),
-                            ValidIssuer = _configuration["Authentication:Exebite.API:ClientId"],
                             ValidateIssuer = true,
-                            ValidAudience = _configuration["Authentication:Exebite.ClientApp:ClientId"],
-                            ValidateAudience = true,
+                            ValidAudiences = new List<string>
+                            {
+                                _configuration["Apps:Exebite.API:Name"],
+                                $"{_configuration["Apps:Exebite.IdentityServer:Url"]}/resources"
+                            },
+                            ValidTypes = new[] { "at+jwt" }
                         };
                     });
 
@@ -115,6 +112,8 @@ namespace Exebite.API
             services.AddIdentityCore<IdentityUser>();
             services.AddScoped<IAuthorizationHandler, RoleHandler>();
             services.AddTransient<IAuthorizationHandler, RoleHandler>();
+            services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+            services.AddTransient<IAuthorizationHandler, PermissionHandler>();
 
             services.AddAutoMapper(
                 cfg =>

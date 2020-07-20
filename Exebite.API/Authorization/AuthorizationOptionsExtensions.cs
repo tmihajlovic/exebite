@@ -83,6 +83,10 @@ namespace Exebite.API.Authorization
                 readAccess: new List<string> { Roles.Admin },
                 updateAccess: new List<string> { Roles.Admin },
                 deleteAccess: new List<string> { Roles.Admin });
+
+            AddUserInfoPolicies(
+                options,
+                readAccess: new List<string> { Permissions.UserInfoRead });
         }
 
         private static void AddRestaurantPolicies(
@@ -231,6 +235,18 @@ namespace Exebite.API.Authorization
         private static void AddPolicy(AuthorizationOptions options, string policyName, List<string> access)
         {
             options.AddPolicy(policyName, policy => policy.AddRequirements(new RequireRoleRequirment(access)));
+        }
+
+        private static void AddUserInfoPolicies(
+            AuthorizationOptions options,
+            List<string> readAccess)
+        {
+            AddPermissionPolicy(options, AccessPolicy.ReadUserInfoAccessPolicy, readAccess);
+        }
+
+        private static void AddPermissionPolicy(AuthorizationOptions options, string policyName, List<string> access)
+        {
+            options.AddPolicy(policyName, policy => policy.AddRequirements(new RequirePermissionRequirement(access)));
         }
     }
 }
