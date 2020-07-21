@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { User, UserManager, UserManagerSettings } from 'oidc-client';
+import { User, UserManager, UserManagerSettings, Profile } from 'oidc-client';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -7,54 +8,51 @@ import { User, UserManager, UserManagerSettings } from 'oidc-client';
 export class AuthService {
 
   private manager = new UserManager(getClientSettings());
-  private user: User = null;
 
-  constructor() {
-    this.manager.getUser().then(
-      user => {
-        this.user = user;
-      }
-    );
+  private async getUser(): Promise<User> {
+    return await this.manager.getUser();
   }
 
-  isLoggedIn(): boolean {
-    return this.user != null && !this.user.expired;
+  async isLoggedIn(): Promise<boolean> {
+    const user = await this.getUser();
+    return user != null && !user.expired;
   }
 
-  getClaims(): any {
-    return this.user.profile;
+  async getClaims(): Promise<Profile> {
+    const user = await this.getUser();
+    return user.profile;
   }
 
-  getAuthorizationHeaderValue(): string {
-    return `${this.user.token_type} ${this.user.access_token}`;
+  async getAuthorizationHeaderValue(): Promise<string> {
+    const user = await this.getUser();
+    return `${user.token_type} ${user.access_token}`;
   }
 
   startAuthentication(): Promise<void> {
     return this.manager.signinRedirect();
   }
 
-  completeAuthentication(): Promise<void> {
-    return this.manager.signinRedirectCallback().then(
-      user => {
-        this.user = user;
-      }
-    );
+  completeAuthentication(): Promise<User> {
+    return this.manager.signinRedirectCallback();
   }
 
-  logout() {
-    this.manager.signoutRedirect({ id_token_hint: this.user.id_token });
+  async logout(): Promise<void> {
+    if (await this.isLoggedIn()) {
+      const user = await this.getUser();
+      this.manager.signoutRedirect({ id_token_hint: user.id_token });
+    }
   }
 
 }
 
 export function getClientSettings(): UserManagerSettings {
   return {
-    authority: 'https://localhost:5001/',
+    authority: environment.identityServerBaseUrl,
     client_id: 'Exebite.ClientApp',
-    redirect_uri: 'http://localhost:4200/auth-callback',
-    post_logout_redirect_uri: 'http://localhost:4200/',
-    response_type: "id_token token",
-    scope: "openid",
+    redirect_uri: `${environment.portalBaseUrl}/auth-callback`,
+    post_logout_redirect_uri: environment.portalBaseUrl,
+    response_type: 'id_token token',
+    scope: 'openid',
     filterProtocolClaims: true,
     loadUserInfo: true
   };

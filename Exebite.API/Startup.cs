@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using AutoMapper;
 using Exebite.API.Authorization;
 using Exebite.API.Extensions;
@@ -47,7 +46,7 @@ namespace Exebite.API
                 options.Events.OnRedirectToLogin = Helper.ReplaceRedirector(HttpStatusCode.Unauthorized, options.Events.OnRedirectToLogin);
             });
 
-            if (!_hostingEnvironment.IsDevelopment())
+            if (_hostingEnvironment.IsDevelopment())
             {
                 services.AddMvc(opts =>
                 {
@@ -101,7 +100,7 @@ namespace Exebite.API
                         _myAllowSpecificOrigins,
                         builder =>
                         {
-                            builder.AllowAnyOrigin() // TODO - Change later for production
+                            builder.AllowAnyOrigin() // TODO - Before app is deployed to production, add only necessary origins
                                    .AllowAnyHeader()
                                    .AllowAnyMethod();
                         });

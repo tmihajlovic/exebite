@@ -21,7 +21,7 @@ namespace Exebite.IdentityServer
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowedScopes = new List<string> { "openid" },
                     RedirectUris = new List<string> { "http://localhost:4200/auth-callback" },
-                    PostLogoutRedirectUris = new List<string> { "http://localhost:4200/" },
+                    PostLogoutRedirectUris = new List<string> { "http://localhost:4200" },
                     AllowedCorsOrigins = new List<string> { "http://localhost:4200" },
                     AllowAccessTokensViaBrowser = true,
                 }

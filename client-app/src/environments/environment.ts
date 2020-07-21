@@ -9,7 +9,8 @@ export const environment = {
   backendDomain: backendDomain,
   backendBaseUrl: `http://${backendDomain}`,
   backendBaseAPIUrl: `http://${backendDomain}/api`,
-  clientId: '705654214740-hn4155dbddmj2puk52i2s7cjscvcs9db.apps.googleusercontent.com'
+  portalBaseUrl: 'http://localhost:4200',
+  identityServerBaseUrl: 'https://localhost:5001'
 };
 
 /*
