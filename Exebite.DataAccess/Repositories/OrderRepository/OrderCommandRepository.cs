@@ -33,6 +33,15 @@ namespace Exebite.DataAccess.Repositories
                     };
 
                     var addedEntity = context.Order.Add(orderEntity).Entity;
+
+                    if (entity.Meals != null)
+                    {
+                        foreach (var meal in entity.Meals)
+                        {
+                            addedEntity.OrdersToMeals.Add(new OrderToMealEntity() { MealId = meal.Id, OrderId = addedEntity.Id });
+                        }
+                    }
+
                     context.SaveChanges();
 
                     return new Right<Error, long>(addedEntity.Id);
