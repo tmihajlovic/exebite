@@ -20,7 +20,9 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
             : base(googleSheetService, restaurantQueryRepository, RestaurantConstants.POD_LIPOM_NAME)
         {
             SheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.LIPA);
-            DailyMenuSheet = GetLocalMonthName(DateTime.Now.Month) + DateTime.Now.Year;
+            ColumnsPerDay = 10;
+            DailyMenuDate = new DateTime(2020, 03, 03);
+            DailyMenuSheet = GetLocalMonthName(DailyMenuDate.Month) + DailyMenuDate.Year;
         }
 
         /// <summary>
@@ -50,7 +52,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         /// <returns>List of today available food</returns>
         private IEnumerable<Meal> DailyMenu()
         {
-            var date = DateTime.Today;
+            var date = new DateTime(2020, 03, 03); //DateTime.Today;
             var foundMerge = FindDateRangeInSheets(date);
 
             if (foundMerge.IsSuccess)

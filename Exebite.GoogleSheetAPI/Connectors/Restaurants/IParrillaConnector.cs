@@ -7,11 +7,6 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
     public interface IParrillaConnector : IRestaurantConnector
     {
         /// <summary>
-        /// Order Daily menu sheet so first column is today and place correct dates
-        /// </summary>
-        void DnevniMenuSheetSetup();
-
-        /// <summary>
         /// Get all meals from the main menu
         /// </summary>
         /// <returns>List of meals</returns>
@@ -22,5 +17,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         /// </summary>
         /// <returns>List of meals</returns>
         List<Meal> GetDailyMenu();
+
+        void WriteOrder(Customer customer, List<Meal> meals);
     }
 }

@@ -7,11 +7,6 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
     public interface IIndexConnector : IRestaurantConnector
     {
         /// <summary>
-        /// Order Daily menu sheet so first column is today and place correct dates
-        /// </summary>
-        void DnevniMenuSheetSetup();
-
-        /// <summary>
         /// Get all meals from the main menu
         /// </summary>
         /// <returns>List of meals</returns>
