@@ -75,10 +75,11 @@ namespace Exebite.API
                     .AddJwtBearer(options =>
                     {
                         options.Authority = _configuration["Apps:Exebite.IdentityServer:Url"];
-
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
+                            ValidateLifetime = true,
                             ValidateIssuer = true,
+                            ValidateAudience = true,
                             ValidAudiences = new List<string>
                             {
                                 _configuration["Apps:Exebite.API:Name"],

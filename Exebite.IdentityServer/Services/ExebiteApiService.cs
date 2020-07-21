@@ -38,7 +38,7 @@ namespace Exebite.IdentityServer.Services
 
             HttpResponseMessage response = null;
 
-            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"userinfo/{id}"))
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"api/userinfo/{id}"))
             {
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                 response = await _httpClient.SendAsync(requestMessage);

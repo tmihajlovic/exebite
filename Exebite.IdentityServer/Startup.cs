@@ -13,13 +13,13 @@ namespace Exebite.IdentityServer
 {
     public class Startup
     {
-        public IWebHostEnvironment _environment { get; }
-        public IConfiguration _configuration { get; }
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly string _corsPolicy = "corsPolicy";
 
-        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
-            _environment = environment;
+            _hostingEnvironment = env;
             _configuration = configuration;
         }
 
@@ -48,10 +48,8 @@ namespace Exebite.IdentityServer
                 .AddGoogle(options =>
                 {
                     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-
                     options.ClientId = _configuration["Apps:Google:ClientId"];
                     options.ClientSecret = _configuration["Apps:Google:ClientSecret"];
-
                     options.ClaimActions.MapAll();
                 });
 
@@ -75,7 +73,7 @@ namespace Exebite.IdentityServer
 
         public void Configure(IApplicationBuilder app)
         {
-            if (_environment.IsDevelopment())
+            if (_hostingEnvironment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
