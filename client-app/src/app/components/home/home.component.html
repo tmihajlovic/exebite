@@ -1,10 +1,10 @@
 <div *ngIf="customer">
-    <img src="{{customer.photoUrl }}">
+    <img src="{{customer.photoUrl}}">
     <div>
         <h4>{{ customer.name }}</h4>
         <p>{{ customer.googleUserId }}</p>
     </div>
     <div>
-        <button (click)=" signOutNavigate()">Logout</button>
+        <button (click)="logout()">Logout</button>
     </div>
 </div>

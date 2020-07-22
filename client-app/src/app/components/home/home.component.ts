@@ -1,9 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 
-import { Router } from "@angular/router";
 import { UserService } from "src/app/services/user.service";
-import { IUser } from "src/app/models/user";
 import { ICustomer } from "src/app/models/customer";
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: "app-home",
@@ -11,21 +10,22 @@ import { ICustomer } from "src/app/models/customer";
   styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit {
-  user: IUser;
-  customers: ICustomer[];
   customer: ICustomer;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
-    this.userService.getUser().subscribe((data) => {
-      this.customer = data;
-      console.log(this.customer);
-    });
+    this.authService.getClaims().then(
+      claims => this.userService.fetchCustomerData(claims.email, claims.picture).subscribe(
+        data => this.customer = data
+      )
+    );
   }
 
-  signOutNavigate(): void {
-    this.userService.signOut();
-    this.router.navigate(["/"]);
+  logout() {
+    this.authService.logout();
   }
 }
