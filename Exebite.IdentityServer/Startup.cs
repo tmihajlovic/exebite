@@ -39,7 +39,7 @@ namespace Exebite.IdentityServer
                 .AddProfileService<ProfileService>();
 
             builder.AddInMemoryIdentityResources(Config.IdentityResources);
-            builder.AddInMemoryClients(Config.Clients);
+            builder.AddInMemoryClients(Config.GetClients(_configuration));
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();

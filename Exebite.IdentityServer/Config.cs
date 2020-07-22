@@ -1,4 +1,5 @@
 ﻿using IdentityServer4.Models;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 
 namespace Exebite.IdentityServer
@@ -12,17 +13,17 @@ namespace Exebite.IdentityServer
                 new IdentityResources.Profile(),
             };
 
-        public static IEnumerable<Client> Clients =>
+        public static IEnumerable<Client> GetClients(IConfiguration configuration) =>
             new Client[]
             {
                 new Client {
-                    ClientId = "Exebite.ClientApp",
-                    ClientName = "Exebite Client App",
+                    ClientId = configuration["Apps:Exebite.ClientApp:ClientId"],
+                    ClientName = configuration["Apps:Exebite.ClientApp:Name"],
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowedScopes = new List<string> { "openid" },
-                    RedirectUris = new List<string> { "http://localhost:4200/auth-callback" },
-                    PostLogoutRedirectUris = new List<string> { "http://localhost:4200" },
-                    AllowedCorsOrigins = new List<string> { "http://localhost:4200" },
+                    RedirectUris = new List<string> { $"{configuration["Apps:Exebite.ClientApp:Url"]}/auth-callback" },
+                    PostLogoutRedirectUris = new List<string> { configuration["Apps:Exebite.ClientApp:Url"] },
+                    AllowedCorsOrigins = new List<string> { configuration["Apps:Exebite.ClientApp:Url"] },
                     AllowAccessTokensViaBrowser = true,
                 }
             };
