@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Either;
@@ -43,69 +44,74 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 
         public abstract void WriteMenu(List<Meal> foods);
 
-        public void WriteOrder(Customer customer, List<Meal> meals)
+        public void WriteOrder(string customerName, string locationName, List<Meal> meals)
         {
-            int rowIndex = 0;
-            int columnIndexA = 0;
-            int columnIndexB = 0;
-            object[] rowData = new object[0];
+            DailyMenuSheet = "Februar2020";
+            DailyMenuDate = DateTime.ParseExact("2020-02-04", "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            ColumnsPerDay = 9;
 
-            ValueRange valueRange = GoogleSheetService.GetRows(SheetId, DailyMenuSheet);
+            var valueRange = GoogleSheetService.GetRows(SheetId, DailyMenuSheet);
 
-            for (int i = 6; i < valueRange.Values.Count; i++)
+            int startDateIndex = GetStartDateColumnIndex(valueRange);
+            int endDateIndex = startDateIndex + ColumnsPerDay;
+
+            object[] mealsData = new object[ColumnsPerDay];
+
+            foreach (var meal in meals)
             {
-                if (valueRange.Values[i][1].ToString() == customer.Name)
+                for (int mealIndex = startDateIndex; mealIndex < endDateIndex; mealIndex++)
                 {
-                    rowIndex = i;
-                    break;
+                    mealsData[mealIndex - startDateIndex] = valueRange.Values[0][mealIndex].ToString() == meal.Name ? "x" : string.Empty;
                 }
             }
 
-            for (int i = 0; i < valueRange.Values[1].Count; i++)
+            var mealsBody = new ValueRange()
             {
-                DateTime date;
+                Values = new List<IList<object>>() { mealsData }
+            };
 
-                try
-                {
-                    date = DateTime.Parse(valueRange.Values[1][i].ToString());
-                }
-                catch (Exception)
-                {
-                    continue;
-                }
+            int rowIndex = GetCustomerRowIndex(valueRange, customerName);
 
-                if (DailyMenuDate.Date == date.Date)
-                {
-                    columnIndexA = 2;
-                    columnIndexB = i + ColumnsPerDay;
-                    rowData = new object[columnIndexB - columnIndexA];
+            GoogleSheetService.Update(
+                mealsBody,
+                SheetId,
+                DailyMenuSheet + "!" + A1Notation.ToCellFormat(startDateIndex, rowIndex) + ":" + A1Notation.ToCellFormat(endDateIndex, rowIndex));
 
-                    foreach (var meal in meals)
-                    {
-                        for (int j = i; j < i + ColumnsPerDay; j++)
-                        {
-                            if (valueRange.Values[0][j].ToString() == meal.Name)
-                            {
-                                rowData[j - columnIndexA] = "x";
-                                break;
-                            }
-                        }
-                    }
-
-                    rowData[0] = customer.DefaultLocation.Name.ToUpper();
-                    break;
-                }
-            }
-
-            ValueRange body = new ValueRange()
+            var locationBody = new ValueRange()
             {
-                Values = new List<IList<object>>() { rowData }
+                Values = new List<IList<object>>() { new object[1] { locationName.ToUpper() } }
             };
 
             GoogleSheetService.Update(
-                body,
+                locationBody,
                 SheetId,
-                DailyMenuSheet + "!" + A1Notation.ToCellFormat(columnIndexA, rowIndex) + ":" + A1Notation.ToCellFormat(columnIndexB, rowIndex));
+                DailyMenuSheet + "!" + A1Notation.ToCellFormat(2, rowIndex));
+        }
+
+        private int GetCustomerRowIndex(ValueRange valueRange, string customerName)
+        {
+            for (int rowIndex = 6; rowIndex < valueRange.Values.Count; rowIndex++)
+            {
+                if (valueRange.Values[rowIndex][1].ToString() == customerName)
+                {
+                    return rowIndex;
+                }
+            }
+
+            throw new Exception("Customer not found!");
+        }
+
+        private int GetStartDateColumnIndex(ValueRange valueRange)
+        {
+            for (int colIndex = 3; colIndex < valueRange.Values[1].Count; colIndex += ColumnsPerDay)
+            {
+                if (DateTime.ParseExact(valueRange.Values[1][colIndex].ToString(), "dd-MMM-yyyy", CultureInfo.InvariantCulture).Date == DailyMenuDate.Date)
+                {
+                    return colIndex;
+                }
+            }
+
+            throw new Exception("Date not found!");
         }
 
         public int WorkingDayInMonth(int year, int month, int day)

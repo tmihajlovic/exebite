@@ -1,6 +1,6 @@
 ﻿using Either;
+using Exebite.Business.Model;
 using Exebite.Common;
-using Exebite.DomainModel;
 
 namespace Exebite.Business
 {
@@ -11,7 +11,7 @@ namespace Exebite.Business
         /// </summary>
         /// <param name="order">Restaurant order</param>
         /// <returns>Id or an error</returns>
-        Either<Error, long> PlaceOrdersForRestaurant(Order order);
+        Either<Error, RestaurantOrder> PlaceOrdersForRestaurant(RestaurantOrder order);
 
         /// <summary>
         /// Update daily menus for all restaurants

@@ -1,5 +1,4 @@
 ﻿using System;
-using AutoMapper;
 using Either;
 using Exebite.Common;
 using Exebite.DataAccess.Context;
@@ -9,12 +8,10 @@ namespace Exebite.DataAccess.Repositories
 {
     public class OrderCommandRepository : IOrderCommandRepository
     {
-        private readonly IMapper _mapper;
         private readonly IMealOrderingContextFactory _factory;
 
-        public OrderCommandRepository(IMealOrderingContextFactory factory, IMapper mapper)
+        public OrderCommandRepository(IMealOrderingContextFactory factory)
         {
-            _mapper = mapper;
             _factory = factory;
         }
 
@@ -76,6 +73,14 @@ namespace Exebite.DataAccess.Repositories
                     currentEntity.Price = entity.Price;
 
                     currentEntity = context.Update(currentEntity).Entity;
+
+                    currentEntity.OrdersToMeals.Clear();
+
+                    foreach (var meal in entity.Meals)
+                    {
+                        currentEntity.OrdersToMeals.Add(new OrderToMealEntity { MealId = meal.Id, OrderId = currentEntity.Id });
+                    }
+
                     context.SaveChanges();
                 }
 

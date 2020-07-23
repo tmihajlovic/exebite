@@ -150,21 +150,21 @@ namespace Exebite.GoogleSheetAPI.Services
                 .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
         }
 
-        public void WriteOrder(Customer customer, List<Meal> meals)
+        public void WriteOrder(string customerName, string locationName, List<Meal> meals)
         {
             switch (meals[0].Restaurant.Name)
             {
                 case RestaurantConstants.POD_LIPOM_NAME:
-                    _lipaConnector.WriteOrder(customer, meals);
+                    _lipaConnector.WriteOrder(customerName, locationName, meals);
                     break;
                 case RestaurantConstants.MIMAS_NAME:
-                    _mimasConnector.WriteOrder(customer, meals);
+                    _mimasConnector.WriteOrder(customerName, locationName, meals);
                     break;
                 case RestaurantConstants.TOPLI_OBROK_NAME:
-                    _topliObrokConnector.WriteOrder(customer, meals);
+                    _topliObrokConnector.WriteOrder(customerName, locationName, meals);
                     break;
                 case RestaurantConstants.PARRILLA_NAME:
-                    _parrillaConnector.WriteOrder(customer, meals);
+                    _parrillaConnector.WriteOrder(customerName, locationName, meals);
                     break;
                 default:
                     throw new NotImplementedException();
