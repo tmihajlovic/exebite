@@ -31,33 +31,40 @@ namespace Exebite.Business
 
         public Either<Error, RestaurantOrder> PlaceOrdersForRestaurant(RestaurantOrder order)
         {
-            if (order == null)
+            try
             {
-                return new Left<Error, RestaurantOrder>(new ArgumentNotSet(nameof(order)));
+                if (order == null)
+                {
+                    return new Left<Error, RestaurantOrder>(new ArgumentNotSet(nameof(order)));
+                }
+
+                var customer = _customerQuery.Query(new CustomerQueryModel() { Id = order.CustomerId })
+                    .Map(c => c.Items.First())
+                    .Reduce(e => throw new Exception("Customer not found!"));
+
+                var location = _locationQuery.Query(new LocationQueryModel() { Id = order.LocationId })
+                    .Map(l => l.Items.First())
+                    .Reduce(_ => throw new Exception("Location not found!"));
+
+                ICollection<Meal> meals = new List<Meal>();
+
+                foreach (var mealOrder in order.Meals)
+                {
+                    var meal = _mealQuery.Query(new MealQueryModel() { Id = mealOrder.Id })
+                        .Map(c => c.Items.First())
+                        .Reduce(_ => throw new Exception("Meal not found!"));
+
+                    meals.Add(meal);
+                }
+
+                _apiService.WriteOrder(customer.Name, location.Name, meals);
+
+                return order;
             }
-
-            var customer = _customerQuery.Query(new CustomerQueryModel() { Id = order.CustomerId })
-                .Map(c => c.Items.ToList().First())
-                .Reduce(_ => throw new Exception());
-
-            var location = _locationQuery.Query(new LocationQueryModel() { Id = order.LocationId })
-                .Map(l => l.Items.ToList().First())
-                .Reduce(_ => throw new Exception());
-
-            ICollection<Meal> meals = new List<Meal>();
-
-            foreach (var mealOrder in order.Meals)
+            catch (Exception ex)
             {
-                var meal = _mealQuery.Query(new MealQueryModel() { Id = mealOrder.Id })
-                    .Map(c => c.Items.ToList().First())
-                    .Reduce(_ => throw new Exception());
-
-                meals.Add(meal);
+                return new Left<Error, RestaurantOrder>(new UnknownError(ex.ToString()));
             }
-
-            _apiService.WriteOrder(customer.Name, location.Name, meals);
-
-            return order;
         }
 
         /// <summary>
