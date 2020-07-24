@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Either;
 using Exebite.Common;
 using Exebite.DomainModel;
@@ -150,9 +151,9 @@ namespace Exebite.GoogleSheetAPI.Services
                 .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
         }
 
-        public void WriteOrder(string customerName, string locationName, List<Meal> meals)
+        public void WriteOrder(string customerName, string locationName, ICollection<Meal> meals)
         {
-            switch (meals[0].Restaurant.Name)
+            switch (meals.First().Restaurant.Name)
             {
                 case RestaurantConstants.POD_LIPOM_NAME:
                     _lipaConnector.WriteOrder(customerName, locationName, meals);

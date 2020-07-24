@@ -110,7 +110,7 @@ namespace Exebite.DataAccess.Test
         #region Order
         internal static OrderCommandRepository CreateOrderCommandRepositoryInstance(IMealOrderingContextFactory factory)
         {
-            return new OrderCommandRepository(factory, _mapper);
+            return new OrderCommandRepository(factory);
         }
 
         internal static OrderQueryRepository CreateOrderQueryRepositoryInstance(IMealOrderingContextFactory factory)

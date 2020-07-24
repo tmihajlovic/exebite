@@ -12,6 +12,6 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         /// <returns>List of meals</returns>
         List<Meal> GetDailyMenu();
 
-        void WriteOrder(string customerName, string locationName, List<Meal> meals);
+        void WriteOrder(string customerName, string locationName, ICollection<Meal> meals);
     }
 }

@@ -13,6 +13,5 @@
         public long DefaultLocationId { get; set; }
 
         public bool IsActive { get; set; }
-
     }
 }

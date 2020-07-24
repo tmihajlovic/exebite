@@ -37,19 +37,19 @@ namespace Exebite.Business
             }
 
             var customer = _customerQuery.Query(new CustomerQueryModel() { Id = order.CustomerId })
-                .Map(c => c.Items.ToList().FirstOrDefault())
+                .Map(c => c.Items.ToList().First())
                 .Reduce(_ => throw new Exception());
 
             var location = _locationQuery.Query(new LocationQueryModel() { Id = order.LocationId })
-                .Map(l => l.Items.ToList().FirstOrDefault())
+                .Map(l => l.Items.ToList().First())
                 .Reduce(_ => throw new Exception());
 
-            List<Meal> meals = new List<Meal>();
+            ICollection<Meal> meals = new List<Meal>();
 
             foreach (var mealOrder in order.Meals)
             {
                 var meal = _mealQuery.Query(new MealQueryModel() { Id = mealOrder.Id })
-                    .Map(c => c.Items.ToList().FirstOrDefault())
+                    .Map(c => c.Items.ToList().First())
                     .Reduce(_ => throw new Exception());
 
                 meals.Add(meal);

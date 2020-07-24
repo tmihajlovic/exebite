@@ -1,5 +1,5 @@
-﻿using Exebite.DomainModel;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Exebite.DomainModel;
 
 namespace Exebite.DataAccess.Repositories
 {

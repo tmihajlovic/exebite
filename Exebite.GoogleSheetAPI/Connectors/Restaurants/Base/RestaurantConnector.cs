@@ -44,12 +44,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 
         public abstract void WriteMenu(List<Meal> foods);
 
-        public void WriteOrder(string customerName, string locationName, List<Meal> meals)
+        public void WriteOrder(string customerName, string locationName, ICollection<Meal> meals)
         {
-            DailyMenuSheet = "Februar2020";
-            DailyMenuDate = DateTime.ParseExact("2020-02-04", "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            ColumnsPerDay = 9;
-
             var valueRange = GoogleSheetService.GetRows(SheetId, DailyMenuSheet);
 
             int startDateIndex = GetStartDateColumnIndex(valueRange);
@@ -86,32 +82,6 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
                 locationBody,
                 SheetId,
                 DailyMenuSheet + "!" + A1Notation.ToCellFormat(2, rowIndex));
-        }
-
-        private int GetCustomerRowIndex(ValueRange valueRange, string customerName)
-        {
-            for (int rowIndex = 6; rowIndex < valueRange.Values.Count; rowIndex++)
-            {
-                if (valueRange.Values[rowIndex][1].ToString() == customerName)
-                {
-                    return rowIndex;
-                }
-            }
-
-            throw new Exception("Customer not found!");
-        }
-
-        private int GetStartDateColumnIndex(ValueRange valueRange)
-        {
-            for (int colIndex = 3; colIndex < valueRange.Values[1].Count; colIndex += ColumnsPerDay)
-            {
-                if (DateTime.ParseExact(valueRange.Values[1][colIndex].ToString(), "dd-MMM-yyyy", CultureInfo.InvariantCulture).Date == DailyMenuDate.Date)
-                {
-                    return colIndex;
-                }
-            }
-
-            throw new Exception("Date not found!");
         }
 
         public int WorkingDayInMonth(int year, int month, int day)
@@ -390,6 +360,32 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
                     .Query(new RestaurantQueryModel { Name = name })
                     .Map(res => res.Items.FirstOrDefault())
                     .Reduce(r => null, ex => Console.WriteLine(ex.ToString()));
+        }
+
+        private int GetCustomerRowIndex(ValueRange valueRange, string customerName)
+        {
+            for (int rowIndex = 6; rowIndex < valueRange.Values.Count; rowIndex++)
+            {
+                if (valueRange.Values[rowIndex][1].ToString() == customerName)
+                {
+                    return rowIndex;
+                }
+            }
+
+            throw new Exception("Customer not found!");
+        }
+
+        private int GetStartDateColumnIndex(ValueRange valueRange)
+        {
+            for (int colIndex = 3; colIndex < valueRange.Values[1].Count; colIndex += ColumnsPerDay)
+            {
+                if (DateTime.ParseExact(valueRange.Values[1][colIndex].ToString(), "dd-MMM-yyyy", CultureInfo.InvariantCulture).Date == DailyMenuDate.Date)
+                {
+                    return colIndex;
+                }
+            }
+
+            throw new Exception("Date not found!");
         }
     }
 }

@@ -53,6 +53,6 @@ namespace Exebite.GoogleSheetAPI.Services
         /// </summary>
         void UpdateMainMenuHeyDay();
 
-        void WriteOrder(string customerName, string locationName, List<Meal> meals);
+        void WriteOrder(string customerName, string locationName, ICollection<Meal> meals);
     }
 }
