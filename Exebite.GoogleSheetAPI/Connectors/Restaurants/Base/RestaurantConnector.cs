@@ -14,6 +14,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 {
     public abstract class RestaurantConnector : IRestaurantConnector
     {
+        private const string _orderMark = "x";
+
         private readonly IRestaurantQueryRepository _restaurantQueryRepository;
 
         protected RestaurantConnector(
@@ -58,7 +60,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
             {
                 for (int mealIndex = startDateIndex; mealIndex < endDateIndex; mealIndex++)
                 {
-                    mealsData[mealIndex - startDateIndex] = valueRange.Values[0][mealIndex].ToString() == meal.Name ? "x" : string.Empty;
+                    mealsData[mealIndex - startDateIndex] = valueRange.Values[0][mealIndex].ToString() == meal.Name ? _orderMark : string.Empty;
                 }
             }
 
