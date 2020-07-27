@@ -21,8 +21,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
         {
             SheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.LIPA);
             ColumnsPerDay = 10;
-            DailyMenuDate = new DateTime(2020, 03, 03);
-            DailyMenuSheet = GetLocalMonthName(DailyMenuDate.Month) + DailyMenuDate.Year;
+            DailyMenuSheet = $"{GetLocalMonthName(DailyMenuDate.Month)}{DailyMenuDate.Year}";
         }
 
         /// <summary>

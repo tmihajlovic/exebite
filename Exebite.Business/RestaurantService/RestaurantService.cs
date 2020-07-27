@@ -40,7 +40,7 @@ namespace Exebite.Business
 
                 var customer = _customerQuery.Query(new CustomerQueryModel() { Id = order.CustomerId })
                     .Map(c => c.Items.First())
-                    .Reduce(e => throw new Exception("Customer not found!"));
+                    .Reduce(_ => throw new Exception("Customer not found!"));
 
                 var location = _locationQuery.Query(new LocationQueryModel() { Id = order.LocationId })
                     .Map(l => l.Items.First())

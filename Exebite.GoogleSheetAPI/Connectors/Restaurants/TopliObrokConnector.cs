@@ -20,7 +20,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
             : base(googleSheetService, restaurantQueryRepository, RestaurantConstants.TOPLI_OBROK_NAME)
         {
             SheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.TOPLI_OBROK);
-            DailyMenuSheet = GetLocalMonthName(DateTime.Now.Month) + DateTime.Now.Year;
+            ColumnsPerDay = 9;
+            DailyMenuSheet = $"{GetLocalMonthName(DailyMenuDate.Month)}{DailyMenuDate.Year}";
         }
 
         /// <summary>

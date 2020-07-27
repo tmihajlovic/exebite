@@ -24,6 +24,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
             _restaurantQueryRepository = restaurantQueryRepository;
             GoogleSheetService = googleSheetService;
             Restaurant = GetRestaurant(restaurantName);
+            DailyMenuDate = DateTime.Today;
         }
 
         internal IGoogleSheetExtractor GoogleSheetService { get; set; }
@@ -36,7 +37,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 
         internal int ColumnsPerDay { get; set; }
 
-        internal DateTime DailyMenuDate { get; set; }
+        internal DateTime DailyMenuDate { get; }
 
         internal string FoodListSheet { get; set; }
 
