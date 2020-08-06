@@ -42,13 +42,13 @@ namespace FeatureTestingConsole
         {
             _locationCommandRepo.Insert(new LocationInsertModel()
             {
-                Name = "Execom VS",
+                Name = "BVS",
                 Address = "Vojvode Stepe 50"
             });
 
             _locationCommandRepo.Insert(new LocationInsertModel()
             {
-                Name = "Execom MM",
+                Name = "MM",
                 Address = "Đorđa Rajkovića 2"
             });
         }

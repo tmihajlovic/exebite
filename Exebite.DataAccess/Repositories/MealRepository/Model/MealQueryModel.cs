@@ -25,6 +25,5 @@
         public bool? IsFromStandardMenu { get; set; }
 
         public int? Type { get; set; }
-
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace Exebite.GoogleSheetAPI.Services
+﻿using System.Collections.Generic;
+using Exebite.DomainModel;
+
+namespace Exebite.GoogleSheetAPI.Services
 {
     /// <summary>
     /// Service that manages access to all of the restaurant/kasa connectors.
@@ -49,5 +52,7 @@
         /// Update main menu for Hey Day restaurant in the db based on data from the spreadsheets.
         /// </summary>
         void UpdateMainMenuHeyDay();
+
+        void WriteOrder(string customerName, string locationName, ICollection<Meal> meals);
     }
 }

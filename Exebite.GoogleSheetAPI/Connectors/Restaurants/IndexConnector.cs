@@ -19,6 +19,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
             : base(googleSheetService, restaurantQueryRepository, RestaurantConstants.INDEX_NAME)
         {
             SheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.INDEX_HOUSE);
+            ColumnsPerDay = 13;
+            DailyMenuSheet = $"Narucivanje-{GetLocalMonthName(DailyMenuDate.Month)}";
         }
 
         /// <summary>

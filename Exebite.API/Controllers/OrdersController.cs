@@ -1,5 +1,7 @@
 ﻿using Either;
 using Exebite.API.Authorization;
+using Exebite.Business;
+using Exebite.Business.Model;
 using Exebite.Common;
 using Exebite.DataAccess.Repositories;
 using Exebite.DtoModels;
@@ -17,37 +19,44 @@ namespace Exebite.API.Controllers
         private readonly IOrderQueryRepository _queryRepo;
         private readonly IOrderCommandRepository _commandRepo;
         private readonly IEitherMapper _mapper;
+        private readonly IRestaurantService _restaurantService;
         private readonly ILogger<OrdersController> _logger;
 
         public OrdersController(
             IOrderQueryRepository queryRepo,
             IOrderCommandRepository commandRepo,
             IEitherMapper mapper,
+            IRestaurantService restaurantService,
             ILogger<OrdersController> logger)
         {
             _queryRepo = queryRepo;
             _commandRepo = commandRepo;
             _mapper = mapper;
+            _restaurantService = restaurantService;
             _logger = logger;
         }
 
         [HttpPost]
         [Authorize(Policy = nameof(AccessPolicy.CreateOrdersAccessPolicy))]
         public IActionResult Post([FromBody] CreateOrderDto model) =>
-            _mapper.Map<OrderInsertModel>(model)
-                   .Map(_commandRepo.Insert)
-                   .Map(x => Created(new { id = x }))
-                   .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
-                   .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
+            _mapper.Map<RestaurantOrder>(model)
+                    .Map(_restaurantService.PlaceOrdersForRestaurant)
+                    .Map(_mapper.Map<OrderInsertModel>)
+                    .Map(_commandRepo.Insert)
+                    .Map(x => Created(new { id = x }))
+                    .Reduce(_ => BadRequest(), error => error is ArgumentNotSet)
+                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpPut("{id}")]
         [Authorize(Policy = nameof(AccessPolicy.UpdateOrdersAccessPolicy))]
         public IActionResult Put(int id, [FromBody] UpdateOrderDto model) =>
-            _mapper.Map<OrderUpdateModel>(model)
-                   .Map(x => _commandRepo.Update(id, x))
-                   .Map(x => AllOk(new { updated = x }))
-                   .Reduce(_ => NotFound(), error => error is RecordNotFound)
-                   .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
+            _mapper.Map<RestaurantOrder>(model)
+                    .Map(_restaurantService.PlaceOrdersForRestaurant)
+                    .Map(_mapper.Map<OrderUpdateModel>)
+                    .Map(x => _commandRepo.Update(id, x))
+                    .Map(x => AllOk(new { updated = x }))
+                    .Reduce(_ => NotFound(), error => error is RecordNotFound)
+                    .Reduce(_ => InternalServerError(), x => _logger.LogError(x.ToString()));
 
         [HttpDelete("{id}")]
         [Authorize(Policy = nameof(AccessPolicy.DeleteOrdersAccessPolicy))]
@@ -59,7 +68,7 @@ namespace Exebite.API.Controllers
 
         [HttpGet("Query")]
         [Authorize(Policy = nameof(AccessPolicy.ReadOrdersAccessPolicy))]
-        public IActionResult Query([FromQuery]OrderQueryDto query) =>
+        public IActionResult Query([FromQuery] OrderQueryDto query) =>
             _mapper.Map<OrderQueryModel>(query)
                    .Map(_queryRepo.Query)
                    .Map(_mapper.Map<PagingResult<OrderDto>>)

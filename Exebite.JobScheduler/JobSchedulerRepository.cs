@@ -25,13 +25,6 @@ namespace Exebite.JobScheduler
                 .RequestRecovery(true)
                 .Build();
             scheduler.AddJob(updateDailyMenusJob, true);
-
-            var writeOrders = JobBuilder.Create<WriteOrders>()
-                .WithIdentity("WriteOrders", "GoogleSheets")
-                .StoreDurably()
-                .RequestRecovery(true)
-                .Build();
-            scheduler.AddJob(writeOrders, true);
         }
 
         /// <summary>

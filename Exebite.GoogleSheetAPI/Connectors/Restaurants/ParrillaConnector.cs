@@ -22,7 +22,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
             : base(googleSheetService, restaurantQueryRepository, RestaurantConstants.PARRILLA_NAME)
         {
             SheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.PARRILLA);
-            DailyMenuSheet = GetLocalMonthName(DateTime.Now.Month) + DateTime.Now.Year;
+            ColumnsPerDay = 10;
+            DailyMenuSheet = $"DNEVNA PONUDA-{GetLocalMonthName(DailyMenuDate.Month).ToUpper()}{DailyMenuDate.Year}";
         }
 
         public override void WriteMenu(List<Meal> foods)
