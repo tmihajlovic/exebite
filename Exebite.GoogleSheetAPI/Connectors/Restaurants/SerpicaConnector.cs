@@ -21,7 +21,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
             : base(googleSheetService, restaurantQueryRepository, RestaurantConstants.SERPICA_NAME)
         {
             SheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.SERPICA);
-            DailyMenuSheet = GetLocalMonthName(DateTime.Now.Month) + DateTime.Now.Year;
+            ColumnsPerDay = 1;
         }
 
         public override void WriteMenu(List<Meal> foods)

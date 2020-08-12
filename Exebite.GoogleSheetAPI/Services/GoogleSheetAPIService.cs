@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Either;
 using Exebite.Common;
 using Exebite.DomainModel;
@@ -150,6 +151,27 @@ namespace Exebite.GoogleSheetAPI.Services
                 .Reduce(_ => (0, 0), ex => Console.WriteLine(ex.ToString()));
         }
 
+        public void WriteOrder(string customerName, string locationName, ICollection<Meal> meals)
+        {
+            switch (meals.First().Restaurant.Name)
+            {
+                case RestaurantConstants.POD_LIPOM_NAME:
+                    _lipaConnector.WriteOrder(customerName, locationName, meals);
+                    break;
+                case RestaurantConstants.MIMAS_NAME:
+                    _mimasConnector.WriteOrder(customerName, locationName, meals);
+                    break;
+                case RestaurantConstants.TOPLI_OBROK_NAME:
+                    _topliObrokConnector.WriteOrder(customerName, locationName, meals);
+                    break;
+                case RestaurantConstants.PARRILLA_NAME:
+                    _parrillaConnector.WriteOrder(customerName, locationName, meals);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         /// Output the result of the operation to the console.
         /// <para>Used for debugging purposes.</para>
@@ -168,7 +190,5 @@ namespace Exebite.GoogleSheetAPI.Services
                 connectorName);
             return rows;
         }
-
-       
     }
 }

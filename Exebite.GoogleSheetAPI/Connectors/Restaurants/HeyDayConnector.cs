@@ -19,6 +19,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
             : base(googleSheetService, restaurantQueryRepository, RestaurantConstants.HEY_DAY_NAME)
         {
             SheetId = googleSSIdFactory.GetSheetId(Enums.ESheetOwner.HEY_DAY);
+            ColumnsPerDay = 18;
+            DailyMenuSheet = $"{GetLocalMonthName(DailyMenuDate.Month)} {DailyMenuDate.Year}";
         }
 
         public override void WriteMenu(List<Meal> foods)

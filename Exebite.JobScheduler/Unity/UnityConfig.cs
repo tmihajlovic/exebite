@@ -1,6 +1,5 @@
 ﻿using System;
 using Exebite.Business;
-using Exebite.Business.GoogleApiImportExport;
 using Exebite.DataAccess.Repositories;
 using Exebite.GoogleSheetAPI.Connectors.Kasa;
 using Exebite.GoogleSheetAPI.GoogleSSFactory;
@@ -41,7 +40,6 @@ namespace Exebite.JobScheduler.Unity
             container.RegisterType<ILocationQueryRepository, LocationQueryRepository>();
             container.RegisterType<IRestaurantCommandRepository, RestaurantCommandRepository>();
             container.RegisterType<IRestaurantQueryRepository, RestaurantQueryRepository>();
-            container.RegisterType<IGoogleDataImporter, GoogleApiImport>();
             container.RegisterType<IGoogleSheetServiceFactory, GoogleSheetServiceFactory>();
             container.RegisterType<IGoogleSpreadsheetIdFactory, GoogleSpreadsheetIdFactory>();
             container.RegisterType<IGoogleSheetExtractor, GoogleSheetExtractor>();
