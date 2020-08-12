@@ -43,8 +43,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Kasa
                  {
                      var name = _googleSheetExtractor.ExtractCell(col, 0, "MissingName");
                      var locationName = name.EndsWith("MM")
-                        ? "Execom MM"
-                        : "Execom VS";
+                        ? "MM"
+                        : "BVS";
 
                      return new Customer()
                      {
