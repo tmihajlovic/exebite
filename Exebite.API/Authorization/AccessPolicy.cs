@@ -56,5 +56,7 @@
         public static readonly string ReadRoleAccessPolicy = "ReadRoleAccessPolicy";
         public static readonly string UpdateRoleAccessPolicy = "UpdateRoleAccessPolicy";
         public static readonly string DeleteRoleAccessPolicy = "DeleteRoleAccessPolicy";
+
+        public static readonly string ReadUserInfoAccessPolicy = "ReadUserInfoAccessPolicy";
     }
 }

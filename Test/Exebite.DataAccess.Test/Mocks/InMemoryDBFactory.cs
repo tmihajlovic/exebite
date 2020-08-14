@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Exebite.DataAccess.Test.Mocks
 {
-    public sealed class InMemoryDBFactory : IFoodOrderingContextFactory
+    public sealed class InMemoryDBFactory : IMealOrderingContextFactory
     {
         private readonly SqliteConnection _connection;
 
@@ -13,11 +13,11 @@ namespace Exebite.DataAccess.Test.Mocks
             _connection = connection;
         }
 
-        public FoodOrderingContext Create()
+        public MealOrderingContext Create()
         {
-            var options = new DbContextOptionsBuilder<FoodOrderingContext>().UseSqlite(_connection).Options;
+            var options = new DbContextOptionsBuilder<MealOrderingContext>().UseSqlite(_connection).Options;
 
-            var context = new FoodOrderingContext(options);
+            var context = new MealOrderingContext(options);
             context.Database.EnsureCreated();
 
             return context;

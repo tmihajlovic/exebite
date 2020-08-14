@@ -10,15 +10,15 @@ namespace Exebite.DataAccess.Repositories
     public class RestaurantCommandRepository : IRestaurantCommandRepository
     {
         private readonly IMapper _mapper;
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
-        public RestaurantCommandRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public RestaurantCommandRepository(IMealOrderingContextFactory factory, IMapper mapper)
         {
             _mapper = mapper;
             _factory = factory;
         }
 
-        public Either<Error, int> Insert(RestaurantInsertModel entity)
+        public Either<Error, long> Insert(RestaurantInsertModel entity)
         {
             try
             {
@@ -27,20 +27,25 @@ namespace Exebite.DataAccess.Repositories
                     var restaurantEntity = new RestaurantEntity()
                     {
                         Name = entity.Name,
+                        IsActive = entity.IsActive,
+                        LogoUrl = entity.LogoUrl,
+                        OrderDue = entity.OrderDue,
+                        SheetId = entity.SheetId,
+                        Contact = entity.Contact
                     };
 
                     var addedEntity = context.Restaurant.Add(restaurantEntity).Entity;
                     context.SaveChanges();
-                    return new Right<Error, int>(addedEntity.Id);
+                    return new Right<Error, long>(addedEntity.Id);
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Error, int>(new UnknownError(ex.ToString()));
+                return new Left<Error, long>(new UnknownError(ex.ToString()));
             }
         }
 
-        public Either<Error, bool> Update(int id, RestaurantUpdateModel entity)
+        public Either<Error, bool> Update(long id, RestaurantUpdateModel entity)
         {
             try
             {
@@ -58,6 +63,12 @@ namespace Exebite.DataAccess.Repositories
                     }
 
                     currentEntity.Name = entity.Name;
+                    currentEntity.IsActive = entity.IsActive;
+                    currentEntity.LogoUrl = entity.LogoUrl;
+                    currentEntity.OrderDue = entity.OrderDue;
+                    currentEntity.SheetId = entity.SheetId;
+                    currentEntity.Contact = entity.Contact;
+
                     context.SaveChanges();
                 }
 
@@ -69,7 +80,7 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, bool> Delete(int id)
+        public Either<Error, bool> Delete(long id)
         {
             try
             {

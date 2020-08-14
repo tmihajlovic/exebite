@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using AutoMapper;
 using Exebite.API.Authorization;
@@ -7,7 +8,7 @@ using Exebite.Business;
 using Exebite.Common;
 using Exebite.DataAccess;
 using Exebite.GoogleSheetAPI;
-using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +18,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using NSwag.AspNetCore;
 
 namespace Exebite.API
@@ -51,7 +53,8 @@ namespace Exebite.API
                     opts.Filters.Add(new AllowAnonymousFilter());
                     opts.EnableEndpointRouting = false;
                 })
-                .AddNewtonsoftJson()
+                .AddNewtonsoftJson(
+                    options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .AddNSwagSettings(); // Add NSwag CamelCase settings.
 
                 services.AddCors(options =>
@@ -68,26 +71,49 @@ namespace Exebite.API
             }
             else
             {
-                services.AddAuthentication(
-                   options =>
-                   {
-                       options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
-                       options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-                   })
-                   .AddGoogle(googleOptions =>
-                   {
-                       googleOptions.ClientId = _configuration["Authentication:Google:ClientId"];
-                       googleOptions.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
-                   });
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.Authority = _configuration["Apps:Exebite.IdentityServer:Url"];
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateLifetime = true,
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidAudiences = new List<string>
+                            {
+                                _configuration["Apps:Exebite.API:Name"],
+                                $"{_configuration["Apps:Exebite.IdentityServer:Url"]}/resources"
+                            },
+                            ValidTypes = new[] { "at+jwt" }
+                        };
+                    });
 
-                services.AddMvc()
+                services.AddMvc(opts =>
+                {
+                    opts.EnableEndpointRouting = false;
+                })
                 .AddNSwagSettings(); // Add NSwag CamelCase settings.
+
+                services.AddCors(options =>
+                {
+                    options.AddPolicy(
+                        _myAllowSpecificOrigins,
+                        builder =>
+                        {
+                            builder.AllowAnyOrigin() // TODO - Before app is deployed to production, add only necessary origins
+                                   .AllowAnyHeader()
+                                   .AllowAnyMethod();
+                        });
+                });
             }
 
             services.AddAuthorization(options => options.AddCustomPolicies());
             services.AddIdentityCore<IdentityUser>();
             services.AddScoped<IAuthorizationHandler, RoleHandler>();
             services.AddTransient<IAuthorizationHandler, RoleHandler>();
+            services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+            services.AddTransient<IAuthorizationHandler, PermissionHandler>();
 
             services.AddAutoMapper(
                 cfg =>
@@ -128,6 +154,8 @@ namespace Exebite.API
             app.UseCors(_myAllowSpecificOrigins);
 
             app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseStatusCodePages();
 

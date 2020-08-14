@@ -43,14 +43,15 @@ namespace Exebite.GoogleSheetAPI.Connectors.Kasa
                  {
                      var name = _googleSheetExtractor.ExtractCell(col, 0, "MissingName");
                      var locationName = name.EndsWith("MM")
-                        ? "Execom MM"
-                        : "Execom VS";
+                        ? "MM"
+                        : "BVS";
 
                      return new Customer()
                      {
                          Name = name,
-                         RoleId = 2,
-                         LocationId = locations.FirstOrDefault(l => l.Name.Equals(locationName))?.Id ?? 0,
+                         Role = 1,
+                         IsActive = true,
+                         DefaultLocation = locations.FirstOrDefault(l => l.Name.Equals(locationName)),
                          GoogleUserId = _googleSheetExtractor.ExtractCell(col, 1, string.Empty),
                          Balance = _googleSheetExtractor.ExtractCell(col, 3, 0m),
                      };

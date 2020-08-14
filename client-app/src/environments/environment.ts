@@ -2,8 +2,15 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+const backendDomain = 'localhost:6879';
+
 export const environment = {
-  production: false
+  production: false,
+  backendDomain: backendDomain,
+  backendBaseUrl: `http://${backendDomain}`,
+  backendBaseAPIUrl: `http://${backendDomain}/api`,
+  portalBaseUrl: 'http://localhost:4200',
+  identityServerBaseUrl: 'https://localhost:5001'
 };
 
 /*

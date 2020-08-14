@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Exebite.DataAccess.Entities
@@ -7,14 +7,17 @@ namespace Exebite.DataAccess.Entities
     [Table("DailyMenu")]
     public class DailyMenuEntity
     {
-        [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        public virtual List<FoodEntity> Foods { get; set; } = new List<FoodEntity>();
+        public DateTime Date { get; set; }
+
+        public string Note { get; set; }
 
         [ForeignKey(nameof(Restaurant))]
-        public int RestaurantId { get; set; }
+        public long RestaurantId { get; set; }
 
         public virtual RestaurantEntity Restaurant { get; set; }
+
+        public virtual List<DailyMenuToMealEntity> DailyMenuToMeals { get; set; } = new List<DailyMenuToMealEntity>();
     }
 }

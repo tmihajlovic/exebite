@@ -1,5 +1,4 @@
 ﻿using System;
-using AutoMapper;
 using Either;
 using Exebite.Common;
 using Exebite.DataAccess.Context;
@@ -9,16 +8,14 @@ namespace Exebite.DataAccess.Repositories
 {
     public class OrderCommandRepository : IOrderCommandRepository
     {
-        private readonly IMapper _mapper;
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
-        public OrderCommandRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public OrderCommandRepository(IMealOrderingContextFactory factory)
         {
-            _mapper = mapper;
             _factory = factory;
         }
 
-        public Either<Error, int> Insert(OrderInsertModel entity)
+        public Either<Error, long> Insert(OrderInsertModel entity)
         {
             try
             {
@@ -28,23 +25,32 @@ namespace Exebite.DataAccess.Repositories
                     {
                         CustomerId = entity.CustomerId,
                         Date = entity.Date,
-                        MealId = entity.MealId,
-                        Note = entity.Note,
                         Price = entity.Price,
+                        LocationId = entity.LocationId
                     };
 
                     var addedEntity = context.Order.Add(orderEntity).Entity;
+
+                    if (entity.Meals != null)
+                    {
+                        foreach (var meal in entity.Meals)
+                        {
+                            addedEntity.OrdersToMeals.Add(new OrderToMealEntity() { MealId = meal.Id, OrderId = addedEntity.Id });
+                        }
+                    }
+
                     context.SaveChanges();
-                    return new Right<Error, int>(addedEntity.Id);
+
+                    return new Right<Error, long>(addedEntity.Id);
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Error, int>(new UnknownError(ex.ToString()));
+                return new Left<Error, long>(new UnknownError(ex.ToString()));
             }
         }
 
-        public Either<Error, bool> Update(int id, OrderUpdateModel entity)
+        public Either<Error, bool> Update(long id, OrderUpdateModel entity)
         {
             try
             {
@@ -63,11 +69,18 @@ namespace Exebite.DataAccess.Repositories
 
                     currentEntity.CustomerId = entity.CustomerId;
                     currentEntity.Date = entity.Date;
-                    currentEntity.MealId = entity.MealId;
-                    currentEntity.Note = entity.Note;
+                    currentEntity.LocationId = entity.LocationId;
                     currentEntity.Price = entity.Price;
 
                     currentEntity = context.Update(currentEntity).Entity;
+
+                    currentEntity.OrdersToMeals.Clear();
+
+                    foreach (var meal in entity.Meals)
+                    {
+                        currentEntity.OrdersToMeals.Add(new OrderToMealEntity { MealId = meal.Id, OrderId = currentEntity.Id });
+                    }
+
                     context.SaveChanges();
                 }
 
@@ -79,7 +92,7 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, bool> Delete(int id)
+        public Either<Error, bool> Delete(long id)
         {
             try
             {
@@ -87,6 +100,7 @@ namespace Exebite.DataAccess.Repositories
                 {
                     var itemSet = context.Set<OrderEntity>();
                     var item = itemSet.Find(id);
+
                     if (item == null)
                     {
                         return new Left<Error, bool>(new RecordNotFound($"Record with Id='{id}' is not found."));
@@ -94,6 +108,7 @@ namespace Exebite.DataAccess.Repositories
 
                     itemSet.Remove(item);
                     context.SaveChanges();
+
                     return new Right<Error, bool>(true);
                 }
             }

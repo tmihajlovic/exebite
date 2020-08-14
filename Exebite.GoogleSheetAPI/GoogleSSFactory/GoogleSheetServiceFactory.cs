@@ -12,7 +12,7 @@ namespace Exebite.GoogleSheetAPI.GoogleSSFactory
         /// </summary>
         private readonly string[] scopes =
         {
-            SheetsService.Scope.SpreadsheetsReadonly,
+            SheetsService.Scope.Spreadsheets,
             SheetsService.Scope.DriveReadonly
         };
 

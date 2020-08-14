@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Either;
@@ -13,7 +14,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 {
     public abstract class RestaurantConnector : IRestaurantConnector
     {
-        private readonly string _kreditTab = "Kredit";
+        private const string _orderMark = "x";
+
         private readonly IRestaurantQueryRepository _restaurantQueryRepository;
 
         protected RestaurantConnector(
@@ -24,6 +26,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
             _restaurantQueryRepository = restaurantQueryRepository;
             GoogleSheetService = googleSheetService;
             Restaurant = GetRestaurant(restaurantName);
+            DailyMenuDate = DateTime.Today;
         }
 
         internal IGoogleSheetExtractor GoogleSheetService { get; set; }
@@ -34,217 +37,75 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
 
         internal string DailyMenuSheet { get; set; }
 
+        internal int ColumnsPerDay { get; set; }
+
+        internal DateTime DailyMenuDate { get; }
+
         internal string FoodListSheet { get; set; }
 
         internal Restaurant Restaurant { get; set; }
 
-        public abstract void WriteMenu(List<Food> foods);
+        public abstract void WriteMenu(List<Meal> foods);
 
-        public abstract List<Food> GetDailyMenu();
-
-        /// <summary>
-        /// Populate Orders tab in sheet with new order data
-        /// </summary>
-        /// <param name="orders">List of orders to write</param>
-        public void PlaceOrders(List<Order> orders)
+        public void WriteOrder(string customerName, string locationName, ICollection<Meal> meals)
         {
-            if (orders == null)
-            {
-                throw new ArgumentNullException(nameof(orders));
-            }
+            var valueRange = GoogleSheetService.GetRows(SheetId, DailyMenuSheet);
 
-            var header = new List<object> { "Jelo", "Komada", "Cena", "Cena Ukupno", "Narucili" };
-            var orderRange = new ValueRange { Values = new List<IList<object>> { header } };
+            int startDateIndex = GetStartDateColumnIndex(valueRange);
+            int endDateIndex = startDateIndex + ColumnsPerDay;
 
-            List<Food> listOFOrderdFood = new List<Food>();
-            foreach (var order in orders)
+            object[] mealsData = new object[ColumnsPerDay];
+
+            foreach (var meal in meals)
             {
-                foreach (var food in order.Meal.Foods)
+                for (int mealIndex = startDateIndex; mealIndex < endDateIndex; mealIndex++)
                 {
-                    listOFOrderdFood.Add(food);
+                    mealsData[mealIndex - startDateIndex] = valueRange.Values[0][mealIndex].ToString() == meal.Name ? _orderMark : string.Empty;
                 }
             }
 
-            var distinctFood = listOFOrderdFood.GroupBy(f => f.Id).Select(o => o.FirstOrDefault());
-            int rowCounter = 2; // First row with orders, used for formula
-            foreach (var food in distinctFood)
+            var mealsBody = new ValueRange()
             {
-                var customerList = new List<object>();
-                var formatedData = new List<object>();
+                Values = new List<IList<object>>() { mealsData }
+            };
 
-                foreach (var order in orders)
-                {
-                    if (order.Meal.Foods.FirstOrDefault(f => f.Name == food.Name) != null)
-                    {
-                        if (!string.IsNullOrEmpty(order.Note))
-                        {
-                            customerList.Add(order.Customer.Name + "(" + order.Note + ")");
-                        }
-                        else
-                        {
-                            customerList.Add(order.Customer.Name);
-                        }
-                    }
-                }
+            int rowIndex = GetCustomerRowIndex(valueRange, customerName);
 
-                formatedData.Add(food.Name);
-                formatedData.Add(customerList.Count);
-                formatedData.Add(food.Price);
-                formatedData.Add($"=B{rowCounter}*C{rowCounter}"); // Add formula to sum
-                rowCounter++;
-                formatedData.AddRange(customerList);
-                orderRange.Values.Add(formatedData);
-            }
+            GoogleSheetService.Update(
+                mealsBody,
+                SheetId,
+                DailyMenuSheet + "!" + A1Notation.ToCellFormat(startDateIndex, rowIndex) + ":" + A1Notation.ToCellFormat(endDateIndex, rowIndex));
 
-            GoogleSheetService.Clear(SheetId, OrdersSheet);
-            GoogleSheetService.Update(orderRange, SheetId, OrdersSheet);
+            var locationBody = new ValueRange()
+            {
+                Values = new List<IList<object>>() { new object[1] { locationName.ToUpper() } }
+            };
+
+            GoogleSheetService.Update(
+                locationBody,
+                SheetId,
+                DailyMenuSheet + "!" + A1Notation.ToCellFormat(2, rowIndex));
         }
 
-        /// <summary>
-        /// Setup daily menu sheet, making today first column
-        /// </summary>
-        public void DnevniMenuSheetSetup()
+        public int WorkingDayInMonth(int year, int month, int day)
         {
-            // Get data
-            ValueRange sheetData = GoogleSheetService.GetColumns(SheetId, DailyMenuSheet);
-
-            DateTime dateCounter = DateTime.Today;
-
-            var sheetValues = sheetData.Values;
-            var dayOfWeek = GetLocalDayName(dateCounter.DayOfWeek);
-            int today = 0;
-            for (int i = 0; i < sheetValues.Count; i++)
+            int days = DateTime.DaysInMonth(year, month);
+            List<DateTime> dates = new List<DateTime>();
+            for (int i = 1; i <= days; i++)
             {
-                if (sheetValues[i][0].ToString() == dayOfWeek)
+                dates.Add(new DateTime(year, month, i));
+            }
+
+            dates = dates.Where(d => d.DayOfWeek > DayOfWeek.Sunday & d.DayOfWeek < DayOfWeek.Saturday).ToList();
+            for (int i = 0; i < dates.Count; i++)
+            {
+                if (dates[i].Day == day)
                 {
-                    today = i;
+                    return i + 1;
                 }
             }
 
-            ValueRange updatedRange = new ValueRange { Values = new List<IList<object>>() };
-            const int daysToAdd = 0;
-
-            // Insert today and after
-            for (int i = today; i < sheetValues.Count; i++)
-            {
-                sheetValues[i][1] = dateCounter.AddDays(daysToAdd).ToString("dd-MM-yyyy");
-                updatedRange.Values.Add(sheetValues[i]);
-                if (dateCounter.DayOfWeek == DayOfWeek.Friday)
-                {
-                    dateCounter = dateCounter.AddDays(3);
-                }
-                else
-                {
-                    dateCounter = dateCounter.AddDays(1);
-                }
-            }
-
-            // Insert before today
-            for (int k = 0; k < today; k++)
-            {
-                sheetValues[k][1] = dateCounter.AddDays(daysToAdd).ToString("dd-MM-yyyy");
-                updatedRange.Values.Add(sheetValues[k]);
-                if (dateCounter.DayOfWeek == DayOfWeek.Friday)
-                {
-                    dateCounter = dateCounter.AddDays(3);
-                }
-                else
-                {
-                    dateCounter = dateCounter.AddDays(1);
-                }
-            }
-
-            // Transpose values
-            ValueRange formatedRange = new ValueRange { Values = new List<IList<object>>() };
-
-            int rowNum = 0;
-            bool empty;
-            do
-            {
-                empty = true;
-                List<object> row = new List<object>();
-                for (int i = 0; i < updatedRange.Values.Count; i++)
-                {
-                    if (updatedRange.Values[i].Count > rowNum)
-                    {
-                        row.Add(updatedRange.Values[i][rowNum].ToString());
-                        empty = false;
-                    }
-                    else
-                    {
-                        row.Add(string.Empty);
-                    }
-                }
-
-                if (!empty)
-                {
-                    formatedRange.Values.Add(row);
-                    rowNum++;
-                }
-            }
-            while (!empty);
-
-            GoogleSheetService.Clear(SheetId, DailyMenuSheet);
-            GoogleSheetService.Update(formatedRange, SheetId, DailyMenuSheet);
-        }
-
-        /// <summary>
-        /// Loads values from sheet, with all info
-        /// </summary>
-        /// <returns>List of all food from sheet</returns>
-        public List<Food> LoadAllFoods()
-        {
-            ValueRange sheetData = GoogleSheetService.GetRows(SheetId, FoodListSheet);
-            IEnumerable<Food> foods = new List<Food>();
-
-            // Null and empty check
-            if (!(sheetData?.Values?.Any() == true))
-            {
-                return foods.ToList();
-            }
-
-            var foodData = sheetData.Values.Skip(1);
-
-            foods = foodData.Select(item => new Food()
-            {
-                Name = item[0].ToString(),
-                Description = item[1].ToString(),
-                Price = decimal.Parse(item[2].ToString()),
-                Type = GetFoodType(item[3].ToString()),
-                Restaurant = Restaurant,
-                IsInactive = false
-            });
-
-            return foods.ToList();
-        }
-
-        /// <summary>
-        /// Populate Kredit tab
-        /// </summary>
-        /// <param name="customerList">List of <see cref="Customer"/></param>
-        [Obsolete("In Kredit tab and kasa should not be written")]
-        public void WriteKasaTab(List<Customer> customerList)
-        {
-            if (customerList == null)
-            {
-                return;
-            }
-
-            List<object> header = new List<object> { "Id", "Ime i prezime", "SUM" };
-            ValueRange kreditData = new ValueRange { Values = new List<IList<object>> { header } };
-
-            foreach (var customer in customerList)
-            {
-                kreditData.Values.Add(new List<object>
-                {
-                    customer.Id,
-                    customer.Name,
-                    customer.Orders.Where(o => o.Meal.Foods[0].Restaurant.Name == Restaurant.Name).Sum(o => o.Price)
-                });
-            }
-
-            GoogleSheetService.Clear(SheetId, _kreditTab);
-            GoogleSheetService.Update(kreditData, SheetId, _kreditTab);
+            return 0;
         }
 
         /// <summary>
@@ -290,33 +151,33 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
         /// </summary>
         /// <param name="foodType">Value of food enum</param>
         /// <returns>Name</returns>
-        internal static string GetLocalFoodType(FoodType foodType)
+        internal static string GetLocalFoodType(MealType foodType)
         {
             string typeLocal = "Glavno jelo";
 
             switch (foodType)
             {
-                case FoodType.MAIN_COURSE:
+                case MealType.MAIN_COURSE:
                     typeLocal = "Glavno jelo";
                     break;
 
-                case FoodType.SIDE_DISH:
+                case MealType.SIDE_DISH:
                     typeLocal = "Prilog";
                     break;
 
-                case FoodType.SALAD:
+                case MealType.SALAD:
                     typeLocal = "Salata";
                     break;
 
-                case FoodType.DESERT:
+                case MealType.DESSERT:
                     typeLocal = "Desert";
                     break;
 
-                case FoodType.SOUP:
+                case MealType.SOUP:
                     typeLocal = "Supa";
                     break;
 
-                case FoodType.CONDIMENTS:
+                case MealType.CONDIMENT:
                     typeLocal = "Dodatak";
                     break;
                 default:
@@ -331,7 +192,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
         /// </summary>
         /// <param name="type">Type of food</param>
         /// <returns>Enum value</returns>
-        internal static FoodType GetFoodType(string type)
+        internal static MealType GetFoodType(string type)
         {
             if (type == null)
             {
@@ -341,25 +202,25 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
             switch (type)
             {
                 case "Glavno jelo":
-                    return FoodType.MAIN_COURSE;
+                    return MealType.MAIN_COURSE;
 
                 case "Prilog":
-                    return FoodType.SIDE_DISH;
+                    return MealType.SIDE_DISH;
 
                 case "Salata":
-                    return FoodType.SALAD;
+                    return MealType.SALAD;
 
                 case "Desert":
-                    return FoodType.DESERT;
+                    return MealType.DESSERT;
 
                 case "Supa":
-                    return FoodType.SOUP;
+                    return MealType.SOUP;
 
                 case "Dodatak":
-                    return FoodType.CONDIMENTS;
+                    return MealType.CONDIMENT;
             }
 
-            return FoodType.MAIN_COURSE;
+            return MealType.MAIN_COURSE;
         }
 
         /// <summary>
@@ -428,7 +289,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
                 .Select(SheetMerges)
                 .Select(mergeList => GetMergeWithDate(mergeList, providedDate))
                 .Where(result => result.IsSuccess)
-                .FirstOrDefault();
+                .LastOrDefault();
 
             if (foundRegion != null)
             {
@@ -487,7 +348,8 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
                 return new List<MergedRegion>();
             }
 
-            return sheet.Merges.Select(merge => new MergedRegion(sheet, merge)).Where(merge => merge.Range.StartRowIndex == 1);
+            return sheet.Merges.Select(merge => new MergedRegion(sheet, merge))
+                .Where(merge => merge.Range.StartRowIndex == 1 && merge.Range.EndColumnIndex - merge.Range.StartColumnIndex > 2);
         }
 
         /// <summary>
@@ -501,6 +363,32 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
                     .Query(new RestaurantQueryModel { Name = name })
                     .Map(res => res.Items.FirstOrDefault())
                     .Reduce(r => null, ex => Console.WriteLine(ex.ToString()));
+        }
+
+        private int GetCustomerRowIndex(ValueRange valueRange, string customerName)
+        {
+            for (int rowIndex = 6; rowIndex < valueRange.Values.Count; rowIndex++)
+            {
+                if (valueRange.Values[rowIndex][1].ToString() == customerName)
+                {
+                    return rowIndex;
+                }
+            }
+
+            throw new Exception("Customer not found!");
+        }
+
+        private int GetStartDateColumnIndex(ValueRange valueRange)
+        {
+            for (int colIndex = 3; colIndex < valueRange.Values[1].Count; colIndex += ColumnsPerDay)
+            {
+                if (DateTime.ParseExact(valueRange.Values[1][colIndex].ToString(), "dd-MMM-yyyy", CultureInfo.InvariantCulture).Date == DailyMenuDate.Date)
+                {
+                    return colIndex;
+                }
+            }
+
+            throw new Exception("Date not found!");
         }
     }
 }

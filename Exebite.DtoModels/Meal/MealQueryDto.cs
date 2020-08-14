@@ -2,6 +2,12 @@
 {
     public class MealQueryDto : QueryBaseDto
     {
-        public int? Id { get; set; }
+        public long? Id { get; set; }
+
+        public long? RestaurantId { get; set; }
+
+        public string Name { get; set; }
+
+        public int? Type { get; set; }
     }
 }

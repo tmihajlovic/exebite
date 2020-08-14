@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using AutoMapper;
 using Either;
 using Exebite.Common;
 using Exebite.DataAccess.Context;
@@ -10,14 +8,14 @@ namespace Exebite.DataAccess.Repositories
 {
     public class DailyMenuCommandRepository : IDailyMenuCommandRepository
     {
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
-        public DailyMenuCommandRepository(IFoodOrderingContextFactory factory)
+        public DailyMenuCommandRepository(IMealOrderingContextFactory factory)
         {
             _factory = factory;
         }
 
-        public Either<Error, int> Insert(DailyMenuInsertModel entity)
+        public Either<Error, long> Insert(DailyMenuInsertModel entity)
         {
             try
             {
@@ -26,21 +24,31 @@ namespace Exebite.DataAccess.Repositories
                     var dailyMenuEntity = new DailyMenuEntity
                     {
                         RestaurantId = entity.RestaurantId,
-                        Foods = entity.Foods.Select(food => context.Food.Find(food.Id)).ToList()
+                        Date = entity.Date,
+                        Note = entity.Note,
                     };
 
                     var addedEntity = context.DailyMenu.Add(dailyMenuEntity).Entity;
+
+                    if (entity.Meals != null)
+                    {
+                        foreach (var meal in entity.Meals)
+                        {
+                            addedEntity.DailyMenuToMeals.Add(new DailyMenuToMealEntity() { DailyMenuId = addedEntity.Id, MealId = meal.Id });
+                        }
+                    }
+
                     context.SaveChanges();
-                    return new Right<Error, int>(addedEntity.Id);
+                    return new Right<Error, long>(addedEntity.Id);
                 }
             }
             catch (Exception ex)
             {
-                return new Left<Error, int>(new UnknownError(ex.ToString()));
+                return new Left<Error, long>(new UnknownError(ex.ToString()));
             }
         }
 
-        public Either<Error, bool> Update(int id, DailyMenuUpdateModel entity)
+        public Either<Error, bool> Update(long id, DailyMenuUpdateModel entity)
         {
             try
             {
@@ -58,13 +66,16 @@ namespace Exebite.DataAccess.Repositories
                     }
 
                     currentEntity.RestaurantId = entity.RestaurantId;
+                    currentEntity.Date = entity.Date;
+                    currentEntity.Note = entity.Note;
 
-                    var addedEntities = entity.Foods.Select(food => context.Food.Find(food.Id)).ToList();
-
-                    // this will remove old references, and after that new ones will be added
-                    currentEntity.Foods.Clear();
-
-                    addedEntities.ForEach(a => currentEntity.Foods.Add(a));
+                    if (entity.Meals != null)
+                    {
+                        foreach (var meal in entity.Meals)
+                        {
+                            currentEntity.DailyMenuToMeals.Add(new DailyMenuToMealEntity() { DailyMenuId = currentEntity.Id, MealId = meal.Id });
+                        }
+                    }
 
                     context.SaveChanges();
                 }
@@ -77,7 +88,7 @@ namespace Exebite.DataAccess.Repositories
             }
         }
 
-        public Either<Error, bool> Delete(int id)
+        public Either<Error, bool> Delete(long id)
         {
             try
             {

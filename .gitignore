@@ -295,4 +295,7 @@ __pycache__/
 /Logs
 # sonarqube working directory
 /.sonarqube
+/Exebite.API/logs/internal-nlog.txt
+/Exebite.API/credentials.json
+/Exebite.IdentityServer/tempkey.jwk
 /Exebite.API/Logs/internal-nlog.txt

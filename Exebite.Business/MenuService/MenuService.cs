@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Either;
 using Exebite.Common;
 using Exebite.DataAccess.Repositories;
@@ -12,14 +13,12 @@ namespace Exebite.Business
     public class MenuService : IMenuService
     {
         private readonly IRestaurantQueryRepository _restaurantRepository;
-        private readonly IRecipeQueryRepository _recipeQueryRepository;
-        private readonly IFoodQueryRepository _foodQueryRepository;
+        private readonly IMealQueryRepository _mealQueryRepository;
 
-        public MenuService(IRestaurantQueryRepository restaurantRepository, IFoodQueryRepository foodQueryRepository, IRecipeQueryRepository recipeQueryRepository)
+        public MenuService(IRestaurantQueryRepository restaurantRepository, IMealQueryRepository mealQueryRepository)
         {
             _restaurantRepository = restaurantRepository;
-            _foodQueryRepository = foodQueryRepository;
-            _recipeQueryRepository = recipeQueryRepository;
+            _mealQueryRepository = mealQueryRepository;
         }
 
         public Either<Error, PagingResult<Restaurant>> GetRestorantsWithMenus()
@@ -33,17 +32,11 @@ namespace Exebite.Business
             throw new NotImplementedException();
         }
 
-        public IList<Food> CheckAvailableSideDishes(int foodId)
+        public IList<Meal> GetCondimentsForMeal(long mealId)
         {
-            var recepies = _foodQueryRepository.Query(new FoodQueryModel() { Id = foodId })
-                .Map(x => x.Items.FirstOrNone())
-                .Map(z =>
-                    z.Map(x => _recipeQueryRepository.Query(new RecipeQueryModel() { MainCourseId = x.Id }))
-                     .Reduce(PagingResult<Recipe>.Empty()))
-                .Map(x => x.Items)
-                .Reduce(_ => new List<Recipe>());
-
-            return recepies.SelectMany(x => x.SideDish).ToList();
+            return _mealQueryRepository.GetCondimentsForMeal(new MealQueryModel { Id = mealId })
+                .Map(c => c.Items.ToList())
+                .Reduce(_ => throw new Exception());
         }
     }
 }

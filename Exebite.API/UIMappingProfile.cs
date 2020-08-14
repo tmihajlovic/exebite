@@ -1,59 +1,33 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
+using Exebite.Business.Model;
 using Exebite.DataAccess.Repositories;
 using Exebite.DomainModel;
 using Exebite.DtoModels;
 
-#pragma warning disable SA1123 // Do not place regions within elements
 namespace Exebite.API
 {
     public class UIMappingProfile : Profile
     {
         public UIMappingProfile()
         {
-            #region CustomerModel
             CreateMap<Customer, CustomerDto>();
             CreateMap<CustomerQueryDto, CustomerQueryModel>();
-            #endregion CustomerModel
-            #region CustomerAliasesModel
-            CreateMap<CustomerAliases, CustomerAliasDto>();
-            CreateMap<CustomerAliasQueryDto, CustomerAliasQueryModel>();
-            #endregion CustomerAliasesModel
-            #region FoodModel
-            CreateMap<Food, FoodDto>();
-            CreateMap<FoodQueryModelDto, FoodQueryModel>();
-            #endregion  FoodModel
-            #region LocationModel
             CreateMap<Location, LocationDto>();
             CreateMap<LocationQueryDto, LocationQueryModel>();
-            #endregion LocationModel
-            #region Order
+            CreateMap<Meal, MealDto>();
+            CreateMap<MealQueryDto, MealQueryModel>();
             CreateMap<Order, OrderDto>();
             CreateMap<OrderQueryDto, OrderQueryModel>();
-            #endregion Order
-            #region MealModel
-            CreateMap<Meal, MealDto>()
-                .ForMember(m => m.Foods, m => m.MapFrom(x => x.Foods.Select(a => a.Id)));
-
-            CreateMap<MealQueryDto, MealQueryModel>();
-            #endregion MealModel
-            #region RecipeModel
-            CreateMap<Recipe, RecipeDto>();
-            CreateMap<RecipeQueryModel, RecipeQueryDto>();
-            #endregion RecipeModel
-            #region RestaurantModel
+            CreateMap<CreateOrderDto, RestaurantOrder>();
+            CreateMap<RestaurantOrder, OrderInsertModel>();
+            CreateMap<UpdateOrderDto, RestaurantOrder>();
+            CreateMap<RestaurantOrder, OrderUpdateModel>();
+            CreateMap<CreateOrderToMealDto, Meal>().ForMember(d => d.Id, opt => opt.MapFrom(src => src.MealId));
+            CreateMap<OrderToMeal, OrderToMealDto>();
+            CreateMap<Payment, PaymentDto>();
+            CreateMap<PaymentQueryDto, PaymentQueryModel>();
             CreateMap<Restaurant, RestaurantDto>();
             CreateMap<RestaurantQueryDto, RestaurantQueryModel>();
-            #endregion  RestaurantModel
-            #region DailyMenuModel
-            CreateMap<DailyMenu, DailyMenuDto>();
-            CreateMap<DailyMenuQueryDto, DailyMenuQueryModel>();
-            #endregion
-            #region Role
-            CreateMap<Role, RoleDto>();
-            CreateMap<RoleQueryDto, RoleQueryModel>();
-            #endregion Role
         }
     }
 }
-#pragma warning restore SA1123 // Do not place regions within elements

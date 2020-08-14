@@ -1,12 +1,17 @@
-﻿using Exebite.GoogleSheetAPI.Connectors.Restaurants.Base;
+﻿using System.Collections.Generic;
+using Exebite.DomainModel;
+using Exebite.GoogleSheetAPI.Connectors.Restaurants.Base;
 
 namespace Exebite.GoogleSheetAPI.Connectors.Restaurants
 {
     public interface ITopliObrokConnector : IRestaurantConnector
     {
         /// <summary>
-        /// Order Daily menu sheet so first column is today and place correct dates
+        /// Gets meals available for today
         /// </summary>
-        void DnevniMenuSheetSetup();
+        /// <returns>List of meals</returns>
+        List<Meal> GetDailyMenu();
+
+        void WriteOrder(string customerName, string locationName, ICollection<Meal> meals);
     }
 }

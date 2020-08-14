@@ -12,9 +12,9 @@ namespace Exebite.DataAccess.Repositories
     public class MealQueryRepository : IMealQueryRepository
     {
         private readonly IMapper _mapper;
-        private readonly IFoodOrderingContextFactory _factory;
+        private readonly IMealOrderingContextFactory _factory;
 
-        public MealQueryRepository(IFoodOrderingContextFactory factory, IMapper mapper)
+        public MealQueryRepository(IMealOrderingContextFactory factory, IMapper mapper)
         {
             _factory = factory;
             _mapper = mapper;
@@ -38,6 +38,21 @@ namespace Exebite.DataAccess.Repositories
                         query = query.Where(x => x.Id == queryModel.Id.Value);
                     }
 
+                    if (queryModel.RestaurantId != null)
+                    {
+                        query = query.Where(x => x.RestaurantId == queryModel.RestaurantId.Value);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(queryModel.Name))
+                    {
+                        query = query.Where(x => x.Name == queryModel.Name);
+                    }
+
+                    if (queryModel.Type != null)
+                    {
+                        query = query.Where(x => x.Type == queryModel.Type.Value);
+                    }
+
                     var total = query.Count();
                     query = query
                         .Skip((queryModel.Page - 1) * queryModel.Size)
@@ -45,7 +60,55 @@ namespace Exebite.DataAccess.Repositories
 
                     var results = query.ToList();
                     var mapped = _mapper.Map<IList<Meal>>(results).ToList();
+
                     return new Right<Error, PagingResult<Meal>>(new PagingResult<Meal>(mapped, total));
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Left<Error, PagingResult<Meal>>(new UnknownError(ex.ToString()));
+            }
+        }
+
+        public Either<Error, long> FindByNameAndRestaurantId(MealQueryModel queryModel)
+        {
+            try
+            {
+                if (queryModel == null)
+                {
+                    return new Left<Error, long>(new ArgumentNotSet(nameof(queryModel)));
+                }
+
+                using (var ctx = _factory.Create())
+                {
+                    var record = ctx.Meal.FirstOrDefault(c =>
+                        c.Name.Equals(queryModel.Name, StringComparison.OrdinalIgnoreCase) &&
+                        c.RestaurantId == queryModel.RestaurantId);
+
+                    return new Right<Error, long>(record?.Id ?? 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Left<Error, long>(new UnknownError(ex.ToString()));
+            }
+        }
+
+        public Either<Error, PagingResult<Meal>> GetCondimentsForMeal(MealQueryModel queryModel)
+        {
+            try
+            {
+                if (queryModel == null)
+                {
+                    return new Left<Error, PagingResult<Meal>>(new ArgumentNotSet(nameof(queryModel)));
+                }
+
+                using (var ctx = _factory.Create())
+                {
+                    var condiments = ctx.Meal.FirstOrDefault(m => m.Id == queryModel.Id).Condiments.Select(c => c.Condiment);
+                    var result = _mapper.Map<IList<Meal>>(condiments);
+
+                    return new Right<Error, PagingResult<Meal>>(new PagingResult<Meal>(result, result.Count()));
                 }
             }
             catch (Exception ex)
