@@ -26,7 +26,7 @@ namespace Exebite.GoogleSheetAPI.Connectors.Restaurants.Base
             _restaurantQueryRepository = restaurantQueryRepository;
             GoogleSheetService = googleSheetService;
             Restaurant = GetRestaurant(restaurantName);
-            DailyMenuDate = DateTime.Today;
+            DailyMenuDate = DateTime.ParseExact("2020-02-03", "yyyy-MM-dd", CultureInfo.InvariantCulture);
         }
 
         internal IGoogleSheetExtractor GoogleSheetService { get; set; }
