@@ -70,142 +70,146 @@ namespace Exebite.GoogleSheetAPI.Properties
         }
 
         /// <summary>
-<<<<<<< HEAD Looks up a localized string similar to 1kfebqHeFkcrO_Tj0stG9NDbFxb_4nM3K8U2uMQ66dtc.
+        ///   Looks up a localized string similar to 1kfebqHeFkcrO_Tj0stG9NDbFxb_4nM3K8U2uMQ66dtc.
         /// </summary>
-        internal static string HEY_DAY {
-            get {
+        internal static string HEY_DAY
         {
             get
-            return ResourceManager.GetString("HEY_DAY", resourceCulture);
+            {
+                return ResourceManager.GetString("HEY_DAY", resourceCulture);
             }
         }
-        
 
         /// <summary>
-        ///   Looks up a localized string similar to 13D2HvRTAON6KZSGfGkKI6wJ_vwiJOVfUkPINl00gvGE.
-=======
-        ///   Looks up a localized string similar to 1Eb3QSsvk3jHcULkl2gyM8_Y56ElaQLWVon6A37oy7Jc.
->>>>>>> dev    return ResourceManager.GetString("INDEX_HOUSE", resourceCulture);
-            }
-        }
+        ///   Looks up a localized string similar to 1qD4_ZykJByF2ThoGIjUh1vX5QmzXn3VstNUbdphM3Pc.
+        /// </summary>
+        internal static string INDEX_HOUSE
         {
             get
-           
+            {
+                return ResourceManager.GetString("INDEX_HOUSE", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to 1y-PZeeCjK4hGi6Z3i_C4UITfuRIsDEGIzo45V0evGZY.
-        /
+        /// </summary>
+        internal static string KASA
+        {
+            get
+            {
+                return ResourceManager.GetString("KASA", resourceCulture);
+            }
+        }
 
         /// <summary>
-<<<<<<< HEAD
-        ///   Looks up a localized string similar to 1m7S2VQQn3q5vsx1WHEIRcQKF7HUPDDzqgBYvm8P2VQE.
-=======
-        ///   Looks up a localized string similar to 1J9Q5MbLg66aT22QCjjX7InlKK8b-OXeZHWXjmUenrrc.
->>>>>>> dev<summary>
         ///   Looks up a localized string similar to 1TiRdknQjMqB9tOdIKgxQ-8bkMC4c_dYrJXcUzC-QoyM.
         /// </summary>
+        internal static string LIPA
         {
             get
-           l static string LIPA {
-            get {
+            {
                 return ResourceManager.GetString("LIPA", resourceCulture);
-         
+            }
+        }
 
         /// <summary>
-<<<<<<< HEAD
-        ///   Looks up a localized string similar to 12ubn-spYqoTQMc3uLGxxxx_bcHnt6ECmySmUbIUcG1E.
-=======
-        ///   Looks up a localized string similar to 1GjiSV7n-wivAUaiGQl0SOjDkKMY29SvgFTLfzfPVHiQ.
->>>>>>> devget {
+        ///   Looks up a localized string similar to 1xjzijk2qAzCzvzQlWHuZsxkH4xYOD92TPJ0PmL1hyXE.
+        /// </summary>
+        internal static string MIMAS
+        {
+            get
+            {
                 return ResourceManager.GetString("MIMAS", resourceCulture);
             }
-        {
-            get
-           
-        
-        /// <summary>
-        /
+        }
 
         /// <summary>
-<<<<<<< HEAD
-        ///   Looks up a localized string similar to 1xb0OFRg9n0HF-rIn7NcdfR2AzGnLYTqiuXbZdeY5ydc.
-=======
-        ///   Looks up a localized string similar to 1kaB79osJftUkw5s8RchsJrB2PUqcrOwyxS2PXFIlap0.
->>>>>>> dev
-        /// <summary>
-        ///   Looks up a localized s
+        ///   Looks up a localized string similar to 15wr86t5w2QJ29mZ37F-U0uF7mamipbmlNI_OvKPyH10.
+        /// </summary>
+        internal static string PARRILLA
         {
             get
-           ummary>
-        internal static string SACredentialsLocation {
-            get {
-         
-   }
+            {
+                return ResourceManager.GetString("PARRILLA", resourceCulture);
+            }
         }
-        
-        /// <summary>
-        ///   Looks up a localized stri
-        {
-            get
-           ummary>
-        internal static string SERPICA {
-            get {
-         
-   }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to
-        {
-            get
-           ummary>
-        internal static string SERPICA_DAILY_MENU_URL {
-            get {
-         
-   }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized str
-        {
-            get
-           ummary>
-        internal static string SERPICA_LOGIN_URL {
-            get {
-         
 
         /// <summary>
-<<<<<<< HEAD
+        ///   Looks up a localized string similar to credentials.json.
+        /// </summary>
+        internal static string SACredentialsLocation
+        {
+            get
+            {
+                return ResourceManager.GetString("SACredentialsLocation", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to 1y3CHHotB9lPif2-yaRffM3yTr9GhfwpGfvO4PJkFCZQ.
+        /// </summary>
+        internal static string SERPICA
+        {
+            get
+            {
+                return ResourceManager.GetString("SERPICA", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to https://app.serpica021.rs/funkcije/getJelaZaDan.php.
+        /// </summary>
+        internal static string SERPICA_DAILY_MENU_URL
+        {
+            get
+            {
+                return ResourceManager.GetString("SERPICA_DAILY_MENU_URL", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to https://app.serpica021.rs/funkcije/logovanje.php.
+        /// </summary>
+        internal static string SERPICA_LOGIN_URL
+        {
+            get
+            {
+                return ResourceManager.GetString("SERPICA_LOGIN_URL", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to 123456.
         /// </summary>
+        internal static string SERPICA_PASSWORD
         {
             get
-           l static string SERPICA_PASSWORD {
-            get {
+            {
                 return ResourceManager.GetString("SERPICA_PASSWORD", resourceCulture);
-         
+            }
+        }
 
-        
         /// <summary>
         ///   Looks up a localized string similar to 060123456.
         /// </summary>
+        internal static string SERPICA_USERNAME
         {
             get
-           l static string SERPICA_USERNAME {
-            get {
+            {
                 return ResourceManager.GetString("SERPICA_USERNAME", resourceCulture);
-         
+            }
+        }
 
-        
         /// <summary>
         ///   Looks up a localized string similar to 1ILH3zHu47nMjOvqbF2nRpq-lJjaAciCCIXt7far3xk4.
         /// </summary>
+        internal static string TOPLI_OBROK
         {
             get
-           l static string TOPLI_OBROK {
-            get {
+            {
                 return ResourceManager.GetString("TOPLI_OBROK", resourceCulture);
-         
-
+            }
+        }
     }
 }
