@@ -298,3 +298,4 @@ __pycache__/
 /Exebite.API/logs/internal-nlog.txt
 /Exebite.API/credentials.json
 /Exebite.IdentityServer/tempkey.jwk
+/Exebite.API/Logs/internal-nlog.txt

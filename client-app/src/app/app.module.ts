@@ -7,23 +7,28 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./components/login/login.component";
 import { HomeComponent } from "./components/home/home.component";
 import { UserService } from "./services/user.service";
-import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
-import { AccessTokenInterceptor } from './interceptors/access-token-interceptor';
+import { RestaurantService } from "./services/restaurant.service";
+import { FoodService } from "./services/food.service";
+import { AuthCallbackComponent } from "./components/auth-callback/auth-callback.component";
+import { AccessTokenInterceptor } from "./interceptors/access-token-interceptor";
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, AuthCallbackComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    HomeComponent,
+    AuthCallbackComponent,
   ],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [
     UserService,
+    RestaurantService,
+    FoodService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AccessTokenInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })
